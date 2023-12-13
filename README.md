@@ -5,6 +5,10 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.cohere.cohere-java/cohere)](https://central.sonatype.com/artifact/com.cohere.cohere-java/cohere)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
+## ✨🪩✨ Announcing Cohere's new Java SDK ✨🪩✨
+
+We are very excited to publish this brand new Java SDK. We now officially support Java and will continuously update this library with all of the latest features in our API. Please create issues where you have feedback so that we can continue to improve the developer experience!
+
 ## Documentation
 
 API reference documentation is available [here](https://docs.cohere.com/docs).
