@@ -39,12 +39,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class CohereApiClient {
+public class Cohere {
     protected final ClientOptions clientOptions;
 
     protected final Supplier<ConnectorsClient> connectorsClient;
 
-    public CohereApiClient(ClientOptions clientOptions) {
+    public Cohere(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.connectorsClient = Suppliers.memoize(() -> new ConnectorsClient(clientOptions));
     }
@@ -484,7 +484,7 @@ public class CohereApiClient {
         return this.connectorsClient.get();
     }
 
-    public static CohereApiClientBuilder builder() {
-        return new CohereApiClientBuilder();
+    public static CohereBuilder builder() {
+        return new CohereBuilder();
     }
 }

@@ -6,28 +6,28 @@ package com.cohere.api;
 import com.cohere.api.core.ClientOptions;
 import com.cohere.api.core.Environment;
 
-public final class CohereApiClientBuilder {
+public final class CohereBuilder {
     private ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
 
     private Environment environment = Environment.PRODUCTION;
 
-    public CohereApiClientBuilder token(String token) {
+    public CohereBuilder token(String token) {
         this.clientOptionsBuilder.addHeader("Authorization", "Bearer " + token);
         return this;
     }
 
-    public CohereApiClientBuilder environment(Environment environment) {
+    public CohereBuilder environment(Environment environment) {
         this.environment = environment;
         return this;
     }
 
-    public CohereApiClientBuilder url(String url) {
+    public CohereBuilder url(String url) {
         this.environment = Environment.custom(url);
         return this;
     }
 
-    public CohereApiClient build() {
+    public Cohere build() {
         clientOptionsBuilder.environment(this.environment);
-        return new CohereApiClient(clientOptionsBuilder.build());
+        return new Cohere(clientOptionsBuilder.build());
     }
 }
