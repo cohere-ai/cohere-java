@@ -29,6 +29,8 @@ public final class EmbedRequest {
 
     private final Optional<String> inputType;
 
+    private final Optional<List<String>> embeddingTypes;
+
     private final Optional<EmbedRequestTruncate> truncate;
 
     private final Map<String, Object> additionalProperties;
@@ -37,11 +39,13 @@ public final class EmbedRequest {
             List<String> texts,
             Optional<String> model,
             Optional<String> inputType,
+            Optional<List<String>> embeddingTypes,
             Optional<EmbedRequestTruncate> truncate,
             Map<String, Object> additionalProperties) {
         this.texts = texts;
         this.model = model;
         this.inputType = inputType;
+        this.embeddingTypes = embeddingTypes;
         this.truncate = truncate;
         this.additionalProperties = additionalProperties;
     }
@@ -102,6 +106,21 @@ public final class EmbedRequest {
     }
 
     /**
+     * @return Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.
+     * <ul>
+     * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
+     * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for only v3 models.</li>
+     * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Valid for only v3 models.</li>
+     * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Valid for only v3 models.</li>
+     * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Valid for only v3 models.</li>
+     * </ul>
+     */
+    @JsonProperty("embedding_types")
+    public Optional<List<String>> getEmbeddingTypes() {
+        return embeddingTypes;
+    }
+
+    /**
      * @return One of <code>NONE|START|END</code> to specify how the API will handle inputs longer than the maximum token length.
      * <p>Passing <code>START</code> will discard the start of the input. <code>END</code> will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.</p>
      * <p>If <code>NONE</code> is selected, when the input exceeds the maximum input token length an error will be returned.</p>
@@ -126,12 +145,13 @@ public final class EmbedRequest {
         return texts.equals(other.texts)
                 && model.equals(other.model)
                 && inputType.equals(other.inputType)
+                && embeddingTypes.equals(other.embeddingTypes)
                 && truncate.equals(other.truncate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.texts, this.model, this.inputType, this.truncate);
+        return Objects.hash(this.texts, this.model, this.inputType, this.embeddingTypes, this.truncate);
     }
 
     @Override
@@ -151,6 +171,8 @@ public final class EmbedRequest {
 
         private Optional<String> inputType = Optional.empty();
 
+        private Optional<List<String>> embeddingTypes = Optional.empty();
+
         private Optional<EmbedRequestTruncate> truncate = Optional.empty();
 
         @JsonAnySetter
@@ -162,6 +184,7 @@ public final class EmbedRequest {
             texts(other.getTexts());
             model(other.getModel());
             inputType(other.getInputType());
+            embeddingTypes(other.getEmbeddingTypes());
             truncate(other.getTruncate());
             return this;
         }
@@ -205,6 +228,17 @@ public final class EmbedRequest {
             return this;
         }
 
+        @JsonSetter(value = "embedding_types", nulls = Nulls.SKIP)
+        public Builder embeddingTypes(Optional<List<String>> embeddingTypes) {
+            this.embeddingTypes = embeddingTypes;
+            return this;
+        }
+
+        public Builder embeddingTypes(List<String> embeddingTypes) {
+            this.embeddingTypes = Optional.of(embeddingTypes);
+            return this;
+        }
+
         @JsonSetter(value = "truncate", nulls = Nulls.SKIP)
         public Builder truncate(Optional<EmbedRequestTruncate> truncate) {
             this.truncate = truncate;
@@ -217,7 +251,7 @@ public final class EmbedRequest {
         }
 
         public EmbedRequest build() {
-            return new EmbedRequest(texts, model, inputType, truncate, additionalProperties);
+            return new EmbedRequest(texts, model, inputType, embeddingTypes, truncate, additionalProperties);
         }
     }
 }

@@ -94,7 +94,7 @@ public final class Connector {
      * @return The organization to which this connector belongs. This is automatically set to
      * the organization of the user who created the connector.
      */
-    @JsonProperty("organizationId")
+    @JsonProperty("organization_id")
     public Optional<String> getOrganizationId() {
         return organizationId;
     }
@@ -126,7 +126,7 @@ public final class Connector {
     /**
      * @return The UTC time at which the connector was created.
      */
-    @JsonProperty("createdAt")
+    @JsonProperty("created_at")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
@@ -134,7 +134,7 @@ public final class Connector {
     /**
      * @return The UTC time at which the connector was last updated.
      */
-    @JsonProperty("updatedAt")
+    @JsonProperty("updated_at")
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -150,7 +150,7 @@ public final class Connector {
     /**
      * @return The type of authentication/authorization used by the connector. Possible values: [oauth, service_auth]
      */
-    @JsonProperty("authType")
+    @JsonProperty("auth_type")
     public Optional<String> getAuthType() {
         return authType;
     }
@@ -166,7 +166,7 @@ public final class Connector {
     /**
      * @return The OAuth status for the user making the request. One of [&quot;valid&quot;, &quot;expired&quot;, &quot;&quot;]. Empty string (field is omitted) means the user has not authorized the connector yet.
      */
-    @JsonProperty("authStatus")
+    @JsonProperty("auth_status")
     public Optional<ConnectorAuthStatus> getAuthStatus() {
         return authStatus;
     }
@@ -182,7 +182,7 @@ public final class Connector {
     /**
      * @return Whether a chat request should continue or not if the request to this connector fails.
      */
-    @JsonProperty("continueOnFailure")
+    @JsonProperty("continue_on_failure")
     public Optional<Boolean> getContinueOnFailure() {
         return continueOnFailure;
     }
@@ -378,7 +378,7 @@ public final class Connector {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
-        @JsonSetter("createdAt")
+        @JsonSetter("created_at")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -389,7 +389,7 @@ public final class Connector {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
-        @JsonSetter("updatedAt")
+        @JsonSetter("updated_at")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
@@ -406,7 +406,7 @@ public final class Connector {
         }
 
         @Override
-        @JsonSetter(value = "continueOnFailure", nulls = Nulls.SKIP)
+        @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
             return this;
@@ -440,7 +440,7 @@ public final class Connector {
         }
 
         @Override
-        @JsonSetter(value = "authStatus", nulls = Nulls.SKIP)
+        @JsonSetter(value = "auth_status", nulls = Nulls.SKIP)
         public _FinalStage authStatus(Optional<ConnectorAuthStatus> authStatus) {
             this.authStatus = authStatus;
             return this;
@@ -474,7 +474,7 @@ public final class Connector {
         }
 
         @Override
-        @JsonSetter(value = "authType", nulls = Nulls.SKIP)
+        @JsonSetter(value = "auth_type", nulls = Nulls.SKIP)
         public _FinalStage authType(Optional<String> authType) {
             this.authType = authType;
             return this;
@@ -543,7 +543,7 @@ public final class Connector {
         }
 
         @Override
-        @JsonSetter(value = "organizationId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "organization_id", nulls = Nulls.SKIP)
         public _FinalStage organizationId(Optional<String> organizationId) {
             this.organizationId = organizationId;
             return this;

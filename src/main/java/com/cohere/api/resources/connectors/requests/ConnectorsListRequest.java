@@ -18,15 +18,16 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ListRequest.Builder.class)
-public final class ListRequest {
+@JsonDeserialize(builder = ConnectorsListRequest.Builder.class)
+public final class ConnectorsListRequest {
     private final Optional<Double> limit;
 
     private final Optional<Double> offset;
 
     private final Map<String, Object> additionalProperties;
 
-    private ListRequest(Optional<Double> limit, Optional<Double> offset, Map<String, Object> additionalProperties) {
+    private ConnectorsListRequest(
+            Optional<Double> limit, Optional<Double> offset, Map<String, Object> additionalProperties) {
         this.limit = limit;
         this.offset = offset;
         this.additionalProperties = additionalProperties;
@@ -51,7 +52,7 @@ public final class ListRequest {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ListRequest && equalTo((ListRequest) other);
+        return other instanceof ConnectorsListRequest && equalTo((ConnectorsListRequest) other);
     }
 
     @JsonAnyGetter
@@ -59,7 +60,7 @@ public final class ListRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ListRequest other) {
+    private boolean equalTo(ConnectorsListRequest other) {
         return limit.equals(other.limit) && offset.equals(other.offset);
     }
 
@@ -88,7 +89,7 @@ public final class ListRequest {
 
         private Builder() {}
 
-        public Builder from(ListRequest other) {
+        public Builder from(ConnectorsListRequest other) {
             limit(other.getLimit());
             offset(other.getOffset());
             return this;
@@ -116,8 +117,8 @@ public final class ListRequest {
             return this;
         }
 
-        public ListRequest build() {
-            return new ListRequest(limit, offset, additionalProperties);
+        public ConnectorsListRequest build() {
+            return new ConnectorsListRequest(limit, offset, additionalProperties);
         }
     }
 }

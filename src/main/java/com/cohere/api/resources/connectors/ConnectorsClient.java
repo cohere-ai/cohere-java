@@ -7,8 +7,8 @@ import com.cohere.api.core.ApiError;
 import com.cohere.api.core.ClientOptions;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.core.RequestOptions;
+import com.cohere.api.resources.connectors.requests.ConnectorsListRequest;
 import com.cohere.api.resources.connectors.requests.CreateRequest;
-import com.cohere.api.resources.connectors.requests.ListRequest;
 import com.cohere.api.resources.connectors.requests.UpdateRequest;
 import com.cohere.api.types.CreateResponse;
 import com.cohere.api.types.GetResponse;
@@ -36,13 +36,13 @@ public class ConnectorsClient {
      * Returns a list of connectors ordered by descending creation date (newer first).
      */
     public ListResponse list() {
-        return list(ListRequest.builder().build());
+        return list(ConnectorsListRequest.builder().build());
     }
 
     /**
      * Returns a list of connectors ordered by descending creation date (newer first).
      */
-    public ListResponse list(ListRequest request, RequestOptions requestOptions) {
+    public ListResponse list(ConnectorsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/connectors");
@@ -75,7 +75,7 @@ public class ConnectorsClient {
     /**
      * Returns a list of connectors ordered by descending creation date (newer first).
      */
-    public ListResponse list(ListRequest request) {
+    public ListResponse list(ConnectorsListRequest request) {
         return list(request, null);
     }
 
