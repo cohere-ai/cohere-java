@@ -95,7 +95,7 @@ public final class CreateRequest {
     }
 
     /**
-     * @return The OAuth 2.0 configuration for the connector. Cannot be specified if serviceAuth is specified.
+     * @return The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.
      */
     @JsonProperty("oauth")
     public Optional<CreateConnectorOAuth> getOauth() {
@@ -113,7 +113,7 @@ public final class CreateRequest {
     /**
      * @return Whether a chat request should continue or not if the request to this connector fails.
      */
-    @JsonProperty("continueOnFailure")
+    @JsonProperty("continue_on_failure")
     public Optional<Boolean> getContinueOnFailure() {
         return continueOnFailure;
     }
@@ -121,7 +121,7 @@ public final class CreateRequest {
     /**
      * @return The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.
      */
-    @JsonProperty("serviceAuth")
+    @JsonProperty("service_auth")
     public Optional<CreateConnectorServiceAuth> getServiceAuth() {
         return serviceAuth;
     }
@@ -277,7 +277,7 @@ public final class CreateRequest {
         }
 
         @Override
-        @JsonSetter(value = "serviceAuth", nulls = Nulls.SKIP)
+        @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
         public _FinalStage serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
             this.serviceAuth = serviceAuth;
             return this;
@@ -294,7 +294,7 @@ public final class CreateRequest {
         }
 
         @Override
-        @JsonSetter(value = "continueOnFailure", nulls = Nulls.SKIP)
+        @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
             return this;
@@ -318,7 +318,7 @@ public final class CreateRequest {
         }
 
         /**
-         * <p>The OAuth 2.0 configuration for the connector. Cannot be specified if serviceAuth is specified.</p>
+         * <p>The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override

@@ -3,235 +3,202 @@
  */
 package com.cohere.api.types;
 
-import com.cohere.api.core.ObjectMappers;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = EmbedResponse.Builder.class)
 public final class EmbedResponse {
-    private final String id;
+    private final Value value;
 
-    private final List<List<Double>> embeddings;
-
-    private final List<String> texts;
-
-    private final Optional<ApiMeta> meta;
-
-    private final Map<String, Object> additionalProperties;
-
-    private EmbedResponse(
-            String id,
-            List<List<Double>> embeddings,
-            List<String> texts,
-            Optional<ApiMeta> meta,
-            Map<String, Object> additionalProperties) {
-        this.id = id;
-        this.embeddings = embeddings;
-        this.texts = texts;
-        this.meta = meta;
-        this.additionalProperties = additionalProperties;
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    private EmbedResponse(Value value) {
+        this.value = value;
     }
 
-    @JsonProperty("id")
-    public String getId() {
-        return id;
+    public <T> T visit(Visitor<T> visitor) {
+        return value.visit(visitor);
     }
 
-    /**
-     * @return An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.
-     */
-    @JsonProperty("embeddings")
-    public List<List<Double>> getEmbeddings() {
-        return embeddings;
+    public static EmbedResponse embeddingsFloats(EmbedFloatsResponse value) {
+        return new EmbedResponse(new EmbeddingsFloatsValue(value));
     }
 
-    /**
-     * @return The text entries for which embeddings were returned.
-     */
-    @JsonProperty("texts")
-    public List<String> getTexts() {
-        return texts;
+    public static EmbedResponse embeddingsByType(EmbedByTypeResponse value) {
+        return new EmbedResponse(new EmbeddingsByTypeValue(value));
     }
 
-    @JsonProperty("meta")
-    public Optional<ApiMeta> getMeta() {
-        return meta;
+    public boolean isEmbeddingsFloats() {
+        return value instanceof EmbeddingsFloatsValue;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        return other instanceof EmbedResponse && equalTo((EmbedResponse) other);
+    public boolean isEmbeddingsByType() {
+        return value instanceof EmbeddingsByTypeValue;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    public boolean _isUnknown() {
+        return value instanceof _UnknownValue;
     }
 
-    private boolean equalTo(EmbedResponse other) {
-        return id.equals(other.id)
-                && embeddings.equals(other.embeddings)
-                && texts.equals(other.texts)
-                && meta.equals(other.meta);
+    public Optional<EmbedFloatsResponse> getEmbeddingsFloats() {
+        if (isEmbeddingsFloats()) {
+            return Optional.of(((EmbeddingsFloatsValue) value).value);
+        }
+        return Optional.empty();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id, this.embeddings, this.texts, this.meta);
+    public Optional<EmbedByTypeResponse> getEmbeddingsByType() {
+        if (isEmbeddingsByType()) {
+            return Optional.of(((EmbeddingsByTypeValue) value).value);
+        }
+        return Optional.empty();
     }
 
-    @Override
-    public String toString() {
-        return ObjectMappers.stringify(this);
+    public Optional<Object> _getUnknown() {
+        if (_isUnknown()) {
+            return Optional.of(((_UnknownValue) value).value);
+        }
+        return Optional.empty();
     }
 
-    public static IdStage builder() {
-        return new Builder();
+    @JsonValue
+    private Value getValue() {
+        return this.value;
     }
 
-    public interface IdStage {
-        _FinalStage id(String id);
+    public interface Visitor<T> {
+        T visitEmbeddingsFloats(EmbedFloatsResponse embeddingsFloats);
 
-        Builder from(EmbedResponse other);
+        T visitEmbeddingsByType(EmbedByTypeResponse embeddingsByType);
+
+        T _visitUnknown(Object unknownType);
     }
 
-    public interface _FinalStage {
-        EmbedResponse build();
-
-        _FinalStage embeddings(List<List<Double>> embeddings);
-
-        _FinalStage addEmbeddings(List<Double> embeddings);
-
-        _FinalStage addAllEmbeddings(List<List<Double>> embeddings);
-
-        _FinalStage texts(List<String> texts);
-
-        _FinalStage addTexts(String texts);
-
-        _FinalStage addAllTexts(List<String> texts);
-
-        _FinalStage meta(Optional<ApiMeta> meta);
-
-        _FinalStage meta(ApiMeta meta);
-    }
-
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            property = "response_type",
+            visible = true,
+            defaultImpl = _UnknownValue.class)
+    @JsonSubTypes({@JsonSubTypes.Type(EmbeddingsFloatsValue.class), @JsonSubTypes.Type(EmbeddingsByTypeValue.class)})
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IdStage, _FinalStage {
-        private String id;
+    private interface Value {
+        <T> T visit(Visitor<T> visitor);
+    }
 
-        private Optional<ApiMeta> meta = Optional.empty();
+    @JsonTypeName("embeddings_floats")
+    private static final class EmbeddingsFloatsValue implements Value {
+        @JsonUnwrapped
+        private EmbedFloatsResponse value;
 
-        private List<String> texts = new ArrayList<>();
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private EmbeddingsFloatsValue() {}
 
-        private List<List<Double>> embeddings = new ArrayList<>();
-
-        @JsonAnySetter
-        private Map<String, Object> additionalProperties = new HashMap<>();
-
-        private Builder() {}
-
-        @Override
-        public Builder from(EmbedResponse other) {
-            id(other.getId());
-            embeddings(other.getEmbeddings());
-            texts(other.getTexts());
-            meta(other.getMeta());
-            return this;
+        private EmbeddingsFloatsValue(EmbedFloatsResponse value) {
+            this.value = value;
         }
 
         @Override
-        @JsonSetter("id")
-        public _FinalStage id(String id) {
-            this.id = id;
-            return this;
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitEmbeddingsFloats(value);
         }
 
         @Override
-        public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.of(meta);
-            return this;
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof EmbeddingsFloatsValue && equalTo((EmbeddingsFloatsValue) other);
+        }
+
+        private boolean equalTo(EmbeddingsFloatsValue other) {
+            return value.equals(other.value);
         }
 
         @Override
-        @JsonSetter(value = "meta", nulls = Nulls.SKIP)
-        public _FinalStage meta(Optional<ApiMeta> meta) {
-            this.meta = meta;
-            return this;
-        }
-
-        /**
-         * <p>The text entries for which embeddings were returned.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage addAllTexts(List<String> texts) {
-            this.texts.addAll(texts);
-            return this;
-        }
-
-        /**
-         * <p>The text entries for which embeddings were returned.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage addTexts(String texts) {
-            this.texts.add(texts);
-            return this;
+        public int hashCode() {
+            return Objects.hash(this.value);
         }
 
         @Override
-        @JsonSetter(value = "texts", nulls = Nulls.SKIP)
-        public _FinalStage texts(List<String> texts) {
-            this.texts.clear();
-            this.texts.addAll(texts);
-            return this;
+        public String toString() {
+            return "EmbedResponse{" + "value: " + value + "}";
         }
+    }
 
-        /**
-         * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage addAllEmbeddings(List<List<Double>> embeddings) {
-            this.embeddings.addAll(embeddings);
-            return this;
-        }
+    @JsonTypeName("embeddings_by_type")
+    private static final class EmbeddingsByTypeValue implements Value {
+        @JsonUnwrapped
+        private EmbedByTypeResponse value;
 
-        /**
-         * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage addEmbeddings(List<Double> embeddings) {
-            this.embeddings.add(embeddings);
-            return this;
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private EmbeddingsByTypeValue() {}
+
+        private EmbeddingsByTypeValue(EmbedByTypeResponse value) {
+            this.value = value;
         }
 
         @Override
-        @JsonSetter(value = "embeddings", nulls = Nulls.SKIP)
-        public _FinalStage embeddings(List<List<Double>> embeddings) {
-            this.embeddings.clear();
-            this.embeddings.addAll(embeddings);
-            return this;
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitEmbeddingsByType(value);
         }
 
         @Override
-        public EmbedResponse build() {
-            return new EmbedResponse(id, embeddings, texts, meta, additionalProperties);
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof EmbeddingsByTypeValue && equalTo((EmbeddingsByTypeValue) other);
+        }
+
+        private boolean equalTo(EmbeddingsByTypeValue other) {
+            return value.equals(other.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @Override
+        public String toString() {
+            return "EmbedResponse{" + "value: " + value + "}";
+        }
+    }
+
+    private static final class _UnknownValue implements Value {
+        private String type;
+
+        @JsonValue
+        private Object value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private _UnknownValue(@JsonProperty("value") Object value) {}
+
+        @Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor._visitUnknown(value);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
+        }
+
+        private boolean equalTo(_UnknownValue other) {
+            return type.equals(other.type) && value.equals(other.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.type, this.value);
+        }
+
+        @Override
+        public String toString() {
+            return "EmbedResponse{" + "type: " + type + ", value: " + value + "}";
         }
     }
 }

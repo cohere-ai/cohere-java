@@ -83,7 +83,7 @@ public final class UpdateRequest {
     }
 
     /**
-     * @return The OAuth 2.0 configuration for the connector. Cannot be specified if serviceAuth is specified.
+     * @return The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.
      */
     @JsonProperty("oauth")
     public Optional<CreateConnectorOAuth> getOauth() {
@@ -95,7 +95,7 @@ public final class UpdateRequest {
         return active;
     }
 
-    @JsonProperty("continueOnFailure")
+    @JsonProperty("continue_on_failure")
     public Optional<Boolean> getContinueOnFailure() {
         return continueOnFailure;
     }
@@ -103,7 +103,7 @@ public final class UpdateRequest {
     /**
      * @return The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.
      */
-    @JsonProperty("serviceAuth")
+    @JsonProperty("service_auth")
     public Optional<CreateConnectorServiceAuth> getServiceAuth() {
         return serviceAuth;
     }
@@ -231,7 +231,7 @@ public final class UpdateRequest {
             return this;
         }
 
-        @JsonSetter(value = "continueOnFailure", nulls = Nulls.SKIP)
+        @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public Builder continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
             return this;
@@ -242,7 +242,7 @@ public final class UpdateRequest {
             return this;
         }
 
-        @JsonSetter(value = "serviceAuth", nulls = Nulls.SKIP)
+        @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
         public Builder serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
             this.serviceAuth = serviceAuth;
             return this;
