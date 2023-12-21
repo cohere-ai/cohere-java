@@ -33,19 +33,19 @@ public class ConnectorsClient {
     }
 
     /**
-     * Returns a list of connectors ordered by descending creation date (newer first).
+     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public ListResponse list() {
         return list(ConnectorsListRequest.builder().build());
     }
 
     /**
-     * Returns a list of connectors ordered by descending creation date (newer first).
+     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public ListResponse list(ConnectorsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors");
+                .addPathSegments("connectors");
         if (request.getLimit().isPresent()) {
             httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
         }
@@ -73,20 +73,19 @@ public class ConnectorsClient {
     }
 
     /**
-     * Returns a list of connectors ordered by descending creation date (newer first).
+     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public ListResponse list(ConnectorsListRequest request) {
         return list(request, null);
     }
 
     /**
-     * Creates a new connector. The connector is tested during registration
-     * and will cancel registration when the test is unsuccessful.
+     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
      */
     public CreateResponse create(CreateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors")
+                .addPathSegments("connectors")
                 .build();
         RequestBody body;
         try {
@@ -116,20 +115,19 @@ public class ConnectorsClient {
     }
 
     /**
-     * Creates a new connector. The connector is tested during registration
-     * and will cancel registration when the test is unsuccessful.
+     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
      */
     public CreateResponse create(CreateRequest request) {
         return create(request, null);
     }
 
     /**
-     * Retrieve a connector by ID.
+     * Retrieve a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
     public GetResponse get(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors")
+                .addPathSegments("connectors")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -153,19 +151,19 @@ public class ConnectorsClient {
     }
 
     /**
-     * Retrieve a connector by ID.
+     * Retrieve a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
     public GetResponse get(String id) {
         return get(id, null);
     }
 
     /**
-     * Delete a connector by ID.
+     * Delete a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
     public Map<String, Object> delete(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors")
+                .addPathSegments("connectors")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -190,26 +188,26 @@ public class ConnectorsClient {
     }
 
     /**
-     * Delete a connector by ID.
+     * Delete a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
     public Map<String, Object> delete(String id) {
         return delete(id, null);
     }
 
     /**
-     * Update a connector by ID. Omitted fields will not be updated.
+     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public UpdateResponse update(String id) {
         return update(id, UpdateRequest.builder().build());
     }
 
     /**
-     * Update a connector by ID. Omitted fields will not be updated.
+     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public UpdateResponse update(String id, UpdateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors")
+                .addPathSegments("connectors")
                 .addPathSegment(id)
                 .build();
         RequestBody body;
@@ -240,19 +238,19 @@ public class ConnectorsClient {
     }
 
     /**
-     * Update a connector by ID. Omitted fields will not be updated.
+     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public UpdateResponse update(String id, UpdateRequest request) {
         return update(id, request, null);
     }
 
     /**
-     * Authorize the connector with the given ID for the connector oauth app.
+     * Authorize the connector with the given ID for the connector oauth app. See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
      */
     public OAuthAuthorizeResponse oAuthAuthorize(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors")
+                .addPathSegments("connectors")
                 .addPathSegment(id)
                 .addPathSegments("oauth/authorize")
                 .build();
@@ -277,7 +275,7 @@ public class ConnectorsClient {
     }
 
     /**
-     * Authorize the connector with the given ID for the connector oauth app.
+     * Authorize the connector with the given ID for the connector oauth app. See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
      */
     public OAuthAuthorizeResponse oAuthAuthorize(String id) {
         return oAuthAuthorize(id, null);

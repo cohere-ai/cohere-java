@@ -56,7 +56,7 @@ public class Cohere {
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/chat")
+                .addPathSegments("chat")
                 .build();
         RequestBody body;
         try {
@@ -101,7 +101,7 @@ public class Cohere {
     public NonStreamedChatResponse chat(ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/chat")
+                .addPathSegments("chat")
                 .build();
         RequestBody body;
         try {
@@ -144,7 +144,7 @@ public class Cohere {
     public Generation generate(GenerateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/generate")
+                .addPathSegments("generate")
                 .build();
         RequestBody body;
         try {
@@ -188,7 +188,7 @@ public class Cohere {
     public EmbedResponse embed(EmbedRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/embed")
+                .addPathSegments("embed")
                 .build();
         RequestBody body;
         try {
@@ -232,7 +232,7 @@ public class Cohere {
     public RerankResponse rerank(RerankRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/rerank")
+                .addPathSegments("rerank")
                 .build();
         RequestBody body;
         try {
@@ -275,7 +275,7 @@ public class Cohere {
     public ClassifyResponse classify(ClassifyRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/classify")
+                .addPathSegments("classify")
                 .build();
         RequestBody body;
         try {
@@ -318,7 +318,7 @@ public class Cohere {
     public DetectLanguageResponse detectLanguage(DetectLanguageRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/detect-language")
+                .addPathSegments("detect-language")
                 .build();
         RequestBody body;
         try {
@@ -360,7 +360,7 @@ public class Cohere {
     public SummarizeResponse summarize(SummarizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/summarize")
+                .addPathSegments("summarize")
                 .build();
         RequestBody body;
         try {
@@ -402,7 +402,7 @@ public class Cohere {
     public TokenizeResponse tokenize(TokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/tokenize")
+                .addPathSegments("tokenize")
                 .build();
         RequestBody body;
         try {
@@ -444,7 +444,7 @@ public class Cohere {
     public DetokenizeResponse detokenize(DetokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/detokenize")
+                .addPathSegments("detokenize")
                 .build();
         RequestBody body;
         try {
