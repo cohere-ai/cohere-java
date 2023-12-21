@@ -9,7 +9,7 @@
 
 We are very excited to publish this brand new Java SDK. We now officially support Java and will continuously update this library with all of the latest features in our API. Please create issues where you have feedback so that we can continue to improve the developer experience!
 
-## Documentation
+## Documentationdd
 
 API reference documentation is available [here](https://docs.cohere.com/docs).
 
