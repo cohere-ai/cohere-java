@@ -46,7 +46,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.cohere'
             artifactId = 'cohere-java'
-            version = '1.0.3'
+            version = '1.0.4'
             from components.java
         }
     }

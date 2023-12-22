@@ -20,6 +20,7 @@ import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
 import com.cohere.api.resources.connectors.ConnectorsClient;
+import com.cohere.api.resources.datasets.DatasetsClient;
 import com.cohere.api.types.ClassifyResponse;
 import com.cohere.api.types.DetectLanguageResponse;
 import com.cohere.api.types.DetokenizeResponse;
@@ -42,10 +43,13 @@ import okhttp3.Response;
 public class Cohere {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<DatasetsClient> datasetsClient;
+
     protected final Supplier<ConnectorsClient> connectorsClient;
 
     public Cohere(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.datasetsClient = Suppliers.memoize(() -> new DatasetsClient(clientOptions));
         this.connectorsClient = Suppliers.memoize(() -> new ConnectorsClient(clientOptions));
     }
 
@@ -478,6 +482,10 @@ public class Cohere {
      */
     public DetokenizeResponse detokenize(DetokenizeRequest request) {
         return detokenize(request, null);
+    }
+
+    public DatasetsClient datasets() {
+        return this.datasetsClient.get();
     }
 
     public ConnectorsClient connectors() {
