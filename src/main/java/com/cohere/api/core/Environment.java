@@ -4,7 +4,7 @@
 package com.cohere.api.core;
 
 public final class Environment {
-    public static final Environment PRODUCTION = new Environment("https://api.cohere.ai");
+    public static final Environment PRODUCTION = new Environment("https://api.cohere.ai/v1");
 
     private final String url;
 
