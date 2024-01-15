@@ -5,7 +5,6 @@ package com.cohere.api.resources.connectors.requests;
 
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.CreateConnectorOAuth;
-import com.cohere.api.types.CreateConnectorServiceAuth;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,8 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = CreateRequest.Builder.class)
-public final class CreateRequest {
+@JsonDeserialize(builder = CreateConnectorRequest.Builder.class)
+public final class CreateConnectorRequest {
     private final String name;
 
     private final Optional<String> description;
@@ -37,11 +36,9 @@ public final class CreateRequest {
 
     private final Optional<Boolean> continueOnFailure;
 
-    private final Optional<CreateConnectorServiceAuth> serviceAuth;
-
     private final Map<String, Object> additionalProperties;
 
-    private CreateRequest(
+    private CreateConnectorRequest(
             String name,
             Optional<String> description,
             String url,
@@ -49,7 +46,6 @@ public final class CreateRequest {
             Optional<CreateConnectorOAuth> oauth,
             Optional<Boolean> active,
             Optional<Boolean> continueOnFailure,
-            Optional<CreateConnectorServiceAuth> serviceAuth,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.description = description;
@@ -58,7 +54,6 @@ public final class CreateRequest {
         this.oauth = oauth;
         this.active = active;
         this.continueOnFailure = continueOnFailure;
-        this.serviceAuth = serviceAuth;
         this.additionalProperties = additionalProperties;
     }
 
@@ -118,18 +113,10 @@ public final class CreateRequest {
         return continueOnFailure;
     }
 
-    /**
-     * @return The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.
-     */
-    @JsonProperty("service_auth")
-    public Optional<CreateConnectorServiceAuth> getServiceAuth() {
-        return serviceAuth;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof CreateRequest && equalTo((CreateRequest) other);
+        return other instanceof CreateConnectorRequest && equalTo((CreateConnectorRequest) other);
     }
 
     @JsonAnyGetter
@@ -137,28 +124,20 @@ public final class CreateRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(CreateRequest other) {
+    private boolean equalTo(CreateConnectorRequest other) {
         return name.equals(other.name)
                 && description.equals(other.description)
                 && url.equals(other.url)
                 && excludes.equals(other.excludes)
                 && oauth.equals(other.oauth)
                 && active.equals(other.active)
-                && continueOnFailure.equals(other.continueOnFailure)
-                && serviceAuth.equals(other.serviceAuth);
+                && continueOnFailure.equals(other.continueOnFailure);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.name,
-                this.description,
-                this.url,
-                this.excludes,
-                this.oauth,
-                this.active,
-                this.continueOnFailure,
-                this.serviceAuth);
+                this.name, this.description, this.url, this.excludes, this.oauth, this.active, this.continueOnFailure);
     }
 
     @Override
@@ -173,7 +152,7 @@ public final class CreateRequest {
     public interface NameStage {
         UrlStage name(String name);
 
-        Builder from(CreateRequest other);
+        Builder from(CreateConnectorRequest other);
     }
 
     public interface UrlStage {
@@ -181,7 +160,7 @@ public final class CreateRequest {
     }
 
     public interface _FinalStage {
-        CreateRequest build();
+        CreateConnectorRequest build();
 
         _FinalStage description(Optional<String> description);
 
@@ -202,10 +181,6 @@ public final class CreateRequest {
         _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure);
 
         _FinalStage continueOnFailure(Boolean continueOnFailure);
-
-        _FinalStage serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth);
-
-        _FinalStage serviceAuth(CreateConnectorServiceAuth serviceAuth);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -213,8 +188,6 @@ public final class CreateRequest {
         private String name;
 
         private String url;
-
-        private Optional<CreateConnectorServiceAuth> serviceAuth = Optional.empty();
 
         private Optional<Boolean> continueOnFailure = Optional.empty();
 
@@ -232,7 +205,7 @@ public final class CreateRequest {
         private Builder() {}
 
         @Override
-        public Builder from(CreateRequest other) {
+        public Builder from(CreateConnectorRequest other) {
             name(other.getName());
             description(other.getDescription());
             url(other.getUrl());
@@ -240,7 +213,6 @@ public final class CreateRequest {
             oauth(other.getOauth());
             active(other.getActive());
             continueOnFailure(other.getContinueOnFailure());
-            serviceAuth(other.getServiceAuth());
             return this;
         }
 
@@ -263,23 +235,6 @@ public final class CreateRequest {
         @JsonSetter("url")
         public _FinalStage url(String url) {
             this.url = url;
-            return this;
-        }
-
-        /**
-         * <p>The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage serviceAuth(CreateConnectorServiceAuth serviceAuth) {
-            this.serviceAuth = Optional.of(serviceAuth);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
-        public _FinalStage serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
-            this.serviceAuth = serviceAuth;
             return this;
         }
 
@@ -369,17 +324,9 @@ public final class CreateRequest {
         }
 
         @Override
-        public CreateRequest build() {
-            return new CreateRequest(
-                    name,
-                    description,
-                    url,
-                    excludes,
-                    oauth,
-                    active,
-                    continueOnFailure,
-                    serviceAuth,
-                    additionalProperties);
+        public CreateConnectorRequest build() {
+            return new CreateConnectorRequest(
+                    name, description, url, excludes, oauth, active, continueOnFailure, additionalProperties);
         }
     }
 }

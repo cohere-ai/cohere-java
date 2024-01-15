@@ -5,7 +5,6 @@ package com.cohere.api.resources.connectors.requests;
 
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.CreateConnectorOAuth;
-import com.cohere.api.types.CreateConnectorServiceAuth;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,8 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = UpdateRequest.Builder.class)
-public final class UpdateRequest {
+@JsonDeserialize(builder = UpdateConnectorRequest.Builder.class)
+public final class UpdateConnectorRequest {
     private final Optional<String> name;
 
     private final Optional<String> url;
@@ -35,18 +34,15 @@ public final class UpdateRequest {
 
     private final Optional<Boolean> continueOnFailure;
 
-    private final Optional<CreateConnectorServiceAuth> serviceAuth;
-
     private final Map<String, Object> additionalProperties;
 
-    private UpdateRequest(
+    private UpdateConnectorRequest(
             Optional<String> name,
             Optional<String> url,
             Optional<List<String>> excludes,
             Optional<CreateConnectorOAuth> oauth,
             Optional<Boolean> active,
             Optional<Boolean> continueOnFailure,
-            Optional<CreateConnectorServiceAuth> serviceAuth,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.url = url;
@@ -54,7 +50,6 @@ public final class UpdateRequest {
         this.oauth = oauth;
         this.active = active;
         this.continueOnFailure = continueOnFailure;
-        this.serviceAuth = serviceAuth;
         this.additionalProperties = additionalProperties;
     }
 
@@ -100,18 +95,10 @@ public final class UpdateRequest {
         return continueOnFailure;
     }
 
-    /**
-     * @return The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.
-     */
-    @JsonProperty("service_auth")
-    public Optional<CreateConnectorServiceAuth> getServiceAuth() {
-        return serviceAuth;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof UpdateRequest && equalTo((UpdateRequest) other);
+        return other instanceof UpdateConnectorRequest && equalTo((UpdateConnectorRequest) other);
     }
 
     @JsonAnyGetter
@@ -119,20 +106,18 @@ public final class UpdateRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(UpdateRequest other) {
+    private boolean equalTo(UpdateConnectorRequest other) {
         return name.equals(other.name)
                 && url.equals(other.url)
                 && excludes.equals(other.excludes)
                 && oauth.equals(other.oauth)
                 && active.equals(other.active)
-                && continueOnFailure.equals(other.continueOnFailure)
-                && serviceAuth.equals(other.serviceAuth);
+                && continueOnFailure.equals(other.continueOnFailure);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                this.name, this.url, this.excludes, this.oauth, this.active, this.continueOnFailure, this.serviceAuth);
+        return Objects.hash(this.name, this.url, this.excludes, this.oauth, this.active, this.continueOnFailure);
     }
 
     @Override
@@ -158,21 +143,18 @@ public final class UpdateRequest {
 
         private Optional<Boolean> continueOnFailure = Optional.empty();
 
-        private Optional<CreateConnectorServiceAuth> serviceAuth = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(UpdateRequest other) {
+        public Builder from(UpdateConnectorRequest other) {
             name(other.getName());
             url(other.getUrl());
             excludes(other.getExcludes());
             oauth(other.getOauth());
             active(other.getActive());
             continueOnFailure(other.getContinueOnFailure());
-            serviceAuth(other.getServiceAuth());
             return this;
         }
 
@@ -242,20 +224,9 @@ public final class UpdateRequest {
             return this;
         }
 
-        @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
-        public Builder serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
-            this.serviceAuth = serviceAuth;
-            return this;
-        }
-
-        public Builder serviceAuth(CreateConnectorServiceAuth serviceAuth) {
-            this.serviceAuth = Optional.of(serviceAuth);
-            return this;
-        }
-
-        public UpdateRequest build() {
-            return new UpdateRequest(
-                    name, url, excludes, oauth, active, continueOnFailure, serviceAuth, additionalProperties);
+        public UpdateConnectorRequest build() {
+            return new UpdateConnectorRequest(
+                    name, url, excludes, oauth, active, continueOnFailure, additionalProperties);
         }
     }
 }

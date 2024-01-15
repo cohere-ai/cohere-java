@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = UpdateResponse.Builder.class)
-public final class UpdateResponse {
+@JsonDeserialize(builder = UpdateConnectorResponse.Builder.class)
+public final class UpdateConnectorResponse {
     private final Connector connector;
 
     private final Map<String, Object> additionalProperties;
 
-    private UpdateResponse(Connector connector, Map<String, Object> additionalProperties) {
+    private UpdateConnectorResponse(Connector connector, Map<String, Object> additionalProperties) {
         this.connector = connector;
         this.additionalProperties = additionalProperties;
     }
@@ -35,7 +35,7 @@ public final class UpdateResponse {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof UpdateResponse && equalTo((UpdateResponse) other);
+        return other instanceof UpdateConnectorResponse && equalTo((UpdateConnectorResponse) other);
     }
 
     @JsonAnyGetter
@@ -43,7 +43,7 @@ public final class UpdateResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(UpdateResponse other) {
+    private boolean equalTo(UpdateConnectorResponse other) {
         return connector.equals(other.connector);
     }
 
@@ -64,11 +64,11 @@ public final class UpdateResponse {
     public interface ConnectorStage {
         _FinalStage connector(Connector connector);
 
-        Builder from(UpdateResponse other);
+        Builder from(UpdateConnectorResponse other);
     }
 
     public interface _FinalStage {
-        UpdateResponse build();
+        UpdateConnectorResponse build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -81,7 +81,7 @@ public final class UpdateResponse {
         private Builder() {}
 
         @Override
-        public Builder from(UpdateResponse other) {
+        public Builder from(UpdateConnectorResponse other) {
             connector(other.getConnector());
             return this;
         }
@@ -94,8 +94,8 @@ public final class UpdateResponse {
         }
 
         @Override
-        public UpdateResponse build() {
-            return new UpdateResponse(connector, additionalProperties);
+        public UpdateConnectorResponse build() {
+            return new UpdateConnectorResponse(connector, additionalProperties);
         }
     }
 }

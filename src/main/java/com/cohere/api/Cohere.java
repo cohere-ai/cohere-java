@@ -16,14 +16,17 @@ import com.cohere.api.requests.DetectLanguageRequest;
 import com.cohere.api.requests.DetokenizeRequest;
 import com.cohere.api.requests.EmbedRequest;
 import com.cohere.api.requests.GenerateRequest;
+import com.cohere.api.requests.GenerateStreamRequest;
 import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
 import com.cohere.api.resources.connectors.ConnectorsClient;
+import com.cohere.api.resources.datasets.DatasetsClient;
 import com.cohere.api.types.ClassifyResponse;
 import com.cohere.api.types.DetectLanguageResponse;
 import com.cohere.api.types.DetokenizeResponse;
 import com.cohere.api.types.EmbedResponse;
+import com.cohere.api.types.GenerateStreamedResponse;
 import com.cohere.api.types.Generation;
 import com.cohere.api.types.NonStreamedChatResponse;
 import com.cohere.api.types.RerankResponse;
@@ -42,10 +45,13 @@ import okhttp3.Response;
 public class Cohere {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<DatasetsClient> datasetsClient;
+
     protected final Supplier<ConnectorsClient> connectorsClient;
 
     public Cohere(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.datasetsClient = Suppliers.memoize(() -> new DatasetsClient(clientOptions));
         this.connectorsClient = Suppliers.memoize(() -> new ConnectorsClient(clientOptions));
     }
 
@@ -56,7 +62,7 @@ public class Cohere {
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("chat")
+                .addPathSegments("v1/chat")
                 .build();
         RequestBody body;
         try {
@@ -101,7 +107,7 @@ public class Cohere {
     public NonStreamedChatResponse chat(ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("chat")
+                .addPathSegments("v1/chat")
                 .build();
         RequestBody body;
         try {
@@ -141,10 +147,54 @@ public class Cohere {
     /**
      * This endpoint generates realistic text conditioned on a given input.
      */
+    public Iterable<GenerateStreamedResponse> generateStream(
+            GenerateStreamRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/generate")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return new Stream<GenerateStreamedResponse>(
+                        GenerateStreamedResponse.class, response.body().charStream(), "\n");
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This endpoint generates realistic text conditioned on a given input.
+     */
+    public Iterable<GenerateStreamedResponse> generateStream(GenerateStreamRequest request) {
+        return generateStream(request, null);
+    }
+
+    /**
+     * This endpoint generates realistic text conditioned on a given input.
+     */
     public Generation generate(GenerateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("generate")
+                .addPathSegments("v1/generate")
                 .build();
         RequestBody body;
         try {
@@ -188,7 +238,7 @@ public class Cohere {
     public EmbedResponse embed(EmbedRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed")
+                .addPathSegments("v1/embed")
                 .build();
         RequestBody body;
         try {
@@ -232,7 +282,7 @@ public class Cohere {
     public RerankResponse rerank(RerankRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("rerank")
+                .addPathSegments("v1/rerank")
                 .build();
         RequestBody body;
         try {
@@ -270,12 +320,12 @@ public class Cohere {
 
     /**
      * This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided <code>examples</code> of text + label pairs as a reference.
-     * Note: <a href="/training-representation-models">Custom Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
      */
     public ClassifyResponse classify(ClassifyRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("classify")
+                .addPathSegments("v1/classify")
                 .build();
         RequestBody body;
         try {
@@ -306,7 +356,7 @@ public class Cohere {
 
     /**
      * This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided <code>examples</code> of text + label pairs as a reference.
-     * Note: <a href="/training-representation-models">Custom Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
      */
     public ClassifyResponse classify(ClassifyRequest request) {
         return classify(request, null);
@@ -318,7 +368,7 @@ public class Cohere {
     public DetectLanguageResponse detectLanguage(DetectLanguageRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("detect-language")
+                .addPathSegments("v1/detect-language")
                 .build();
         RequestBody body;
         try {
@@ -360,7 +410,7 @@ public class Cohere {
     public SummarizeResponse summarize(SummarizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("summarize")
+                .addPathSegments("v1/summarize")
                 .build();
         RequestBody body;
         try {
@@ -402,7 +452,7 @@ public class Cohere {
     public TokenizeResponse tokenize(TokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("tokenize")
+                .addPathSegments("v1/tokenize")
                 .build();
         RequestBody body;
         try {
@@ -444,7 +494,7 @@ public class Cohere {
     public DetokenizeResponse detokenize(DetokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("detokenize")
+                .addPathSegments("v1/detokenize")
                 .build();
         RequestBody body;
         try {
@@ -478,6 +528,10 @@ public class Cohere {
      */
     public DetokenizeResponse detokenize(DetokenizeRequest request) {
         return detokenize(request, null);
+    }
+
+    public DatasetsClient datasets() {
+        return this.datasetsClient.get();
     }
 
     public ConnectorsClient connectors() {

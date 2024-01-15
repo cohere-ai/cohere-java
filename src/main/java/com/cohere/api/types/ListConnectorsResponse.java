@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ListResponse.Builder.class)
-public final class ListResponse {
+@JsonDeserialize(builder = ListConnectorsResponse.Builder.class)
+public final class ListConnectorsResponse {
     private final List<Connector> connectors;
 
     private final Map<String, Object> additionalProperties;
 
-    private ListResponse(List<Connector> connectors, Map<String, Object> additionalProperties) {
+    private ListConnectorsResponse(List<Connector> connectors, Map<String, Object> additionalProperties) {
         this.connectors = connectors;
         this.additionalProperties = additionalProperties;
     }
@@ -38,7 +38,7 @@ public final class ListResponse {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ListResponse && equalTo((ListResponse) other);
+        return other instanceof ListConnectorsResponse && equalTo((ListConnectorsResponse) other);
     }
 
     @JsonAnyGetter
@@ -46,7 +46,7 @@ public final class ListResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ListResponse other) {
+    private boolean equalTo(ListConnectorsResponse other) {
         return connectors.equals(other.connectors);
     }
 
@@ -73,7 +73,7 @@ public final class ListResponse {
 
         private Builder() {}
 
-        public Builder from(ListResponse other) {
+        public Builder from(ListConnectorsResponse other) {
             connectors(other.getConnectors());
             return this;
         }
@@ -95,8 +95,8 @@ public final class ListResponse {
             return this;
         }
 
-        public ListResponse build() {
-            return new ListResponse(connectors, additionalProperties);
+        public ListConnectorsResponse build() {
+            return new ListConnectorsResponse(connectors, additionalProperties);
         }
     }
 }

@@ -20,19 +20,16 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ConnectorOAuth.Builder.class)
 public final class ConnectorOAuth {
-    private final Optional<String> authorizeUrl;
+    private final String authorizeUrl;
 
-    private final Optional<String> tokenUrl;
+    private final String tokenUrl;
 
     private final Optional<String> scope;
 
     private final Map<String, Object> additionalProperties;
 
     private ConnectorOAuth(
-            Optional<String> authorizeUrl,
-            Optional<String> tokenUrl,
-            Optional<String> scope,
-            Map<String, Object> additionalProperties) {
+            String authorizeUrl, String tokenUrl, Optional<String> scope, Map<String, Object> additionalProperties) {
         this.authorizeUrl = authorizeUrl;
         this.tokenUrl = tokenUrl;
         this.scope = scope;
@@ -42,16 +39,16 @@ public final class ConnectorOAuth {
     /**
      * @return The OAuth 2.0 /authorize endpoint to use when users authorize the connector.
      */
-    @JsonProperty("authorizeUrl")
-    public Optional<String> getAuthorizeUrl() {
+    @JsonProperty("authorize_url")
+    public String getAuthorizeUrl() {
         return authorizeUrl;
     }
 
     /**
      * @return The OAuth 2.0 /token endpoint to use when users authorize the connector.
      */
-    @JsonProperty("tokenUrl")
-    public Optional<String> getTokenUrl() {
+    @JsonProperty("token_url")
+    public String getTokenUrl() {
         return tokenUrl;
     }
 
@@ -88,15 +85,33 @@ public final class ConnectorOAuth {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static AuthorizeUrlStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> authorizeUrl = Optional.empty();
+    public interface AuthorizeUrlStage {
+        TokenUrlStage authorizeUrl(String authorizeUrl);
 
-        private Optional<String> tokenUrl = Optional.empty();
+        Builder from(ConnectorOAuth other);
+    }
+
+    public interface TokenUrlStage {
+        _FinalStage tokenUrl(String tokenUrl);
+    }
+
+    public interface _FinalStage {
+        ConnectorOAuth build();
+
+        _FinalStage scope(Optional<String> scope);
+
+        _FinalStage scope(String scope);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements AuthorizeUrlStage, TokenUrlStage, _FinalStage {
+        private String authorizeUrl;
+
+        private String tokenUrl;
 
         private Optional<String> scope = Optional.empty();
 
@@ -105,6 +120,7 @@ public final class ConnectorOAuth {
 
         private Builder() {}
 
+        @Override
         public Builder from(ConnectorOAuth other) {
             authorizeUrl(other.getAuthorizeUrl());
             tokenUrl(other.getTokenUrl());
@@ -112,39 +128,46 @@ public final class ConnectorOAuth {
             return this;
         }
 
-        @JsonSetter(value = "authorizeUrl", nulls = Nulls.SKIP)
-        public Builder authorizeUrl(Optional<String> authorizeUrl) {
+        /**
+         * <p>The OAuth 2.0 /authorize endpoint to use when users authorize the connector.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        @JsonSetter("authorize_url")
+        public TokenUrlStage authorizeUrl(String authorizeUrl) {
             this.authorizeUrl = authorizeUrl;
             return this;
         }
 
-        public Builder authorizeUrl(String authorizeUrl) {
-            this.authorizeUrl = Optional.of(authorizeUrl);
-            return this;
-        }
-
-        @JsonSetter(value = "tokenUrl", nulls = Nulls.SKIP)
-        public Builder tokenUrl(Optional<String> tokenUrl) {
+        /**
+         * <p>The OAuth 2.0 /token endpoint to use when users authorize the connector.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        @JsonSetter("token_url")
+        public _FinalStage tokenUrl(String tokenUrl) {
             this.tokenUrl = tokenUrl;
             return this;
         }
 
-        public Builder tokenUrl(String tokenUrl) {
-            this.tokenUrl = Optional.of(tokenUrl);
-            return this;
-        }
-
-        @JsonSetter(value = "scope", nulls = Nulls.SKIP)
-        public Builder scope(Optional<String> scope) {
-            this.scope = scope;
-            return this;
-        }
-
-        public Builder scope(String scope) {
+        /**
+         * <p>The OAuth scopes to request when users authorize the connector.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage scope(String scope) {
             this.scope = Optional.of(scope);
             return this;
         }
 
+        @Override
+        @JsonSetter(value = "scope", nulls = Nulls.SKIP)
+        public _FinalStage scope(Optional<String> scope) {
+            this.scope = scope;
+            return this;
+        }
+
+        @Override
         public ConnectorOAuth build() {
             return new ConnectorOAuth(authorizeUrl, tokenUrl, scope, additionalProperties);
         }

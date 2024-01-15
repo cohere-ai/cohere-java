@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = GetResponse.Builder.class)
-public final class GetResponse {
+@JsonDeserialize(builder = GetConnectorResponse.Builder.class)
+public final class GetConnectorResponse {
     private final Connector connector;
 
     private final Map<String, Object> additionalProperties;
 
-    private GetResponse(Connector connector, Map<String, Object> additionalProperties) {
+    private GetConnectorResponse(Connector connector, Map<String, Object> additionalProperties) {
         this.connector = connector;
         this.additionalProperties = additionalProperties;
     }
@@ -35,7 +35,7 @@ public final class GetResponse {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof GetResponse && equalTo((GetResponse) other);
+        return other instanceof GetConnectorResponse && equalTo((GetConnectorResponse) other);
     }
 
     @JsonAnyGetter
@@ -43,7 +43,7 @@ public final class GetResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(GetResponse other) {
+    private boolean equalTo(GetConnectorResponse other) {
         return connector.equals(other.connector);
     }
 
@@ -64,11 +64,11 @@ public final class GetResponse {
     public interface ConnectorStage {
         _FinalStage connector(Connector connector);
 
-        Builder from(GetResponse other);
+        Builder from(GetConnectorResponse other);
     }
 
     public interface _FinalStage {
-        GetResponse build();
+        GetConnectorResponse build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -81,7 +81,7 @@ public final class GetResponse {
         private Builder() {}
 
         @Override
-        public Builder from(GetResponse other) {
+        public Builder from(GetConnectorResponse other) {
             connector(other.getConnector());
             return this;
         }
@@ -94,8 +94,8 @@ public final class GetResponse {
         }
 
         @Override
-        public GetResponse build() {
-            return new GetResponse(connector, additionalProperties);
+        public GetConnectorResponse build() {
+            return new GetConnectorResponse(connector, additionalProperties);
         }
     }
 }

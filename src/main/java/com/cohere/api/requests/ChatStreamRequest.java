@@ -29,8 +29,6 @@ public final class ChatStreamRequest {
 
     private final Optional<String> model;
 
-    private final Boolean stream;
-
     private final Optional<String> preambleOverride;
 
     private final Optional<List<ChatMessage>> chatHistory;
@@ -54,7 +52,6 @@ public final class ChatStreamRequest {
     private ChatStreamRequest(
             String message,
             Optional<String> model,
-            Boolean stream,
             Optional<String> preambleOverride,
             Optional<List<ChatMessage>> chatHistory,
             Optional<String> conversationId,
@@ -67,7 +64,6 @@ public final class ChatStreamRequest {
             Map<String, Object> additionalProperties) {
         this.message = message;
         this.model = model;
-        this.stream = stream;
         this.preambleOverride = preambleOverride;
         this.chatHistory = chatHistory;
         this.conversationId = conversationId;
@@ -97,11 +93,6 @@ public final class ChatStreamRequest {
     @JsonProperty("model")
     public Optional<String> getModel() {
         return model;
-    }
-
-    @JsonProperty("stream")
-    public Boolean getStream() {
-        return stream;
     }
 
     /**
@@ -198,7 +189,6 @@ public final class ChatStreamRequest {
     private boolean equalTo(ChatStreamRequest other) {
         return message.equals(other.message)
                 && model.equals(other.model)
-                && stream.equals(other.stream)
                 && preambleOverride.equals(other.preambleOverride)
                 && chatHistory.equals(other.chatHistory)
                 && conversationId.equals(other.conversationId)
@@ -215,7 +205,6 @@ public final class ChatStreamRequest {
         return Objects.hash(
                 this.message,
                 this.model,
-                this.stream,
                 this.preambleOverride,
                 this.chatHistory,
                 this.conversationId,
@@ -237,13 +226,9 @@ public final class ChatStreamRequest {
     }
 
     public interface MessageStage {
-        StreamStage message(String message);
+        _FinalStage message(String message);
 
         Builder from(ChatStreamRequest other);
-    }
-
-    public interface StreamStage {
-        _FinalStage stream(Boolean stream);
     }
 
     public interface _FinalStage {
@@ -291,10 +276,8 @@ public final class ChatStreamRequest {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements MessageStage, StreamStage, _FinalStage {
+    public static final class Builder implements MessageStage, _FinalStage {
         private String message;
-
-        private Boolean stream;
 
         private Optional<Double> temperature = Optional.empty();
 
@@ -325,7 +308,6 @@ public final class ChatStreamRequest {
         public Builder from(ChatStreamRequest other) {
             message(other.getMessage());
             model(other.getModel());
-            stream(other.getStream());
             preambleOverride(other.getPreambleOverride());
             chatHistory(other.getChatHistory());
             conversationId(other.getConversationId());
@@ -345,15 +327,8 @@ public final class ChatStreamRequest {
          */
         @Override
         @JsonSetter("message")
-        public StreamStage message(String message) {
+        public _FinalStage message(String message) {
             this.message = message;
-            return this;
-        }
-
-        @Override
-        @JsonSetter("stream")
-        public _FinalStage stream(Boolean stream) {
-            this.stream = stream;
             return this;
         }
 
@@ -542,7 +517,6 @@ public final class ChatStreamRequest {
             return new ChatStreamRequest(
                     message,
                     model,
-                    stream,
                     preambleOverride,
                     chatHistory,
                     conversationId,

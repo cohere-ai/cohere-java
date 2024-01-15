@@ -16,6 +16,11 @@ public final class CohereBuilder {
         return this;
     }
 
+    public CohereBuilder clientName(String clientName) {
+        this.clientOptionsBuilder.addHeader("X-Client-Name", clientName);
+        return this;
+    }
+
     public CohereBuilder environment(Environment environment) {
         this.environment = environment;
         return this;

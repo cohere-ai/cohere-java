@@ -4,8 +4,8 @@
 package com.cohere.api.requests;
 
 import com.cohere.api.core.ObjectMappers;
-import com.cohere.api.types.GenerateRequestReturnLikelihoods;
-import com.cohere.api.types.GenerateRequestTruncate;
+import com.cohere.api.types.GenerateStreamRequestReturnLikelihoods;
+import com.cohere.api.types.GenerateStreamRequestTruncate;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,8 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = GenerateRequest.Builder.class)
-public final class GenerateRequest {
+@JsonDeserialize(builder = GenerateStreamRequest.Builder.class)
+public final class GenerateStreamRequest {
     private final String prompt;
 
     private final Optional<String> model;
@@ -31,7 +31,7 @@ public final class GenerateRequest {
 
     private final Optional<Integer> maxTokens;
 
-    private final Optional<GenerateRequestTruncate> truncate;
+    private final Optional<GenerateStreamRequestTruncate> truncate;
 
     private final Optional<Double> temperature;
 
@@ -49,18 +49,18 @@ public final class GenerateRequest {
 
     private final Optional<Double> presencePenalty;
 
-    private final Optional<GenerateRequestReturnLikelihoods> returnLikelihoods;
+    private final Optional<GenerateStreamRequestReturnLikelihoods> returnLikelihoods;
 
     private final Optional<Map<String, Double>> logitBias;
 
     private final Map<String, Object> additionalProperties;
 
-    private GenerateRequest(
+    private GenerateStreamRequest(
             String prompt,
             Optional<String> model,
             Optional<Integer> numGenerations,
             Optional<Integer> maxTokens,
-            Optional<GenerateRequestTruncate> truncate,
+            Optional<GenerateStreamRequestTruncate> truncate,
             Optional<Double> temperature,
             Optional<String> preset,
             Optional<List<String>> endSequences,
@@ -69,7 +69,7 @@ public final class GenerateRequest {
             Optional<Double> p,
             Optional<Double> frequencyPenalty,
             Optional<Double> presencePenalty,
-            Optional<GenerateRequestReturnLikelihoods> returnLikelihoods,
+            Optional<GenerateStreamRequestReturnLikelihoods> returnLikelihoods,
             Optional<Map<String, Double>> logitBias,
             Map<String, Object> additionalProperties) {
         this.prompt = prompt;
@@ -132,7 +132,7 @@ public final class GenerateRequest {
      * <p>If <code>NONE</code> is selected, when the input exceeds the maximum input token length an error will be returned.</p>
      */
     @JsonProperty("truncate")
-    public Optional<GenerateRequestTruncate> getTruncate() {
+    public Optional<GenerateStreamRequestTruncate> getTruncate() {
         return truncate;
     }
 
@@ -210,7 +210,7 @@ public final class GenerateRequest {
      * <p>If <code>ALL</code> is selected, the token likelihoods will be provided both for the prompt and the generated text.</p>
      */
     @JsonProperty("return_likelihoods")
-    public Optional<GenerateRequestReturnLikelihoods> getReturnLikelihoods() {
+    public Optional<GenerateStreamRequestReturnLikelihoods> getReturnLikelihoods() {
         return returnLikelihoods;
     }
 
@@ -227,7 +227,7 @@ public final class GenerateRequest {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof GenerateRequest && equalTo((GenerateRequest) other);
+        return other instanceof GenerateStreamRequest && equalTo((GenerateStreamRequest) other);
     }
 
     @JsonAnyGetter
@@ -235,7 +235,7 @@ public final class GenerateRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(GenerateRequest other) {
+    private boolean equalTo(GenerateStreamRequest other) {
         return prompt.equals(other.prompt)
                 && model.equals(other.model)
                 && numGenerations.equals(other.numGenerations)
@@ -285,11 +285,11 @@ public final class GenerateRequest {
     public interface PromptStage {
         _FinalStage prompt(String prompt);
 
-        Builder from(GenerateRequest other);
+        Builder from(GenerateStreamRequest other);
     }
 
     public interface _FinalStage {
-        GenerateRequest build();
+        GenerateStreamRequest build();
 
         _FinalStage model(Optional<String> model);
 
@@ -303,9 +303,9 @@ public final class GenerateRequest {
 
         _FinalStage maxTokens(Integer maxTokens);
 
-        _FinalStage truncate(Optional<GenerateRequestTruncate> truncate);
+        _FinalStage truncate(Optional<GenerateStreamRequestTruncate> truncate);
 
-        _FinalStage truncate(GenerateRequestTruncate truncate);
+        _FinalStage truncate(GenerateStreamRequestTruncate truncate);
 
         _FinalStage temperature(Optional<Double> temperature);
 
@@ -339,9 +339,9 @@ public final class GenerateRequest {
 
         _FinalStage presencePenalty(Double presencePenalty);
 
-        _FinalStage returnLikelihoods(Optional<GenerateRequestReturnLikelihoods> returnLikelihoods);
+        _FinalStage returnLikelihoods(Optional<GenerateStreamRequestReturnLikelihoods> returnLikelihoods);
 
-        _FinalStage returnLikelihoods(GenerateRequestReturnLikelihoods returnLikelihoods);
+        _FinalStage returnLikelihoods(GenerateStreamRequestReturnLikelihoods returnLikelihoods);
 
         _FinalStage logitBias(Optional<Map<String, Double>> logitBias);
 
@@ -354,7 +354,7 @@ public final class GenerateRequest {
 
         private Optional<Map<String, Double>> logitBias = Optional.empty();
 
-        private Optional<GenerateRequestReturnLikelihoods> returnLikelihoods = Optional.empty();
+        private Optional<GenerateStreamRequestReturnLikelihoods> returnLikelihoods = Optional.empty();
 
         private Optional<Double> presencePenalty = Optional.empty();
 
@@ -372,7 +372,7 @@ public final class GenerateRequest {
 
         private Optional<Double> temperature = Optional.empty();
 
-        private Optional<GenerateRequestTruncate> truncate = Optional.empty();
+        private Optional<GenerateStreamRequestTruncate> truncate = Optional.empty();
 
         private Optional<Integer> maxTokens = Optional.empty();
 
@@ -386,7 +386,7 @@ public final class GenerateRequest {
         private Builder() {}
 
         @Override
-        public Builder from(GenerateRequest other) {
+        public Builder from(GenerateStreamRequest other) {
             prompt(other.getPrompt());
             model(other.getModel());
             numGenerations(other.getNumGenerations());
@@ -443,14 +443,14 @@ public final class GenerateRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
-        public _FinalStage returnLikelihoods(GenerateRequestReturnLikelihoods returnLikelihoods) {
+        public _FinalStage returnLikelihoods(GenerateStreamRequestReturnLikelihoods returnLikelihoods) {
             this.returnLikelihoods = Optional.of(returnLikelihoods);
             return this;
         }
 
         @Override
         @JsonSetter(value = "return_likelihoods", nulls = Nulls.SKIP)
-        public _FinalStage returnLikelihoods(Optional<GenerateRequestReturnLikelihoods> returnLikelihoods) {
+        public _FinalStage returnLikelihoods(Optional<GenerateStreamRequestReturnLikelihoods> returnLikelihoods) {
             this.returnLikelihoods = returnLikelihoods;
             return this;
         }
@@ -602,14 +602,14 @@ public final class GenerateRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
-        public _FinalStage truncate(GenerateRequestTruncate truncate) {
+        public _FinalStage truncate(GenerateStreamRequestTruncate truncate) {
             this.truncate = Optional.of(truncate);
             return this;
         }
 
         @Override
         @JsonSetter(value = "truncate", nulls = Nulls.SKIP)
-        public _FinalStage truncate(Optional<GenerateRequestTruncate> truncate) {
+        public _FinalStage truncate(Optional<GenerateStreamRequestTruncate> truncate) {
             this.truncate = truncate;
             return this;
         }
@@ -669,8 +669,8 @@ public final class GenerateRequest {
         }
 
         @Override
-        public GenerateRequest build() {
-            return new GenerateRequest(
+        public GenerateStreamRequest build() {
+            return new GenerateStreamRequest(
                     prompt,
                     model,
                     numGenerations,

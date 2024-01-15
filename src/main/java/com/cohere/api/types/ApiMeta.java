@@ -23,15 +23,19 @@ import java.util.Optional;
 public final class ApiMeta {
     private final Optional<ApiMetaApiVersion> apiVersion;
 
+    private final Optional<ApiMetaBilledUnits> billedUnits;
+
     private final Optional<List<String>> warnings;
 
     private final Map<String, Object> additionalProperties;
 
     private ApiMeta(
             Optional<ApiMetaApiVersion> apiVersion,
+            Optional<ApiMetaBilledUnits> billedUnits,
             Optional<List<String>> warnings,
             Map<String, Object> additionalProperties) {
         this.apiVersion = apiVersion;
+        this.billedUnits = billedUnits;
         this.warnings = warnings;
         this.additionalProperties = additionalProperties;
     }
@@ -39,6 +43,11 @@ public final class ApiMeta {
     @JsonProperty("api_version")
     public Optional<ApiMetaApiVersion> getApiVersion() {
         return apiVersion;
+    }
+
+    @JsonProperty("billed_units")
+    public Optional<ApiMetaBilledUnits> getBilledUnits() {
+        return billedUnits;
     }
 
     @JsonProperty("warnings")
@@ -58,12 +67,14 @@ public final class ApiMeta {
     }
 
     private boolean equalTo(ApiMeta other) {
-        return apiVersion.equals(other.apiVersion) && warnings.equals(other.warnings);
+        return apiVersion.equals(other.apiVersion)
+                && billedUnits.equals(other.billedUnits)
+                && warnings.equals(other.warnings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.apiVersion, this.warnings);
+        return Objects.hash(this.apiVersion, this.billedUnits, this.warnings);
     }
 
     @Override
@@ -79,6 +90,8 @@ public final class ApiMeta {
     public static final class Builder {
         private Optional<ApiMetaApiVersion> apiVersion = Optional.empty();
 
+        private Optional<ApiMetaBilledUnits> billedUnits = Optional.empty();
+
         private Optional<List<String>> warnings = Optional.empty();
 
         @JsonAnySetter
@@ -88,6 +101,7 @@ public final class ApiMeta {
 
         public Builder from(ApiMeta other) {
             apiVersion(other.getApiVersion());
+            billedUnits(other.getBilledUnits());
             warnings(other.getWarnings());
             return this;
         }
@@ -103,6 +117,17 @@ public final class ApiMeta {
             return this;
         }
 
+        @JsonSetter(value = "billed_units", nulls = Nulls.SKIP)
+        public Builder billedUnits(Optional<ApiMetaBilledUnits> billedUnits) {
+            this.billedUnits = billedUnits;
+            return this;
+        }
+
+        public Builder billedUnits(ApiMetaBilledUnits billedUnits) {
+            this.billedUnits = Optional.of(billedUnits);
+            return this;
+        }
+
         @JsonSetter(value = "warnings", nulls = Nulls.SKIP)
         public Builder warnings(Optional<List<String>> warnings) {
             this.warnings = warnings;
@@ -115,7 +140,7 @@ public final class ApiMeta {
         }
 
         public ApiMeta build() {
-            return new ApiMeta(apiVersion, warnings, additionalProperties);
+            return new ApiMeta(apiVersion, billedUnits, warnings, additionalProperties);
         }
     }
 }

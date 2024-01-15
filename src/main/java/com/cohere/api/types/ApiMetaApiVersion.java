@@ -26,20 +26,16 @@ public final class ApiMetaApiVersion {
 
     private final Optional<Boolean> isExperimental;
 
-    private final Optional<ApiMetaApiVersionBilledUnits> billedUnits;
-
     private final Map<String, Object> additionalProperties;
 
     private ApiMetaApiVersion(
             String version,
             Optional<Boolean> isDeprecated,
             Optional<Boolean> isExperimental,
-            Optional<ApiMetaApiVersionBilledUnits> billedUnits,
             Map<String, Object> additionalProperties) {
         this.version = version;
         this.isDeprecated = isDeprecated;
         this.isExperimental = isExperimental;
-        this.billedUnits = billedUnits;
         this.additionalProperties = additionalProperties;
     }
 
@@ -58,11 +54,6 @@ public final class ApiMetaApiVersion {
         return isExperimental;
     }
 
-    @JsonProperty("billed_units")
-    public Optional<ApiMetaApiVersionBilledUnits> getBilledUnits() {
-        return billedUnits;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -77,13 +68,12 @@ public final class ApiMetaApiVersion {
     private boolean equalTo(ApiMetaApiVersion other) {
         return version.equals(other.version)
                 && isDeprecated.equals(other.isDeprecated)
-                && isExperimental.equals(other.isExperimental)
-                && billedUnits.equals(other.billedUnits);
+                && isExperimental.equals(other.isExperimental);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.version, this.isDeprecated, this.isExperimental, this.billedUnits);
+        return Objects.hash(this.version, this.isDeprecated, this.isExperimental);
     }
 
     @Override
@@ -111,17 +101,11 @@ public final class ApiMetaApiVersion {
         _FinalStage isExperimental(Optional<Boolean> isExperimental);
 
         _FinalStage isExperimental(Boolean isExperimental);
-
-        _FinalStage billedUnits(Optional<ApiMetaApiVersionBilledUnits> billedUnits);
-
-        _FinalStage billedUnits(ApiMetaApiVersionBilledUnits billedUnits);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements VersionStage, _FinalStage {
         private String version;
-
-        private Optional<ApiMetaApiVersionBilledUnits> billedUnits = Optional.empty();
 
         private Optional<Boolean> isExperimental = Optional.empty();
 
@@ -137,7 +121,6 @@ public final class ApiMetaApiVersion {
             version(other.getVersion());
             isDeprecated(other.getIsDeprecated());
             isExperimental(other.getIsExperimental());
-            billedUnits(other.getBilledUnits());
             return this;
         }
 
@@ -145,19 +128,6 @@ public final class ApiMetaApiVersion {
         @JsonSetter("version")
         public _FinalStage version(String version) {
             this.version = version;
-            return this;
-        }
-
-        @Override
-        public _FinalStage billedUnits(ApiMetaApiVersionBilledUnits billedUnits) {
-            this.billedUnits = Optional.of(billedUnits);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "billed_units", nulls = Nulls.SKIP)
-        public _FinalStage billedUnits(Optional<ApiMetaApiVersionBilledUnits> billedUnits) {
-            this.billedUnits = billedUnits;
             return this;
         }
 
@@ -189,7 +159,7 @@ public final class ApiMetaApiVersion {
 
         @Override
         public ApiMetaApiVersion build() {
-            return new ApiMetaApiVersion(version, isDeprecated, isExperimental, billedUnits, additionalProperties);
+            return new ApiMetaApiVersion(version, isDeprecated, isExperimental, additionalProperties);
         }
     }
 }

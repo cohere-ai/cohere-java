@@ -52,7 +52,9 @@ public final class ClassifyRequest {
     }
 
     /**
-     * @return Represents a list of queries to be classified, each entry must not be empty. The maximum is 96 inputs.
+     * @return A list of up to 96 texts to be classified. Each one must be a non-empty string.
+     * There is, however, no consistent, universal limit to the length a particular input can be. We perform classification on the first <code>x</code> tokens of each input, and <code>x</code> varies depending on which underlying model is powering classification. The maximum token length for each model is listed in the &quot;max tokens&quot; column <a href="https://docs.cohere.com/docs/models">here</a>.
+     * Note: by default the <code>truncate</code> parameter is set to <code>END</code>, so tokens exceeding the limit will be automatically dropped. This behavior can be disabled by setting <code>truncate</code> to <code>NONE</code>, which will result in validation errors for longer texts.
      */
     @JsonProperty("inputs")
     public List<String> getInputs() {
@@ -61,7 +63,7 @@ public final class ClassifyRequest {
 
     /**
      * @return An array of examples to provide context to the model. Each example is a text string and its associated label/class. Each unique label requires at least 2 examples associated with it; the maximum number of examples is 2500, and each example has a maximum length of 512 tokens. The values should be structured as <code>{text: &quot;...&quot;,label: &quot;...&quot;}</code>.
-     * Note: <a href="/training-representation-models">Custom Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
      */
     @JsonProperty("examples")
     public List<ClassifyRequestExamplesItem> getExamples() {
@@ -69,7 +71,7 @@ public final class ClassifyRequest {
     }
 
     /**
-     * @return The identifier of the model. Currently available models are <code>embed-multilingual-v2.0</code>, <code>embed-english-light-v2.0</code>, and <code>embed-english-v2.0</code> (default). Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.
+     * @return The identifier of the model. Currently available models are <code>embed-multilingual-v2.0</code>, <code>embed-english-light-v2.0</code>, and <code>embed-english-v2.0</code> (default). Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/fine-tuning">Fine-tuned models</a> can also be supplied with their full ID.
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
