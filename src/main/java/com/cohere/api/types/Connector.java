@@ -187,7 +187,7 @@ public final class Connector {
         return continueOnFailure;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Connector && equalTo((Connector) other);
@@ -214,7 +214,7 @@ public final class Connector {
                 && continueOnFailure.equals(other.continueOnFailure);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -232,7 +232,7 @@ public final class Connector {
                 this.continueOnFailure);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -332,7 +332,7 @@ public final class Connector {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(Connector other) {
             id(other.getId());
             organizationId(other.getOrganizationId());
@@ -355,7 +355,7 @@ public final class Connector {
          * This is automatically created from the name of the connector upon registration.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public NameStage id(String id) {
             this.id = id;
@@ -366,7 +366,7 @@ public final class Connector {
          * <p>A human-readable name for the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public CreatedAtStage name(String name) {
             this.name = name;
@@ -377,7 +377,7 @@ public final class Connector {
          * <p>The UTC time at which the connector was created.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("created_at")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
@@ -388,7 +388,7 @@ public final class Connector {
          * <p>The UTC time at which the connector was last updated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("updated_at")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
@@ -399,13 +399,13 @@ public final class Connector {
          * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
             this.continueOnFailure = Optional.of(continueOnFailure);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
@@ -416,13 +416,13 @@ public final class Connector {
          * <p>Whether the connector is active or not.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage active(Boolean active) {
             this.active = Optional.of(active);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "active", nulls = Nulls.SKIP)
         public _FinalStage active(Optional<Boolean> active) {
             this.active = active;
@@ -433,13 +433,13 @@ public final class Connector {
          * <p>The OAuth status for the user making the request. One of [&quot;valid&quot;, &quot;expired&quot;, &quot;&quot;]. Empty string (field is omitted) means the user has not authorized the connector yet.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage authStatus(ConnectorAuthStatus authStatus) {
             this.authStatus = Optional.of(authStatus);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "auth_status", nulls = Nulls.SKIP)
         public _FinalStage authStatus(Optional<ConnectorAuthStatus> authStatus) {
             this.authStatus = authStatus;
@@ -450,13 +450,13 @@ public final class Connector {
          * <p>The OAuth 2.0 configuration for the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage oauth(ConnectorOAuth oauth) {
             this.oauth = Optional.of(oauth);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "oauth", nulls = Nulls.SKIP)
         public _FinalStage oauth(Optional<ConnectorOAuth> oauth) {
             this.oauth = oauth;
@@ -467,13 +467,13 @@ public final class Connector {
          * <p>The type of authentication/authorization used by the connector. Possible values: [oauth, service_auth]</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage authType(String authType) {
             this.authType = Optional.of(authType);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "auth_type", nulls = Nulls.SKIP)
         public _FinalStage authType(Optional<String> authType) {
             this.authType = authType;
@@ -484,13 +484,13 @@ public final class Connector {
          * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage excludes(List<String> excludes) {
             this.excludes = Optional.of(excludes);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "excludes", nulls = Nulls.SKIP)
         public _FinalStage excludes(Optional<List<String>> excludes) {
             this.excludes = excludes;
@@ -501,13 +501,13 @@ public final class Connector {
          * <p>The URL of the connector that will be used to search for documents.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage url(String url) {
             this.url = Optional.of(url);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "url", nulls = Nulls.SKIP)
         public _FinalStage url(Optional<String> url) {
             this.url = url;
@@ -518,13 +518,13 @@ public final class Connector {
          * <p>A description of the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
             this.description = description;
@@ -536,20 +536,20 @@ public final class Connector {
          * the organization of the user who created the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage organizationId(String organizationId) {
             this.organizationId = Optional.of(organizationId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "organization_id", nulls = Nulls.SKIP)
         public _FinalStage organizationId(Optional<String> organizationId) {
             this.organizationId = organizationId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public Connector build() {
             return new Connector(
                     id,

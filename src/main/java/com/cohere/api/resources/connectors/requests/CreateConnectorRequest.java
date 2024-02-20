@@ -21,8 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = CreateRequest.Builder.class)
-public final class CreateRequest {
+@JsonDeserialize(builder = CreateConnectorRequest.Builder.class)
+public final class CreateConnectorRequest {
     private final String name;
 
     private final Optional<String> description;
@@ -41,7 +41,7 @@ public final class CreateRequest {
 
     private final Map<String, Object> additionalProperties;
 
-    private CreateRequest(
+    private CreateConnectorRequest(
             String name,
             Optional<String> description,
             String url,
@@ -126,10 +126,10 @@ public final class CreateRequest {
         return serviceAuth;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof CreateRequest && equalTo((CreateRequest) other);
+        return other instanceof CreateConnectorRequest && equalTo((CreateConnectorRequest) other);
     }
 
     @JsonAnyGetter
@@ -137,7 +137,7 @@ public final class CreateRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(CreateRequest other) {
+    private boolean equalTo(CreateConnectorRequest other) {
         return name.equals(other.name)
                 && description.equals(other.description)
                 && url.equals(other.url)
@@ -148,7 +148,7 @@ public final class CreateRequest {
                 && serviceAuth.equals(other.serviceAuth);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.name,
@@ -161,7 +161,7 @@ public final class CreateRequest {
                 this.serviceAuth);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -173,7 +173,7 @@ public final class CreateRequest {
     public interface NameStage {
         UrlStage name(String name);
 
-        Builder from(CreateRequest other);
+        Builder from(CreateConnectorRequest other);
     }
 
     public interface UrlStage {
@@ -181,7 +181,7 @@ public final class CreateRequest {
     }
 
     public interface _FinalStage {
-        CreateRequest build();
+        CreateConnectorRequest build();
 
         _FinalStage description(Optional<String> description);
 
@@ -231,8 +231,8 @@ public final class CreateRequest {
 
         private Builder() {}
 
-        @Override
-        public Builder from(CreateRequest other) {
+        @java.lang.Override
+        public Builder from(CreateConnectorRequest other) {
             name(other.getName());
             description(other.getDescription());
             url(other.getUrl());
@@ -248,7 +248,7 @@ public final class CreateRequest {
          * <p>A human-readable name for the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public UrlStage name(String name) {
             this.name = name;
@@ -259,7 +259,7 @@ public final class CreateRequest {
          * <p>The URL of the connector that will be used to search for documents.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("url")
         public _FinalStage url(String url) {
             this.url = url;
@@ -270,13 +270,13 @@ public final class CreateRequest {
          * <p>The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage serviceAuth(CreateConnectorServiceAuth serviceAuth) {
             this.serviceAuth = Optional.of(serviceAuth);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
         public _FinalStage serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
             this.serviceAuth = serviceAuth;
@@ -287,13 +287,13 @@ public final class CreateRequest {
          * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
             this.continueOnFailure = Optional.of(continueOnFailure);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
@@ -304,13 +304,13 @@ public final class CreateRequest {
          * <p>Whether the connector is active or not.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage active(Boolean active) {
             this.active = Optional.of(active);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "active", nulls = Nulls.SKIP)
         public _FinalStage active(Optional<Boolean> active) {
             this.active = active;
@@ -321,13 +321,13 @@ public final class CreateRequest {
          * <p>The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage oauth(CreateConnectorOAuth oauth) {
             this.oauth = Optional.of(oauth);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "oauth", nulls = Nulls.SKIP)
         public _FinalStage oauth(Optional<CreateConnectorOAuth> oauth) {
             this.oauth = oauth;
@@ -338,13 +338,13 @@ public final class CreateRequest {
          * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage excludes(List<String> excludes) {
             this.excludes = Optional.of(excludes);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "excludes", nulls = Nulls.SKIP)
         public _FinalStage excludes(Optional<List<String>> excludes) {
             this.excludes = excludes;
@@ -355,22 +355,22 @@ public final class CreateRequest {
          * <p>A description of the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
             this.description = description;
             return this;
         }
 
-        @Override
-        public CreateRequest build() {
-            return new CreateRequest(
+        @java.lang.Override
+        public CreateConnectorRequest build() {
+            return new CreateConnectorRequest(
                     name,
                     description,
                     url,

@@ -51,7 +51,7 @@ public final class ChatMessage {
         return userName;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatMessage && equalTo((ChatMessage) other);
@@ -66,12 +66,12 @@ public final class ChatMessage {
         return role.equals(other.role) && message.equals(other.message) && userName.equals(other.userName);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.role, this.message, this.userName);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -111,7 +111,7 @@ public final class ChatMessage {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatMessage other) {
             role(other.getRole());
             message(other.getMessage());
@@ -119,34 +119,34 @@ public final class ChatMessage {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("role")
         public MessageStage role(ChatMessageRole role) {
             this.role = role;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("message")
         public _FinalStage message(String message) {
             this.message = message;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage userName(String userName) {
             this.userName = Optional.of(userName);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "user_name", nulls = Nulls.SKIP)
         public _FinalStage userName(Optional<String> userName) {
             this.userName = userName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatMessage build() {
             return new ChatMessage(role, message, userName, additionalProperties);
         }

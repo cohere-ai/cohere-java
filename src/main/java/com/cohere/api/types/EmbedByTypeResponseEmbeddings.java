@@ -88,7 +88,7 @@ public final class EmbedByTypeResponseEmbeddings {
         return ubinary;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmbedByTypeResponseEmbeddings && equalTo((EmbedByTypeResponseEmbeddings) other);
@@ -107,12 +107,12 @@ public final class EmbedByTypeResponseEmbeddings {
                 && ubinary.equals(other.ubinary);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.float_, this.int8, this.uint8, this.binary, this.ubinary);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

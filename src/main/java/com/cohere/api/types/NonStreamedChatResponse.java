@@ -23,32 +23,40 @@ import java.util.Optional;
 public final class NonStreamedChatResponse {
     private final String text;
 
-    private final String generationId;
+    private final Optional<String> generationId;
 
     private final Optional<List<ChatCitation>> citations;
 
     private final Optional<List<Map<String, String>>> documents;
 
+    private final Optional<Boolean> isSearchRequired;
+
     private final Optional<List<ChatSearchQuery>> searchQueries;
 
     private final Optional<List<ChatSearchResult>> searchResults;
+
+    private final Optional<FinishReason> finishReason;
 
     private final Map<String, Object> additionalProperties;
 
     private NonStreamedChatResponse(
             String text,
-            String generationId,
+            Optional<String> generationId,
             Optional<List<ChatCitation>> citations,
             Optional<List<Map<String, String>>> documents,
+            Optional<Boolean> isSearchRequired,
             Optional<List<ChatSearchQuery>> searchQueries,
             Optional<List<ChatSearchResult>> searchResults,
+            Optional<FinishReason> finishReason,
             Map<String, Object> additionalProperties) {
         this.text = text;
         this.generationId = generationId;
         this.citations = citations;
         this.documents = documents;
+        this.isSearchRequired = isSearchRequired;
         this.searchQueries = searchQueries;
         this.searchResults = searchResults;
+        this.finishReason = finishReason;
         this.additionalProperties = additionalProperties;
     }
 
@@ -64,7 +72,7 @@ public final class NonStreamedChatResponse {
      * @return Unique identifier for the generated reply. Useful for submitting feedback.
      */
     @JsonProperty("generation_id")
-    public String getGenerationId() {
+    public Optional<String> getGenerationId() {
         return generationId;
     }
 
@@ -85,6 +93,14 @@ public final class NonStreamedChatResponse {
     }
 
     /**
+     * @return Denotes that a search for documents is required during the RAG flow.
+     */
+    @JsonProperty("is_search_required")
+    public Optional<Boolean> getIsSearchRequired() {
+        return isSearchRequired;
+    }
+
+    /**
      * @return Generated search queries, meant to be used as part of the RAG flow.
      */
     @JsonProperty("search_queries")
@@ -100,7 +116,12 @@ public final class NonStreamedChatResponse {
         return searchResults;
     }
 
-    @Override
+    @JsonProperty("finish_reason")
+    public Optional<FinishReason> getFinishReason() {
+        return finishReason;
+    }
+
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof NonStreamedChatResponse && equalTo((NonStreamedChatResponse) other);
@@ -116,17 +137,26 @@ public final class NonStreamedChatResponse {
                 && generationId.equals(other.generationId)
                 && citations.equals(other.citations)
                 && documents.equals(other.documents)
+                && isSearchRequired.equals(other.isSearchRequired)
                 && searchQueries.equals(other.searchQueries)
-                && searchResults.equals(other.searchResults);
+                && searchResults.equals(other.searchResults)
+                && finishReason.equals(other.finishReason);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.text, this.generationId, this.citations, this.documents, this.searchQueries, this.searchResults);
+                this.text,
+                this.generationId,
+                this.citations,
+                this.documents,
+                this.isSearchRequired,
+                this.searchQueries,
+                this.searchResults,
+                this.finishReason);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -136,17 +166,17 @@ public final class NonStreamedChatResponse {
     }
 
     public interface TextStage {
-        GenerationIdStage text(String text);
+        _FinalStage text(String text);
 
         Builder from(NonStreamedChatResponse other);
     }
 
-    public interface GenerationIdStage {
-        _FinalStage generationId(String generationId);
-    }
-
     public interface _FinalStage {
         NonStreamedChatResponse build();
+
+        _FinalStage generationId(Optional<String> generationId);
+
+        _FinalStage generationId(String generationId);
 
         _FinalStage citations(Optional<List<ChatCitation>> citations);
 
@@ -156,6 +186,10 @@ public final class NonStreamedChatResponse {
 
         _FinalStage documents(List<Map<String, String>> documents);
 
+        _FinalStage isSearchRequired(Optional<Boolean> isSearchRequired);
+
+        _FinalStage isSearchRequired(Boolean isSearchRequired);
+
         _FinalStage searchQueries(Optional<List<ChatSearchQuery>> searchQueries);
 
         _FinalStage searchQueries(List<ChatSearchQuery> searchQueries);
@@ -163,35 +197,45 @@ public final class NonStreamedChatResponse {
         _FinalStage searchResults(Optional<List<ChatSearchResult>> searchResults);
 
         _FinalStage searchResults(List<ChatSearchResult> searchResults);
+
+        _FinalStage finishReason(Optional<FinishReason> finishReason);
+
+        _FinalStage finishReason(FinishReason finishReason);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TextStage, GenerationIdStage, _FinalStage {
+    public static final class Builder implements TextStage, _FinalStage {
         private String text;
 
-        private String generationId;
+        private Optional<FinishReason> finishReason = Optional.empty();
 
         private Optional<List<ChatSearchResult>> searchResults = Optional.empty();
 
         private Optional<List<ChatSearchQuery>> searchQueries = Optional.empty();
 
+        private Optional<Boolean> isSearchRequired = Optional.empty();
+
         private Optional<List<Map<String, String>>> documents = Optional.empty();
 
         private Optional<List<ChatCitation>> citations = Optional.empty();
+
+        private Optional<String> generationId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(NonStreamedChatResponse other) {
             text(other.getText());
             generationId(other.getGenerationId());
             citations(other.getCitations());
             documents(other.getDocuments());
+            isSearchRequired(other.getIsSearchRequired());
             searchQueries(other.getSearchQueries());
             searchResults(other.getSearchResults());
+            finishReason(other.getFinishReason());
             return this;
         }
 
@@ -199,21 +243,23 @@ public final class NonStreamedChatResponse {
          * <p>Contents of the reply generated by the model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
-        public GenerationIdStage text(String text) {
+        public _FinalStage text(String text) {
             this.text = text;
             return this;
         }
 
-        /**
-         * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        @JsonSetter("generation_id")
-        public _FinalStage generationId(String generationId) {
-            this.generationId = generationId;
+        @java.lang.Override
+        public _FinalStage finishReason(FinishReason finishReason) {
+            this.finishReason = Optional.of(finishReason);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "finish_reason", nulls = Nulls.SKIP)
+        public _FinalStage finishReason(Optional<FinishReason> finishReason) {
+            this.finishReason = finishReason;
             return this;
         }
 
@@ -221,13 +267,13 @@ public final class NonStreamedChatResponse {
          * <p>Documents retrieved from each of the conducted searches.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage searchResults(List<ChatSearchResult> searchResults) {
             this.searchResults = Optional.of(searchResults);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "search_results", nulls = Nulls.SKIP)
         public _FinalStage searchResults(Optional<List<ChatSearchResult>> searchResults) {
             this.searchResults = searchResults;
@@ -238,13 +284,13 @@ public final class NonStreamedChatResponse {
          * <p>Generated search queries, meant to be used as part of the RAG flow.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage searchQueries(List<ChatSearchQuery> searchQueries) {
             this.searchQueries = Optional.of(searchQueries);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "search_queries", nulls = Nulls.SKIP)
         public _FinalStage searchQueries(Optional<List<ChatSearchQuery>> searchQueries) {
             this.searchQueries = searchQueries;
@@ -252,16 +298,33 @@ public final class NonStreamedChatResponse {
         }
 
         /**
+         * <p>Denotes that a search for documents is required during the RAG flow.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage isSearchRequired(Boolean isSearchRequired) {
+            this.isSearchRequired = Optional.of(isSearchRequired);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "is_search_required", nulls = Nulls.SKIP)
+        public _FinalStage isSearchRequired(Optional<Boolean> isSearchRequired) {
+            this.isSearchRequired = isSearchRequired;
+            return this;
+        }
+
+        /**
          * <p>Documents seen by the model when generating the reply.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage documents(List<Map<String, String>> documents) {
             this.documents = Optional.of(documents);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(Optional<List<Map<String, String>>> documents) {
             this.documents = documents;
@@ -272,23 +335,48 @@ public final class NonStreamedChatResponse {
          * <p>Inline citations for the generated reply.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage citations(List<ChatCitation> citations) {
             this.citations = Optional.of(citations);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "citations", nulls = Nulls.SKIP)
         public _FinalStage citations(Optional<List<ChatCitation>> citations) {
             this.citations = citations;
             return this;
         }
 
-        @Override
+        /**
+         * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage generationId(String generationId) {
+            this.generationId = Optional.of(generationId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "generation_id", nulls = Nulls.SKIP)
+        public _FinalStage generationId(Optional<String> generationId) {
+            this.generationId = generationId;
+            return this;
+        }
+
+        @java.lang.Override
         public NonStreamedChatResponse build() {
             return new NonStreamedChatResponse(
-                    text, generationId, citations, documents, searchQueries, searchResults, additionalProperties);
+                    text,
+                    generationId,
+                    citations,
+                    documents,
+                    isSearchRequired,
+                    searchQueries,
+                    searchResults,
+                    finishReason,
+                    additionalProperties);
         }
     }
 }

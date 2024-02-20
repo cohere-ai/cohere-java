@@ -48,7 +48,7 @@ public final class TokenizeRequest {
         return model;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenizeRequest && equalTo((TokenizeRequest) other);
@@ -63,12 +63,12 @@ public final class TokenizeRequest {
         return text.equals(other.text) && model.equals(other.model);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text, this.model);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -102,7 +102,7 @@ public final class TokenizeRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(TokenizeRequest other) {
             text(other.getText());
             model(other.getModel());
@@ -113,7 +113,7 @@ public final class TokenizeRequest {
          * <p>The string to be tokenized, the minimum text length is 1 character, and the maximum text length is 65536 characters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
@@ -124,20 +124,20 @@ public final class TokenizeRequest {
          * <p>An optional parameter to provide the model name. This will ensure that the tokenization uses the tokenizer used by that model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage model(String model) {
             this.model = Optional.of(model);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public _FinalStage model(Optional<String> model) {
             this.model = model;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public TokenizeRequest build() {
             return new TokenizeRequest(text, model, additionalProperties);
         }

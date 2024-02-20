@@ -9,14 +9,20 @@ import java.util.Map;
 public final class RequestOptions {
     private final String token;
 
-    private RequestOptions(String token) {
+    private final String clientName;
+
+    private RequestOptions(String token, String clientName) {
         this.token = token;
+        this.clientName = clientName;
     }
 
     public Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
         if (this.token != null) {
             headers.put("Authorization", "Bearer " + this.token);
+        }
+        if (this.clientName != null) {
+            headers.put("X-Client-Name", this.clientName);
         }
         return headers;
     }
@@ -28,13 +34,20 @@ public final class RequestOptions {
     public static final class Builder {
         private String token = null;
 
+        private String clientName = null;
+
         public Builder token(String token) {
             this.token = token;
             return this;
         }
 
+        public Builder clientName(String clientName) {
+            this.clientName = clientName;
+            return this;
+        }
+
         public RequestOptions build() {
-            return new RequestOptions(token);
+            return new RequestOptions(token, clientName);
         }
     }
 }

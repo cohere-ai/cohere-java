@@ -52,7 +52,7 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
         return documents;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatSearchResultsEvent && equalTo((ChatSearchResultsEvent) other);
@@ -67,12 +67,12 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
         return searchResults.equals(other.searchResults) && documents.equals(other.documents);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.searchResults, this.documents);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

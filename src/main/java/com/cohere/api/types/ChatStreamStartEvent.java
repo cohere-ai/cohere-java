@@ -35,7 +35,7 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
         return generationId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatStreamStartEvent && equalTo((ChatStreamStartEvent) other);
@@ -50,12 +50,12 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
         return generationId.equals(other.generationId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.generationId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -83,7 +83,7 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatStreamStartEvent other) {
             generationId(other.getGenerationId());
             return this;
@@ -93,14 +93,14 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
          * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("generation_id")
         public _FinalStage generationId(String generationId) {
             this.generationId = generationId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatStreamStartEvent build() {
             return new ChatStreamStartEvent(generationId, additionalProperties);
         }

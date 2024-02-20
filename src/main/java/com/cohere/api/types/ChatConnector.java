@@ -44,7 +44,7 @@ public final class ChatConnector {
     }
 
     /**
-     * @return The identifier of the connector. Currently only 'web-search' is supported.
+     * @return The identifier of the connector.
      */
     @JsonProperty("id")
     public String getId() {
@@ -83,7 +83,7 @@ public final class ChatConnector {
         return options;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatConnector && equalTo((ChatConnector) other);
@@ -101,12 +101,12 @@ public final class ChatConnector {
                 && options.equals(other.options);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.userAccessToken, this.continueOnFailure, this.options);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -152,7 +152,7 @@ public final class ChatConnector {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatConnector other) {
             id(other.getId());
             userAccessToken(other.getUserAccessToken());
@@ -162,10 +162,10 @@ public final class ChatConnector {
         }
 
         /**
-         * <p>The identifier of the connector. Currently only 'web-search' is supported.</p>
+         * <p>The identifier of the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
@@ -184,13 +184,13 @@ public final class ChatConnector {
          * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage options(Map<String, Object> options) {
             this.options = Optional.of(options);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "options", nulls = Nulls.SKIP)
         public _FinalStage options(Optional<Map<String, Object>> options) {
             this.options = options;
@@ -201,13 +201,13 @@ public final class ChatConnector {
          * <p>An optional override to set whether or not the request continues if this connector fails.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
             this.continueOnFailure = Optional.of(continueOnFailure);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
@@ -218,20 +218,20 @@ public final class ChatConnector {
          * <p>An optional override to set the token that Cohere passes to the connector in the Authorization header.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage userAccessToken(String userAccessToken) {
             this.userAccessToken = Optional.of(userAccessToken);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "user_access_token", nulls = Nulls.SKIP)
         public _FinalStage userAccessToken(Optional<String> userAccessToken) {
             this.userAccessToken = userAccessToken;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatConnector build() {
             return new ChatConnector(id, userAccessToken, continueOnFailure, options, additionalProperties);
         }

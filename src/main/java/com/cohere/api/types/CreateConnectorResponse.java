@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = GetResponse.Builder.class)
-public final class GetResponse {
+@JsonDeserialize(builder = CreateConnectorResponse.Builder.class)
+public final class CreateConnectorResponse {
     private final Connector connector;
 
     private final Map<String, Object> additionalProperties;
 
-    private GetResponse(Connector connector, Map<String, Object> additionalProperties) {
+    private CreateConnectorResponse(Connector connector, Map<String, Object> additionalProperties) {
         this.connector = connector;
         this.additionalProperties = additionalProperties;
     }
@@ -32,10 +32,10 @@ public final class GetResponse {
         return connector;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof GetResponse && equalTo((GetResponse) other);
+        return other instanceof CreateConnectorResponse && equalTo((CreateConnectorResponse) other);
     }
 
     @JsonAnyGetter
@@ -43,16 +43,16 @@ public final class GetResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(GetResponse other) {
+    private boolean equalTo(CreateConnectorResponse other) {
         return connector.equals(other.connector);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.connector);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -64,11 +64,11 @@ public final class GetResponse {
     public interface ConnectorStage {
         _FinalStage connector(Connector connector);
 
-        Builder from(GetResponse other);
+        Builder from(CreateConnectorResponse other);
     }
 
     public interface _FinalStage {
-        GetResponse build();
+        CreateConnectorResponse build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -80,22 +80,22 @@ public final class GetResponse {
 
         private Builder() {}
 
-        @Override
-        public Builder from(GetResponse other) {
+        @java.lang.Override
+        public Builder from(CreateConnectorResponse other) {
             connector(other.getConnector());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("connector")
         public _FinalStage connector(Connector connector) {
             this.connector = connector;
             return this;
         }
 
-        @Override
-        public GetResponse build() {
-            return new GetResponse(connector, additionalProperties);
+        @java.lang.Override
+        public CreateConnectorResponse build() {
+            return new CreateConnectorResponse(connector, additionalProperties);
         }
     }
 }

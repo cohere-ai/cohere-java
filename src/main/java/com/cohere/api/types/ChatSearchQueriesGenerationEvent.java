@@ -39,7 +39,7 @@ public final class ChatSearchQueriesGenerationEvent implements IChatStreamEvent 
         return searchQueries;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatSearchQueriesGenerationEvent && equalTo((ChatSearchQueriesGenerationEvent) other);
@@ -54,12 +54,12 @@ public final class ChatSearchQueriesGenerationEvent implements IChatStreamEvent 
         return searchQueries.equals(other.searchQueries);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.searchQueries);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

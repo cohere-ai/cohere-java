@@ -18,8 +18,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ApiMetaApiVersionBilledUnits.Builder.class)
-public final class ApiMetaApiVersionBilledUnits {
+@JsonDeserialize(builder = ApiMetaBilledUnits.Builder.class)
+public final class ApiMetaBilledUnits {
     private final Optional<Double> inputTokens;
 
     private final Optional<Double> outputTokens;
@@ -30,7 +30,7 @@ public final class ApiMetaApiVersionBilledUnits {
 
     private final Map<String, Object> additionalProperties;
 
-    private ApiMetaApiVersionBilledUnits(
+    private ApiMetaBilledUnits(
             Optional<Double> inputTokens,
             Optional<Double> outputTokens,
             Optional<Double> searchUnits,
@@ -75,10 +75,10 @@ public final class ApiMetaApiVersionBilledUnits {
         return classifications;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ApiMetaApiVersionBilledUnits && equalTo((ApiMetaApiVersionBilledUnits) other);
+        return other instanceof ApiMetaBilledUnits && equalTo((ApiMetaBilledUnits) other);
     }
 
     @JsonAnyGetter
@@ -86,19 +86,19 @@ public final class ApiMetaApiVersionBilledUnits {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ApiMetaApiVersionBilledUnits other) {
+    private boolean equalTo(ApiMetaBilledUnits other) {
         return inputTokens.equals(other.inputTokens)
                 && outputTokens.equals(other.outputTokens)
                 && searchUnits.equals(other.searchUnits)
                 && classifications.equals(other.classifications);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.inputTokens, this.outputTokens, this.searchUnits, this.classifications);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -122,7 +122,7 @@ public final class ApiMetaApiVersionBilledUnits {
 
         private Builder() {}
 
-        public Builder from(ApiMetaApiVersionBilledUnits other) {
+        public Builder from(ApiMetaBilledUnits other) {
             inputTokens(other.getInputTokens());
             outputTokens(other.getOutputTokens());
             searchUnits(other.getSearchUnits());
@@ -174,8 +174,8 @@ public final class ApiMetaApiVersionBilledUnits {
             return this;
         }
 
-        public ApiMetaApiVersionBilledUnits build() {
-            return new ApiMetaApiVersionBilledUnits(
+        public ApiMetaBilledUnits build() {
+            return new ApiMetaBilledUnits(
                     inputTokens, outputTokens, searchUnits, classifications, additionalProperties);
         }
     }

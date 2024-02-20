@@ -13,35 +13,28 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = DetectLanguageResponse.Builder.class)
-public final class DetectLanguageResponse {
-    private final Optional<List<DetectLanguageResponseResultsItem>> results;
+@JsonDeserialize(builder = CreateEmbedJobResponse.Builder.class)
+public final class CreateEmbedJobResponse {
+    private final String jobId;
 
     private final Optional<ApiMeta> meta;
 
     private final Map<String, Object> additionalProperties;
 
-    private DetectLanguageResponse(
-            Optional<List<DetectLanguageResponseResultsItem>> results,
-            Optional<ApiMeta> meta,
-            Map<String, Object> additionalProperties) {
-        this.results = results;
+    private CreateEmbedJobResponse(String jobId, Optional<ApiMeta> meta, Map<String, Object> additionalProperties) {
+        this.jobId = jobId;
         this.meta = meta;
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return List of languages, one per input text
-     */
-    @JsonProperty("results")
-    public Optional<List<DetectLanguageResponseResultsItem>> getResults() {
-        return results;
+    @JsonProperty("job_id")
+    public String getJobId() {
+        return jobId;
     }
 
     @JsonProperty("meta")
@@ -49,10 +42,10 @@ public final class DetectLanguageResponse {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof DetectLanguageResponse && equalTo((DetectLanguageResponse) other);
+        return other instanceof CreateEmbedJobResponse && equalTo((CreateEmbedJobResponse) other);
     }
 
     @JsonAnyGetter
@@ -60,27 +53,41 @@ public final class DetectLanguageResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(DetectLanguageResponse other) {
-        return results.equals(other.results) && meta.equals(other.meta);
+    private boolean equalTo(CreateEmbedJobResponse other) {
+        return jobId.equals(other.jobId) && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.results, this.meta);
+        return Objects.hash(this.jobId, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static JobIdStage builder() {
         return new Builder();
     }
 
+    public interface JobIdStage {
+        _FinalStage jobId(String jobId);
+
+        Builder from(CreateEmbedJobResponse other);
+    }
+
+    public interface _FinalStage {
+        CreateEmbedJobResponse build();
+
+        _FinalStage meta(Optional<ApiMeta> meta);
+
+        _FinalStage meta(ApiMeta meta);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<List<DetectLanguageResponseResultsItem>> results = Optional.empty();
+    public static final class Builder implements JobIdStage, _FinalStage {
+        private String jobId;
 
         private Optional<ApiMeta> meta = Optional.empty();
 
@@ -89,36 +96,36 @@ public final class DetectLanguageResponse {
 
         private Builder() {}
 
-        public Builder from(DetectLanguageResponse other) {
-            results(other.getResults());
+        @java.lang.Override
+        public Builder from(CreateEmbedJobResponse other) {
+            jobId(other.getJobId());
             meta(other.getMeta());
             return this;
         }
 
-        @JsonSetter(value = "results", nulls = Nulls.SKIP)
-        public Builder results(Optional<List<DetectLanguageResponseResultsItem>> results) {
-            this.results = results;
+        @java.lang.Override
+        @JsonSetter("job_id")
+        public _FinalStage jobId(String jobId) {
+            this.jobId = jobId;
             return this;
         }
 
-        public Builder results(List<DetectLanguageResponseResultsItem> results) {
-            this.results = Optional.of(results);
-            return this;
-        }
-
-        @JsonSetter(value = "meta", nulls = Nulls.SKIP)
-        public Builder meta(Optional<ApiMeta> meta) {
-            this.meta = meta;
-            return this;
-        }
-
-        public Builder meta(ApiMeta meta) {
+        @java.lang.Override
+        public _FinalStage meta(ApiMeta meta) {
             this.meta = Optional.of(meta);
             return this;
         }
 
-        public DetectLanguageResponse build() {
-            return new DetectLanguageResponse(results, meta, additionalProperties);
+        @java.lang.Override
+        @JsonSetter(value = "meta", nulls = Nulls.SKIP)
+        public _FinalStage meta(Optional<ApiMeta> meta) {
+            this.meta = meta;
+            return this;
+        }
+
+        @java.lang.Override
+        public CreateEmbedJobResponse build() {
+            return new CreateEmbedJobResponse(jobId, meta, additionalProperties);
         }
     }
 }

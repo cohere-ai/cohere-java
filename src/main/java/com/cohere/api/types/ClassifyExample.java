@@ -18,16 +18,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ClassifyRequestExamplesItem.Builder.class)
-public final class ClassifyRequestExamplesItem {
+@JsonDeserialize(builder = ClassifyExample.Builder.class)
+public final class ClassifyExample {
     private final Optional<String> text;
 
     private final Optional<String> label;
 
     private final Map<String, Object> additionalProperties;
 
-    private ClassifyRequestExamplesItem(
-            Optional<String> text, Optional<String> label, Map<String, Object> additionalProperties) {
+    private ClassifyExample(Optional<String> text, Optional<String> label, Map<String, Object> additionalProperties) {
         this.text = text;
         this.label = label;
         this.additionalProperties = additionalProperties;
@@ -43,10 +42,10 @@ public final class ClassifyRequestExamplesItem {
         return label;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ClassifyRequestExamplesItem && equalTo((ClassifyRequestExamplesItem) other);
+        return other instanceof ClassifyExample && equalTo((ClassifyExample) other);
     }
 
     @JsonAnyGetter
@@ -54,16 +53,16 @@ public final class ClassifyRequestExamplesItem {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ClassifyRequestExamplesItem other) {
+    private boolean equalTo(ClassifyExample other) {
         return text.equals(other.text) && label.equals(other.label);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text, this.label);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -83,7 +82,7 @@ public final class ClassifyRequestExamplesItem {
 
         private Builder() {}
 
-        public Builder from(ClassifyRequestExamplesItem other) {
+        public Builder from(ClassifyExample other) {
             text(other.getText());
             label(other.getLabel());
             return this;
@@ -111,8 +110,8 @@ public final class ClassifyRequestExamplesItem {
             return this;
         }
 
-        public ClassifyRequestExamplesItem build() {
-            return new ClassifyRequestExamplesItem(text, label, additionalProperties);
+        public ClassifyExample build() {
+            return new ClassifyExample(text, label, additionalProperties);
         }
     }
 }

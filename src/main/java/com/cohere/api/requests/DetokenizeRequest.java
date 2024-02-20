@@ -50,7 +50,7 @@ public final class DetokenizeRequest {
         return model;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof DetokenizeRequest && equalTo((DetokenizeRequest) other);
@@ -65,12 +65,12 @@ public final class DetokenizeRequest {
         return tokens.equals(other.tokens) && model.equals(other.model);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.tokens, this.model);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

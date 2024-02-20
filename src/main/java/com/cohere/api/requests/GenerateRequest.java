@@ -29,8 +29,6 @@ public final class GenerateRequest {
 
     private final Optional<Integer> numGenerations;
 
-    private final Optional<Boolean> stream;
-
     private final Optional<Integer> maxTokens;
 
     private final Optional<GenerateRequestTruncate> truncate;
@@ -53,7 +51,7 @@ public final class GenerateRequest {
 
     private final Optional<GenerateRequestReturnLikelihoods> returnLikelihoods;
 
-    private final Optional<Map<String, Double>> logitBias;
+    private final Optional<Boolean> rawPrompting;
 
     private final Map<String, Object> additionalProperties;
 
@@ -61,7 +59,6 @@ public final class GenerateRequest {
             String prompt,
             Optional<String> model,
             Optional<Integer> numGenerations,
-            Optional<Boolean> stream,
             Optional<Integer> maxTokens,
             Optional<GenerateRequestTruncate> truncate,
             Optional<Double> temperature,
@@ -73,12 +70,11 @@ public final class GenerateRequest {
             Optional<Double> frequencyPenalty,
             Optional<Double> presencePenalty,
             Optional<GenerateRequestReturnLikelihoods> returnLikelihoods,
-            Optional<Map<String, Double>> logitBias,
+            Optional<Boolean> rawPrompting,
             Map<String, Object> additionalProperties) {
         this.prompt = prompt;
         this.model = model;
         this.numGenerations = numGenerations;
-        this.stream = stream;
         this.maxTokens = maxTokens;
         this.truncate = truncate;
         this.temperature = temperature;
@@ -90,7 +86,7 @@ public final class GenerateRequest {
         this.frequencyPenalty = frequencyPenalty;
         this.presencePenalty = presencePenalty;
         this.returnLikelihoods = returnLikelihoods;
-        this.logitBias = logitBias;
+        this.rawPrompting = rawPrompting;
         this.additionalProperties = additionalProperties;
     }
 
@@ -120,19 +116,9 @@ public final class GenerateRequest {
         return numGenerations;
     }
 
-    /**
-     * @return When <code>true</code>, the response will be a JSON stream of events. Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.
-     * <p>The final event will contain the complete response, and will contain an <code>is_finished</code> field set to <code>true</code>. The event will also contain a <code>finish_reason</code>, which can be one of the following:</p>
-     * <ul>
-     * <li><code>COMPLETE</code> - the model sent back a finished reply</li>
-     * <li><code>MAX_TOKENS</code> - the reply was cut off because the model reached the maximum number of tokens for its context length</li>
-     * <li><code>ERROR</code> - something went wrong when generating the reply</li>
-     * <li><code>ERROR_TOXIC</code> - the model generated a reply that was deemed toxic</li>
-     * </ul>
-     */
     @JsonProperty("stream")
-    public Optional<Boolean> getStream() {
-        return stream;
+    public Boolean getStream() {
+        return false;
     }
 
     /**
@@ -208,7 +194,8 @@ public final class GenerateRequest {
     }
 
     /**
-     * @return Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.'
+     * @return Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
+     * <p>Using <code>frequency_penalty</code> in combination with <code>presence_penalty</code> is not supported on newer models.</p>
      */
     @JsonProperty("frequency_penalty")
     public Optional<Double> getFrequencyPenalty() {
@@ -216,7 +203,9 @@ public final class GenerateRequest {
     }
 
     /**
-     * @return Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>. Can be used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
+     * @return Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
+     * <p>Can be used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+     * <p>Using <code>frequency_penalty</code> in combination with <code>presence_penalty</code> is not supported on newer models.</p>
      */
     @JsonProperty("presence_penalty")
     public Optional<Double> getPresencePenalty() {
@@ -234,16 +223,14 @@ public final class GenerateRequest {
     }
 
     /**
-     * @return Used to prevent the model from generating unwanted tokens or to incentivize it to include desired tokens. The format is <code>{token_id: bias}</code> where bias is a float between -10 and 10. Tokens can be obtained from text using <a href="/reference/tokenize">Tokenize</a>.
-     * <p>For example, if the value <code>{'11': -10}</code> is provided, the model will be very unlikely to include the token 11 (<code>&quot;\n&quot;</code>, the newline character) anywhere in the generated text. In contrast <code>{'11': 10}</code> will result in generations that nearly only contain that token. Values between -10 and 10 will proportionally affect the likelihood of the token appearing in the generated text.</p>
-     * <p>Note: logit bias may not be supported for all custom models.</p>
+     * @return When enabled, the user's prompt will be sent to the model without any pre-processing.
      */
-    @JsonProperty("logit_bias")
-    public Optional<Map<String, Double>> getLogitBias() {
-        return logitBias;
+    @JsonProperty("raw_prompting")
+    public Optional<Boolean> getRawPrompting() {
+        return rawPrompting;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof GenerateRequest && equalTo((GenerateRequest) other);
@@ -258,7 +245,6 @@ public final class GenerateRequest {
         return prompt.equals(other.prompt)
                 && model.equals(other.model)
                 && numGenerations.equals(other.numGenerations)
-                && stream.equals(other.stream)
                 && maxTokens.equals(other.maxTokens)
                 && truncate.equals(other.truncate)
                 && temperature.equals(other.temperature)
@@ -270,16 +256,15 @@ public final class GenerateRequest {
                 && frequencyPenalty.equals(other.frequencyPenalty)
                 && presencePenalty.equals(other.presencePenalty)
                 && returnLikelihoods.equals(other.returnLikelihoods)
-                && logitBias.equals(other.logitBias);
+                && rawPrompting.equals(other.rawPrompting);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.prompt,
                 this.model,
                 this.numGenerations,
-                this.stream,
                 this.maxTokens,
                 this.truncate,
                 this.temperature,
@@ -291,10 +276,10 @@ public final class GenerateRequest {
                 this.frequencyPenalty,
                 this.presencePenalty,
                 this.returnLikelihoods,
-                this.logitBias);
+                this.rawPrompting);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -319,10 +304,6 @@ public final class GenerateRequest {
         _FinalStage numGenerations(Optional<Integer> numGenerations);
 
         _FinalStage numGenerations(Integer numGenerations);
-
-        _FinalStage stream(Optional<Boolean> stream);
-
-        _FinalStage stream(Boolean stream);
 
         _FinalStage maxTokens(Optional<Integer> maxTokens);
 
@@ -368,16 +349,16 @@ public final class GenerateRequest {
 
         _FinalStage returnLikelihoods(GenerateRequestReturnLikelihoods returnLikelihoods);
 
-        _FinalStage logitBias(Optional<Map<String, Double>> logitBias);
+        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
 
-        _FinalStage logitBias(Map<String, Double> logitBias);
+        _FinalStage rawPrompting(Boolean rawPrompting);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements PromptStage, _FinalStage {
         private String prompt;
 
-        private Optional<Map<String, Double>> logitBias = Optional.empty();
+        private Optional<Boolean> rawPrompting = Optional.empty();
 
         private Optional<GenerateRequestReturnLikelihoods> returnLikelihoods = Optional.empty();
 
@@ -401,8 +382,6 @@ public final class GenerateRequest {
 
         private Optional<Integer> maxTokens = Optional.empty();
 
-        private Optional<Boolean> stream = Optional.empty();
-
         private Optional<Integer> numGenerations = Optional.empty();
 
         private Optional<String> model = Optional.empty();
@@ -412,12 +391,11 @@ public final class GenerateRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(GenerateRequest other) {
             prompt(other.getPrompt());
             model(other.getModel());
             numGenerations(other.getNumGenerations());
-            stream(other.getStream());
             maxTokens(other.getMaxTokens());
             truncate(other.getTruncate());
             temperature(other.getTemperature());
@@ -429,7 +407,7 @@ public final class GenerateRequest {
             frequencyPenalty(other.getFrequencyPenalty());
             presencePenalty(other.getPresencePenalty());
             returnLikelihoods(other.getReturnLikelihoods());
-            logitBias(other.getLogitBias());
+            rawPrompting(other.getRawPrompting());
             return this;
         }
 
@@ -438,7 +416,7 @@ public final class GenerateRequest {
          * Note: The prompt will be pre-processed and modified before reaching the model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("prompt")
         public _FinalStage prompt(String prompt) {
             this.prompt = prompt;
@@ -446,21 +424,19 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>Used to prevent the model from generating unwanted tokens or to incentivize it to include desired tokens. The format is <code>{token_id: bias}</code> where bias is a float between -10 and 10. Tokens can be obtained from text using <a href="/reference/tokenize">Tokenize</a>.</p>
-         * <p>For example, if the value <code>{'11': -10}</code> is provided, the model will be very unlikely to include the token 11 (<code>&quot;\n&quot;</code>, the newline character) anywhere in the generated text. In contrast <code>{'11': 10}</code> will result in generations that nearly only contain that token. Values between -10 and 10 will proportionally affect the likelihood of the token appearing in the generated text.</p>
-         * <p>Note: logit bias may not be supported for all custom models.</p>
+         * <p>When enabled, the user's prompt will be sent to the model without any pre-processing.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
-        public _FinalStage logitBias(Map<String, Double> logitBias) {
-            this.logitBias = Optional.of(logitBias);
+        @java.lang.Override
+        public _FinalStage rawPrompting(Boolean rawPrompting) {
+            this.rawPrompting = Optional.of(rawPrompting);
             return this;
         }
 
-        @Override
-        @JsonSetter(value = "logit_bias", nulls = Nulls.SKIP)
-        public _FinalStage logitBias(Optional<Map<String, Double>> logitBias) {
-            this.logitBias = logitBias;
+        @java.lang.Override
+        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
+        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
+            this.rawPrompting = rawPrompting;
             return this;
         }
 
@@ -470,13 +446,13 @@ public final class GenerateRequest {
          * <p>If <code>ALL</code> is selected, the token likelihoods will be provided both for the prompt and the generated text.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage returnLikelihoods(GenerateRequestReturnLikelihoods returnLikelihoods) {
             this.returnLikelihoods = Optional.of(returnLikelihoods);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "return_likelihoods", nulls = Nulls.SKIP)
         public _FinalStage returnLikelihoods(Optional<GenerateRequestReturnLikelihoods> returnLikelihoods) {
             this.returnLikelihoods = returnLikelihoods;
@@ -484,16 +460,18 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>. Can be used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.</p>
+         * <p>Can be used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+         * <p>Using <code>frequency_penalty</code> in combination with <code>presence_penalty</code> is not supported on newer models.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage presencePenalty(Double presencePenalty) {
             this.presencePenalty = Optional.of(presencePenalty);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "presence_penalty", nulls = Nulls.SKIP)
         public _FinalStage presencePenalty(Optional<Double> presencePenalty) {
             this.presencePenalty = presencePenalty;
@@ -501,16 +479,17 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.'</p>
+         * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
+         * <p>Using <code>frequency_penalty</code> in combination with <code>presence_penalty</code> is not supported on newer models.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage frequencyPenalty(Double frequencyPenalty) {
             this.frequencyPenalty = Optional.of(frequencyPenalty);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "frequency_penalty", nulls = Nulls.SKIP)
         public _FinalStage frequencyPenalty(Optional<Double> frequencyPenalty) {
             this.frequencyPenalty = frequencyPenalty;
@@ -522,13 +501,13 @@ public final class GenerateRequest {
          * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage p(Double p) {
             this.p = Optional.of(p);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "p", nulls = Nulls.SKIP)
         public _FinalStage p(Optional<Double> p) {
             this.p = p;
@@ -540,13 +519,13 @@ public final class GenerateRequest {
          * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage k(Integer k) {
             this.k = Optional.of(k);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "k", nulls = Nulls.SKIP)
         public _FinalStage k(Optional<Integer> k) {
             this.k = k;
@@ -557,13 +536,13 @@ public final class GenerateRequest {
          * <p>The generated text will be cut at the end of the earliest occurrence of a stop sequence. The sequence will be included the text.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage stopSequences(List<String> stopSequences) {
             this.stopSequences = Optional.of(stopSequences);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "stop_sequences", nulls = Nulls.SKIP)
         public _FinalStage stopSequences(Optional<List<String>> stopSequences) {
             this.stopSequences = stopSequences;
@@ -574,13 +553,13 @@ public final class GenerateRequest {
          * <p>The generated text will be cut at the beginning of the earliest occurrence of an end sequence. The sequence will be excluded from the text.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage endSequences(List<String> endSequences) {
             this.endSequences = Optional.of(endSequences);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "end_sequences", nulls = Nulls.SKIP)
         public _FinalStage endSequences(Optional<List<String>> endSequences) {
             this.endSequences = endSequences;
@@ -592,13 +571,13 @@ public final class GenerateRequest {
          * When a preset is specified, the <code>prompt</code> parameter becomes optional, and any included parameters will override the preset's parameters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage preset(String preset) {
             this.preset = Optional.of(preset);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "preset", nulls = Nulls.SKIP)
         public _FinalStage preset(Optional<String> preset) {
             this.preset = preset;
@@ -610,13 +589,13 @@ public final class GenerateRequest {
          * Defaults to <code>0.75</code>, min value of <code>0.0</code>, max value of <code>5.0</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage temperature(Double temperature) {
             this.temperature = Optional.of(temperature);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
         public _FinalStage temperature(Optional<Double> temperature) {
             this.temperature = temperature;
@@ -629,13 +608,13 @@ public final class GenerateRequest {
          * <p>If <code>NONE</code> is selected, when the input exceeds the maximum input token length an error will be returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage truncate(GenerateRequestTruncate truncate) {
             this.truncate = Optional.of(truncate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "truncate", nulls = Nulls.SKIP)
         public _FinalStage truncate(Optional<GenerateRequestTruncate> truncate) {
             this.truncate = truncate;
@@ -648,13 +627,13 @@ public final class GenerateRequest {
          * <p>Can only be set to <code>0</code> if <code>return_likelihoods</code> is set to <code>ALL</code> to get the likelihood of the prompt.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage maxTokens(Integer maxTokens) {
             this.maxTokens = Optional.of(maxTokens);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "max_tokens", nulls = Nulls.SKIP)
         public _FinalStage maxTokens(Optional<Integer> maxTokens) {
             this.maxTokens = maxTokens;
@@ -662,40 +641,16 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>When <code>true</code>, the response will be a JSON stream of events. Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.</p>
-         * <p>The final event will contain the complete response, and will contain an <code>is_finished</code> field set to <code>true</code>. The event will also contain a <code>finish_reason</code>, which can be one of the following:</p>
-         * <ul>
-         * <li><code>COMPLETE</code> - the model sent back a finished reply</li>
-         * <li><code>MAX_TOKENS</code> - the reply was cut off because the model reached the maximum number of tokens for its context length</li>
-         * <li><code>ERROR</code> - something went wrong when generating the reply</li>
-         * <li><code>ERROR_TOXIC</code> - the model generated a reply that was deemed toxic</li>
-         * </ul>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage stream(Boolean stream) {
-            this.stream = Optional.of(stream);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "stream", nulls = Nulls.SKIP)
-        public _FinalStage stream(Optional<Boolean> stream) {
-            this.stream = stream;
-            return this;
-        }
-
-        /**
          * <p>The maximum number of generations that will be returned. Defaults to <code>1</code>, min value of <code>1</code>, max value of <code>5</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage numGenerations(Integer numGenerations) {
             this.numGenerations = Optional.of(numGenerations);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "num_generations", nulls = Nulls.SKIP)
         public _FinalStage numGenerations(Optional<Integer> numGenerations) {
             this.numGenerations = numGenerations;
@@ -707,26 +662,25 @@ public final class GenerateRequest {
          * Smaller, &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage model(String model) {
             this.model = Optional.of(model);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public _FinalStage model(Optional<String> model) {
             this.model = model;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public GenerateRequest build() {
             return new GenerateRequest(
                     prompt,
                     model,
                     numGenerations,
-                    stream,
                     maxTokens,
                     truncate,
                     temperature,
@@ -738,7 +692,7 @@ public final class GenerateRequest {
                     frequencyPenalty,
                     presencePenalty,
                     returnLikelihoods,
-                    logitBias,
+                    rawPrompting,
                     additionalProperties);
         }
     }

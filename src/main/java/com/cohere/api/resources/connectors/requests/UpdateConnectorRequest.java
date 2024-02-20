@@ -21,8 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = UpdateRequest.Builder.class)
-public final class UpdateRequest {
+@JsonDeserialize(builder = UpdateConnectorRequest.Builder.class)
+public final class UpdateConnectorRequest {
     private final Optional<String> name;
 
     private final Optional<String> url;
@@ -39,7 +39,7 @@ public final class UpdateRequest {
 
     private final Map<String, Object> additionalProperties;
 
-    private UpdateRequest(
+    private UpdateConnectorRequest(
             Optional<String> name,
             Optional<String> url,
             Optional<List<String>> excludes,
@@ -108,10 +108,10 @@ public final class UpdateRequest {
         return serviceAuth;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof UpdateRequest && equalTo((UpdateRequest) other);
+        return other instanceof UpdateConnectorRequest && equalTo((UpdateConnectorRequest) other);
     }
 
     @JsonAnyGetter
@@ -119,7 +119,7 @@ public final class UpdateRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(UpdateRequest other) {
+    private boolean equalTo(UpdateConnectorRequest other) {
         return name.equals(other.name)
                 && url.equals(other.url)
                 && excludes.equals(other.excludes)
@@ -129,13 +129,13 @@ public final class UpdateRequest {
                 && serviceAuth.equals(other.serviceAuth);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.name, this.url, this.excludes, this.oauth, this.active, this.continueOnFailure, this.serviceAuth);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -165,7 +165,7 @@ public final class UpdateRequest {
 
         private Builder() {}
 
-        public Builder from(UpdateRequest other) {
+        public Builder from(UpdateConnectorRequest other) {
             name(other.getName());
             url(other.getUrl());
             excludes(other.getExcludes());
@@ -253,8 +253,8 @@ public final class UpdateRequest {
             return this;
         }
 
-        public UpdateRequest build() {
-            return new UpdateRequest(
+        public UpdateConnectorRequest build() {
+            return new UpdateConnectorRequest(
                     name, url, excludes, oauth, active, continueOnFailure, serviceAuth, additionalProperties);
         }
     }

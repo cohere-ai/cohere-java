@@ -23,7 +23,7 @@ import java.util.Objects;
 public final class ChatSearchResult {
     private final ChatSearchQuery searchQuery;
 
-    private final ChatConnector connector;
+    private final ChatSearchResultConnector connector;
 
     private final List<String> documentIds;
 
@@ -31,7 +31,7 @@ public final class ChatSearchResult {
 
     private ChatSearchResult(
             ChatSearchQuery searchQuery,
-            ChatConnector connector,
+            ChatSearchResultConnector connector,
             List<String> documentIds,
             Map<String, Object> additionalProperties) {
         this.searchQuery = searchQuery;
@@ -49,7 +49,7 @@ public final class ChatSearchResult {
      * @return The connector from which this result comes from.
      */
     @JsonProperty("connector")
-    public ChatConnector getConnector() {
+    public ChatSearchResultConnector getConnector() {
         return connector;
     }
 
@@ -61,7 +61,7 @@ public final class ChatSearchResult {
         return documentIds;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatSearchResult && equalTo((ChatSearchResult) other);
@@ -78,12 +78,12 @@ public final class ChatSearchResult {
                 && documentIds.equals(other.documentIds);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.searchQuery, this.connector, this.documentIds);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -99,7 +99,7 @@ public final class ChatSearchResult {
     }
 
     public interface ConnectorStage {
-        _FinalStage connector(ChatConnector connector);
+        _FinalStage connector(ChatSearchResultConnector connector);
     }
 
     public interface _FinalStage {
@@ -116,7 +116,7 @@ public final class ChatSearchResult {
     public static final class Builder implements SearchQueryStage, ConnectorStage, _FinalStage {
         private ChatSearchQuery searchQuery;
 
-        private ChatConnector connector;
+        private ChatSearchResultConnector connector;
 
         private List<String> documentIds = new ArrayList<>();
 
@@ -125,7 +125,7 @@ public final class ChatSearchResult {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatSearchResult other) {
             searchQuery(other.getSearchQuery());
             connector(other.getConnector());
@@ -133,7 +133,7 @@ public final class ChatSearchResult {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("search_query")
         public ConnectorStage searchQuery(ChatSearchQuery searchQuery) {
             this.searchQuery = searchQuery;
@@ -144,9 +144,9 @@ public final class ChatSearchResult {
          * <p>The connector from which this result comes from.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("connector")
-        public _FinalStage connector(ChatConnector connector) {
+        public _FinalStage connector(ChatSearchResultConnector connector) {
             this.connector = connector;
             return this;
         }
@@ -155,7 +155,7 @@ public final class ChatSearchResult {
          * <p>Identifiers of documents found by this search query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllDocumentIds(List<String> documentIds) {
             this.documentIds.addAll(documentIds);
             return this;
@@ -165,13 +165,13 @@ public final class ChatSearchResult {
          * <p>Identifiers of documents found by this search query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addDocumentIds(String documentIds) {
             this.documentIds.add(documentIds);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
         public _FinalStage documentIds(List<String> documentIds) {
             this.documentIds.clear();
@@ -179,7 +179,7 @@ public final class ChatSearchResult {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatSearchResult build() {
             return new ChatSearchResult(searchQuery, connector, documentIds, additionalProperties);
         }
