@@ -59,7 +59,7 @@ public final class RerankResponse {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RerankResponse && equalTo((RerankResponse) other);
@@ -74,12 +74,12 @@ public final class RerankResponse {
         return id.equals(other.id) && results.equals(other.results) && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.results, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

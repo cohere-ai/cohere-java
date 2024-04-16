@@ -79,7 +79,7 @@ public final class SingleGeneration {
         return tokenLikelihoods;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof SingleGeneration && equalTo((SingleGeneration) other);
@@ -98,12 +98,12 @@ public final class SingleGeneration {
                 && tokenLikelihoods.equals(other.tokenLikelihoods);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.text, this.index, this.likelihood, this.tokenLikelihoods);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -155,7 +155,7 @@ public final class SingleGeneration {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(SingleGeneration other) {
             id(other.getId());
             text(other.getText());
@@ -165,14 +165,14 @@ public final class SingleGeneration {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public TextStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
@@ -183,26 +183,26 @@ public final class SingleGeneration {
          * <p>Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage tokenLikelihoods(List<SingleGenerationTokenLikelihoodsItem> tokenLikelihoods) {
             this.tokenLikelihoods = Optional.of(tokenLikelihoods);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "token_likelihoods", nulls = Nulls.SKIP)
         public _FinalStage tokenLikelihoods(Optional<List<SingleGenerationTokenLikelihoodsItem>> tokenLikelihoods) {
             this.tokenLikelihoods = tokenLikelihoods;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage likelihood(Double likelihood) {
             this.likelihood = Optional.of(likelihood);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "likelihood", nulls = Nulls.SKIP)
         public _FinalStage likelihood(Optional<Double> likelihood) {
             this.likelihood = likelihood;
@@ -213,20 +213,20 @@ public final class SingleGeneration {
          * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage index(Integer index) {
             this.index = Optional.of(index);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "index", nulls = Nulls.SKIP)
         public _FinalStage index(Optional<Integer> index) {
             this.index = index;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public SingleGeneration build() {
             return new SingleGeneration(id, text, index, likelihood, tokenLikelihoods, additionalProperties);
         }

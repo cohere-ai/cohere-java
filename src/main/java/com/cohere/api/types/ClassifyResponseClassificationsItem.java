@@ -123,7 +123,7 @@ public final class ClassifyResponseClassificationsItem {
         return classificationType;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ClassifyResponseClassificationsItem
@@ -146,7 +146,7 @@ public final class ClassifyResponseClassificationsItem {
                 && classificationType.equals(other.classificationType);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -159,7 +159,7 @@ public final class ClassifyResponseClassificationsItem {
                 this.classificationType);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -235,7 +235,7 @@ public final class ClassifyResponseClassificationsItem {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ClassifyResponseClassificationsItem other) {
             id(other.getId());
             input(other.getInput());
@@ -248,7 +248,7 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public ClassificationTypeStage id(String id) {
             this.id = id;
@@ -259,7 +259,7 @@ public final class ClassifyResponseClassificationsItem {
          * <p>The type of classification performed</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("classification_type")
         public _FinalStage classificationType(
                 ClassifyResponseClassificationsItemClassificationType classificationType) {
@@ -271,7 +271,7 @@ public final class ClassifyResponseClassificationsItem {
          * <p>A map containing each label and its confidence score according to the classifier. All the confidence scores add up to 1 for single-label classification. For multi-label classification the label confidences are independent of each other, so they don't have to sum up to 1.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage labels(String key, ClassifyResponseClassificationsItemLabelsValue value) {
             this.labels.put(key, value);
             return this;
@@ -281,13 +281,13 @@ public final class ClassifyResponseClassificationsItem {
          * <p>A map containing each label and its confidence score according to the classifier. All the confidence scores add up to 1 for single-label classification. For multi-label classification the label confidences are independent of each other, so they don't have to sum up to 1.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage putAllLabels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels) {
             this.labels.putAll(labels);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "labels", nulls = Nulls.SKIP)
         public _FinalStage labels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels) {
             this.labels.clear();
@@ -299,7 +299,7 @@ public final class ClassifyResponseClassificationsItem {
          * <p>An array containing the confidence scores of all the predictions in the same order</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllConfidences(List<Double> confidences) {
             this.confidences.addAll(confidences);
             return this;
@@ -309,13 +309,13 @@ public final class ClassifyResponseClassificationsItem {
          * <p>An array containing the confidence scores of all the predictions in the same order</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addConfidences(Double confidences) {
             this.confidences.add(confidences);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "confidences", nulls = Nulls.SKIP)
         public _FinalStage confidences(List<Double> confidences) {
             this.confidences.clear();
@@ -327,13 +327,13 @@ public final class ClassifyResponseClassificationsItem {
          * <p>The confidence score for the top predicted class (only filled for single-label classification)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage confidence(Double confidence) {
             this.confidence = Optional.of(confidence);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "confidence", nulls = Nulls.SKIP)
         public _FinalStage confidence(Optional<Double> confidence) {
             this.confidence = confidence;
@@ -344,7 +344,7 @@ public final class ClassifyResponseClassificationsItem {
          * <p>An array containing the predicted labels for the associated query (only filled for single-label classification)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllPredictions(List<String> predictions) {
             this.predictions.addAll(predictions);
             return this;
@@ -354,13 +354,13 @@ public final class ClassifyResponseClassificationsItem {
          * <p>An array containing the predicted labels for the associated query (only filled for single-label classification)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addPredictions(String predictions) {
             this.predictions.add(predictions);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "predictions", nulls = Nulls.SKIP)
         public _FinalStage predictions(List<String> predictions) {
             this.predictions.clear();
@@ -372,13 +372,13 @@ public final class ClassifyResponseClassificationsItem {
          * <p>The predicted label for the associated query (only filled for single-label models)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage prediction(String prediction) {
             this.prediction = Optional.of(prediction);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "prediction", nulls = Nulls.SKIP)
         public _FinalStage prediction(Optional<String> prediction) {
             this.prediction = prediction;
@@ -389,20 +389,20 @@ public final class ClassifyResponseClassificationsItem {
          * <p>The input text that was classified</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage input(String input) {
             this.input = Optional.of(input);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "input", nulls = Nulls.SKIP)
         public _FinalStage input(Optional<String> input) {
             this.input = input;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ClassifyResponseClassificationsItem build() {
             return new ClassifyResponseClassificationsItem(
                     id,

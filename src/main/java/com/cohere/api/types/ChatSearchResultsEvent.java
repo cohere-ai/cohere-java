@@ -12,24 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatSearchResultsEvent.Builder.class)
 public final class ChatSearchResultsEvent implements IChatStreamEvent {
-    private final List<ChatSearchResult> searchResults;
+    private final Optional<List<ChatSearchResult>> searchResults;
 
-    private final List<Map<String, String>> documents;
+    private final Optional<List<Map<String, String>>> documents;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatSearchResultsEvent(
-            List<ChatSearchResult> searchResults,
-            List<Map<String, String>> documents,
+            Optional<List<ChatSearchResult>> searchResults,
+            Optional<List<Map<String, String>>> documents,
             Map<String, Object> additionalProperties) {
         this.searchResults = searchResults;
         this.documents = documents;
@@ -40,7 +40,7 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
      * @return Conducted searches and the ids of documents retrieved from each of them.
      */
     @JsonProperty("search_results")
-    public List<ChatSearchResult> getSearchResults() {
+    public Optional<List<ChatSearchResult>> getSearchResults() {
         return searchResults;
     }
 
@@ -48,11 +48,11 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
      * @return Documents fetched from searches or provided by the user.
      */
     @JsonProperty("documents")
-    public List<Map<String, String>> getDocuments() {
+    public Optional<List<Map<String, String>>> getDocuments() {
         return documents;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatSearchResultsEvent && equalTo((ChatSearchResultsEvent) other);
@@ -67,12 +67,12 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
         return searchResults.equals(other.searchResults) && documents.equals(other.documents);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.searchResults, this.documents);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -83,9 +83,9 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private List<ChatSearchResult> searchResults = new ArrayList<>();
+        private Optional<List<ChatSearchResult>> searchResults = Optional.empty();
 
-        private List<Map<String, String>> documents = new ArrayList<>();
+        private Optional<List<Map<String, String>>> documents = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -99,36 +99,24 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
         }
 
         @JsonSetter(value = "search_results", nulls = Nulls.SKIP)
+        public Builder searchResults(Optional<List<ChatSearchResult>> searchResults) {
+            this.searchResults = searchResults;
+            return this;
+        }
+
         public Builder searchResults(List<ChatSearchResult> searchResults) {
-            this.searchResults.clear();
-            this.searchResults.addAll(searchResults);
-            return this;
-        }
-
-        public Builder addSearchResults(ChatSearchResult searchResults) {
-            this.searchResults.add(searchResults);
-            return this;
-        }
-
-        public Builder addAllSearchResults(List<ChatSearchResult> searchResults) {
-            this.searchResults.addAll(searchResults);
+            this.searchResults = Optional.of(searchResults);
             return this;
         }
 
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
+        public Builder documents(Optional<List<Map<String, String>>> documents) {
+            this.documents = documents;
+            return this;
+        }
+
         public Builder documents(List<Map<String, String>> documents) {
-            this.documents.clear();
-            this.documents.addAll(documents);
-            return this;
-        }
-
-        public Builder addDocuments(Map<String, String> documents) {
-            this.documents.add(documents);
-            return this;
-        }
-
-        public Builder addAllDocuments(List<Map<String, String>> documents) {
-            this.documents.addAll(documents);
+            this.documents = Optional.of(documents);
             return this;
         }
 

@@ -23,22 +23,22 @@ import java.util.Optional;
 public final class EmbedByTypeResponseEmbeddings {
     private final Optional<List<List<Double>>> float_;
 
-    private final Optional<List<List<Double>>> int8;
+    private final Optional<List<List<Integer>>> int8;
 
-    private final Optional<List<List<Double>>> uint8;
+    private final Optional<List<List<Integer>>> uint8;
 
-    private final Optional<List<List<Double>>> binary;
+    private final Optional<List<List<Integer>>> binary;
 
-    private final Optional<List<List<Double>>> ubinary;
+    private final Optional<List<List<Integer>>> ubinary;
 
     private final Map<String, Object> additionalProperties;
 
     private EmbedByTypeResponseEmbeddings(
             Optional<List<List<Double>>> float_,
-            Optional<List<List<Double>>> int8,
-            Optional<List<List<Double>>> uint8,
-            Optional<List<List<Double>>> binary,
-            Optional<List<List<Double>>> ubinary,
+            Optional<List<List<Integer>>> int8,
+            Optional<List<List<Integer>>> uint8,
+            Optional<List<List<Integer>>> binary,
+            Optional<List<List<Integer>>> ubinary,
             Map<String, Object> additionalProperties) {
         this.float_ = float_;
         this.int8 = int8;
@@ -60,7 +60,7 @@ public final class EmbedByTypeResponseEmbeddings {
      * @return An array of signed int8 embeddings. Each value is between -128 and 127.
      */
     @JsonProperty("int8")
-    public Optional<List<List<Double>>> getInt8() {
+    public Optional<List<List<Integer>>> getInt8() {
         return int8;
     }
 
@@ -68,7 +68,7 @@ public final class EmbedByTypeResponseEmbeddings {
      * @return An array of unsigned int8 embeddings. Each value is between 0 and 255.
      */
     @JsonProperty("uint8")
-    public Optional<List<List<Double>>> getUint8() {
+    public Optional<List<List<Integer>>> getUint8() {
         return uint8;
     }
 
@@ -76,7 +76,7 @@ public final class EmbedByTypeResponseEmbeddings {
      * @return An array of packed signed binary embeddings. The length of each binary embedding is 1/8 the length of the float embeddings of the provided model. Each value is between -128 and 127.
      */
     @JsonProperty("binary")
-    public Optional<List<List<Double>>> getBinary() {
+    public Optional<List<List<Integer>>> getBinary() {
         return binary;
     }
 
@@ -84,11 +84,11 @@ public final class EmbedByTypeResponseEmbeddings {
      * @return An array of packed unsigned binary embeddings. The length of each binary embedding is 1/8 the length of the float embeddings of the provided model. Each value is between 0 and 255.
      */
     @JsonProperty("ubinary")
-    public Optional<List<List<Double>>> getUbinary() {
+    public Optional<List<List<Integer>>> getUbinary() {
         return ubinary;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmbedByTypeResponseEmbeddings && equalTo((EmbedByTypeResponseEmbeddings) other);
@@ -107,12 +107,12 @@ public final class EmbedByTypeResponseEmbeddings {
                 && ubinary.equals(other.ubinary);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.float_, this.int8, this.uint8, this.binary, this.ubinary);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -125,13 +125,13 @@ public final class EmbedByTypeResponseEmbeddings {
     public static final class Builder {
         private Optional<List<List<Double>>> float_ = Optional.empty();
 
-        private Optional<List<List<Double>>> int8 = Optional.empty();
+        private Optional<List<List<Integer>>> int8 = Optional.empty();
 
-        private Optional<List<List<Double>>> uint8 = Optional.empty();
+        private Optional<List<List<Integer>>> uint8 = Optional.empty();
 
-        private Optional<List<List<Double>>> binary = Optional.empty();
+        private Optional<List<List<Integer>>> binary = Optional.empty();
 
-        private Optional<List<List<Double>>> ubinary = Optional.empty();
+        private Optional<List<List<Integer>>> ubinary = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -159,45 +159,45 @@ public final class EmbedByTypeResponseEmbeddings {
         }
 
         @JsonSetter(value = "int8", nulls = Nulls.SKIP)
-        public Builder int8(Optional<List<List<Double>>> int8) {
+        public Builder int8(Optional<List<List<Integer>>> int8) {
             this.int8 = int8;
             return this;
         }
 
-        public Builder int8(List<List<Double>> int8) {
+        public Builder int8(List<List<Integer>> int8) {
             this.int8 = Optional.of(int8);
             return this;
         }
 
         @JsonSetter(value = "uint8", nulls = Nulls.SKIP)
-        public Builder uint8(Optional<List<List<Double>>> uint8) {
+        public Builder uint8(Optional<List<List<Integer>>> uint8) {
             this.uint8 = uint8;
             return this;
         }
 
-        public Builder uint8(List<List<Double>> uint8) {
+        public Builder uint8(List<List<Integer>> uint8) {
             this.uint8 = Optional.of(uint8);
             return this;
         }
 
         @JsonSetter(value = "binary", nulls = Nulls.SKIP)
-        public Builder binary(Optional<List<List<Double>>> binary) {
+        public Builder binary(Optional<List<List<Integer>>> binary) {
             this.binary = binary;
             return this;
         }
 
-        public Builder binary(List<List<Double>> binary) {
+        public Builder binary(List<List<Integer>> binary) {
             this.binary = Optional.of(binary);
             return this;
         }
 
         @JsonSetter(value = "ubinary", nulls = Nulls.SKIP)
-        public Builder ubinary(Optional<List<List<Double>>> ubinary) {
+        public Builder ubinary(Optional<List<List<Integer>>> ubinary) {
             this.ubinary = ubinary;
             return this;
         }
 
-        public Builder ubinary(List<List<Double>> ubinary) {
+        public Builder ubinary(List<List<Integer>> ubinary) {
             this.ubinary = Optional.of(ubinary);
             return this;
         }

@@ -71,7 +71,7 @@ public final class EmbedFloatsResponse {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmbedFloatsResponse && equalTo((EmbedFloatsResponse) other);
@@ -89,12 +89,12 @@ public final class EmbedFloatsResponse {
                 && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.embeddings, this.texts, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -144,7 +144,7 @@ public final class EmbedFloatsResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EmbedFloatsResponse other) {
             id(other.getId());
             embeddings(other.getEmbeddings());
@@ -153,20 +153,20 @@ public final class EmbedFloatsResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
             this.meta = Optional.of(meta);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
@@ -177,7 +177,7 @@ public final class EmbedFloatsResponse {
          * <p>The text entries for which embeddings were returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllTexts(List<String> texts) {
             this.texts.addAll(texts);
             return this;
@@ -187,13 +187,13 @@ public final class EmbedFloatsResponse {
          * <p>The text entries for which embeddings were returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addTexts(String texts) {
             this.texts.add(texts);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
         public _FinalStage texts(List<String> texts) {
             this.texts.clear();
@@ -205,7 +205,7 @@ public final class EmbedFloatsResponse {
          * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllEmbeddings(List<List<Double>> embeddings) {
             this.embeddings.addAll(embeddings);
             return this;
@@ -215,13 +215,13 @@ public final class EmbedFloatsResponse {
          * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addEmbeddings(List<Double> embeddings) {
             this.embeddings.add(embeddings);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "embeddings", nulls = Nulls.SKIP)
         public _FinalStage embeddings(List<List<Double>> embeddings) {
             this.embeddings.clear();
@@ -229,7 +229,7 @@ public final class EmbedFloatsResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EmbedFloatsResponse build() {
             return new EmbedFloatsResponse(id, embeddings, texts, meta, additionalProperties);
         }

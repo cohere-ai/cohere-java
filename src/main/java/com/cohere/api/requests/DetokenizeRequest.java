@@ -17,18 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = DetokenizeRequest.Builder.class)
 public final class DetokenizeRequest {
     private final List<Integer> tokens;
 
-    private final Optional<String> model;
+    private final String model;
 
     private final Map<String, Object> additionalProperties;
 
-    private DetokenizeRequest(List<Integer> tokens, Optional<String> model, Map<String, Object> additionalProperties) {
+    private DetokenizeRequest(List<Integer> tokens, String model, Map<String, Object> additionalProperties) {
         this.tokens = tokens;
         this.model = model;
         this.additionalProperties = additionalProperties;
@@ -46,11 +45,11 @@ public final class DetokenizeRequest {
      * @return An optional parameter to provide the model name. This will ensure that the detokenization is done by the tokenizer used by that model.
      */
     @JsonProperty("model")
-    public Optional<String> getModel() {
+    public String getModel() {
         return model;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof DetokenizeRequest && equalTo((DetokenizeRequest) other);
@@ -65,65 +64,94 @@ public final class DetokenizeRequest {
         return tokens.equals(other.tokens) && model.equals(other.model);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.tokens, this.model);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ModelStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private List<Integer> tokens = new ArrayList<>();
+    public interface ModelStage {
+        _FinalStage model(String model);
 
-        private Optional<String> model = Optional.empty();
+        Builder from(DetokenizeRequest other);
+    }
+
+    public interface _FinalStage {
+        DetokenizeRequest build();
+
+        _FinalStage tokens(List<Integer> tokens);
+
+        _FinalStage addTokens(Integer tokens);
+
+        _FinalStage addAllTokens(List<Integer> tokens);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ModelStage, _FinalStage {
+        private String model;
+
+        private List<Integer> tokens = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(DetokenizeRequest other) {
             tokens(other.getTokens());
             model(other.getModel());
             return this;
         }
 
+        /**
+         * <p>An optional parameter to provide the model name. This will ensure that the detokenization is done by the tokenizer used by that model.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("model")
+        public _FinalStage model(String model) {
+            this.model = model;
+            return this;
+        }
+
+        /**
+         * <p>The list of tokens to be detokenized.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllTokens(List<Integer> tokens) {
+            this.tokens.addAll(tokens);
+            return this;
+        }
+
+        /**
+         * <p>The list of tokens to be detokenized.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addTokens(Integer tokens) {
+            this.tokens.add(tokens);
+            return this;
+        }
+
+        @java.lang.Override
         @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
-        public Builder tokens(List<Integer> tokens) {
+        public _FinalStage tokens(List<Integer> tokens) {
             this.tokens.clear();
             this.tokens.addAll(tokens);
             return this;
         }
 
-        public Builder addTokens(Integer tokens) {
-            this.tokens.add(tokens);
-            return this;
-        }
-
-        public Builder addAllTokens(List<Integer> tokens) {
-            this.tokens.addAll(tokens);
-            return this;
-        }
-
-        @JsonSetter(value = "model", nulls = Nulls.SKIP)
-        public Builder model(Optional<String> model) {
-            this.model = model;
-            return this;
-        }
-
-        public Builder model(String model) {
-            this.model = Optional.of(model);
-            return this;
-        }
-
+        @java.lang.Override
         public DetokenizeRequest build() {
             return new DetokenizeRequest(tokens, model, additionalProperties);
         }

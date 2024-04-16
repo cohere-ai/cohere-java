@@ -4,7 +4,7 @@
 package com.cohere.api.requests;
 
 import com.cohere.api.core.ObjectMappers;
-import com.cohere.api.types.ClassifyRequestExamplesItem;
+import com.cohere.api.types.ClassifyExample;
 import com.cohere.api.types.ClassifyRequestTruncate;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public final class ClassifyRequest {
     private final List<String> inputs;
 
-    private final List<ClassifyRequestExamplesItem> examples;
+    private final List<ClassifyExample> examples;
 
     private final Optional<String> model;
 
@@ -38,7 +38,7 @@ public final class ClassifyRequest {
 
     private ClassifyRequest(
             List<String> inputs,
-            List<ClassifyRequestExamplesItem> examples,
+            List<ClassifyExample> examples,
             Optional<String> model,
             Optional<String> preset,
             Optional<ClassifyRequestTruncate> truncate,
@@ -52,7 +52,9 @@ public final class ClassifyRequest {
     }
 
     /**
-     * @return Represents a list of queries to be classified, each entry must not be empty. The maximum is 96 inputs.
+     * @return A list of up to 96 texts to be classified. Each one must be a non-empty string.
+     * There is, however, no consistent, universal limit to the length a particular input can be. We perform classification on the first <code>x</code> tokens of each input, and <code>x</code> varies depending on which underlying model is powering classification. The maximum token length for each model is listed in the &quot;max tokens&quot; column <a href="https://docs.cohere.com/docs/models">here</a>.
+     * Note: by default the <code>truncate</code> parameter is set to <code>END</code>, so tokens exceeding the limit will be automatically dropped. This behavior can be disabled by setting <code>truncate</code> to <code>NONE</code>, which will result in validation errors for longer texts.
      */
     @JsonProperty("inputs")
     public List<String> getInputs() {
@@ -61,15 +63,15 @@ public final class ClassifyRequest {
 
     /**
      * @return An array of examples to provide context to the model. Each example is a text string and its associated label/class. Each unique label requires at least 2 examples associated with it; the maximum number of examples is 2500, and each example has a maximum length of 512 tokens. The values should be structured as <code>{text: &quot;...&quot;,label: &quot;...&quot;}</code>.
-     * Note: <a href="/training-representation-models">Custom Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
      */
     @JsonProperty("examples")
-    public List<ClassifyRequestExamplesItem> getExamples() {
+    public List<ClassifyExample> getExamples() {
         return examples;
     }
 
     /**
-     * @return The identifier of the model. Currently available models are <code>embed-multilingual-v2.0</code>, <code>embed-english-light-v2.0</code>, and <code>embed-english-v2.0</code> (default). Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.
+     * @return The identifier of the model. Currently available models are <code>embed-multilingual-v2.0</code>, <code>embed-english-light-v2.0</code>, and <code>embed-english-v2.0</code> (default). Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/fine-tuning">Fine-tuned models</a> can also be supplied with their full ID.
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -94,7 +96,7 @@ public final class ClassifyRequest {
         return truncate;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ClassifyRequest && equalTo((ClassifyRequest) other);
@@ -113,12 +115,12 @@ public final class ClassifyRequest {
                 && truncate.equals(other.truncate);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.inputs, this.examples, this.model, this.preset, this.truncate);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -131,7 +133,7 @@ public final class ClassifyRequest {
     public static final class Builder {
         private List<String> inputs = new ArrayList<>();
 
-        private List<ClassifyRequestExamplesItem> examples = new ArrayList<>();
+        private List<ClassifyExample> examples = new ArrayList<>();
 
         private Optional<String> model = Optional.empty();
 
@@ -171,18 +173,18 @@ public final class ClassifyRequest {
         }
 
         @JsonSetter(value = "examples", nulls = Nulls.SKIP)
-        public Builder examples(List<ClassifyRequestExamplesItem> examples) {
+        public Builder examples(List<ClassifyExample> examples) {
             this.examples.clear();
             this.examples.addAll(examples);
             return this;
         }
 
-        public Builder addExamples(ClassifyRequestExamplesItem examples) {
+        public Builder addExamples(ClassifyExample examples) {
             this.examples.add(examples);
             return this;
         }
 
-        public Builder addAllExamples(List<ClassifyRequestExamplesItem> examples) {
+        public Builder addAllExamples(List<ClassifyExample> examples) {
             this.examples.addAll(examples);
             return this;
         }

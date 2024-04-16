@@ -46,6 +46,10 @@ public final class StreamedChatResponse {
         return new StreamedChatResponse(new CitationGenerationValue(value));
     }
 
+    public static StreamedChatResponse toolCallsGeneration(ChatToolCallsGenerationEvent value) {
+        return new StreamedChatResponse(new ToolCallsGenerationValue(value));
+    }
+
     public static StreamedChatResponse streamEnd(ChatStreamEndEvent value) {
         return new StreamedChatResponse(new StreamEndValue(value));
     }
@@ -68,6 +72,10 @@ public final class StreamedChatResponse {
 
     public boolean isCitationGeneration() {
         return value instanceof CitationGenerationValue;
+    }
+
+    public boolean isToolCallsGeneration() {
+        return value instanceof ToolCallsGenerationValue;
     }
 
     public boolean isStreamEnd() {
@@ -113,6 +121,13 @@ public final class StreamedChatResponse {
         return Optional.empty();
     }
 
+    public Optional<ChatToolCallsGenerationEvent> getToolCallsGeneration() {
+        if (isToolCallsGeneration()) {
+            return Optional.of(((ToolCallsGenerationValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<ChatStreamEndEvent> getStreamEnd() {
         if (isStreamEnd()) {
             return Optional.of(((StreamEndValue) value).value);
@@ -143,6 +158,8 @@ public final class StreamedChatResponse {
 
         T visitCitationGeneration(ChatCitationGenerationEvent citationGeneration);
 
+        T visitToolCallsGeneration(ChatToolCallsGenerationEvent toolCallsGeneration);
+
         T visitStreamEnd(ChatStreamEndEvent streamEnd);
 
         T _visitUnknown(Object unknownType);
@@ -159,6 +176,7 @@ public final class StreamedChatResponse {
         @JsonSubTypes.Type(SearchResultsValue.class),
         @JsonSubTypes.Type(TextGenerationValue.class),
         @JsonSubTypes.Type(CitationGenerationValue.class),
+        @JsonSubTypes.Type(ToolCallsGenerationValue.class),
         @JsonSubTypes.Type(StreamEndValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -178,12 +196,12 @@ public final class StreamedChatResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitStreamStart(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof StreamStartValue && equalTo((StreamStartValue) other);
@@ -193,12 +211,12 @@ public final class StreamedChatResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "value: " + value + "}";
         }
@@ -216,12 +234,12 @@ public final class StreamedChatResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitSearchQueriesGeneration(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof SearchQueriesGenerationValue && equalTo((SearchQueriesGenerationValue) other);
@@ -231,12 +249,12 @@ public final class StreamedChatResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "value: " + value + "}";
         }
@@ -254,12 +272,12 @@ public final class StreamedChatResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitSearchResults(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof SearchResultsValue && equalTo((SearchResultsValue) other);
@@ -269,12 +287,12 @@ public final class StreamedChatResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "value: " + value + "}";
         }
@@ -292,12 +310,12 @@ public final class StreamedChatResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitTextGeneration(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof TextGenerationValue && equalTo((TextGenerationValue) other);
@@ -307,12 +325,12 @@ public final class StreamedChatResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "value: " + value + "}";
         }
@@ -330,12 +348,12 @@ public final class StreamedChatResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitCitationGeneration(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof CitationGenerationValue && equalTo((CitationGenerationValue) other);
@@ -345,12 +363,50 @@ public final class StreamedChatResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
+        public String toString() {
+            return "StreamedChatResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("tool-calls-generation")
+    private static final class ToolCallsGenerationValue implements Value {
+        @JsonUnwrapped
+        private ChatToolCallsGenerationEvent value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private ToolCallsGenerationValue() {}
+
+        private ToolCallsGenerationValue(ChatToolCallsGenerationEvent value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitToolCallsGeneration(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof ToolCallsGenerationValue && equalTo((ToolCallsGenerationValue) other);
+        }
+
+        private boolean equalTo(ToolCallsGenerationValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "value: " + value + "}";
         }
@@ -368,12 +424,12 @@ public final class StreamedChatResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitStreamEnd(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof StreamEndValue && equalTo((StreamEndValue) other);
@@ -383,12 +439,12 @@ public final class StreamedChatResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "value: " + value + "}";
         }
@@ -403,12 +459,12 @@ public final class StreamedChatResponse {
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private _UnknownValue(@JsonProperty("value") Object value) {}
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor._visitUnknown(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
@@ -418,12 +474,12 @@ public final class StreamedChatResponse {
             return type.equals(other.type) && value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.type, this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "StreamedChatResponse{" + "type: " + type + ", value: " + value + "}";
         }
