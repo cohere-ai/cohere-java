@@ -18,23 +18,20 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CreateConnectorServiceAuth.Builder.class)
 public final class CreateConnectorServiceAuth {
-    private final String type;
+    private final AuthTokenType type;
 
     private final String token;
 
     private final Map<String, Object> additionalProperties;
 
-    private CreateConnectorServiceAuth(String type, String token, Map<String, Object> additionalProperties) {
+    private CreateConnectorServiceAuth(AuthTokenType type, String token, Map<String, Object> additionalProperties) {
         this.type = type;
         this.token = token;
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return The token_type specifies the way the token is passed in the Authorization header. Valid values are &quot;bearer&quot;, &quot;basic&quot;, and &quot;noscheme&quot;.
-     */
     @JsonProperty("type")
-    public String getType() {
+    public AuthTokenType getType() {
         return type;
     }
 
@@ -46,7 +43,7 @@ public final class CreateConnectorServiceAuth {
         return token;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CreateConnectorServiceAuth && equalTo((CreateConnectorServiceAuth) other);
@@ -61,12 +58,12 @@ public final class CreateConnectorServiceAuth {
         return type.equals(other.type) && token.equals(other.token);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.type, this.token);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -76,7 +73,7 @@ public final class CreateConnectorServiceAuth {
     }
 
     public interface TypeStage {
-        TokenStage type(String type);
+        TokenStage type(AuthTokenType type);
 
         Builder from(CreateConnectorServiceAuth other);
     }
@@ -91,7 +88,7 @@ public final class CreateConnectorServiceAuth {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements TypeStage, TokenStage, _FinalStage {
-        private String type;
+        private AuthTokenType type;
 
         private String token;
 
@@ -100,20 +97,16 @@ public final class CreateConnectorServiceAuth {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CreateConnectorServiceAuth other) {
             type(other.getType());
             token(other.getToken());
             return this;
         }
 
-        /**
-         * <p>The token_type specifies the way the token is passed in the Authorization header. Valid values are &quot;bearer&quot;, &quot;basic&quot;, and &quot;noscheme&quot;.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
-        public TokenStage type(String type) {
+        public TokenStage type(AuthTokenType type) {
             this.type = type;
             return this;
         }
@@ -122,14 +115,14 @@ public final class CreateConnectorServiceAuth {
          * <p>The token that will be used in the HTTP Authorization header when making requests to the connector. This field is encrypted at rest and never returned in a response.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("token")
         public _FinalStage token(String token) {
             this.token = token;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CreateConnectorServiceAuth build() {
             return new CreateConnectorServiceAuth(type, token, additionalProperties);
         }

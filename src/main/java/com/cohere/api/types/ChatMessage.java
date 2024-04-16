@@ -10,12 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatMessage.Builder.class)
@@ -24,34 +22,31 @@ public final class ChatMessage {
 
     private final String message;
 
-    private final Optional<String> userName;
-
     private final Map<String, Object> additionalProperties;
 
-    private ChatMessage(
-            ChatMessageRole role, String message, Optional<String> userName, Map<String, Object> additionalProperties) {
+    private ChatMessage(ChatMessageRole role, String message, Map<String, Object> additionalProperties) {
         this.role = role;
         this.message = message;
-        this.userName = userName;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return One of <code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code> to identify who the message is coming from.
+     */
     @JsonProperty("role")
     public ChatMessageRole getRole() {
         return role;
     }
 
+    /**
+     * @return Contents of the chat message.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
-    @JsonProperty("user_name")
-    public Optional<String> getUserName() {
-        return userName;
-    }
-
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatMessage && equalTo((ChatMessage) other);
@@ -63,15 +58,15 @@ public final class ChatMessage {
     }
 
     private boolean equalTo(ChatMessage other) {
-        return role.equals(other.role) && message.equals(other.message) && userName.equals(other.userName);
+        return role.equals(other.role) && message.equals(other.message);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.role, this.message, this.userName);
+        return Objects.hash(this.role, this.message);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -92,10 +87,6 @@ public final class ChatMessage {
 
     public interface _FinalStage {
         ChatMessage build();
-
-        _FinalStage userName(Optional<String> userName);
-
-        _FinalStage userName(String userName);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -104,51 +95,43 @@ public final class ChatMessage {
 
         private String message;
 
-        private Optional<String> userName = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatMessage other) {
             role(other.getRole());
             message(other.getMessage());
-            userName(other.getUserName());
             return this;
         }
 
-        @Override
+        /**
+         * <p>One of <code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code> to identify who the message is coming from.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         @JsonSetter("role")
         public MessageStage role(ChatMessageRole role) {
             this.role = role;
             return this;
         }
 
-        @Override
+        /**
+         * <p>Contents of the chat message.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         @JsonSetter("message")
         public _FinalStage message(String message) {
             this.message = message;
             return this;
         }
 
-        @Override
-        public _FinalStage userName(String userName) {
-            this.userName = Optional.of(userName);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "user_name", nulls = Nulls.SKIP)
-        public _FinalStage userName(Optional<String> userName) {
-            this.userName = userName;
-            return this;
-        }
-
-        @Override
+        @java.lang.Override
         public ChatMessage build() {
-            return new ChatMessage(role, message, userName, additionalProperties);
+            return new ChatMessage(role, message, additionalProperties);
         }
     }
 }

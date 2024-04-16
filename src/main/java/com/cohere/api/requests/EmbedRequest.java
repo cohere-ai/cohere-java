@@ -4,7 +4,9 @@
 package com.cohere.api.requests;
 
 import com.cohere.api.core.ObjectMappers;
+import com.cohere.api.types.EmbedInputType;
 import com.cohere.api.types.EmbedRequestTruncate;
+import com.cohere.api.types.EmbeddingType;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,9 +29,9 @@ public final class EmbedRequest {
 
     private final Optional<String> model;
 
-    private final Optional<String> inputType;
+    private final Optional<EmbedInputType> inputType;
 
-    private final Optional<List<String>> embeddingTypes;
+    private final Optional<List<EmbeddingType>> embeddingTypes;
 
     private final Optional<EmbedRequestTruncate> truncate;
 
@@ -38,8 +40,8 @@ public final class EmbedRequest {
     private EmbedRequest(
             List<String> texts,
             Optional<String> model,
-            Optional<String> inputType,
-            Optional<List<String>> embeddingTypes,
+            Optional<EmbedInputType> inputType,
+            Optional<List<EmbeddingType>> embeddingTypes,
             Optional<EmbedRequestTruncate> truncate,
             Map<String, Object> additionalProperties) {
         this.texts = texts;
@@ -91,17 +93,8 @@ public final class EmbedRequest {
         return model;
     }
 
-    /**
-     * @return Specifies the type of input you're giving to the model. Not required for older versions of the embedding models (i.e. anything lower than v3), but is required for more recent versions (i.e. anything bigger than v2).
-     * <ul>
-     * <li><code>&quot;search_document&quot;</code>: Use this when you encode documents for embeddings that you store in a vector database for search use-cases.</li>
-     * <li><code>&quot;search_query&quot;</code>: Use this when you query your vector DB to find relevant documents.</li>
-     * <li><code>&quot;classification&quot;</code>: Use this when you use the embeddings as an input to a text classifier.</li>
-     * <li><code>&quot;clustering&quot;</code>: Use this when you want to cluster the embeddings.</li>
-     * </ul>
-     */
     @JsonProperty("input_type")
-    public Optional<String> getInputType() {
+    public Optional<EmbedInputType> getInputType() {
         return inputType;
     }
 
@@ -116,7 +109,7 @@ public final class EmbedRequest {
      * </ul>
      */
     @JsonProperty("embedding_types")
-    public Optional<List<String>> getEmbeddingTypes() {
+    public Optional<List<EmbeddingType>> getEmbeddingTypes() {
         return embeddingTypes;
     }
 
@@ -130,7 +123,7 @@ public final class EmbedRequest {
         return truncate;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmbedRequest && equalTo((EmbedRequest) other);
@@ -149,12 +142,12 @@ public final class EmbedRequest {
                 && truncate.equals(other.truncate);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.texts, this.model, this.inputType, this.embeddingTypes, this.truncate);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -169,9 +162,9 @@ public final class EmbedRequest {
 
         private Optional<String> model = Optional.empty();
 
-        private Optional<String> inputType = Optional.empty();
+        private Optional<EmbedInputType> inputType = Optional.empty();
 
-        private Optional<List<String>> embeddingTypes = Optional.empty();
+        private Optional<List<EmbeddingType>> embeddingTypes = Optional.empty();
 
         private Optional<EmbedRequestTruncate> truncate = Optional.empty();
 
@@ -218,23 +211,23 @@ public final class EmbedRequest {
         }
 
         @JsonSetter(value = "input_type", nulls = Nulls.SKIP)
-        public Builder inputType(Optional<String> inputType) {
+        public Builder inputType(Optional<EmbedInputType> inputType) {
             this.inputType = inputType;
             return this;
         }
 
-        public Builder inputType(String inputType) {
+        public Builder inputType(EmbedInputType inputType) {
             this.inputType = Optional.of(inputType);
             return this;
         }
 
         @JsonSetter(value = "embedding_types", nulls = Nulls.SKIP)
-        public Builder embeddingTypes(Optional<List<String>> embeddingTypes) {
+        public Builder embeddingTypes(Optional<List<EmbeddingType>> embeddingTypes) {
             this.embeddingTypes = embeddingTypes;
             return this;
         }
 
-        public Builder embeddingTypes(List<String> embeddingTypes) {
+        public Builder embeddingTypes(List<EmbeddingType> embeddingTypes) {
             this.embeddingTypes = Optional.of(embeddingTypes);
             return this;
         }

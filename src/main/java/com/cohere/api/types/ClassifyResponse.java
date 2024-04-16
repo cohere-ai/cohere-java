@@ -56,7 +56,7 @@ public final class ClassifyResponse {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ClassifyResponse && equalTo((ClassifyResponse) other);
@@ -71,12 +71,12 @@ public final class ClassifyResponse {
         return id.equals(other.id) && classifications.equals(other.classifications) && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.classifications, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -118,7 +118,7 @@ public final class ClassifyResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ClassifyResponse other) {
             id(other.getId());
             classifications(other.getClassifications());
@@ -126,39 +126,39 @@ public final class ClassifyResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
             this.meta = Optional.of(meta);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllClassifications(List<ClassifyResponseClassificationsItem> classifications) {
             this.classifications.addAll(classifications);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addClassifications(ClassifyResponseClassificationsItem classifications) {
             this.classifications.add(classifications);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "classifications", nulls = Nulls.SKIP)
         public _FinalStage classifications(List<ClassifyResponseClassificationsItem> classifications) {
             this.classifications.clear();
@@ -166,7 +166,7 @@ public final class ClassifyResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ClassifyResponse build() {
             return new ClassifyResponse(id, classifications, meta, additionalProperties);
         }

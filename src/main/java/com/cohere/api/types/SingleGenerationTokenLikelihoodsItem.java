@@ -41,7 +41,7 @@ public final class SingleGenerationTokenLikelihoodsItem {
         return likelihood;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof SingleGenerationTokenLikelihoodsItem
@@ -57,12 +57,12 @@ public final class SingleGenerationTokenLikelihoodsItem {
         return token.equals(other.token) && likelihood == other.likelihood;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.token, this.likelihood);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -96,28 +96,28 @@ public final class SingleGenerationTokenLikelihoodsItem {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(SingleGenerationTokenLikelihoodsItem other) {
             token(other.getToken());
             likelihood(other.getLikelihood());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("token")
         public LikelihoodStage token(String token) {
             this.token = token;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("likelihood")
         public _FinalStage likelihood(double likelihood) {
             this.likelihood = likelihood;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public SingleGenerationTokenLikelihoodsItem build() {
             return new SingleGenerationTokenLikelihoodsItem(token, likelihood, additionalProperties);
         }

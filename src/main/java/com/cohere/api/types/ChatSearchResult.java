@@ -17,31 +17,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatSearchResult.Builder.class)
 public final class ChatSearchResult {
-    private final ChatSearchQuery searchQuery;
+    private final Optional<ChatSearchQuery> searchQuery;
 
-    private final ChatConnector connector;
+    private final ChatSearchResultConnector connector;
 
     private final List<String> documentIds;
+
+    private final Optional<String> errorMessage;
+
+    private final Optional<Boolean> continueOnFailure;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatSearchResult(
-            ChatSearchQuery searchQuery,
-            ChatConnector connector,
+            Optional<ChatSearchQuery> searchQuery,
+            ChatSearchResultConnector connector,
             List<String> documentIds,
+            Optional<String> errorMessage,
+            Optional<Boolean> continueOnFailure,
             Map<String, Object> additionalProperties) {
         this.searchQuery = searchQuery;
         this.connector = connector;
         this.documentIds = documentIds;
+        this.errorMessage = errorMessage;
+        this.continueOnFailure = continueOnFailure;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("search_query")
-    public ChatSearchQuery getSearchQuery() {
+    public Optional<ChatSearchQuery> getSearchQuery() {
         return searchQuery;
     }
 
@@ -49,7 +58,7 @@ public final class ChatSearchResult {
      * @return The connector from which this result comes from.
      */
     @JsonProperty("connector")
-    public ChatConnector getConnector() {
+    public ChatSearchResultConnector getConnector() {
         return connector;
     }
 
@@ -61,7 +70,23 @@ public final class ChatSearchResult {
         return documentIds;
     }
 
-    @Override
+    /**
+     * @return An error message if the search failed.
+     */
+    @JsonProperty("error_message")
+    public Optional<String> getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * @return Whether a chat request should continue or not if the request to this connector fails.
+     */
+    @JsonProperty("continue_on_failure")
+    public Optional<Boolean> getContinueOnFailure() {
+        return continueOnFailure;
+    }
+
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatSearchResult && equalTo((ChatSearchResult) other);
@@ -75,68 +100,78 @@ public final class ChatSearchResult {
     private boolean equalTo(ChatSearchResult other) {
         return searchQuery.equals(other.searchQuery)
                 && connector.equals(other.connector)
-                && documentIds.equals(other.documentIds);
+                && documentIds.equals(other.documentIds)
+                && errorMessage.equals(other.errorMessage)
+                && continueOnFailure.equals(other.continueOnFailure);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.searchQuery, this.connector, this.documentIds);
+        return Objects.hash(
+                this.searchQuery, this.connector, this.documentIds, this.errorMessage, this.continueOnFailure);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
 
-    public static SearchQueryStage builder() {
+    public static ConnectorStage builder() {
         return new Builder();
     }
 
-    public interface SearchQueryStage {
-        ConnectorStage searchQuery(ChatSearchQuery searchQuery);
+    public interface ConnectorStage {
+        _FinalStage connector(ChatSearchResultConnector connector);
 
         Builder from(ChatSearchResult other);
     }
 
-    public interface ConnectorStage {
-        _FinalStage connector(ChatConnector connector);
-    }
-
     public interface _FinalStage {
         ChatSearchResult build();
+
+        _FinalStage searchQuery(Optional<ChatSearchQuery> searchQuery);
+
+        _FinalStage searchQuery(ChatSearchQuery searchQuery);
 
         _FinalStage documentIds(List<String> documentIds);
 
         _FinalStage addDocumentIds(String documentIds);
 
         _FinalStage addAllDocumentIds(List<String> documentIds);
+
+        _FinalStage errorMessage(Optional<String> errorMessage);
+
+        _FinalStage errorMessage(String errorMessage);
+
+        _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure);
+
+        _FinalStage continueOnFailure(Boolean continueOnFailure);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements SearchQueryStage, ConnectorStage, _FinalStage {
-        private ChatSearchQuery searchQuery;
+    public static final class Builder implements ConnectorStage, _FinalStage {
+        private ChatSearchResultConnector connector;
 
-        private ChatConnector connector;
+        private Optional<Boolean> continueOnFailure = Optional.empty();
+
+        private Optional<String> errorMessage = Optional.empty();
 
         private List<String> documentIds = new ArrayList<>();
+
+        private Optional<ChatSearchQuery> searchQuery = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatSearchResult other) {
             searchQuery(other.getSearchQuery());
             connector(other.getConnector());
             documentIds(other.getDocumentIds());
-            return this;
-        }
-
-        @Override
-        @JsonSetter("search_query")
-        public ConnectorStage searchQuery(ChatSearchQuery searchQuery) {
-            this.searchQuery = searchQuery;
+            errorMessage(other.getErrorMessage());
+            continueOnFailure(other.getContinueOnFailure());
             return this;
         }
 
@@ -144,10 +179,44 @@ public final class ChatSearchResult {
          * <p>The connector from which this result comes from.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("connector")
-        public _FinalStage connector(ChatConnector connector) {
+        public _FinalStage connector(ChatSearchResultConnector connector) {
             this.connector = connector;
+            return this;
+        }
+
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage continueOnFailure(Boolean continueOnFailure) {
+            this.continueOnFailure = Optional.of(continueOnFailure);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
+        public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
+            this.continueOnFailure = continueOnFailure;
+            return this;
+        }
+
+        /**
+         * <p>An error message if the search failed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage errorMessage(String errorMessage) {
+            this.errorMessage = Optional.of(errorMessage);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "error_message", nulls = Nulls.SKIP)
+        public _FinalStage errorMessage(Optional<String> errorMessage) {
+            this.errorMessage = errorMessage;
             return this;
         }
 
@@ -155,7 +224,7 @@ public final class ChatSearchResult {
          * <p>Identifiers of documents found by this search query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllDocumentIds(List<String> documentIds) {
             this.documentIds.addAll(documentIds);
             return this;
@@ -165,13 +234,13 @@ public final class ChatSearchResult {
          * <p>Identifiers of documents found by this search query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addDocumentIds(String documentIds) {
             this.documentIds.add(documentIds);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
         public _FinalStage documentIds(List<String> documentIds) {
             this.documentIds.clear();
@@ -179,9 +248,23 @@ public final class ChatSearchResult {
             return this;
         }
 
-        @Override
+        @java.lang.Override
+        public _FinalStage searchQuery(ChatSearchQuery searchQuery) {
+            this.searchQuery = Optional.of(searchQuery);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "search_query", nulls = Nulls.SKIP)
+        public _FinalStage searchQuery(Optional<ChatSearchQuery> searchQuery) {
+            this.searchQuery = searchQuery;
+            return this;
+        }
+
+        @java.lang.Override
         public ChatSearchResult build() {
-            return new ChatSearchResult(searchQuery, connector, documentIds, additionalProperties);
+            return new ChatSearchResult(
+                    searchQuery, connector, documentIds, errorMessage, continueOnFailure, additionalProperties);
         }
     }
 }

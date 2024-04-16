@@ -71,7 +71,7 @@ public final class Generation {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Generation && equalTo((Generation) other);
@@ -89,12 +89,12 @@ public final class Generation {
                 && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.prompt, this.generations, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -142,7 +142,7 @@ public final class Generation {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(Generation other) {
             id(other.getId());
             prompt(other.getPrompt());
@@ -151,20 +151,20 @@ public final class Generation {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
             this.meta = Optional.of(meta);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
@@ -175,7 +175,7 @@ public final class Generation {
          * <p>List of generated results</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllGenerations(List<SingleGeneration> generations) {
             this.generations.addAll(generations);
             return this;
@@ -185,13 +185,13 @@ public final class Generation {
          * <p>List of generated results</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addGenerations(SingleGeneration generations) {
             this.generations.add(generations);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "generations", nulls = Nulls.SKIP)
         public _FinalStage generations(List<SingleGeneration> generations) {
             this.generations.clear();
@@ -203,20 +203,20 @@ public final class Generation {
          * <p>Prompt used for generations.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage prompt(String prompt) {
             this.prompt = Optional.of(prompt);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "prompt", nulls = Nulls.SKIP)
         public _FinalStage prompt(Optional<String> prompt) {
             this.prompt = prompt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public Generation build() {
             return new Generation(id, prompt, generations, meta, additionalProperties);
         }

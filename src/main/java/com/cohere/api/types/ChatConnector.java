@@ -44,7 +44,7 @@ public final class ChatConnector {
     }
 
     /**
-     * @return The identifier of the connector. Currently only 'web-search' is supported.
+     * @return The identifier of the connector.
      */
     @JsonProperty("id")
     public String getId() {
@@ -52,7 +52,7 @@ public final class ChatConnector {
     }
 
     /**
-     * @return An optional override to set the token that Cohere passes to the connector in the Authorization header.
+     * @return When specified, this user access token will be passed to the connector in the Authorization header instead of the Cohere generated one.
      */
     @JsonProperty("user_access_token")
     public Optional<String> getUserAccessToken() {
@@ -60,7 +60,8 @@ public final class ChatConnector {
     }
 
     /**
-     * @return An optional override to set whether or not the request continues if this connector fails.
+     * @return Defaults to <code>false</code>.
+     * <p>When <code>true</code>, the request will continue if this connector returned an error.</p>
      */
     @JsonProperty("continue_on_failure")
     public Optional<Boolean> getContinueOnFailure() {
@@ -69,21 +70,14 @@ public final class ChatConnector {
 
     /**
      * @return Provides the connector with different settings at request time. The key/value pairs of this object are specific to each connector.
-     * <p>The supported options are:</p>
-     * <p><strong>web-search</strong></p>
-     * <p><strong>site</strong> - The web search results will be restricted to this domain (and TLD) when specified. Only a single domain is specified, and subdomains are also accepted.
-     * Examples:</p>
-     * <ul>
-     * <li><code>{&quot;options&quot;: {&quot;site&quot;: &quot;cohere.com&quot;}}</code> would restrict the results to all subdomains at cohere.com</li>
-     * <li><code>{&quot;options&quot;: {&quot;site&quot;: &quot;txt.cohere.com&quot;}}</code> would restrict the results to <code>txt.cohere.com</code></li>
-     * </ul>
+     * <p>For example, the connector <code>web-search</code> supports the <code>site</code> option, which limits search results to the specified domain.</p>
      */
     @JsonProperty("options")
     public Optional<Map<String, Object>> getOptions() {
         return options;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatConnector && equalTo((ChatConnector) other);
@@ -101,12 +95,12 @@ public final class ChatConnector {
                 && options.equals(other.options);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.userAccessToken, this.continueOnFailure, this.options);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -152,7 +146,7 @@ public final class ChatConnector {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatConnector other) {
             id(other.getId());
             userAccessToken(other.getUserAccessToken());
@@ -162,10 +156,10 @@ public final class ChatConnector {
         }
 
         /**
-         * <p>The identifier of the connector. Currently only 'web-search' is supported.</p>
+         * <p>The identifier of the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
@@ -174,23 +168,16 @@ public final class ChatConnector {
 
         /**
          * <p>Provides the connector with different settings at request time. The key/value pairs of this object are specific to each connector.</p>
-         * <p>The supported options are:</p>
-         * <p><strong>web-search</strong></p>
-         * <p><strong>site</strong> - The web search results will be restricted to this domain (and TLD) when specified. Only a single domain is specified, and subdomains are also accepted.
-         * Examples:</p>
-         * <ul>
-         * <li><code>{&quot;options&quot;: {&quot;site&quot;: &quot;cohere.com&quot;}}</code> would restrict the results to all subdomains at cohere.com</li>
-         * <li><code>{&quot;options&quot;: {&quot;site&quot;: &quot;txt.cohere.com&quot;}}</code> would restrict the results to <code>txt.cohere.com</code></li>
-         * </ul>
+         * <p>For example, the connector <code>web-search</code> supports the <code>site</code> option, which limits search results to the specified domain.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage options(Map<String, Object> options) {
             this.options = Optional.of(options);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "options", nulls = Nulls.SKIP)
         public _FinalStage options(Optional<Map<String, Object>> options) {
             this.options = options;
@@ -198,16 +185,17 @@ public final class ChatConnector {
         }
 
         /**
-         * <p>An optional override to set whether or not the request continues if this connector fails.</p>
+         * <p>Defaults to <code>false</code>.</p>
+         * <p>When <code>true</code>, the request will continue if this connector returned an error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
             this.continueOnFailure = Optional.of(continueOnFailure);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
             this.continueOnFailure = continueOnFailure;
@@ -215,23 +203,23 @@ public final class ChatConnector {
         }
 
         /**
-         * <p>An optional override to set the token that Cohere passes to the connector in the Authorization header.</p>
+         * <p>When specified, this user access token will be passed to the connector in the Authorization header instead of the Cohere generated one.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage userAccessToken(String userAccessToken) {
             this.userAccessToken = Optional.of(userAccessToken);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "user_access_token", nulls = Nulls.SKIP)
         public _FinalStage userAccessToken(Optional<String> userAccessToken) {
             this.userAccessToken = userAccessToken;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatConnector build() {
             return new ChatConnector(id, userAccessToken, continueOnFailure, options, additionalProperties);
         }

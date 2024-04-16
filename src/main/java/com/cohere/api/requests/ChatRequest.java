@@ -6,8 +6,9 @@ package com.cohere.api.requests;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.ChatConnector;
 import com.cohere.api.types.ChatMessage;
-import com.cohere.api.types.ChatRequestCitationQuality;
 import com.cohere.api.types.ChatRequestPromptTruncation;
+import com.cohere.api.types.ChatRequestToolResultsItem;
+import com.cohere.api.types.Tool;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,9 +30,7 @@ public final class ChatRequest {
 
     private final Optional<String> model;
 
-    private final Boolean stream;
-
-    private final Optional<String> preambleOverride;
+    private final Optional<String> preamble;
 
     private final Optional<List<ChatMessage>> chatHistory;
 
@@ -45,44 +44,81 @@ public final class ChatRequest {
 
     private final Optional<List<Map<String, String>>> documents;
 
-    private final Optional<ChatRequestCitationQuality> citationQuality;
-
     private final Optional<Double> temperature;
+
+    private final Optional<Integer> maxTokens;
+
+    private final Optional<Integer> maxInputTokens;
+
+    private final Optional<Integer> k;
+
+    private final Optional<Double> p;
+
+    private final Optional<Double> seed;
+
+    private final Optional<List<String>> stopSequences;
+
+    private final Optional<Double> frequencyPenalty;
+
+    private final Optional<Double> presencePenalty;
+
+    private final Optional<Boolean> rawPrompting;
+
+    private final Optional<List<Tool>> tools;
+
+    private final Optional<List<ChatRequestToolResultsItem>> toolResults;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatRequest(
             String message,
             Optional<String> model,
-            Boolean stream,
-            Optional<String> preambleOverride,
+            Optional<String> preamble,
             Optional<List<ChatMessage>> chatHistory,
             Optional<String> conversationId,
             Optional<ChatRequestPromptTruncation> promptTruncation,
             Optional<List<ChatConnector>> connectors,
             Optional<Boolean> searchQueriesOnly,
             Optional<List<Map<String, String>>> documents,
-            Optional<ChatRequestCitationQuality> citationQuality,
             Optional<Double> temperature,
+            Optional<Integer> maxTokens,
+            Optional<Integer> maxInputTokens,
+            Optional<Integer> k,
+            Optional<Double> p,
+            Optional<Double> seed,
+            Optional<List<String>> stopSequences,
+            Optional<Double> frequencyPenalty,
+            Optional<Double> presencePenalty,
+            Optional<Boolean> rawPrompting,
+            Optional<List<Tool>> tools,
+            Optional<List<ChatRequestToolResultsItem>> toolResults,
             Map<String, Object> additionalProperties) {
         this.message = message;
         this.model = model;
-        this.stream = stream;
-        this.preambleOverride = preambleOverride;
+        this.preamble = preamble;
         this.chatHistory = chatHistory;
         this.conversationId = conversationId;
         this.promptTruncation = promptTruncation;
         this.connectors = connectors;
         this.searchQueriesOnly = searchQueriesOnly;
         this.documents = documents;
-        this.citationQuality = citationQuality;
         this.temperature = temperature;
+        this.maxTokens = maxTokens;
+        this.maxInputTokens = maxInputTokens;
+        this.k = k;
+        this.p = p;
+        this.seed = seed;
+        this.stopSequences = stopSequences;
+        this.frequencyPenalty = frequencyPenalty;
+        this.presencePenalty = presencePenalty;
+        this.rawPrompting = rawPrompting;
+        this.tools = tools;
+        this.toolResults = toolResults;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return Accepts a string.
-     * The chat message from the user to the model.
+     * @return Text input for the model to respond to.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -90,9 +126,8 @@ public final class ChatRequest {
     }
 
     /**
-     * @return Defaults to <code>command</code>.
-     * The identifier of the model, which can be one of the existing Cohere models or the full ID for a <a href="/docs/training-custom-models">finetuned custom model</a>.
-     * Compatible Cohere models are <code>command</code> and <code>command-light</code> as well as the experimental <code>command-nightly</code> and <code>command-light-nightly</code> variants. Read more about <a href="https://docs.cohere.com/docs/models">Cohere models</a>.
+     * @return Defaults to <code>command-r</code>.
+     * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -101,19 +136,22 @@ public final class ChatRequest {
 
     @JsonProperty("stream")
     public Boolean getStream() {
-        return stream;
+        return false;
     }
 
     /**
-     * @return When specified, the default Cohere preamble will be replaced with the provided one.
+     * @return When specified, the default Cohere preamble will be replaced with the provided one. Preambles are a part of the prompt used to adjust the model's overall behavior and conversation style, and use the <code>SYSTEM</code> role.
+     * <p>The <code>SYSTEM</code> role is also used for the contents of the optional <code>chat_history=</code> parameter. When used with the <code>chat_history=</code> parameter it adds content throughout a conversation. Conversely, when used with the <code>preamble=</code> parameter it adds content at the start of the conversation only.</p>
      */
-    @JsonProperty("preamble_override")
-    public Optional<String> getPreambleOverride() {
-        return preambleOverride;
+    @JsonProperty("preamble")
+    public Optional<String> getPreamble() {
+        return preamble;
     }
 
     /**
-     * @return A list of previous messages between the user and the model, meant to give the model conversational context for responding to the user's <code>message</code>.
+     * @return A list of previous messages between the user and the model, giving the model conversational context for responding to the user's <code>message</code>.
+     * <p>Each item represents a single message in the chat history, excluding the current user turn. It has two properties: <code>role</code> and <code>message</code>. The <code>role</code> identifies the sender (<code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code>), while the <code>message</code> contains the text content.</p>
+     * <p>The chat_history parameter should not be used for <code>SYSTEM</code> messages in most cases. Instead, to add a <code>SYSTEM</code> role message at the beginning of a conversation, the <code>preamble</code> parameter should be used.</p>
      */
     @JsonProperty("chat_history")
     public Optional<List<ChatMessage>> getChatHistory() {
@@ -121,8 +159,8 @@ public final class ChatRequest {
     }
 
     /**
-     * @return An alternative to <code>chat_history</code>. Previous conversations can be resumed by providing the conversation's identifier. The contents of <code>message</code> and the model's response will be stored as part of this conversation.
-     * If a conversation with this id does not already exist, a new conversation will be created.
+     * @return An alternative to <code>chat_history</code>.
+     * <p>Providing a <code>conversation_id</code> creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.</p>
      */
     @JsonProperty("conversation_id")
     public Optional<String> getConversationId() {
@@ -131,9 +169,10 @@ public final class ChatRequest {
 
     /**
      * @return Defaults to <code>AUTO</code> when <code>connectors</code> are specified and <code>OFF</code> in all other cases.
-     * Dictates how the prompt will be constructed.
-     * With <code>prompt_truncation</code> set to &quot;AUTO&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit.
-     * With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.
+     * <p>Dictates how the prompt will be constructed.</p>
+     * <p>With <code>prompt_truncation</code> set to &quot;AUTO&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be changed and ranked by relevance.</p>
+     * <p>With <code>prompt_truncation</code> set to &quot;AUTO_PRESERVE_ORDER&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be preserved as they are inputted into the API.</p>
+     * <p>With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.</p>
      */
     @JsonProperty("prompt_truncation")
     public Optional<ChatRequestPromptTruncation> getPromptTruncation() {
@@ -142,7 +181,7 @@ public final class ChatRequest {
 
     /**
      * @return Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.
-     * When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).
+     * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).</p>
      */
     @JsonProperty("connectors")
     public Optional<List<ChatConnector>> getConnectors() {
@@ -151,7 +190,7 @@ public final class ChatRequest {
 
     /**
      * @return Defaults to <code>false</code>.
-     * When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.
+     * <p>When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.</p>
      */
     @JsonProperty("search_queries_only")
     public Optional<Boolean> getSearchQueriesOnly() {
@@ -159,7 +198,14 @@ public final class ChatRequest {
     }
 
     /**
-     * @return A list of relevant documents that the model can use to enrich its reply. See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.
+     * @return A list of relevant documents that the model can cite to generate a more accurate reply. Each document is a string-string dictionary.
+     * <p>Example:
+     * <code>[ { &quot;title&quot;: &quot;Tall penguins&quot;, &quot;text&quot;: &quot;Emperor penguins are the tallest.&quot; }, { &quot;title&quot;: &quot;Penguin habitats&quot;, &quot;text&quot;: &quot;Emperor penguins only live in Antarctica.&quot; }, ]</code></p>
+     * <p>Keys and values from each document will be serialized to a string and passed to the model. The resulting generation will include citations that reference some of these documents.</p>
+     * <p>Some suggested keys are &quot;text&quot;, &quot;author&quot;, and &quot;date&quot;. For better generation quality, it is recommended to keep the total word count of the strings in the dictionary to under 300 words.</p>
+     * <p>An <code>id</code> field (string) can be optionally supplied to identify the document in the citations. This field will not be passed to the model.</p>
+     * <p>An <code>_excludes</code> field (array of strings) can be optionally supplied to omit some key-value pairs from being shown to the model. The omitted fields will still show up in the citation object. The &quot;_excludes&quot; field will not be passed to the model.</p>
+     * <p>See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.</p>
      */
     @JsonProperty("documents")
     public Optional<List<Map<String, String>>> getDocuments() {
@@ -167,24 +213,128 @@ public final class ChatRequest {
     }
 
     /**
-     * @return Defaults to <code>&quot;accurate&quot;</code>.
-     * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.
-     */
-    @JsonProperty("citation_quality")
-    public Optional<ChatRequestCitationQuality> getCitationQuality() {
-        return citationQuality;
-    }
-
-    /**
-     * @return Defaults to <code>0.3</code>
-     * A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.
+     * @return Defaults to <code>0.3</code>.
+     * <p>A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
+     * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
      */
     @JsonProperty("temperature")
     public Optional<Double> getTemperature() {
         return temperature;
     }
 
-    @Override
+    /**
+     * @return The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.
+     */
+    @JsonProperty("max_tokens")
+    public Optional<Integer> getMaxTokens() {
+        return maxTokens;
+    }
+
+    /**
+     * @return The maximum number of input tokens to send to the model. If not specified, <code>max_input_tokens</code> is the model's context length limit minus a small buffer.
+     * <p>Input will be truncated according to the <code>prompt_truncation</code> parameter.</p>
+     */
+    @JsonProperty("max_input_tokens")
+    public Optional<Integer> getMaxInputTokens() {
+        return maxInputTokens;
+    }
+
+    /**
+     * @return Ensures only the top <code>k</code> most likely tokens are considered for generation at each step.
+     * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.
+     */
+    @JsonProperty("k")
+    public Optional<Integer> getK() {
+        return k;
+    }
+
+    /**
+     * @return Ensures that only the most likely tokens, with total probability mass of <code>p</code>, are considered for generation at each step. If both <code>k</code> and <code>p</code> are enabled, <code>p</code> acts after <code>k</code>.
+     * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.
+     */
+    @JsonProperty("p")
+    public Optional<Double> getP() {
+        return p;
+    }
+
+    /**
+     * @return If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinism cannot be totally guaranteed.
+     */
+    @JsonProperty("seed")
+    public Optional<Double> getSeed() {
+        return seed;
+    }
+
+    /**
+     * @return A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.
+     */
+    @JsonProperty("stop_sequences")
+    public Optional<List<String>> getStopSequences() {
+        return stopSequences;
+    }
+
+    /**
+     * @return Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
+     * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
+     */
+    @JsonProperty("frequency_penalty")
+    public Optional<Double> getFrequencyPenalty() {
+        return frequencyPenalty;
+    }
+
+    /**
+     * @return Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
+     * <p>Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+     */
+    @JsonProperty("presence_penalty")
+    public Optional<Double> getPresencePenalty() {
+        return presencePenalty;
+    }
+
+    /**
+     * @return When enabled, the user's prompt will be sent to the model without any pre-processing.
+     */
+    @JsonProperty("raw_prompting")
+    public Optional<Boolean> getRawPrompting() {
+        return rawPrompting;
+    }
+
+    /**
+     * @return A list of available tools (functions) that the model may suggest invoking before producing a text response.
+     * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
+     */
+    @JsonProperty("tools")
+    public Optional<List<Tool>> getTools() {
+        return tools;
+    }
+
+    /**
+     * @return A list of results from invoking tools recommended by the model in the previous chat turn. Results are used to produce a text response and will be referenced in citations. When using <code>tool_results</code>, <code>tools</code> must be passed as well.
+     * Each tool_result contains information about how it was invoked, as well as a list of outputs in the form of dictionaries.
+     * <p><strong>Note</strong>: <code>outputs</code> must be a list of objects. If your tool returns a single object (eg <code>{&quot;status&quot;: 200}</code>), make sure to wrap it in a list.</p>
+     * <pre><code>tool_results = [
+     *   {
+     *     &quot;call&quot;: {
+     *       &quot;name&quot;: &lt;tool name&gt;,
+     *       &quot;parameters&quot;: {
+     *         &lt;param name&gt;: &lt;param value&gt;
+     *       }
+     *     },
+     *     &quot;outputs&quot;: [{
+     *       &lt;key&gt;: &lt;value&gt;
+     *     }]
+     *   },
+     *   ...
+     * ]
+     * </code></pre>
+     * <p><strong>Note</strong>: Chat calls with <code>tool_results</code> should not be included in the Chat history to avoid duplication of the message text.</p>
+     */
+    @JsonProperty("tool_results")
+    public Optional<List<ChatRequestToolResultsItem>> getToolResults() {
+        return toolResults;
+    }
+
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatRequest && equalTo((ChatRequest) other);
@@ -198,36 +348,54 @@ public final class ChatRequest {
     private boolean equalTo(ChatRequest other) {
         return message.equals(other.message)
                 && model.equals(other.model)
-                && stream.equals(other.stream)
-                && preambleOverride.equals(other.preambleOverride)
+                && preamble.equals(other.preamble)
                 && chatHistory.equals(other.chatHistory)
                 && conversationId.equals(other.conversationId)
                 && promptTruncation.equals(other.promptTruncation)
                 && connectors.equals(other.connectors)
                 && searchQueriesOnly.equals(other.searchQueriesOnly)
                 && documents.equals(other.documents)
-                && citationQuality.equals(other.citationQuality)
-                && temperature.equals(other.temperature);
+                && temperature.equals(other.temperature)
+                && maxTokens.equals(other.maxTokens)
+                && maxInputTokens.equals(other.maxInputTokens)
+                && k.equals(other.k)
+                && p.equals(other.p)
+                && seed.equals(other.seed)
+                && stopSequences.equals(other.stopSequences)
+                && frequencyPenalty.equals(other.frequencyPenalty)
+                && presencePenalty.equals(other.presencePenalty)
+                && rawPrompting.equals(other.rawPrompting)
+                && tools.equals(other.tools)
+                && toolResults.equals(other.toolResults);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.message,
                 this.model,
-                this.stream,
-                this.preambleOverride,
+                this.preamble,
                 this.chatHistory,
                 this.conversationId,
                 this.promptTruncation,
                 this.connectors,
                 this.searchQueriesOnly,
                 this.documents,
-                this.citationQuality,
-                this.temperature);
+                this.temperature,
+                this.maxTokens,
+                this.maxInputTokens,
+                this.k,
+                this.p,
+                this.seed,
+                this.stopSequences,
+                this.frequencyPenalty,
+                this.presencePenalty,
+                this.rawPrompting,
+                this.tools,
+                this.toolResults);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -237,13 +405,9 @@ public final class ChatRequest {
     }
 
     public interface MessageStage {
-        StreamStage message(String message);
+        _FinalStage message(String message);
 
         Builder from(ChatRequest other);
-    }
-
-    public interface StreamStage {
-        _FinalStage stream(Boolean stream);
     }
 
     public interface _FinalStage {
@@ -253,9 +417,9 @@ public final class ChatRequest {
 
         _FinalStage model(String model);
 
-        _FinalStage preambleOverride(Optional<String> preambleOverride);
+        _FinalStage preamble(Optional<String> preamble);
 
-        _FinalStage preambleOverride(String preambleOverride);
+        _FinalStage preamble(String preamble);
 
         _FinalStage chatHistory(Optional<List<ChatMessage>> chatHistory);
 
@@ -281,24 +445,82 @@ public final class ChatRequest {
 
         _FinalStage documents(List<Map<String, String>> documents);
 
-        _FinalStage citationQuality(Optional<ChatRequestCitationQuality> citationQuality);
-
-        _FinalStage citationQuality(ChatRequestCitationQuality citationQuality);
-
         _FinalStage temperature(Optional<Double> temperature);
 
         _FinalStage temperature(Double temperature);
+
+        _FinalStage maxTokens(Optional<Integer> maxTokens);
+
+        _FinalStage maxTokens(Integer maxTokens);
+
+        _FinalStage maxInputTokens(Optional<Integer> maxInputTokens);
+
+        _FinalStage maxInputTokens(Integer maxInputTokens);
+
+        _FinalStage k(Optional<Integer> k);
+
+        _FinalStage k(Integer k);
+
+        _FinalStage p(Optional<Double> p);
+
+        _FinalStage p(Double p);
+
+        _FinalStage seed(Optional<Double> seed);
+
+        _FinalStage seed(Double seed);
+
+        _FinalStage stopSequences(Optional<List<String>> stopSequences);
+
+        _FinalStage stopSequences(List<String> stopSequences);
+
+        _FinalStage frequencyPenalty(Optional<Double> frequencyPenalty);
+
+        _FinalStage frequencyPenalty(Double frequencyPenalty);
+
+        _FinalStage presencePenalty(Optional<Double> presencePenalty);
+
+        _FinalStage presencePenalty(Double presencePenalty);
+
+        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
+
+        _FinalStage rawPrompting(Boolean rawPrompting);
+
+        _FinalStage tools(Optional<List<Tool>> tools);
+
+        _FinalStage tools(List<Tool> tools);
+
+        _FinalStage toolResults(Optional<List<ChatRequestToolResultsItem>> toolResults);
+
+        _FinalStage toolResults(List<ChatRequestToolResultsItem> toolResults);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements MessageStage, StreamStage, _FinalStage {
+    public static final class Builder implements MessageStage, _FinalStage {
         private String message;
 
-        private Boolean stream;
+        private Optional<List<ChatRequestToolResultsItem>> toolResults = Optional.empty();
+
+        private Optional<List<Tool>> tools = Optional.empty();
+
+        private Optional<Boolean> rawPrompting = Optional.empty();
+
+        private Optional<Double> presencePenalty = Optional.empty();
+
+        private Optional<Double> frequencyPenalty = Optional.empty();
+
+        private Optional<List<String>> stopSequences = Optional.empty();
+
+        private Optional<Double> seed = Optional.empty();
+
+        private Optional<Double> p = Optional.empty();
+
+        private Optional<Integer> k = Optional.empty();
+
+        private Optional<Integer> maxInputTokens = Optional.empty();
+
+        private Optional<Integer> maxTokens = Optional.empty();
 
         private Optional<Double> temperature = Optional.empty();
-
-        private Optional<ChatRequestCitationQuality> citationQuality = Optional.empty();
 
         private Optional<List<Map<String, String>>> documents = Optional.empty();
 
@@ -312,7 +534,7 @@ public final class ChatRequest {
 
         private Optional<List<ChatMessage>> chatHistory = Optional.empty();
 
-        private Optional<String> preambleOverride = Optional.empty();
+        private Optional<String> preamble = Optional.empty();
 
         private Optional<String> model = Optional.empty();
 
@@ -321,54 +543,267 @@ public final class ChatRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatRequest other) {
             message(other.getMessage());
             model(other.getModel());
-            stream(other.getStream());
-            preambleOverride(other.getPreambleOverride());
+            preamble(other.getPreamble());
             chatHistory(other.getChatHistory());
             conversationId(other.getConversationId());
             promptTruncation(other.getPromptTruncation());
             connectors(other.getConnectors());
             searchQueriesOnly(other.getSearchQueriesOnly());
             documents(other.getDocuments());
-            citationQuality(other.getCitationQuality());
             temperature(other.getTemperature());
+            maxTokens(other.getMaxTokens());
+            maxInputTokens(other.getMaxInputTokens());
+            k(other.getK());
+            p(other.getP());
+            seed(other.getSeed());
+            stopSequences(other.getStopSequences());
+            frequencyPenalty(other.getFrequencyPenalty());
+            presencePenalty(other.getPresencePenalty());
+            rawPrompting(other.getRawPrompting());
+            tools(other.getTools());
+            toolResults(other.getToolResults());
             return this;
         }
 
         /**
-         * <p>Accepts a string.
-         * The chat message from the user to the model.</p>
+         * <p>Text input for the model to respond to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("message")
-        public StreamStage message(String message) {
+        public _FinalStage message(String message) {
             this.message = message;
             return this;
         }
 
-        @Override
-        @JsonSetter("stream")
-        public _FinalStage stream(Boolean stream) {
-            this.stream = stream;
+        /**
+         * <p>A list of results from invoking tools recommended by the model in the previous chat turn. Results are used to produce a text response and will be referenced in citations. When using <code>tool_results</code>, <code>tools</code> must be passed as well.
+         * Each tool_result contains information about how it was invoked, as well as a list of outputs in the form of dictionaries.</p>
+         * <p><strong>Note</strong>: <code>outputs</code> must be a list of objects. If your tool returns a single object (eg <code>{&quot;status&quot;: 200}</code>), make sure to wrap it in a list.</p>
+         * <pre><code>tool_results = [
+         *   {
+         *     &quot;call&quot;: {
+         *       &quot;name&quot;: &lt;tool name&gt;,
+         *       &quot;parameters&quot;: {
+         *         &lt;param name&gt;: &lt;param value&gt;
+         *       }
+         *     },
+         *     &quot;outputs&quot;: [{
+         *       &lt;key&gt;: &lt;value&gt;
+         *     }]
+         *   },
+         *   ...
+         * ]
+         * </code></pre>
+         * <p><strong>Note</strong>: Chat calls with <code>tool_results</code> should not be included in the Chat history to avoid duplication of the message text.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage toolResults(List<ChatRequestToolResultsItem> toolResults) {
+            this.toolResults = Optional.of(toolResults);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "tool_results", nulls = Nulls.SKIP)
+        public _FinalStage toolResults(Optional<List<ChatRequestToolResultsItem>> toolResults) {
+            this.toolResults = toolResults;
             return this;
         }
 
         /**
-         * <p>Defaults to <code>0.3</code>
-         * A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
+         * <p>A list of available tools (functions) that the model may suggest invoking before producing a text response.</p>
+         * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
+        public _FinalStage tools(List<Tool> tools) {
+            this.tools = Optional.of(tools);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "tools", nulls = Nulls.SKIP)
+        public _FinalStage tools(Optional<List<Tool>> tools) {
+            this.tools = tools;
+            return this;
+        }
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without any pre-processing.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage rawPrompting(Boolean rawPrompting) {
+            this.rawPrompting = Optional.of(rawPrompting);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
+        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
+            this.rawPrompting = rawPrompting;
+            return this;
+        }
+
+        /**
+         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.</p>
+         * <p>Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage presencePenalty(Double presencePenalty) {
+            this.presencePenalty = Optional.of(presencePenalty);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "presence_penalty", nulls = Nulls.SKIP)
+        public _FinalStage presencePenalty(Optional<Double> presencePenalty) {
+            this.presencePenalty = presencePenalty;
+            return this;
+        }
+
+        /**
+         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.</p>
+         * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage frequencyPenalty(Double frequencyPenalty) {
+            this.frequencyPenalty = Optional.of(frequencyPenalty);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "frequency_penalty", nulls = Nulls.SKIP)
+        public _FinalStage frequencyPenalty(Optional<Double> frequencyPenalty) {
+            this.frequencyPenalty = frequencyPenalty;
+            return this;
+        }
+
+        /**
+         * <p>A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage stopSequences(List<String> stopSequences) {
+            this.stopSequences = Optional.of(stopSequences);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "stop_sequences", nulls = Nulls.SKIP)
+        public _FinalStage stopSequences(Optional<List<String>> stopSequences) {
+            this.stopSequences = stopSequences;
+            return this;
+        }
+
+        /**
+         * <p>If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinism cannot be totally guaranteed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage seed(Double seed) {
+            this.seed = Optional.of(seed);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "seed", nulls = Nulls.SKIP)
+        public _FinalStage seed(Optional<Double> seed) {
+            this.seed = seed;
+            return this;
+        }
+
+        /**
+         * <p>Ensures that only the most likely tokens, with total probability mass of <code>p</code>, are considered for generation at each step. If both <code>k</code> and <code>p</code> are enabled, <code>p</code> acts after <code>k</code>.
+         * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage p(Double p) {
+            this.p = Optional.of(p);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "p", nulls = Nulls.SKIP)
+        public _FinalStage p(Optional<Double> p) {
+            this.p = p;
+            return this;
+        }
+
+        /**
+         * <p>Ensures only the top <code>k</code> most likely tokens are considered for generation at each step.
+         * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage k(Integer k) {
+            this.k = Optional.of(k);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "k", nulls = Nulls.SKIP)
+        public _FinalStage k(Optional<Integer> k) {
+            this.k = k;
+            return this;
+        }
+
+        /**
+         * <p>The maximum number of input tokens to send to the model. If not specified, <code>max_input_tokens</code> is the model's context length limit minus a small buffer.</p>
+         * <p>Input will be truncated according to the <code>prompt_truncation</code> parameter.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage maxInputTokens(Integer maxInputTokens) {
+            this.maxInputTokens = Optional.of(maxInputTokens);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "max_input_tokens", nulls = Nulls.SKIP)
+        public _FinalStage maxInputTokens(Optional<Integer> maxInputTokens) {
+            this.maxInputTokens = maxInputTokens;
+            return this;
+        }
+
+        /**
+         * <p>The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage maxTokens(Integer maxTokens) {
+            this.maxTokens = Optional.of(maxTokens);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "max_tokens", nulls = Nulls.SKIP)
+        public _FinalStage maxTokens(Optional<Integer> maxTokens) {
+            this.maxTokens = maxTokens;
+            return this;
+        }
+
+        /**
+         * <p>Defaults to <code>0.3</code>.</p>
+         * <p>A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
+         * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage temperature(Double temperature) {
             this.temperature = Optional.of(temperature);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
         public _FinalStage temperature(Optional<Double> temperature) {
             this.temperature = temperature;
@@ -376,34 +811,23 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Defaults to <code>&quot;accurate&quot;</code>.
-         * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.</p>
+         * <p>A list of relevant documents that the model can cite to generate a more accurate reply. Each document is a string-string dictionary.</p>
+         * <p>Example:
+         * <code>[ { &quot;title&quot;: &quot;Tall penguins&quot;, &quot;text&quot;: &quot;Emperor penguins are the tallest.&quot; }, { &quot;title&quot;: &quot;Penguin habitats&quot;, &quot;text&quot;: &quot;Emperor penguins only live in Antarctica.&quot; }, ]</code></p>
+         * <p>Keys and values from each document will be serialized to a string and passed to the model. The resulting generation will include citations that reference some of these documents.</p>
+         * <p>Some suggested keys are &quot;text&quot;, &quot;author&quot;, and &quot;date&quot;. For better generation quality, it is recommended to keep the total word count of the strings in the dictionary to under 300 words.</p>
+         * <p>An <code>id</code> field (string) can be optionally supplied to identify the document in the citations. This field will not be passed to the model.</p>
+         * <p>An <code>_excludes</code> field (array of strings) can be optionally supplied to omit some key-value pairs from being shown to the model. The omitted fields will still show up in the citation object. The &quot;_excludes&quot; field will not be passed to the model.</p>
+         * <p>See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
-        public _FinalStage citationQuality(ChatRequestCitationQuality citationQuality) {
-            this.citationQuality = Optional.of(citationQuality);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "citation_quality", nulls = Nulls.SKIP)
-        public _FinalStage citationQuality(Optional<ChatRequestCitationQuality> citationQuality) {
-            this.citationQuality = citationQuality;
-            return this;
-        }
-
-        /**
-         * <p>A list of relevant documents that the model can use to enrich its reply. See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
+        @java.lang.Override
         public _FinalStage documents(List<Map<String, String>> documents) {
             this.documents = Optional.of(documents);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(Optional<List<Map<String, String>>> documents) {
             this.documents = documents;
@@ -411,17 +835,17 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Defaults to <code>false</code>.
-         * When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.</p>
+         * <p>Defaults to <code>false</code>.</p>
+         * <p>When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage searchQueriesOnly(Boolean searchQueriesOnly) {
             this.searchQueriesOnly = Optional.of(searchQueriesOnly);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "search_queries_only", nulls = Nulls.SKIP)
         public _FinalStage searchQueriesOnly(Optional<Boolean> searchQueriesOnly) {
             this.searchQueriesOnly = searchQueriesOnly;
@@ -429,17 +853,17 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.
-         * When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).</p>
+         * <p>Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.</p>
+         * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage connectors(List<ChatConnector> connectors) {
             this.connectors = Optional.of(connectors);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "connectors", nulls = Nulls.SKIP)
         public _FinalStage connectors(Optional<List<ChatConnector>> connectors) {
             this.connectors = connectors;
@@ -447,19 +871,20 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Defaults to <code>AUTO</code> when <code>connectors</code> are specified and <code>OFF</code> in all other cases.
-         * Dictates how the prompt will be constructed.
-         * With <code>prompt_truncation</code> set to &quot;AUTO&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit.
-         * With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.</p>
+         * <p>Defaults to <code>AUTO</code> when <code>connectors</code> are specified and <code>OFF</code> in all other cases.</p>
+         * <p>Dictates how the prompt will be constructed.</p>
+         * <p>With <code>prompt_truncation</code> set to &quot;AUTO&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be changed and ranked by relevance.</p>
+         * <p>With <code>prompt_truncation</code> set to &quot;AUTO_PRESERVE_ORDER&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be preserved as they are inputted into the API.</p>
+         * <p>With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage promptTruncation(ChatRequestPromptTruncation promptTruncation) {
             this.promptTruncation = Optional.of(promptTruncation);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "prompt_truncation", nulls = Nulls.SKIP)
         public _FinalStage promptTruncation(Optional<ChatRequestPromptTruncation> promptTruncation) {
             this.promptTruncation = promptTruncation;
@@ -467,17 +892,17 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>An alternative to <code>chat_history</code>. Previous conversations can be resumed by providing the conversation's identifier. The contents of <code>message</code> and the model's response will be stored as part of this conversation.
-         * If a conversation with this id does not already exist, a new conversation will be created.</p>
+         * <p>An alternative to <code>chat_history</code>.</p>
+         * <p>Providing a <code>conversation_id</code> creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage conversationId(String conversationId) {
             this.conversationId = Optional.of(conversationId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "conversation_id", nulls = Nulls.SKIP)
         public _FinalStage conversationId(Optional<String> conversationId) {
             this.conversationId = conversationId;
@@ -485,16 +910,18 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>A list of previous messages between the user and the model, meant to give the model conversational context for responding to the user's <code>message</code>.</p>
+         * <p>A list of previous messages between the user and the model, giving the model conversational context for responding to the user's <code>message</code>.</p>
+         * <p>Each item represents a single message in the chat history, excluding the current user turn. It has two properties: <code>role</code> and <code>message</code>. The <code>role</code> identifies the sender (<code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code>), while the <code>message</code> contains the text content.</p>
+         * <p>The chat_history parameter should not be used for <code>SYSTEM</code> messages in most cases. Instead, to add a <code>SYSTEM</code> role message at the beginning of a conversation, the <code>preamble</code> parameter should be used.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage chatHistory(List<ChatMessage> chatHistory) {
             this.chatHistory = Optional.of(chatHistory);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "chat_history", nulls = Nulls.SKIP)
         public _FinalStage chatHistory(Optional<List<ChatMessage>> chatHistory) {
             this.chatHistory = chatHistory;
@@ -502,56 +929,65 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>When specified, the default Cohere preamble will be replaced with the provided one.</p>
+         * <p>When specified, the default Cohere preamble will be replaced with the provided one. Preambles are a part of the prompt used to adjust the model's overall behavior and conversation style, and use the <code>SYSTEM</code> role.</p>
+         * <p>The <code>SYSTEM</code> role is also used for the contents of the optional <code>chat_history=</code> parameter. When used with the <code>chat_history=</code> parameter it adds content throughout a conversation. Conversely, when used with the <code>preamble=</code> parameter it adds content at the start of the conversation only.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
-        public _FinalStage preambleOverride(String preambleOverride) {
-            this.preambleOverride = Optional.of(preambleOverride);
+        @java.lang.Override
+        public _FinalStage preamble(String preamble) {
+            this.preamble = Optional.of(preamble);
             return this;
         }
 
-        @Override
-        @JsonSetter(value = "preamble_override", nulls = Nulls.SKIP)
-        public _FinalStage preambleOverride(Optional<String> preambleOverride) {
-            this.preambleOverride = preambleOverride;
+        @java.lang.Override
+        @JsonSetter(value = "preamble", nulls = Nulls.SKIP)
+        public _FinalStage preamble(Optional<String> preamble) {
+            this.preamble = preamble;
             return this;
         }
 
         /**
-         * <p>Defaults to <code>command</code>.
-         * The identifier of the model, which can be one of the existing Cohere models or the full ID for a <a href="/docs/training-custom-models">finetuned custom model</a>.
-         * Compatible Cohere models are <code>command</code> and <code>command-light</code> as well as the experimental <code>command-nightly</code> and <code>command-light-nightly</code> variants. Read more about <a href="https://docs.cohere.com/docs/models">Cohere models</a>.</p>
+         * <p>Defaults to <code>command-r</code>.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage model(String model) {
             this.model = Optional.of(model);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public _FinalStage model(Optional<String> model) {
             this.model = model;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatRequest build() {
             return new ChatRequest(
                     message,
                     model,
-                    stream,
-                    preambleOverride,
+                    preamble,
                     chatHistory,
                     conversationId,
                     promptTruncation,
                     connectors,
                     searchQueriesOnly,
                     documents,
-                    citationQuality,
                     temperature,
+                    maxTokens,
+                    maxInputTokens,
+                    k,
+                    p,
+                    seed,
+                    stopSequences,
+                    frequencyPenalty,
+                    presencePenalty,
+                    rawPrompting,
+                    tools,
+                    toolResults,
                     additionalProperties);
         }
     }

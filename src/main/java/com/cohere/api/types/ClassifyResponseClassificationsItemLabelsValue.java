@@ -35,7 +35,7 @@ public final class ClassifyResponseClassificationsItemLabelsValue {
         return confidence;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ClassifyResponseClassificationsItemLabelsValue
@@ -51,12 +51,12 @@ public final class ClassifyResponseClassificationsItemLabelsValue {
         return confidence.equals(other.confidence);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.confidence);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
