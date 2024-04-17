@@ -20,13 +20,13 @@ import java.util.Objects;
 public final class ChatStreamEndEvent implements IChatStreamEvent {
     private final ChatStreamEndEventFinishReason finishReason;
 
-    private final ChatStreamEndEventResponse response;
+    private final NonStreamedChatResponse response;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatStreamEndEvent(
             ChatStreamEndEventFinishReason finishReason,
-            ChatStreamEndEventResponse response,
+            NonStreamedChatResponse response,
             Map<String, Object> additionalProperties) {
         this.finishReason = finishReason;
         this.response = response;
@@ -51,11 +51,11 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
      * @return The consolidated response from the model. Contains the generated reply and all the other information streamed back in the previous events.
      */
     @JsonProperty("response")
-    public ChatStreamEndEventResponse getResponse() {
+    public NonStreamedChatResponse getResponse() {
         return response;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatStreamEndEvent && equalTo((ChatStreamEndEvent) other);
@@ -70,12 +70,12 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
         return finishReason.equals(other.finishReason) && response.equals(other.response);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.finishReason, this.response);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -91,7 +91,7 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
     }
 
     public interface ResponseStage {
-        _FinalStage response(ChatStreamEndEventResponse response);
+        _FinalStage response(NonStreamedChatResponse response);
     }
 
     public interface _FinalStage {
@@ -102,14 +102,14 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
     public static final class Builder implements FinishReasonStage, ResponseStage, _FinalStage {
         private ChatStreamEndEventFinishReason finishReason;
 
-        private ChatStreamEndEventResponse response;
+        private NonStreamedChatResponse response;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatStreamEndEvent other) {
             finishReason(other.getFinishReason());
             response(other.getResponse());
@@ -126,7 +126,7 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
          * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("finish_reason")
         public ResponseStage finishReason(ChatStreamEndEventFinishReason finishReason) {
             this.finishReason = finishReason;
@@ -137,14 +137,14 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
          * <p>The consolidated response from the model. Contains the generated reply and all the other information streamed back in the previous events.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("response")
-        public _FinalStage response(ChatStreamEndEventResponse response) {
+        public _FinalStage response(NonStreamedChatResponse response) {
             this.response = response;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatStreamEndEvent build() {
             return new ChatStreamEndEvent(finishReason, response, additionalProperties);
         }

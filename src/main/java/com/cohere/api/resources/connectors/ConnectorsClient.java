@@ -5,22 +5,24 @@ package com.cohere.api.resources.connectors;
 
 import com.cohere.api.core.ApiError;
 import com.cohere.api.core.ClientOptions;
+import com.cohere.api.core.MediaTypes;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.core.RequestOptions;
 import com.cohere.api.resources.connectors.requests.ConnectorsListRequest;
-import com.cohere.api.resources.connectors.requests.CreateRequest;
-import com.cohere.api.resources.connectors.requests.UpdateRequest;
-import com.cohere.api.types.CreateResponse;
-import com.cohere.api.types.GetResponse;
-import com.cohere.api.types.ListResponse;
+import com.cohere.api.resources.connectors.requests.ConnectorsOAuthAuthorizeRequest;
+import com.cohere.api.resources.connectors.requests.CreateConnectorRequest;
+import com.cohere.api.resources.connectors.requests.UpdateConnectorRequest;
+import com.cohere.api.types.CreateConnectorResponse;
+import com.cohere.api.types.GetConnectorResponse;
+import com.cohere.api.types.ListConnectorsResponse;
 import com.cohere.api.types.OAuthAuthorizeResponse;
-import com.cohere.api.types.UpdateResponse;
+import com.cohere.api.types.UpdateConnectorResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -35,14 +37,21 @@ public class ConnectorsClient {
     /**
      * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
-    public ListResponse list() {
+    public ListConnectorsResponse list() {
         return list(ConnectorsListRequest.builder().build());
     }
 
     /**
      * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
-    public ListResponse list(ConnectorsListRequest request, RequestOptions requestOptions) {
+    public ListConnectorsResponse list(ConnectorsListRequest request) {
+        return list(request, null);
+    }
+
+    /**
+     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
+     */
+    public ListConnectorsResponse list(ConnectorsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("connectors");
@@ -59,10 +68,13 @@ public class ConnectorsClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ListResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ListConnectorsResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -73,16 +85,16 @@ public class ConnectorsClient {
     }
 
     /**
-     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
+     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
      */
-    public ListResponse list(ConnectorsListRequest request) {
-        return list(request, null);
+    public CreateConnectorResponse create(CreateConnectorRequest request) {
+        return create(request, null);
     }
 
     /**
      * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
      */
-    public CreateResponse create(CreateRequest request, RequestOptions requestOptions) {
+    public CreateConnectorResponse create(CreateConnectorRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("connectors")
@@ -90,7 +102,7 @@ public class ConnectorsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -101,10 +113,13 @@ public class ConnectorsClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), CreateResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), CreateConnectorResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -115,16 +130,16 @@ public class ConnectorsClient {
     }
 
     /**
-     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
+     * Retrieve a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
-    public CreateResponse create(CreateRequest request) {
-        return create(request, null);
+    public GetConnectorResponse get(String id) {
+        return get(id, null);
     }
 
     /**
      * Retrieve a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
-    public GetResponse get(String id, RequestOptions requestOptions) {
+    public GetConnectorResponse get(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("connectors")
@@ -137,10 +152,13 @@ public class ConnectorsClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), GetResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), GetConnectorResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -151,10 +169,10 @@ public class ConnectorsClient {
     }
 
     /**
-     * Retrieve a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
+     * Delete a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
-    public GetResponse get(String id) {
-        return get(id, null);
+    public Map<String, Object> delete(String id) {
+        return delete(id, null);
     }
 
     /**
@@ -173,8 +191,11 @@ public class ConnectorsClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<Map<String, Object>>() {});
@@ -188,23 +209,23 @@ public class ConnectorsClient {
     }
 
     /**
-     * Delete a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
+     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
-    public Map<String, Object> delete(String id) {
-        return delete(id, null);
+    public UpdateConnectorResponse update(String id) {
+        return update(id, UpdateConnectorRequest.builder().build());
     }
 
     /**
      * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
-    public UpdateResponse update(String id) {
-        return update(id, UpdateRequest.builder().build());
+    public UpdateConnectorResponse update(String id, UpdateConnectorRequest request) {
+        return update(id, request, null);
     }
 
     /**
      * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
-    public UpdateResponse update(String id, UpdateRequest request, RequestOptions requestOptions) {
+    public UpdateConnectorResponse update(String id, UpdateConnectorRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("connectors")
@@ -213,7 +234,7 @@ public class ConnectorsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -224,47 +245,13 @@ public class ConnectorsClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), UpdateResponse.class);
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
             }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
-     */
-    public UpdateResponse update(String id, UpdateRequest request) {
-        return update(id, request, null);
-    }
-
-    /**
-     * Authorize the connector with the given ID for the connector oauth app. See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
-     */
-    public OAuthAuthorizeResponse oAuthAuthorize(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("connectors")
-                .addPathSegment(id)
-                .addPathSegments("oauth/authorize")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OAuthAuthorizeResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), UpdateConnectorResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -278,6 +265,50 @@ public class ConnectorsClient {
      * Authorize the connector with the given ID for the connector oauth app. See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
      */
     public OAuthAuthorizeResponse oAuthAuthorize(String id) {
-        return oAuthAuthorize(id, null);
+        return oAuthAuthorize(id, ConnectorsOAuthAuthorizeRequest.builder().build());
+    }
+
+    /**
+     * Authorize the connector with the given ID for the connector oauth app. See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
+     */
+    public OAuthAuthorizeResponse oAuthAuthorize(String id, ConnectorsOAuthAuthorizeRequest request) {
+        return oAuthAuthorize(id, request, null);
+    }
+
+    /**
+     * Authorize the connector with the given ID for the connector oauth app. See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
+     */
+    public OAuthAuthorizeResponse oAuthAuthorize(
+            String id, ConnectorsOAuthAuthorizeRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("connectors")
+                .addPathSegment(id)
+                .addPathSegments("oauth/authorize");
+        if (request.getAfterTokenRedirect().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "after_token_redirect", request.getAfterTokenRedirect().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OAuthAuthorizeResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

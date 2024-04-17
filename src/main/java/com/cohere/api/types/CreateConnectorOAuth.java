@@ -20,23 +20,23 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CreateConnectorOAuth.Builder.class)
 public final class CreateConnectorOAuth {
-    private final String clientId;
+    private final Optional<String> clientId;
 
-    private final String clientSecret;
+    private final Optional<String> clientSecret;
 
-    private final String authorizeUrl;
+    private final Optional<String> authorizeUrl;
 
-    private final String tokenUrl;
+    private final Optional<String> tokenUrl;
 
     private final Optional<String> scope;
 
     private final Map<String, Object> additionalProperties;
 
     private CreateConnectorOAuth(
-            String clientId,
-            String clientSecret,
-            String authorizeUrl,
-            String tokenUrl,
+            Optional<String> clientId,
+            Optional<String> clientSecret,
+            Optional<String> authorizeUrl,
+            Optional<String> tokenUrl,
             Optional<String> scope,
             Map<String, Object> additionalProperties) {
         this.clientId = clientId;
@@ -50,32 +50,32 @@ public final class CreateConnectorOAuth {
     /**
      * @return The OAuth 2.0 client ID. This fields is encrypted at rest.
      */
-    @JsonProperty("clientId")
-    public String getClientId() {
+    @JsonProperty("client_id")
+    public Optional<String> getClientId() {
         return clientId;
     }
 
     /**
      * @return The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.
      */
-    @JsonProperty("clientSecret")
-    public String getClientSecret() {
+    @JsonProperty("client_secret")
+    public Optional<String> getClientSecret() {
         return clientSecret;
     }
 
     /**
      * @return The OAuth 2.0 /authorize endpoint to use when users authorize the connector.
      */
-    @JsonProperty("authorizeUrl")
-    public String getAuthorizeUrl() {
+    @JsonProperty("authorize_url")
+    public Optional<String> getAuthorizeUrl() {
         return authorizeUrl;
     }
 
     /**
      * @return The OAuth 2.0 /token endpoint to use when users authorize the connector.
      */
-    @JsonProperty("tokenUrl")
-    public String getTokenUrl() {
+    @JsonProperty("token_url")
+    public Optional<String> getTokenUrl() {
         return tokenUrl;
     }
 
@@ -87,7 +87,7 @@ public final class CreateConnectorOAuth {
         return scope;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CreateConnectorOAuth && equalTo((CreateConnectorOAuth) other);
@@ -106,56 +106,29 @@ public final class CreateConnectorOAuth {
                 && scope.equals(other.scope);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.clientId, this.clientSecret, this.authorizeUrl, this.tokenUrl, this.scope);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
 
-    public static ClientIdStage builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    public interface ClientIdStage {
-        ClientSecretStage clientId(String clientId);
-
-        Builder from(CreateConnectorOAuth other);
-    }
-
-    public interface ClientSecretStage {
-        AuthorizeUrlStage clientSecret(String clientSecret);
-    }
-
-    public interface AuthorizeUrlStage {
-        TokenUrlStage authorizeUrl(String authorizeUrl);
-    }
-
-    public interface TokenUrlStage {
-        _FinalStage tokenUrl(String tokenUrl);
-    }
-
-    public interface _FinalStage {
-        CreateConnectorOAuth build();
-
-        _FinalStage scope(Optional<String> scope);
-
-        _FinalStage scope(String scope);
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder
-            implements ClientIdStage, ClientSecretStage, AuthorizeUrlStage, TokenUrlStage, _FinalStage {
-        private String clientId;
+    public static final class Builder {
+        private Optional<String> clientId = Optional.empty();
 
-        private String clientSecret;
+        private Optional<String> clientSecret = Optional.empty();
 
-        private String authorizeUrl;
+        private Optional<String> authorizeUrl = Optional.empty();
 
-        private String tokenUrl;
+        private Optional<String> tokenUrl = Optional.empty();
 
         private Optional<String> scope = Optional.empty();
 
@@ -164,7 +137,6 @@ public final class CreateConnectorOAuth {
 
         private Builder() {}
 
-        @Override
         public Builder from(CreateConnectorOAuth other) {
             clientId(other.getClientId());
             clientSecret(other.getClientSecret());
@@ -174,68 +146,61 @@ public final class CreateConnectorOAuth {
             return this;
         }
 
-        /**
-         * <p>The OAuth 2.0 client ID. This fields is encrypted at rest.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        @JsonSetter("clientId")
-        public ClientSecretStage clientId(String clientId) {
+        @JsonSetter(value = "client_id", nulls = Nulls.SKIP)
+        public Builder clientId(Optional<String> clientId) {
             this.clientId = clientId;
             return this;
         }
 
-        /**
-         * <p>The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        @JsonSetter("clientSecret")
-        public AuthorizeUrlStage clientSecret(String clientSecret) {
+        public Builder clientId(String clientId) {
+            this.clientId = Optional.of(clientId);
+            return this;
+        }
+
+        @JsonSetter(value = "client_secret", nulls = Nulls.SKIP)
+        public Builder clientSecret(Optional<String> clientSecret) {
             this.clientSecret = clientSecret;
             return this;
         }
 
-        /**
-         * <p>The OAuth 2.0 /authorize endpoint to use when users authorize the connector.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        @JsonSetter("authorizeUrl")
-        public TokenUrlStage authorizeUrl(String authorizeUrl) {
+        public Builder clientSecret(String clientSecret) {
+            this.clientSecret = Optional.of(clientSecret);
+            return this;
+        }
+
+        @JsonSetter(value = "authorize_url", nulls = Nulls.SKIP)
+        public Builder authorizeUrl(Optional<String> authorizeUrl) {
             this.authorizeUrl = authorizeUrl;
             return this;
         }
 
-        /**
-         * <p>The OAuth 2.0 /token endpoint to use when users authorize the connector.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        @JsonSetter("tokenUrl")
-        public _FinalStage tokenUrl(String tokenUrl) {
+        public Builder authorizeUrl(String authorizeUrl) {
+            this.authorizeUrl = Optional.of(authorizeUrl);
+            return this;
+        }
+
+        @JsonSetter(value = "token_url", nulls = Nulls.SKIP)
+        public Builder tokenUrl(Optional<String> tokenUrl) {
             this.tokenUrl = tokenUrl;
             return this;
         }
 
-        /**
-         * <p>The OAuth scopes to request when users authorize the connector.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        public _FinalStage scope(String scope) {
-            this.scope = Optional.of(scope);
+        public Builder tokenUrl(String tokenUrl) {
+            this.tokenUrl = Optional.of(tokenUrl);
             return this;
         }
 
-        @Override
         @JsonSetter(value = "scope", nulls = Nulls.SKIP)
-        public _FinalStage scope(Optional<String> scope) {
+        public Builder scope(Optional<String> scope) {
             this.scope = scope;
             return this;
         }
 
-        @Override
+        public Builder scope(String scope) {
+            this.scope = Optional.of(scope);
+            return this;
+        }
+
         public CreateConnectorOAuth build() {
             return new CreateConnectorOAuth(
                     clientId, clientSecret, authorizeUrl, tokenUrl, scope, additionalProperties);

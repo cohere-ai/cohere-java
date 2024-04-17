@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ChatMessageRole {
     CHATBOT("CHATBOT"),
 
+    SYSTEM("SYSTEM"),
+
     USER("USER");
 
     private final String value;
@@ -17,7 +19,7 @@ public enum ChatMessageRole {
     }
 
     @JsonValue
-    @Override
+    @java.lang.Override
     public String toString() {
         return this.value;
     }

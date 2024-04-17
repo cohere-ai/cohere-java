@@ -5,6 +5,7 @@ package com.cohere.api;
 
 import com.cohere.api.core.ApiError;
 import com.cohere.api.core.ClientOptions;
+import com.cohere.api.core.MediaTypes;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.core.RequestOptions;
 import com.cohere.api.core.Stream;
@@ -12,18 +13,22 @@ import com.cohere.api.core.Suppliers;
 import com.cohere.api.requests.ChatRequest;
 import com.cohere.api.requests.ChatStreamRequest;
 import com.cohere.api.requests.ClassifyRequest;
-import com.cohere.api.requests.DetectLanguageRequest;
 import com.cohere.api.requests.DetokenizeRequest;
 import com.cohere.api.requests.EmbedRequest;
 import com.cohere.api.requests.GenerateRequest;
+import com.cohere.api.requests.GenerateStreamRequest;
 import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
 import com.cohere.api.resources.connectors.ConnectorsClient;
+import com.cohere.api.resources.datasets.DatasetsClient;
+import com.cohere.api.resources.embedjobs.EmbedJobsClient;
+import com.cohere.api.resources.finetuning.FinetuningClient;
+import com.cohere.api.resources.models.ModelsClient;
 import com.cohere.api.types.ClassifyResponse;
-import com.cohere.api.types.DetectLanguageResponse;
 import com.cohere.api.types.DetokenizeResponse;
 import com.cohere.api.types.EmbedResponse;
+import com.cohere.api.types.GenerateStreamedResponse;
 import com.cohere.api.types.Generation;
 import com.cohere.api.types.NonStreamedChatResponse;
 import com.cohere.api.types.RerankResponse;
@@ -34,7 +39,7 @@ import java.io.IOException;
 import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -42,16 +47,36 @@ import okhttp3.Response;
 public class Cohere {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<EmbedJobsClient> embedJobsClient;
+
+    protected final Supplier<DatasetsClient> datasetsClient;
+
     protected final Supplier<ConnectorsClient> connectorsClient;
+
+    protected final Supplier<ModelsClient> modelsClient;
+
+    protected final Supplier<FinetuningClient> finetuningClient;
 
     public Cohere(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.embedJobsClient = Suppliers.memoize(() -> new EmbedJobsClient(clientOptions));
+        this.datasetsClient = Suppliers.memoize(() -> new DatasetsClient(clientOptions));
         this.connectorsClient = Suppliers.memoize(() -> new ConnectorsClient(clientOptions));
+        this.modelsClient = Suppliers.memoize(() -> new ModelsClient(clientOptions));
+        this.finetuningClient = Suppliers.memoize(() -> new FinetuningClient(clientOptions));
     }
 
     /**
-     * The <code>chat</code> endpoint allows users to have conversations with a Large Language Model (LLM) from Cohere. Users can send messages as part of a persisted conversation using the <code>conversation_id</code> parameter, or they can pass in their own conversation history using the <code>chat_history</code> parameter.
-     * The endpoint features additional parameters such as <a href="https://docs.cohere.com/docs/connectors">connectors</a> and <code>documents</code> that enable conversations enriched by external knowledge. We call this &quot;Retrieval Augmented Generation&quot;, or &quot;RAG&quot;.
+     * Generates a text response to a user message.
+     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
+     */
+    public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request) {
+        return chatStream(request, null);
+    }
+
+    /**
+     * Generates a text response to a user message.
+     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
      */
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -61,7 +86,7 @@ public class Cohere {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -72,8 +97,11 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return new Stream<StreamedChatResponse>(
                         StreamedChatResponse.class, response.body().charStream(), "\n");
@@ -87,16 +115,16 @@ public class Cohere {
     }
 
     /**
-     * The <code>chat</code> endpoint allows users to have conversations with a Large Language Model (LLM) from Cohere. Users can send messages as part of a persisted conversation using the <code>conversation_id</code> parameter, or they can pass in their own conversation history using the <code>chat_history</code> parameter.
-     * The endpoint features additional parameters such as <a href="https://docs.cohere.com/docs/connectors">connectors</a> and <code>documents</code> that enable conversations enriched by external knowledge. We call this &quot;Retrieval Augmented Generation&quot;, or &quot;RAG&quot;.
+     * Generates a text response to a user message.
+     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
      */
-    public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request) {
-        return chatStream(request, null);
+    public NonStreamedChatResponse chat(ChatRequest request) {
+        return chat(request, null);
     }
 
     /**
-     * The <code>chat</code> endpoint allows users to have conversations with a Large Language Model (LLM) from Cohere. Users can send messages as part of a persisted conversation using the <code>conversation_id</code> parameter, or they can pass in their own conversation history using the <code>chat_history</code> parameter.
-     * The endpoint features additional parameters such as <a href="https://docs.cohere.com/docs/connectors">connectors</a> and <code>documents</code> that enable conversations enriched by external knowledge. We call this &quot;Retrieval Augmented Generation&quot;, or &quot;RAG&quot;.
+     * Generates a text response to a user message.
+     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
      */
     public NonStreamedChatResponse chat(ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -106,7 +134,7 @@ public class Cohere {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -117,8 +145,11 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), NonStreamedChatResponse.class);
             }
@@ -131,17 +162,25 @@ public class Cohere {
     }
 
     /**
-     * The <code>chat</code> endpoint allows users to have conversations with a Large Language Model (LLM) from Cohere. Users can send messages as part of a persisted conversation using the <code>conversation_id</code> parameter, or they can pass in their own conversation history using the <code>chat_history</code> parameter.
-     * The endpoint features additional parameters such as <a href="https://docs.cohere.com/docs/connectors">connectors</a> and <code>documents</code> that enable conversations enriched by external knowledge. We call this &quot;Retrieval Augmented Generation&quot;, or &quot;RAG&quot;.
+     * <blockquote>
+     * 🚧 Warning
+     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
+     * </blockquote>
+     * <p>Generates realistic text conditioned on a given input.</p>
      */
-    public NonStreamedChatResponse chat(ChatRequest request) {
-        return chat(request, null);
+    public Iterable<GenerateStreamedResponse> generateStream(GenerateStreamRequest request) {
+        return generateStream(request, null);
     }
 
     /**
-     * This endpoint generates realistic text conditioned on a given input.
+     * <blockquote>
+     * 🚧 Warning
+     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
+     * </blockquote>
+     * <p>Generates realistic text conditioned on a given input.</p>
      */
-    public Generation generate(GenerateRequest request, RequestOptions requestOptions) {
+    public Iterable<GenerateStreamedResponse> generateStream(
+            GenerateStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("generate")
@@ -149,7 +188,7 @@ public class Cohere {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -160,10 +199,14 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Generation.class);
+                return new Stream<GenerateStreamedResponse>(
+                        GenerateStreamedResponse.class, response.body().charStream(), "\n");
             }
             throw new ApiError(
                     response.code(),
@@ -174,26 +217,32 @@ public class Cohere {
     }
 
     /**
-     * This endpoint generates realistic text conditioned on a given input.
+     * <blockquote>
+     * 🚧 Warning
+     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
+     * </blockquote>
+     * <p>Generates realistic text conditioned on a given input.</p>
      */
     public Generation generate(GenerateRequest request) {
         return generate(request, null);
     }
 
     /**
-     * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
-     * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
-     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     * <blockquote>
+     * 🚧 Warning
+     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
+     * </blockquote>
+     * <p>Generates realistic text conditioned on a given input.</p>
      */
-    public EmbedResponse embed(EmbedRequest request, RequestOptions requestOptions) {
+    public Generation generate(GenerateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed")
+                .addPathSegments("generate")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -204,10 +253,13 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EmbedResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Generation.class);
             }
             throw new ApiError(
                     response.code(),
@@ -227,17 +279,19 @@ public class Cohere {
     }
 
     /**
-     * This endpoint takes in a query and a list of texts and produces an ordered array with each text assigned a relevance score.
+     * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
+     * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
-    public RerankResponse rerank(RerankRequest request, RequestOptions requestOptions) {
+    public EmbedResponse embed(EmbedRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("rerank")
+                .addPathSegments("embed")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -248,10 +302,13 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), RerankResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EmbedResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -269,18 +326,17 @@ public class Cohere {
     }
 
     /**
-     * This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided <code>examples</code> of text + label pairs as a reference.
-     * Note: <a href="/training-representation-models">Custom Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     * This endpoint takes in a query and a list of texts and produces an ordered array with each text assigned a relevance score.
      */
-    public ClassifyResponse classify(ClassifyRequest request, RequestOptions requestOptions) {
+    public RerankResponse rerank(RerankRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("classify")
+                .addPathSegments("rerank")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -291,8 +347,58 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), RerankResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided <code>examples</code> of text + label pairs as a reference.
+     * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     */
+    public ClassifyResponse classify(ClassifyRequest request) {
+        return classify(request, null);
+    }
+
+    /**
+     * This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided <code>examples</code> of text + label pairs as a reference.
+     * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     */
+    public ClassifyResponse classify(ClassifyRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("classify")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ClassifyResponse.class);
             }
@@ -305,57 +411,22 @@ public class Cohere {
     }
 
     /**
-     * This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided <code>examples</code> of text + label pairs as a reference.
-     * Note: <a href="/training-representation-models">Custom Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
+     * <blockquote>
+     * 🚧 Warning
+     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
+     * </blockquote>
+     * <p>Generates a summary in English for a given text.</p>
      */
-    public ClassifyResponse classify(ClassifyRequest request) {
-        return classify(request, null);
+    public SummarizeResponse summarize(SummarizeRequest request) {
+        return summarize(request, null);
     }
 
     /**
-     * This endpoint identifies which language each of the provided texts is written in.
-     */
-    public DetectLanguageResponse detectLanguage(DetectLanguageRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("detect-language")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DetectLanguageResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * This endpoint identifies which language each of the provided texts is written in.
-     */
-    public DetectLanguageResponse detectLanguage(DetectLanguageRequest request) {
-        return detectLanguage(request, null);
-    }
-
-    /**
-     * This endpoint generates a summary in English for a given text.
+     * <blockquote>
+     * 🚧 Warning
+     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
+     * </blockquote>
+     * <p>Generates a summary in English for a given text.</p>
      */
     public SummarizeResponse summarize(SummarizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -365,7 +436,7 @@ public class Cohere {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -376,52 +447,13 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), SummarizeResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * This endpoint generates a summary in English for a given text.
-     */
-    public SummarizeResponse summarize(SummarizeRequest request) {
-        return summarize(request, null);
-    }
-
-    /**
-     * This endpoint splits input text into smaller units called tokens using byte-pair encoding (BPE). To learn more about tokenization and byte pair encoding, see the tokens page.
-     */
-    public TokenizeResponse tokenize(TokenizeRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("tokenize")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), TokenizeResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -439,17 +471,17 @@ public class Cohere {
     }
 
     /**
-     * This endpoint takes tokens using byte-pair encoding and returns their text representation. To learn more about tokenization and byte pair encoding, see the tokens page.
+     * This endpoint splits input text into smaller units called tokens using byte-pair encoding (BPE). To learn more about tokenization and byte pair encoding, see the tokens page.
      */
-    public DetokenizeResponse detokenize(DetokenizeRequest request, RequestOptions requestOptions) {
+    public TokenizeResponse tokenize(TokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("detokenize")
+                .addPathSegments("tokenize")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -460,10 +492,13 @@ public class Cohere {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DetokenizeResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), TokenizeResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -480,8 +515,62 @@ public class Cohere {
         return detokenize(request, null);
     }
 
+    /**
+     * This endpoint takes tokens using byte-pair encoding and returns their text representation. To learn more about tokenization and byte pair encoding, see the tokens page.
+     */
+    public DetokenizeResponse detokenize(DetokenizeRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("detokenize")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DetokenizeResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public EmbedJobsClient embedJobs() {
+        return this.embedJobsClient.get();
+    }
+
+    public DatasetsClient datasets() {
+        return this.datasetsClient.get();
+    }
+
     public ConnectorsClient connectors() {
         return this.connectorsClient.get();
+    }
+
+    public ModelsClient models() {
+        return this.modelsClient.get();
+    }
+
+    public FinetuningClient finetuning() {
+        return this.finetuningClient.get();
     }
 
     public static CohereBuilder builder() {

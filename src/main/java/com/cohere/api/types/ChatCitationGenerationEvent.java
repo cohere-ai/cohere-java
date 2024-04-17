@@ -38,7 +38,7 @@ public final class ChatCitationGenerationEvent implements IChatStreamEvent {
         return citations;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatCitationGenerationEvent && equalTo((ChatCitationGenerationEvent) other);
@@ -53,12 +53,12 @@ public final class ChatCitationGenerationEvent implements IChatStreamEvent {
         return citations.equals(other.citations);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.citations);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

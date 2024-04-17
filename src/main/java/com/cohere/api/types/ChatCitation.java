@@ -72,7 +72,7 @@ public final class ChatCitation {
         return documentIds;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatCitation && equalTo((ChatCitation) other);
@@ -90,12 +90,12 @@ public final class ChatCitation {
                 && documentIds.equals(other.documentIds);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.start, this.end, this.text, this.documentIds);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -143,7 +143,7 @@ public final class ChatCitation {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatCitation other) {
             start(other.getStart());
             end(other.getEnd());
@@ -156,7 +156,7 @@ public final class ChatCitation {
          * <p>The index of text that the citation starts at, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have a start value of <code>7</code>. This is because the citation starts at <code>w</code>, which is the seventh character.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("start")
         public EndStage start(int start) {
             this.start = start;
@@ -167,7 +167,7 @@ public final class ChatCitation {
          * <p>The index of text that the citation ends after, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have an end value of <code>11</code>. This is because the citation ends after <code>d</code>, which is the eleventh character.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("end")
         public TextStage end(int end) {
             this.end = end;
@@ -178,7 +178,7 @@ public final class ChatCitation {
          * <p>The text of the citation. For example, a generation of <code>Hello, world!</code> with a citation of <code>world</code> would have a text value of <code>world</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
@@ -189,7 +189,7 @@ public final class ChatCitation {
          * <p>Identifiers of documents cited by this section of the generated reply.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllDocumentIds(List<String> documentIds) {
             this.documentIds.addAll(documentIds);
             return this;
@@ -199,13 +199,13 @@ public final class ChatCitation {
          * <p>Identifiers of documents cited by this section of the generated reply.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addDocumentIds(String documentIds) {
             this.documentIds.add(documentIds);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
         public _FinalStage documentIds(List<String> documentIds) {
             this.documentIds.clear();
@@ -213,7 +213,7 @@ public final class ChatCitation {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatCitation build() {
             return new ChatCitation(start, end, text, documentIds, additionalProperties);
         }

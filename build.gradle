@@ -2,17 +2,18 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'com.diffplug.spotless' version '6.11.0'
+    id 'signing'
 }
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/releases/'
+        url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
     }
 }
 
 dependencies {
-    api 'com.squareup.okhttp3:okhttp:4.9.3'
+    api 'com.squareup.okhttp3:okhttp:4.12.0'
     api 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.3'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
@@ -35,6 +36,9 @@ java {
     withJavadocJar()
 }
 
+signing {
+    sign(publishing.publications)
+}
 test {
     useJUnitPlatform()
     testLogging {
@@ -46,8 +50,24 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.cohere'
             artifactId = 'cohere-java'
-            version = '1.0.3'
+            version = '1.0.4'
             from components.java
+            pom {
+                name = 'cohere'
+                description = 'The official SDK of cohere'
+                url = 'https://buildwithfern.com'
+                developers {
+                    developer {
+                        name = 'cohere'
+                        email = 'developers@cohere.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/cohere-ai/cohere-java.git'
+                    developerConnection = 'scm:git:git://github.com/cohere-ai/cohere-java.git'
+                    url = 'https://github.com/cohere-ai/cohere-java'
+                }
+            }
         }
     }
     repositories {

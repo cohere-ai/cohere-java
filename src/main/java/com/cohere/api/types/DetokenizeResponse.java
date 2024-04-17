@@ -45,7 +45,7 @@ public final class DetokenizeResponse {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof DetokenizeResponse && equalTo((DetokenizeResponse) other);
@@ -60,12 +60,12 @@ public final class DetokenizeResponse {
         return text.equals(other.text) && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -99,7 +99,7 @@ public final class DetokenizeResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(DetokenizeResponse other) {
             text(other.getText());
             meta(other.getMeta());
@@ -110,27 +110,27 @@ public final class DetokenizeResponse {
          * <p>A string representing the list of tokens.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
             this.meta = Optional.of(meta);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public DetokenizeResponse build() {
             return new DetokenizeResponse(text, meta, additionalProperties);
         }
