@@ -23,15 +23,23 @@ import java.util.Optional;
 public final class ApiMeta {
     private final Optional<ApiMetaApiVersion> apiVersion;
 
+    private final Optional<ApiMetaBilledUnits> billedUnits;
+
+    private final Optional<ApiMetaTokens> tokens;
+
     private final Optional<List<String>> warnings;
 
     private final Map<String, Object> additionalProperties;
 
     private ApiMeta(
             Optional<ApiMetaApiVersion> apiVersion,
+            Optional<ApiMetaBilledUnits> billedUnits,
+            Optional<ApiMetaTokens> tokens,
             Optional<List<String>> warnings,
             Map<String, Object> additionalProperties) {
         this.apiVersion = apiVersion;
+        this.billedUnits = billedUnits;
+        this.tokens = tokens;
         this.warnings = warnings;
         this.additionalProperties = additionalProperties;
     }
@@ -41,12 +49,22 @@ public final class ApiMeta {
         return apiVersion;
     }
 
+    @JsonProperty("billed_units")
+    public Optional<ApiMetaBilledUnits> getBilledUnits() {
+        return billedUnits;
+    }
+
+    @JsonProperty("tokens")
+    public Optional<ApiMetaTokens> getTokens() {
+        return tokens;
+    }
+
     @JsonProperty("warnings")
     public Optional<List<String>> getWarnings() {
         return warnings;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApiMeta && equalTo((ApiMeta) other);
@@ -58,15 +76,18 @@ public final class ApiMeta {
     }
 
     private boolean equalTo(ApiMeta other) {
-        return apiVersion.equals(other.apiVersion) && warnings.equals(other.warnings);
+        return apiVersion.equals(other.apiVersion)
+                && billedUnits.equals(other.billedUnits)
+                && tokens.equals(other.tokens)
+                && warnings.equals(other.warnings);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.apiVersion, this.warnings);
+        return Objects.hash(this.apiVersion, this.billedUnits, this.tokens, this.warnings);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -79,6 +100,10 @@ public final class ApiMeta {
     public static final class Builder {
         private Optional<ApiMetaApiVersion> apiVersion = Optional.empty();
 
+        private Optional<ApiMetaBilledUnits> billedUnits = Optional.empty();
+
+        private Optional<ApiMetaTokens> tokens = Optional.empty();
+
         private Optional<List<String>> warnings = Optional.empty();
 
         @JsonAnySetter
@@ -88,6 +113,8 @@ public final class ApiMeta {
 
         public Builder from(ApiMeta other) {
             apiVersion(other.getApiVersion());
+            billedUnits(other.getBilledUnits());
+            tokens(other.getTokens());
             warnings(other.getWarnings());
             return this;
         }
@@ -103,6 +130,28 @@ public final class ApiMeta {
             return this;
         }
 
+        @JsonSetter(value = "billed_units", nulls = Nulls.SKIP)
+        public Builder billedUnits(Optional<ApiMetaBilledUnits> billedUnits) {
+            this.billedUnits = billedUnits;
+            return this;
+        }
+
+        public Builder billedUnits(ApiMetaBilledUnits billedUnits) {
+            this.billedUnits = Optional.of(billedUnits);
+            return this;
+        }
+
+        @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
+        public Builder tokens(Optional<ApiMetaTokens> tokens) {
+            this.tokens = tokens;
+            return this;
+        }
+
+        public Builder tokens(ApiMetaTokens tokens) {
+            this.tokens = Optional.of(tokens);
+            return this;
+        }
+
         @JsonSetter(value = "warnings", nulls = Nulls.SKIP)
         public Builder warnings(Optional<List<String>> warnings) {
             this.warnings = warnings;
@@ -115,7 +164,7 @@ public final class ApiMeta {
         }
 
         public ApiMeta build() {
-            return new ApiMeta(apiVersion, warnings, additionalProperties);
+            return new ApiMeta(apiVersion, billedUnits, tokens, warnings, additionalProperties);
         }
     }
 }

@@ -71,7 +71,7 @@ public final class EmbedByTypeResponse {
         return meta;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmbedByTypeResponse && equalTo((EmbedByTypeResponse) other);
@@ -89,12 +89,12 @@ public final class EmbedByTypeResponse {
                 && meta.equals(other.meta);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.embeddings, this.texts, this.meta);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -142,7 +142,7 @@ public final class EmbedByTypeResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EmbedByTypeResponse other) {
             id(other.getId());
             embeddings(other.getEmbeddings());
@@ -151,7 +151,7 @@ public final class EmbedByTypeResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public EmbeddingsStage id(String id) {
             this.id = id;
@@ -162,20 +162,20 @@ public final class EmbedByTypeResponse {
          * <p>An object with different embedding types. The length of each embedding type array will be the same as the length of the original <code>texts</code> array.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("embeddings")
         public _FinalStage embeddings(EmbedByTypeResponseEmbeddings embeddings) {
             this.embeddings = embeddings;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
             this.meta = Optional.of(meta);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
@@ -186,7 +186,7 @@ public final class EmbedByTypeResponse {
          * <p>The text entries for which embeddings were returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllTexts(List<String> texts) {
             this.texts.addAll(texts);
             return this;
@@ -196,13 +196,13 @@ public final class EmbedByTypeResponse {
          * <p>The text entries for which embeddings were returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addTexts(String texts) {
             this.texts.add(texts);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
         public _FinalStage texts(List<String> texts) {
             this.texts.clear();
@@ -210,7 +210,7 @@ public final class EmbedByTypeResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EmbedByTypeResponse build() {
             return new EmbedByTypeResponse(id, embeddings, texts, meta, additionalProperties);
         }

@@ -114,7 +114,7 @@ public final class SummarizeRequest {
         return additionalCommand;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof SummarizeRequest && equalTo((SummarizeRequest) other);
@@ -135,7 +135,7 @@ public final class SummarizeRequest {
                 && additionalCommand.equals(other.additionalCommand);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.text,
@@ -147,7 +147,7 @@ public final class SummarizeRequest {
                 this.additionalCommand);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -211,7 +211,7 @@ public final class SummarizeRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(SummarizeRequest other) {
             text(other.getText());
             length(other.getLength());
@@ -227,7 +227,7 @@ public final class SummarizeRequest {
          * <p>The text to generate a summary for. Can be up to 100,000 characters long. Currently the only supported language is English.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
@@ -238,13 +238,13 @@ public final class SummarizeRequest {
          * <p>A free-form instruction for modifying how the summaries get generated. Should complete the sentence &quot;Generate a summary _&quot;. Eg. &quot;focusing on the next steps&quot; or &quot;written by Yoda&quot;</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage additionalCommand(String additionalCommand) {
             this.additionalCommand = Optional.of(additionalCommand);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "additional_command", nulls = Nulls.SKIP)
         public _FinalStage additionalCommand(Optional<String> additionalCommand) {
             this.additionalCommand = additionalCommand;
@@ -255,13 +255,13 @@ public final class SummarizeRequest {
          * <p>Ranges from 0 to 5. Controls the randomness of the output. Lower values tend to generate more “predictable” output, while higher values tend to generate more “creative” output. The sweet spot is typically between 0 and 1.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage temperature(Double temperature) {
             this.temperature = Optional.of(temperature);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
         public _FinalStage temperature(Optional<Double> temperature) {
             this.temperature = temperature;
@@ -272,13 +272,13 @@ public final class SummarizeRequest {
          * <p>One of <code>low</code>, <code>medium</code>, <code>high</code>, or <code>auto</code>, defaults to <code>auto</code>. Controls how close to the original text the summary is. <code>high</code> extractiveness summaries will lean towards reusing sentences verbatim, while <code>low</code> extractiveness summaries will tend to paraphrase more. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage extractiveness(SummarizeRequestExtractiveness extractiveness) {
             this.extractiveness = Optional.of(extractiveness);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "extractiveness", nulls = Nulls.SKIP)
         public _FinalStage extractiveness(Optional<SummarizeRequestExtractiveness> extractiveness) {
             this.extractiveness = extractiveness;
@@ -289,13 +289,13 @@ public final class SummarizeRequest {
          * <p>The identifier of the model to generate the summary with. Currently available models are <code>command</code> (default), <code>command-nightly</code> (experimental), <code>command-light</code>, and <code>command-light-nightly</code> (experimental). Smaller, &quot;light&quot; models are faster, while larger models will perform better.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage model(String model) {
             this.model = Optional.of(model);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public _FinalStage model(Optional<String> model) {
             this.model = model;
@@ -306,13 +306,13 @@ public final class SummarizeRequest {
          * <p>One of <code>paragraph</code>, <code>bullets</code>, or <code>auto</code>, defaults to <code>auto</code>. Indicates the style in which the summary will be delivered - in a free form paragraph or in bullet points. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage format(SummarizeRequestFormat format) {
             this.format = Optional.of(format);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "format", nulls = Nulls.SKIP)
         public _FinalStage format(Optional<SummarizeRequestFormat> format) {
             this.format = format;
@@ -323,20 +323,20 @@ public final class SummarizeRequest {
          * <p>One of <code>short</code>, <code>medium</code>, <code>long</code>, or <code>auto</code> defaults to <code>auto</code>. Indicates the approximate length of the summary. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage length(SummarizeRequestLength length) {
             this.length = Optional.of(length);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "length", nulls = Nulls.SKIP)
         public _FinalStage length(Optional<SummarizeRequestLength> length) {
             this.length = length;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public SummarizeRequest build() {
             return new SummarizeRequest(
                     text, length, format, model, extractiveness, temperature, additionalCommand, additionalProperties);

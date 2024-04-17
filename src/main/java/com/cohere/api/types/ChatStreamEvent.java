@@ -14,7 +14,7 @@ public final class ChatStreamEvent implements IChatStreamEvent {
         this.additionalProperties = additionalProperties;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatStreamEvent;
@@ -25,7 +25,7 @@ public final class ChatStreamEvent implements IChatStreamEvent {
         return this.additionalProperties;
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

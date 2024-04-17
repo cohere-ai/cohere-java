@@ -49,7 +49,7 @@ public final class ConnectorsListRequest {
         return offset;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ConnectorsListRequest && equalTo((ConnectorsListRequest) other);
@@ -64,12 +64,12 @@ public final class ConnectorsListRequest {
         return limit.equals(other.limit) && offset.equals(other.offset);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.limit, this.offset);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

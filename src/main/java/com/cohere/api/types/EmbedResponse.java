@@ -103,12 +103,12 @@ public final class EmbedResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitEmbeddingsFloats(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof EmbeddingsFloatsValue && equalTo((EmbeddingsFloatsValue) other);
@@ -118,12 +118,12 @@ public final class EmbedResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "EmbedResponse{" + "value: " + value + "}";
         }
@@ -141,12 +141,12 @@ public final class EmbedResponse {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitEmbeddingsByType(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof EmbeddingsByTypeValue && equalTo((EmbeddingsByTypeValue) other);
@@ -156,12 +156,12 @@ public final class EmbedResponse {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "EmbedResponse{" + "value: " + value + "}";
         }
@@ -176,12 +176,12 @@ public final class EmbedResponse {
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private _UnknownValue(@JsonProperty("value") Object value) {}
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor._visitUnknown(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
@@ -191,12 +191,12 @@ public final class EmbedResponse {
             return type.equals(other.type) && value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.type, this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "EmbedResponse{" + "type: " + type + ", value: " + value + "}";
         }

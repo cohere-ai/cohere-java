@@ -46,7 +46,7 @@ public final class ChatSearchQuery {
         return generationId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ChatSearchQuery && equalTo((ChatSearchQuery) other);
@@ -61,12 +61,12 @@ public final class ChatSearchQuery {
         return text.equals(other.text) && generationId.equals(other.generationId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text, this.generationId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -100,7 +100,7 @@ public final class ChatSearchQuery {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ChatSearchQuery other) {
             text(other.getText());
             generationId(other.getGenerationId());
@@ -111,7 +111,7 @@ public final class ChatSearchQuery {
          * <p>The text of the search query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public GenerationIdStage text(String text) {
             this.text = text;
@@ -122,14 +122,14 @@ public final class ChatSearchQuery {
          * <p>Unique identifier for the generated search query. Useful for submitting feedback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("generation_id")
         public _FinalStage generationId(String generationId) {
             this.generationId = generationId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ChatSearchQuery build() {
             return new ChatSearchQuery(text, generationId, additionalProperties);
         }

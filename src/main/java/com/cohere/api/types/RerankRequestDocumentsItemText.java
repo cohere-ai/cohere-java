@@ -35,7 +35,7 @@ public final class RerankRequestDocumentsItemText {
         return text;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RerankRequestDocumentsItemText && equalTo((RerankRequestDocumentsItemText) other);
@@ -50,12 +50,12 @@ public final class RerankRequestDocumentsItemText {
         return text.equals(other.text);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -83,7 +83,7 @@ public final class RerankRequestDocumentsItemText {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(RerankRequestDocumentsItemText other) {
             text(other.getText());
             return this;
@@ -93,14 +93,14 @@ public final class RerankRequestDocumentsItemText {
          * <p>The text of the document to rerank.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public RerankRequestDocumentsItemText build() {
             return new RerankRequestDocumentsItemText(text, additionalProperties);
         }

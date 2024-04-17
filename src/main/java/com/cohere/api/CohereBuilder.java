@@ -9,10 +9,26 @@ import com.cohere.api.core.Environment;
 public final class CohereBuilder {
     private ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
 
+    private String token = System.getenv("CO_API_KEY");
+
+    private String clientName = null;
+
     private Environment environment = Environment.PRODUCTION;
 
+    /**
+     * Sets token.
+     * Defaults to the CO_API_KEY environment variable.
+     */
     public CohereBuilder token(String token) {
-        this.clientOptionsBuilder.addHeader("Authorization", "Bearer " + token);
+        this.token = token;
+        return this;
+    }
+
+    /**
+     * Sets clientName
+     */
+    public CohereBuilder clientName(String clientName) {
+        this.clientName = clientName;
         return this;
     }
 
@@ -27,6 +43,14 @@ public final class CohereBuilder {
     }
 
     public Cohere build() {
+        if (token == null) {
+            throw new RuntimeException("Please provide token or set the CO_API_KEY environment variable.");
+        }
+        this.clientOptionsBuilder.addHeader("Authorization", "Bearer " + this.token);
+        if (clientName == null) {
+            throw new RuntimeException("Please provide clientName");
+        }
+        this.clientOptionsBuilder.addHeader("X-Client-Name", this.clientName);
         clientOptionsBuilder.environment(this.environment);
         return new Cohere(clientOptionsBuilder.build());
     }

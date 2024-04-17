@@ -31,6 +31,8 @@ public final class RerankRequest {
 
     private final Optional<Integer> topN;
 
+    private final Optional<List<String>> rankFields;
+
     private final Optional<Boolean> returnDocuments;
 
     private final Optional<Integer> maxChunksPerDoc;
@@ -42,6 +44,7 @@ public final class RerankRequest {
             String query,
             List<RerankRequestDocumentsItem> documents,
             Optional<Integer> topN,
+            Optional<List<String>> rankFields,
             Optional<Boolean> returnDocuments,
             Optional<Integer> maxChunksPerDoc,
             Map<String, Object> additionalProperties) {
@@ -49,13 +52,14 @@ public final class RerankRequest {
         this.query = query;
         this.documents = documents;
         this.topN = topN;
+        this.rankFields = rankFields;
         this.returnDocuments = returnDocuments;
         this.maxChunksPerDoc = maxChunksPerDoc;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The identifier of the model to use, one of : <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code>
+     * @return The identifier of the model to use, one of : <code>rerank-english-v3.0</code>, <code>rerank-multilingual-v3.0</code>, <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code>
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -90,6 +94,14 @@ public final class RerankRequest {
     }
 
     /**
+     * @return If a JSON object is provided, you can specify which keys you would like to have considered for reranking. The model will rerank based on order of the fields passed in (i.e. rank_fields=['title','author','text'] will rerank using the values in title, author, text  sequentially. If the length of title, author, and text exceeds the context length of the model, the chunking will not re-consider earlier fields). If not provided, the model will use the default text field for ranking.
+     */
+    @JsonProperty("rank_fields")
+    public Optional<List<String>> getRankFields() {
+        return rankFields;
+    }
+
+    /**
      * @return <ul>
      * <li>If false, returns results without the doc text - the api will return a list of {index, relevance score} where index is inferred from the list passed into the request.</li>
      * <li>If true, returns results with the doc text passed in - the api will return an ordered list of {index, text, relevance score} where index + text refers to the list passed into the request.</li>
@@ -108,7 +120,7 @@ public final class RerankRequest {
         return maxChunksPerDoc;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RerankRequest && equalTo((RerankRequest) other);
@@ -124,17 +136,24 @@ public final class RerankRequest {
                 && query.equals(other.query)
                 && documents.equals(other.documents)
                 && topN.equals(other.topN)
+                && rankFields.equals(other.rankFields)
                 && returnDocuments.equals(other.returnDocuments)
                 && maxChunksPerDoc.equals(other.maxChunksPerDoc);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.model, this.query, this.documents, this.topN, this.returnDocuments, this.maxChunksPerDoc);
+                this.model,
+                this.query,
+                this.documents,
+                this.topN,
+                this.rankFields,
+                this.returnDocuments,
+                this.maxChunksPerDoc);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -166,6 +185,10 @@ public final class RerankRequest {
 
         _FinalStage topN(Integer topN);
 
+        _FinalStage rankFields(Optional<List<String>> rankFields);
+
+        _FinalStage rankFields(List<String> rankFields);
+
         _FinalStage returnDocuments(Optional<Boolean> returnDocuments);
 
         _FinalStage returnDocuments(Boolean returnDocuments);
@@ -183,6 +206,8 @@ public final class RerankRequest {
 
         private Optional<Boolean> returnDocuments = Optional.empty();
 
+        private Optional<List<String>> rankFields = Optional.empty();
+
         private Optional<Integer> topN = Optional.empty();
 
         private List<RerankRequestDocumentsItem> documents = new ArrayList<>();
@@ -194,12 +219,13 @@ public final class RerankRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(RerankRequest other) {
             model(other.getModel());
             query(other.getQuery());
             documents(other.getDocuments());
             topN(other.getTopN());
+            rankFields(other.getRankFields());
             returnDocuments(other.getReturnDocuments());
             maxChunksPerDoc(other.getMaxChunksPerDoc());
             return this;
@@ -209,7 +235,7 @@ public final class RerankRequest {
          * <p>The search query</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("query")
         public _FinalStage query(String query) {
             this.query = query;
@@ -220,13 +246,13 @@ public final class RerankRequest {
          * <p>The maximum number of chunks to produce internally from a document</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage maxChunksPerDoc(Integer maxChunksPerDoc) {
             this.maxChunksPerDoc = Optional.of(maxChunksPerDoc);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "max_chunks_per_doc", nulls = Nulls.SKIP)
         public _FinalStage maxChunksPerDoc(Optional<Integer> maxChunksPerDoc) {
             this.maxChunksPerDoc = maxChunksPerDoc;
@@ -240,13 +266,13 @@ public final class RerankRequest {
          * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage returnDocuments(Boolean returnDocuments) {
             this.returnDocuments = Optional.of(returnDocuments);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "return_documents", nulls = Nulls.SKIP)
         public _FinalStage returnDocuments(Optional<Boolean> returnDocuments) {
             this.returnDocuments = returnDocuments;
@@ -254,16 +280,33 @@ public final class RerankRequest {
         }
 
         /**
+         * <p>If a JSON object is provided, you can specify which keys you would like to have considered for reranking. The model will rerank based on order of the fields passed in (i.e. rank_fields=['title','author','text'] will rerank using the values in title, author, text  sequentially. If the length of title, author, and text exceeds the context length of the model, the chunking will not re-consider earlier fields). If not provided, the model will use the default text field for ranking.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage rankFields(List<String> rankFields) {
+            this.rankFields = Optional.of(rankFields);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "rank_fields", nulls = Nulls.SKIP)
+        public _FinalStage rankFields(Optional<List<String>> rankFields) {
+            this.rankFields = rankFields;
+            return this;
+        }
+
+        /**
          * <p>The number of most relevant documents or indices to return, defaults to the length of the documents</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage topN(Integer topN) {
             this.topN = Optional.of(topN);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "top_n", nulls = Nulls.SKIP)
         public _FinalStage topN(Optional<Integer> topN) {
             this.topN = topN;
@@ -277,7 +320,7 @@ public final class RerankRequest {
          * <p>We recommend a maximum of 1,000 documents for optimal endpoint performance.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllDocuments(List<RerankRequestDocumentsItem> documents) {
             this.documents.addAll(documents);
             return this;
@@ -290,13 +333,13 @@ public final class RerankRequest {
          * <p>We recommend a maximum of 1,000 documents for optimal endpoint performance.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addDocuments(RerankRequestDocumentsItem documents) {
             this.documents.add(documents);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(List<RerankRequestDocumentsItem> documents) {
             this.documents.clear();
@@ -305,26 +348,26 @@ public final class RerankRequest {
         }
 
         /**
-         * <p>The identifier of the model to use, one of : <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code></p>
+         * <p>The identifier of the model to use, one of : <code>rerank-english-v3.0</code>, <code>rerank-multilingual-v3.0</code>, <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code></p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage model(String model) {
             this.model = Optional.of(model);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public _FinalStage model(Optional<String> model) {
             this.model = model;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public RerankRequest build() {
             return new RerankRequest(
-                    model, query, documents, topN, returnDocuments, maxChunksPerDoc, additionalProperties);
+                    model, query, documents, topN, rankFields, returnDocuments, maxChunksPerDoc, additionalProperties);
         }
     }
 }
