@@ -26,7 +26,7 @@ import java.util.Optional;
 public final class ClassifyRequest {
     private final List<String> inputs;
 
-    private final List<ClassifyExample> examples;
+    private final Optional<List<ClassifyExample>> examples;
 
     private final Optional<String> model;
 
@@ -38,7 +38,7 @@ public final class ClassifyRequest {
 
     private ClassifyRequest(
             List<String> inputs,
-            List<ClassifyExample> examples,
+            Optional<List<ClassifyExample>> examples,
             Optional<String> model,
             Optional<String> preset,
             Optional<ClassifyRequestTruncate> truncate,
@@ -66,7 +66,7 @@ public final class ClassifyRequest {
      * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
      */
     @JsonProperty("examples")
-    public List<ClassifyExample> getExamples() {
+    public Optional<List<ClassifyExample>> getExamples() {
         return examples;
     }
 
@@ -133,7 +133,7 @@ public final class ClassifyRequest {
     public static final class Builder {
         private List<String> inputs = new ArrayList<>();
 
-        private List<ClassifyExample> examples = new ArrayList<>();
+        private Optional<List<ClassifyExample>> examples = Optional.empty();
 
         private Optional<String> model = Optional.empty();
 
@@ -173,19 +173,13 @@ public final class ClassifyRequest {
         }
 
         @JsonSetter(value = "examples", nulls = Nulls.SKIP)
+        public Builder examples(Optional<List<ClassifyExample>> examples) {
+            this.examples = examples;
+            return this;
+        }
+
         public Builder examples(List<ClassifyExample> examples) {
-            this.examples.clear();
-            this.examples.addAll(examples);
-            return this;
-        }
-
-        public Builder addExamples(ClassifyExample examples) {
-            this.examples.add(examples);
-            return this;
-        }
-
-        public Builder addAllExamples(List<ClassifyExample> examples) {
-            this.examples.addAll(examples);
+            this.examples = Optional.of(examples);
             return this;
         }
 

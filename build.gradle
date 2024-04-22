@@ -54,12 +54,17 @@ publishing {
             from components.java
             pom {
                 name = 'cohere'
-                description = 'The official SDK of cohere'
-                url = 'https://buildwithfern.com'
+                description = 'The official Java library for Cohere\'s API.'
+                url = 'https://docs.cohere.com'
+                licenses {
+                    license {
+                        name = 'MIT'
+                    }
+                }
                 developers {
                     developer {
                         name = 'cohere'
-                        email = 'developers@cohere.com'
+                        email = 'platform@cohere.com'
                     }
                 }
                 scm {

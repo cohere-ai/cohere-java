@@ -41,6 +41,8 @@ public final class NonStreamedChatResponse {
 
     private final Optional<List<ChatMessage>> chatHistory;
 
+    private final Optional<String> prompt;
+
     private final Optional<ApiMeta> meta;
 
     private final Map<String, Object> additionalProperties;
@@ -56,6 +58,7 @@ public final class NonStreamedChatResponse {
             Optional<FinishReason> finishReason,
             Optional<List<ToolCall>> toolCalls,
             Optional<List<ChatMessage>> chatHistory,
+            Optional<String> prompt,
             Optional<ApiMeta> meta,
             Map<String, Object> additionalProperties) {
         this.text = text;
@@ -68,6 +71,7 @@ public final class NonStreamedChatResponse {
         this.finishReason = finishReason;
         this.toolCalls = toolCalls;
         this.chatHistory = chatHistory;
+        this.prompt = prompt;
         this.meta = meta;
         this.additionalProperties = additionalProperties;
     }
@@ -146,6 +150,14 @@ public final class NonStreamedChatResponse {
         return chatHistory;
     }
 
+    /**
+     * @return The prompt that was used. Only present when <code>return_prompt</code> in the request is set to true.
+     */
+    @JsonProperty("prompt")
+    public Optional<String> getPrompt() {
+        return prompt;
+    }
+
     @JsonProperty("meta")
     public Optional<ApiMeta> getMeta() {
         return meta;
@@ -173,6 +185,7 @@ public final class NonStreamedChatResponse {
                 && finishReason.equals(other.finishReason)
                 && toolCalls.equals(other.toolCalls)
                 && chatHistory.equals(other.chatHistory)
+                && prompt.equals(other.prompt)
                 && meta.equals(other.meta);
     }
 
@@ -189,6 +202,7 @@ public final class NonStreamedChatResponse {
                 this.finishReason,
                 this.toolCalls,
                 this.chatHistory,
+                this.prompt,
                 this.meta);
     }
 
@@ -246,6 +260,10 @@ public final class NonStreamedChatResponse {
 
         _FinalStage chatHistory(List<ChatMessage> chatHistory);
 
+        _FinalStage prompt(Optional<String> prompt);
+
+        _FinalStage prompt(String prompt);
+
         _FinalStage meta(Optional<ApiMeta> meta);
 
         _FinalStage meta(ApiMeta meta);
@@ -256,6 +274,8 @@ public final class NonStreamedChatResponse {
         private String text;
 
         private Optional<ApiMeta> meta = Optional.empty();
+
+        private Optional<String> prompt = Optional.empty();
 
         private Optional<List<ChatMessage>> chatHistory = Optional.empty();
 
@@ -292,6 +312,7 @@ public final class NonStreamedChatResponse {
             finishReason(other.getFinishReason());
             toolCalls(other.getToolCalls());
             chatHistory(other.getChatHistory());
+            prompt(other.getPrompt());
             meta(other.getMeta());
             return this;
         }
@@ -317,6 +338,23 @@ public final class NonStreamedChatResponse {
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
+            return this;
+        }
+
+        /**
+         * <p>The prompt that was used. Only present when <code>return_prompt</code> in the request is set to true.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage prompt(String prompt) {
+            this.prompt = Optional.of(prompt);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "prompt", nulls = Nulls.SKIP)
+        public _FinalStage prompt(Optional<String> prompt) {
+            this.prompt = prompt;
             return this;
         }
 
@@ -478,6 +516,7 @@ public final class NonStreamedChatResponse {
                     finishReason,
                     toolCalls,
                     chatHistory,
+                    prompt,
                     meta,
                     additionalProperties);
         }

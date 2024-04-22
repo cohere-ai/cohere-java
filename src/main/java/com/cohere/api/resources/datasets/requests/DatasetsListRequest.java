@@ -4,6 +4,7 @@
 package com.cohere.api.resources.datasets.requests;
 
 import com.cohere.api.core.ObjectMappers;
+import com.cohere.api.types.DatasetValidationStatus;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -31,6 +32,8 @@ public final class DatasetsListRequest {
 
     private final Optional<Double> offset;
 
+    private final Optional<DatasetValidationStatus> validationStatus;
+
     private final Map<String, Object> additionalProperties;
 
     private DatasetsListRequest(
@@ -39,12 +42,14 @@ public final class DatasetsListRequest {
             Optional<OffsetDateTime> after,
             Optional<Double> limit,
             Optional<Double> offset,
+            Optional<DatasetValidationStatus> validationStatus,
             Map<String, Object> additionalProperties) {
         this.datasetType = datasetType;
         this.before = before;
         this.after = after;
         this.limit = limit;
         this.offset = offset;
+        this.validationStatus = validationStatus;
         this.additionalProperties = additionalProperties;
     }
 
@@ -88,6 +93,14 @@ public final class DatasetsListRequest {
         return offset;
     }
 
+    /**
+     * @return optional filter by validation status
+     */
+    @JsonProperty("validationStatus")
+    public Optional<DatasetValidationStatus> getValidationStatus() {
+        return validationStatus;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -104,12 +117,13 @@ public final class DatasetsListRequest {
                 && before.equals(other.before)
                 && after.equals(other.after)
                 && limit.equals(other.limit)
-                && offset.equals(other.offset);
+                && offset.equals(other.offset)
+                && validationStatus.equals(other.validationStatus);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.datasetType, this.before, this.after, this.limit, this.offset);
+        return Objects.hash(this.datasetType, this.before, this.after, this.limit, this.offset, this.validationStatus);
     }
 
     @java.lang.Override
@@ -133,6 +147,8 @@ public final class DatasetsListRequest {
 
         private Optional<Double> offset = Optional.empty();
 
+        private Optional<DatasetValidationStatus> validationStatus = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -144,6 +160,7 @@ public final class DatasetsListRequest {
             after(other.getAfter());
             limit(other.getLimit());
             offset(other.getOffset());
+            validationStatus(other.getValidationStatus());
             return this;
         }
 
@@ -202,8 +219,20 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        @JsonSetter(value = "validationStatus", nulls = Nulls.SKIP)
+        public Builder validationStatus(Optional<DatasetValidationStatus> validationStatus) {
+            this.validationStatus = validationStatus;
+            return this;
+        }
+
+        public Builder validationStatus(DatasetValidationStatus validationStatus) {
+            this.validationStatus = Optional.of(validationStatus);
+            return this;
+        }
+
         public DatasetsListRequest build() {
-            return new DatasetsListRequest(datasetType, before, after, limit, offset, additionalProperties);
+            return new DatasetsListRequest(
+                    datasetType, before, after, limit, offset, validationStatus, additionalProperties);
         }
     }
 }
