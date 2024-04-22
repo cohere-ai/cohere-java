@@ -71,6 +71,10 @@ public class DatasetsClient {
         if (request.getOffset().isPresent()) {
             httpUrl.addQueryParameter("offset", request.getOffset().get().toString());
         }
+        if (request.getValidationStatus().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "validationStatus", request.getValidationStatus().get().toString());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)

@@ -40,7 +40,7 @@ public final class RerankResponseResultsItem {
     }
 
     /**
-     * @return The doc object which was ranked
+     * @return If <code>return_documents</code> is set as <code>false</code> this will return none, if <code>true</code> it will return the documents passed in
      */
     @JsonProperty("document")
     public Optional<RerankResponseResultsItemDocument> getDocument() {
@@ -48,7 +48,7 @@ public final class RerankResponseResultsItem {
     }
 
     /**
-     * @return The index of the input document
+     * @return Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)
      */
     @JsonProperty("index")
     public int getIndex() {
@@ -56,7 +56,7 @@ public final class RerankResponseResultsItem {
     }
 
     /**
-     * @return A relevance score assigned to the ranking
+     * @return Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45
      */
     @JsonProperty("relevance_score")
     public double getRelevanceScore() {
@@ -132,7 +132,7 @@ public final class RerankResponseResultsItem {
         }
 
         /**
-         * <p>The index of the input document</p>
+         * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -143,7 +143,7 @@ public final class RerankResponseResultsItem {
         }
 
         /**
-         * <p>A relevance score assigned to the ranking</p>
+         * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -154,7 +154,7 @@ public final class RerankResponseResultsItem {
         }
 
         /**
-         * <p>The doc object which was ranked</p>
+         * <p>If <code>return_documents</code> is set as <code>false</code> this will return none, if <code>true</code> it will return the documents passed in</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -6,6 +6,7 @@ package com.cohere.api.requests;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.ChatConnector;
 import com.cohere.api.types.ChatMessage;
+import com.cohere.api.types.ChatStreamRequestCitationQuality;
 import com.cohere.api.types.ChatStreamRequestPromptTruncation;
 import com.cohere.api.types.ChatStreamRequestToolResultsItem;
 import com.cohere.api.types.Tool;
@@ -44,6 +45,8 @@ public final class ChatStreamRequest {
 
     private final Optional<List<Map<String, String>>> documents;
 
+    private final Optional<ChatStreamRequestCitationQuality> citationQuality;
+
     private final Optional<Double> temperature;
 
     private final Optional<Integer> maxTokens;
@@ -64,6 +67,8 @@ public final class ChatStreamRequest {
 
     private final Optional<Boolean> rawPrompting;
 
+    private final Optional<Boolean> returnPrompt;
+
     private final Optional<List<Tool>> tools;
 
     private final Optional<List<ChatStreamRequestToolResultsItem>> toolResults;
@@ -80,6 +85,7 @@ public final class ChatStreamRequest {
             Optional<List<ChatConnector>> connectors,
             Optional<Boolean> searchQueriesOnly,
             Optional<List<Map<String, String>>> documents,
+            Optional<ChatStreamRequestCitationQuality> citationQuality,
             Optional<Double> temperature,
             Optional<Integer> maxTokens,
             Optional<Integer> maxInputTokens,
@@ -90,6 +96,7 @@ public final class ChatStreamRequest {
             Optional<Double> frequencyPenalty,
             Optional<Double> presencePenalty,
             Optional<Boolean> rawPrompting,
+            Optional<Boolean> returnPrompt,
             Optional<List<Tool>> tools,
             Optional<List<ChatStreamRequestToolResultsItem>> toolResults,
             Map<String, Object> additionalProperties) {
@@ -102,6 +109,7 @@ public final class ChatStreamRequest {
         this.connectors = connectors;
         this.searchQueriesOnly = searchQueriesOnly;
         this.documents = documents;
+        this.citationQuality = citationQuality;
         this.temperature = temperature;
         this.maxTokens = maxTokens;
         this.maxInputTokens = maxInputTokens;
@@ -112,6 +120,7 @@ public final class ChatStreamRequest {
         this.frequencyPenalty = frequencyPenalty;
         this.presencePenalty = presencePenalty;
         this.rawPrompting = rawPrompting;
+        this.returnPrompt = returnPrompt;
         this.tools = tools;
         this.toolResults = toolResults;
         this.additionalProperties = additionalProperties;
@@ -126,7 +135,7 @@ public final class ChatStreamRequest {
     }
 
     /**
-     * @return Defaults to <code>command-r</code>.
+     * @return Defaults to <code>command-r-plus</code>.
      * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
      */
     @JsonProperty("model")
@@ -210,6 +219,15 @@ public final class ChatStreamRequest {
     @JsonProperty("documents")
     public Optional<List<Map<String, String>>> getDocuments() {
         return documents;
+    }
+
+    /**
+     * @return Defaults to <code>&quot;accurate&quot;</code>.
+     * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.</p>
+     */
+    @JsonProperty("citation_quality")
+    public Optional<ChatStreamRequestCitationQuality> getCitationQuality() {
+        return citationQuality;
     }
 
     /**
@@ -300,6 +318,14 @@ public final class ChatStreamRequest {
     }
 
     /**
+     * @return The prompt is returned in the <code>prompt</code> response field when this is enabled.
+     */
+    @JsonProperty("return_prompt")
+    public Optional<Boolean> getReturnPrompt() {
+        return returnPrompt;
+    }
+
+    /**
      * @return A list of available tools (functions) that the model may suggest invoking before producing a text response.
      * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
      */
@@ -355,6 +381,7 @@ public final class ChatStreamRequest {
                 && connectors.equals(other.connectors)
                 && searchQueriesOnly.equals(other.searchQueriesOnly)
                 && documents.equals(other.documents)
+                && citationQuality.equals(other.citationQuality)
                 && temperature.equals(other.temperature)
                 && maxTokens.equals(other.maxTokens)
                 && maxInputTokens.equals(other.maxInputTokens)
@@ -365,6 +392,7 @@ public final class ChatStreamRequest {
                 && frequencyPenalty.equals(other.frequencyPenalty)
                 && presencePenalty.equals(other.presencePenalty)
                 && rawPrompting.equals(other.rawPrompting)
+                && returnPrompt.equals(other.returnPrompt)
                 && tools.equals(other.tools)
                 && toolResults.equals(other.toolResults);
     }
@@ -381,6 +409,7 @@ public final class ChatStreamRequest {
                 this.connectors,
                 this.searchQueriesOnly,
                 this.documents,
+                this.citationQuality,
                 this.temperature,
                 this.maxTokens,
                 this.maxInputTokens,
@@ -391,6 +420,7 @@ public final class ChatStreamRequest {
                 this.frequencyPenalty,
                 this.presencePenalty,
                 this.rawPrompting,
+                this.returnPrompt,
                 this.tools,
                 this.toolResults);
     }
@@ -445,6 +475,10 @@ public final class ChatStreamRequest {
 
         _FinalStage documents(List<Map<String, String>> documents);
 
+        _FinalStage citationQuality(Optional<ChatStreamRequestCitationQuality> citationQuality);
+
+        _FinalStage citationQuality(ChatStreamRequestCitationQuality citationQuality);
+
         _FinalStage temperature(Optional<Double> temperature);
 
         _FinalStage temperature(Double temperature);
@@ -485,6 +519,10 @@ public final class ChatStreamRequest {
 
         _FinalStage rawPrompting(Boolean rawPrompting);
 
+        _FinalStage returnPrompt(Optional<Boolean> returnPrompt);
+
+        _FinalStage returnPrompt(Boolean returnPrompt);
+
         _FinalStage tools(Optional<List<Tool>> tools);
 
         _FinalStage tools(List<Tool> tools);
@@ -501,6 +539,8 @@ public final class ChatStreamRequest {
         private Optional<List<ChatStreamRequestToolResultsItem>> toolResults = Optional.empty();
 
         private Optional<List<Tool>> tools = Optional.empty();
+
+        private Optional<Boolean> returnPrompt = Optional.empty();
 
         private Optional<Boolean> rawPrompting = Optional.empty();
 
@@ -521,6 +561,8 @@ public final class ChatStreamRequest {
         private Optional<Integer> maxTokens = Optional.empty();
 
         private Optional<Double> temperature = Optional.empty();
+
+        private Optional<ChatStreamRequestCitationQuality> citationQuality = Optional.empty();
 
         private Optional<List<Map<String, String>>> documents = Optional.empty();
 
@@ -554,6 +596,7 @@ public final class ChatStreamRequest {
             connectors(other.getConnectors());
             searchQueriesOnly(other.getSearchQueriesOnly());
             documents(other.getDocuments());
+            citationQuality(other.getCitationQuality());
             temperature(other.getTemperature());
             maxTokens(other.getMaxTokens());
             maxInputTokens(other.getMaxInputTokens());
@@ -564,6 +607,7 @@ public final class ChatStreamRequest {
             frequencyPenalty(other.getFrequencyPenalty());
             presencePenalty(other.getPresencePenalty());
             rawPrompting(other.getRawPrompting());
+            returnPrompt(other.getReturnPrompt());
             tools(other.getTools());
             toolResults(other.getToolResults());
             return this;
@@ -630,6 +674,23 @@ public final class ChatStreamRequest {
         @JsonSetter(value = "tools", nulls = Nulls.SKIP)
         public _FinalStage tools(Optional<List<Tool>> tools) {
             this.tools = tools;
+            return this;
+        }
+
+        /**
+         * <p>The prompt is returned in the <code>prompt</code> response field when this is enabled.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage returnPrompt(Boolean returnPrompt) {
+            this.returnPrompt = Optional.of(returnPrompt);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "return_prompt", nulls = Nulls.SKIP)
+        public _FinalStage returnPrompt(Optional<Boolean> returnPrompt) {
+            this.returnPrompt = returnPrompt;
             return this;
         }
 
@@ -811,6 +872,24 @@ public final class ChatStreamRequest {
         }
 
         /**
+         * <p>Defaults to <code>&quot;accurate&quot;</code>.</p>
+         * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage citationQuality(ChatStreamRequestCitationQuality citationQuality) {
+            this.citationQuality = Optional.of(citationQuality);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "citation_quality", nulls = Nulls.SKIP)
+        public _FinalStage citationQuality(Optional<ChatStreamRequestCitationQuality> citationQuality) {
+            this.citationQuality = citationQuality;
+            return this;
+        }
+
+        /**
          * <p>A list of relevant documents that the model can cite to generate a more accurate reply. Each document is a string-string dictionary.</p>
          * <p>Example:
          * <code>[ { &quot;title&quot;: &quot;Tall penguins&quot;, &quot;text&quot;: &quot;Emperor penguins are the tallest.&quot; }, { &quot;title&quot;: &quot;Penguin habitats&quot;, &quot;text&quot;: &quot;Emperor penguins only live in Antarctica.&quot; }, ]</code></p>
@@ -947,7 +1026,7 @@ public final class ChatStreamRequest {
         }
 
         /**
-         * <p>Defaults to <code>command-r</code>.</p>
+         * <p>Defaults to <code>command-r-plus</code>.</p>
          * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -976,6 +1055,7 @@ public final class ChatStreamRequest {
                     connectors,
                     searchQueriesOnly,
                     documents,
+                    citationQuality,
                     temperature,
                     maxTokens,
                     maxInputTokens,
@@ -986,6 +1066,7 @@ public final class ChatStreamRequest {
                     frequencyPenalty,
                     presencePenalty,
                     rawPrompting,
+                    returnPrompt,
                     tools,
                     toolResults,
                     additionalProperties);
