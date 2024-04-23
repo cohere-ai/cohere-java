@@ -2,7 +2,7 @@
 
 ![](banner.png)
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.cohere.cohere-java/cohere)](https://central.sonatype.com/artifact/com.cohere.cohere-java/cohere)
+[![Maven Central](https://img.shields.io/maven-central/v/com.cohere/cohere-java)](https://central.sonatype.com/artifact/com.cohere/cohere-java)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
 ## ✨🪩✨ Announcing Cohere's new Java SDK ✨🪩✨
@@ -21,7 +21,7 @@ Add the dependency in your `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'com.cohere.cohere-java:cohere:1.x.x'
+    implementation 'com.cohere:cohere-java:+'
 }
 ```
 
@@ -31,8 +31,8 @@ Add the dependency in your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.cohere.cohere-java</groupId>
-    <artifactId>cohere</artifactId>
+    <groupId>com.cohere</groupId>
+    <artifactId>cohere-java</artifactId>
     <version>1.x.x</version>
 </dependency>
 ```
@@ -40,16 +40,28 @@ Add the dependency in your `pom.xml`:
 ## Usage
 ```java
 import com.cohere.api.Cohere;
+import com.cohere.api.requests.ChatRequest;
+import com.cohere.api.types.ChatMessage;
+import com.cohere.api.types.ChatMessageRole;
+import com.cohere.api.types.NonStreamedChatResponse;
 
-Cohere cohere = Cohere.builder()
-  .apiKey("YOUR_API_KEY")
-  .build();
-  
-GenerateResponse response = cohere.generate(GenerateRequest.builder()
-      .prompt("Summarize the blog post...")
-      .build());
+import java.util.List;
 
-System.out.printlin("Received response!" + response);
+
+public class ChatPost {
+    public static void main(String[] args) {
+        Cohere cohere = Cohere.builder().token("<<apiKey>>").clientName("snippet").build();
+
+        NonStreamedChatResponse response = cohere.chat(
+                ChatRequest.builder()
+                        .message("What year was he born?")
+                        .chatHistory(
+                                List.of(ChatMessage.builder().role(ChatMessageRole.USER).message("Who discovered gravity?").build(),
+                                        ChatMessage.builder().role(ChatMessageRole.CHATBOT).message("The man who is widely credited with discovering gravity is Sir Isaac Newton").build())).build());
+
+        System.out.println(response);
+    }
+}
 ```
 
 ### Handling Errors
