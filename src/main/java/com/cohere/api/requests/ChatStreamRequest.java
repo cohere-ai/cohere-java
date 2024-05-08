@@ -128,6 +128,7 @@ public final class ChatStreamRequest {
 
     /**
      * @return Text input for the model to respond to.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -136,7 +137,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return Defaults to <code>command-r-plus</code>.
-     * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+     * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.
+     * Compatible Deployments: Cohere Platform, Private Deployments</p>
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -150,7 +152,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return When specified, the default Cohere preamble will be replaced with the provided one. Preambles are a part of the prompt used to adjust the model's overall behavior and conversation style, and use the <code>SYSTEM</code> role.
-     * <p>The <code>SYSTEM</code> role is also used for the contents of the optional <code>chat_history=</code> parameter. When used with the <code>chat_history=</code> parameter it adds content throughout a conversation. Conversely, when used with the <code>preamble=</code> parameter it adds content at the start of the conversation only.</p>
+     * <p>The <code>SYSTEM</code> role is also used for the contents of the optional <code>chat_history=</code> parameter. When used with the <code>chat_history=</code> parameter it adds content throughout a conversation. Conversely, when used with the <code>preamble=</code> parameter it adds content at the start of the conversation only.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("preamble")
     public Optional<String> getPreamble() {
@@ -160,7 +163,8 @@ public final class ChatStreamRequest {
     /**
      * @return A list of previous messages between the user and the model, giving the model conversational context for responding to the user's <code>message</code>.
      * <p>Each item represents a single message in the chat history, excluding the current user turn. It has two properties: <code>role</code> and <code>message</code>. The <code>role</code> identifies the sender (<code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code>), while the <code>message</code> contains the text content.</p>
-     * <p>The chat_history parameter should not be used for <code>SYSTEM</code> messages in most cases. Instead, to add a <code>SYSTEM</code> role message at the beginning of a conversation, the <code>preamble</code> parameter should be used.</p>
+     * <p>The chat_history parameter should not be used for <code>SYSTEM</code> messages in most cases. Instead, to add a <code>SYSTEM</code> role message at the beginning of a conversation, the <code>preamble</code> parameter should be used.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("chat_history")
     public Optional<List<ChatMessage>> getChatHistory() {
@@ -169,7 +173,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return An alternative to <code>chat_history</code>.
-     * <p>Providing a <code>conversation_id</code> creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.</p>
+     * <p>Providing a <code>conversation_id</code> creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.
+     * Compatible Deployments: Cohere Platform</p>
      */
     @JsonProperty("conversation_id")
     public Optional<String> getConversationId() {
@@ -181,7 +186,8 @@ public final class ChatStreamRequest {
      * <p>Dictates how the prompt will be constructed.</p>
      * <p>With <code>prompt_truncation</code> set to &quot;AUTO&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be changed and ranked by relevance.</p>
      * <p>With <code>prompt_truncation</code> set to &quot;AUTO_PRESERVE_ORDER&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be preserved as they are inputted into the API.</p>
-     * <p>With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.</p>
+     * <p>With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.
+     * Compatible Deployments: Cohere Platform Only AUTO_PRESERVE_ORDER: Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("prompt_truncation")
     public Optional<ChatStreamRequestPromptTruncation> getPromptTruncation() {
@@ -190,7 +196,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.
-     * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).</p>
+     * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).
+     * Compatible Deployments: Cohere Platform</p>
      */
     @JsonProperty("connectors")
     public Optional<List<ChatConnector>> getConnectors() {
@@ -199,7 +206,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return Defaults to <code>false</code>.
-     * <p>When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.</p>
+     * <p>When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("search_queries_only")
     public Optional<Boolean> getSearchQueriesOnly() {
@@ -214,7 +222,8 @@ public final class ChatStreamRequest {
      * <p>Some suggested keys are &quot;text&quot;, &quot;author&quot;, and &quot;date&quot;. For better generation quality, it is recommended to keep the total word count of the strings in the dictionary to under 300 words.</p>
      * <p>An <code>id</code> field (string) can be optionally supplied to identify the document in the citations. This field will not be passed to the model.</p>
      * <p>An <code>_excludes</code> field (array of strings) can be optionally supplied to omit some key-value pairs from being shown to the model. The omitted fields will still show up in the citation object. The &quot;_excludes&quot; field will not be passed to the model.</p>
-     * <p>See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.</p>
+     * <p>See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("documents")
     public Optional<List<Map<String, String>>> getDocuments() {
@@ -223,7 +232,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return Defaults to <code>&quot;accurate&quot;</code>.
-     * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.</p>
+     * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("citation_quality")
     public Optional<ChatStreamRequestCitationQuality> getCitationQuality() {
@@ -233,7 +243,8 @@ public final class ChatStreamRequest {
     /**
      * @return Defaults to <code>0.3</code>.
      * <p>A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
-     * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
+     * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("temperature")
     public Optional<Double> getTemperature() {
@@ -242,6 +253,7 @@ public final class ChatStreamRequest {
 
     /**
      * @return The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("max_tokens")
     public Optional<Integer> getMaxTokens() {
@@ -250,7 +262,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return The maximum number of input tokens to send to the model. If not specified, <code>max_input_tokens</code> is the model's context length limit minus a small buffer.
-     * <p>Input will be truncated according to the <code>prompt_truncation</code> parameter.</p>
+     * <p>Input will be truncated according to the <code>prompt_truncation</code> parameter.
+     * Compatible Deployments: Cohere Platform</p>
      */
     @JsonProperty("max_input_tokens")
     public Optional<Integer> getMaxInputTokens() {
@@ -260,6 +273,7 @@ public final class ChatStreamRequest {
     /**
      * @return Ensures only the top <code>k</code> most likely tokens are considered for generation at each step.
      * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("k")
     public Optional<Integer> getK() {
@@ -269,6 +283,7 @@ public final class ChatStreamRequest {
     /**
      * @return Ensures that only the most likely tokens, with total probability mass of <code>p</code>, are considered for generation at each step. If both <code>k</code> and <code>p</code> are enabled, <code>p</code> acts after <code>k</code>.
      * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("p")
     public Optional<Double> getP() {
@@ -276,7 +291,11 @@ public final class ChatStreamRequest {
     }
 
     /**
-     * @return If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinism cannot be totally guaranteed.
+     * @return If specified, the backend will make a best effort to sample tokens
+     * deterministically, such that repeated requests with the same
+     * seed and parameters should return the same result. However,
+     * determinism cannot be totally guaranteed.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("seed")
     public Optional<Double> getSeed() {
@@ -285,6 +304,7 @@ public final class ChatStreamRequest {
 
     /**
      * @return A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("stop_sequences")
     public Optional<List<String>> getStopSequences() {
@@ -293,7 +313,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
-     * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
+     * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("frequency_penalty")
     public Optional<Double> getFrequencyPenalty() {
@@ -302,7 +323,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
-     * <p>Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+     * <p>Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("presence_penalty")
     public Optional<Double> getPresencePenalty() {
@@ -310,7 +332,9 @@ public final class ChatStreamRequest {
     }
 
     /**
-     * @return When enabled, the user's prompt will be sent to the model without any pre-processing.
+     * @return When enabled, the user's prompt will be sent to the model without
+     * any pre-processing.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("raw_prompting")
     public Optional<Boolean> getRawPrompting() {
@@ -327,7 +351,8 @@ public final class ChatStreamRequest {
 
     /**
      * @return A list of available tools (functions) that the model may suggest invoking before producing a text response.
-     * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
+     * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("tools")
     public Optional<List<Tool>> getTools() {
@@ -353,7 +378,8 @@ public final class ChatStreamRequest {
      *   ...
      * ]
      * </code></pre>
-     * <p><strong>Note</strong>: Chat calls with <code>tool_results</code> should not be included in the Chat history to avoid duplication of the message text.</p>
+     * <p><strong>Note</strong>: Chat calls with <code>tool_results</code> should not be included in the Chat history to avoid duplication of the message text.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("tool_results")
     public Optional<List<ChatStreamRequestToolResultsItem>> getToolResults() {
@@ -614,7 +640,8 @@ public final class ChatStreamRequest {
         }
 
         /**
-         * <p>Text input for the model to respond to.</p>
+         * <p>Text input for the model to respond to.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -643,7 +670,8 @@ public final class ChatStreamRequest {
          *   ...
          * ]
          * </code></pre>
-         * <p><strong>Note</strong>: Chat calls with <code>tool_results</code> should not be included in the Chat history to avoid duplication of the message text.</p>
+         * <p><strong>Note</strong>: Chat calls with <code>tool_results</code> should not be included in the Chat history to avoid duplication of the message text.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -661,7 +689,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>A list of available tools (functions) that the model may suggest invoking before producing a text response.</p>
-         * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
+         * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -695,7 +724,9 @@ public final class ChatStreamRequest {
         }
 
         /**
-         * <p>When enabled, the user's prompt will be sent to the model without any pre-processing.</p>
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -713,7 +744,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.</p>
-         * <p>Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
+         * <p>Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -731,7 +763,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.</p>
-         * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
+         * <p>Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -748,7 +781,8 @@ public final class ChatStreamRequest {
         }
 
         /**
-         * <p>A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.</p>
+         * <p>A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -765,7 +799,11 @@ public final class ChatStreamRequest {
         }
 
         /**
-         * <p>If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinism cannot be totally guaranteed.</p>
+         * <p>If specified, the backend will make a best effort to sample tokens
+         * deterministically, such that repeated requests with the same
+         * seed and parameters should return the same result. However,
+         * determinism cannot be totally guaranteed.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -783,7 +821,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Ensures that only the most likely tokens, with total probability mass of <code>p</code>, are considered for generation at each step. If both <code>k</code> and <code>p</code> are enabled, <code>p</code> acts after <code>k</code>.
-         * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.</p>
+         * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -801,7 +840,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Ensures only the top <code>k</code> most likely tokens are considered for generation at each step.
-         * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.</p>
+         * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -819,7 +859,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>The maximum number of input tokens to send to the model. If not specified, <code>max_input_tokens</code> is the model's context length limit minus a small buffer.</p>
-         * <p>Input will be truncated according to the <code>prompt_truncation</code> parameter.</p>
+         * <p>Input will be truncated according to the <code>prompt_truncation</code> parameter.
+         * Compatible Deployments: Cohere Platform</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -836,7 +877,8 @@ public final class ChatStreamRequest {
         }
 
         /**
-         * <p>The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.</p>
+         * <p>The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -855,7 +897,8 @@ public final class ChatStreamRequest {
         /**
          * <p>Defaults to <code>0.3</code>.</p>
          * <p>A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
-         * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
+         * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -873,7 +916,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Defaults to <code>&quot;accurate&quot;</code>.</p>
-         * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.</p>
+         * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results or <code>&quot;fast&quot;</code> results.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -897,7 +941,8 @@ public final class ChatStreamRequest {
          * <p>Some suggested keys are &quot;text&quot;, &quot;author&quot;, and &quot;date&quot;. For better generation quality, it is recommended to keep the total word count of the strings in the dictionary to under 300 words.</p>
          * <p>An <code>id</code> field (string) can be optionally supplied to identify the document in the citations. This field will not be passed to the model.</p>
          * <p>An <code>_excludes</code> field (array of strings) can be optionally supplied to omit some key-value pairs from being shown to the model. The omitted fields will still show up in the citation object. The &quot;_excludes&quot; field will not be passed to the model.</p>
-         * <p>See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.</p>
+         * <p>See <a href="https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode">'Document Mode'</a> in the guide for more information.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -915,7 +960,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Defaults to <code>false</code>.</p>
-         * <p>When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.</p>
+         * <p>When <code>true</code>, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's <code>message</code> will be generated.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -933,7 +979,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.</p>
-         * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).</p>
+         * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).
+         * Compatible Deployments: Cohere Platform</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -954,7 +1001,8 @@ public final class ChatStreamRequest {
          * <p>Dictates how the prompt will be constructed.</p>
          * <p>With <code>prompt_truncation</code> set to &quot;AUTO&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be changed and ranked by relevance.</p>
          * <p>With <code>prompt_truncation</code> set to &quot;AUTO_PRESERVE_ORDER&quot;, some elements from <code>chat_history</code> and <code>documents</code> will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be preserved as they are inputted into the API.</p>
-         * <p>With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.</p>
+         * <p>With <code>prompt_truncation</code> set to &quot;OFF&quot;, no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a <code>TooManyTokens</code> error will be returned.
+         * Compatible Deployments: Cohere Platform Only AUTO_PRESERVE_ORDER: Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -972,7 +1020,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>An alternative to <code>chat_history</code>.</p>
-         * <p>Providing a <code>conversation_id</code> creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.</p>
+         * <p>Providing a <code>conversation_id</code> creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.
+         * Compatible Deployments: Cohere Platform</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -991,7 +1040,8 @@ public final class ChatStreamRequest {
         /**
          * <p>A list of previous messages between the user and the model, giving the model conversational context for responding to the user's <code>message</code>.</p>
          * <p>Each item represents a single message in the chat history, excluding the current user turn. It has two properties: <code>role</code> and <code>message</code>. The <code>role</code> identifies the sender (<code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code>), while the <code>message</code> contains the text content.</p>
-         * <p>The chat_history parameter should not be used for <code>SYSTEM</code> messages in most cases. Instead, to add a <code>SYSTEM</code> role message at the beginning of a conversation, the <code>preamble</code> parameter should be used.</p>
+         * <p>The chat_history parameter should not be used for <code>SYSTEM</code> messages in most cases. Instead, to add a <code>SYSTEM</code> role message at the beginning of a conversation, the <code>preamble</code> parameter should be used.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1009,7 +1059,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>When specified, the default Cohere preamble will be replaced with the provided one. Preambles are a part of the prompt used to adjust the model's overall behavior and conversation style, and use the <code>SYSTEM</code> role.</p>
-         * <p>The <code>SYSTEM</code> role is also used for the contents of the optional <code>chat_history=</code> parameter. When used with the <code>chat_history=</code> parameter it adds content throughout a conversation. Conversely, when used with the <code>preamble=</code> parameter it adds content at the start of the conversation only.</p>
+         * <p>The <code>SYSTEM</code> role is also used for the contents of the optional <code>chat_history=</code> parameter. When used with the <code>chat_history=</code> parameter it adds content throughout a conversation. Conversely, when used with the <code>preamble=</code> parameter it adds content at the start of the conversation only.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1027,7 +1078,8 @@ public final class ChatStreamRequest {
 
         /**
          * <p>Defaults to <code>command-r-plus</code>.</p>
-         * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.
+         * Compatible Deployments: Cohere Platform, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
