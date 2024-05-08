@@ -145,6 +145,12 @@ public final class ChatRequest {
         return model;
     }
 
+    /**
+     * @return Defaults to <code>false</code>.
+     * <p>When <code>true</code>, the response will be a JSON stream of events. The final event will contain the complete response, and will have an <code>event_type</code> of <code>&quot;stream-end&quot;</code>.</p>
+     * <p>Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
+     */
     @JsonProperty("stream")
     public Boolean getStream() {
         return false;

@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = LabelMetric.Builder.class)
 public final class LabelMetric {
-    private final Optional<String> totalExamples;
+    private final Optional<Long> totalExamples;
 
     private final Optional<String> label;
 
@@ -30,7 +30,7 @@ public final class LabelMetric {
     private final Map<String, Object> additionalProperties;
 
     private LabelMetric(
-            Optional<String> totalExamples,
+            Optional<Long> totalExamples,
             Optional<String> label,
             Optional<List<String>> samples,
             Map<String, Object> additionalProperties) {
@@ -44,7 +44,7 @@ public final class LabelMetric {
      * @return Total number of examples for this label
      */
     @JsonProperty("total_examples")
-    public Optional<String> getTotalExamples() {
+    public Optional<Long> getTotalExamples() {
         return totalExamples;
     }
 
@@ -95,7 +95,7 @@ public final class LabelMetric {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> totalExamples = Optional.empty();
+        private Optional<Long> totalExamples = Optional.empty();
 
         private Optional<String> label = Optional.empty();
 
@@ -114,12 +114,12 @@ public final class LabelMetric {
         }
 
         @JsonSetter(value = "total_examples", nulls = Nulls.SKIP)
-        public Builder totalExamples(Optional<String> totalExamples) {
+        public Builder totalExamples(Optional<Long> totalExamples) {
             this.totalExamples = totalExamples;
             return this;
         }
 
-        public Builder totalExamples(String totalExamples) {
+        public Builder totalExamples(Long totalExamples) {
             this.totalExamples = Optional.of(totalExamples);
             return this;
         }

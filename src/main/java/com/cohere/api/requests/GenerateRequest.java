@@ -120,6 +120,16 @@ public final class GenerateRequest {
         return numGenerations;
     }
 
+    /**
+     * @return When <code>true</code>, the response will be a JSON stream of events. Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.
+     * <p>The final event will contain the complete response, and will contain an <code>is_finished</code> field set to <code>true</code>. The event will also contain a <code>finish_reason</code>, which can be one of the following:</p>
+     * <ul>
+     * <li><code>COMPLETE</code> - the model sent back a finished reply</li>
+     * <li><code>MAX_TOKENS</code> - the reply was cut off because the model reached the maximum number of tokens for its context length</li>
+     * <li><code>ERROR</code> - something went wrong when generating the reply</li>
+     * <li><code>ERROR_TOXIC</code> - the model generated a reply that was deemed toxic</li>
+     * </ul>
+     */
     @JsonProperty("stream")
     public Boolean getStream() {
         return false;
