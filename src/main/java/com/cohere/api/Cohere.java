@@ -25,6 +25,7 @@ import com.cohere.api.resources.datasets.DatasetsClient;
 import com.cohere.api.resources.embedjobs.EmbedJobsClient;
 import com.cohere.api.resources.finetuning.FinetuningClient;
 import com.cohere.api.resources.models.ModelsClient;
+import com.cohere.api.types.CheckApiKeyResponse;
 import com.cohere.api.types.ClassifyResponse;
 import com.cohere.api.types.DetokenizeResponse;
 import com.cohere.api.types.EmbedResponse;
@@ -544,6 +545,44 @@ public class Cohere {
             Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DetokenizeResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Checks that the api key in the Authorization header is valid and active
+     */
+    public CheckApiKeyResponse checkApiKey() {
+        return checkApiKey(null);
+    }
+
+    /**
+     * Checks that the api key in the Authorization header is valid and active
+     */
+    public CheckApiKeyResponse checkApiKey(RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("check-api-key")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), CheckApiKeyResponse.class);
             }
             throw new ApiError(
                     response.code(),

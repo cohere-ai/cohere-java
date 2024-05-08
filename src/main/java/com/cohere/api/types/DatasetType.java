@@ -16,8 +16,6 @@ public enum DatasetType {
 
     RERANKER_FINETUNE_INPUT("reranker-finetune-input"),
 
-    PROMPT_COMPLETION_FINETUNE_INPUT("prompt-completion-finetune-input"),
-
     SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT("single-label-classification-finetune-input"),
 
     CHAT_FINETUNE_INPUT("chat-finetune-input"),
