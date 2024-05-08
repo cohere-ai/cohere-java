@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = DatasetsCreateResponseDatasetParts.Builder.class)
-public final class DatasetsCreateResponseDatasetParts {
+@JsonDeserialize(builder = DatasetsCreateResponseDatasetPartsItem.Builder.class)
+public final class DatasetsCreateResponseDatasetPartsItem {
     private final Optional<String> name;
 
     private final Optional<Double> numRows;
@@ -31,7 +31,7 @@ public final class DatasetsCreateResponseDatasetParts {
 
     private final Map<String, Object> additionalProperties;
 
-    private DatasetsCreateResponseDatasetParts(
+    private DatasetsCreateResponseDatasetPartsItem(
             Optional<String> name,
             Optional<Double> numRows,
             Optional<List<String>> samples,
@@ -76,8 +76,8 @@ public final class DatasetsCreateResponseDatasetParts {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof DatasetsCreateResponseDatasetParts
-                && equalTo((DatasetsCreateResponseDatasetParts) other);
+        return other instanceof DatasetsCreateResponseDatasetPartsItem
+                && equalTo((DatasetsCreateResponseDatasetPartsItem) other);
     }
 
     @JsonAnyGetter
@@ -85,7 +85,7 @@ public final class DatasetsCreateResponseDatasetParts {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(DatasetsCreateResponseDatasetParts other) {
+    private boolean equalTo(DatasetsCreateResponseDatasetPartsItem other) {
         return name.equals(other.name)
                 && numRows.equals(other.numRows)
                 && samples.equals(other.samples)
@@ -121,7 +121,7 @@ public final class DatasetsCreateResponseDatasetParts {
 
         private Builder() {}
 
-        public Builder from(DatasetsCreateResponseDatasetParts other) {
+        public Builder from(DatasetsCreateResponseDatasetPartsItem other) {
             name(other.getName());
             numRows(other.getNumRows());
             samples(other.getSamples());
@@ -173,8 +173,8 @@ public final class DatasetsCreateResponseDatasetParts {
             return this;
         }
 
-        public DatasetsCreateResponseDatasetParts build() {
-            return new DatasetsCreateResponseDatasetParts(name, numRows, samples, partKind, additionalProperties);
+        public DatasetsCreateResponseDatasetPartsItem build() {
+            return new DatasetsCreateResponseDatasetPartsItem(name, numRows, samples, partKind, additionalProperties);
         }
     }
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +35,8 @@ public final class DatasetPart {
 
     private final Optional<String> originalUrl;
 
+    private final Optional<List<String>> samples;
+
     private final Map<String, Object> additionalProperties;
 
     private DatasetPart(
@@ -44,6 +47,7 @@ public final class DatasetPart {
             Optional<Integer> sizeBytes,
             Optional<Integer> numRows,
             Optional<String> originalUrl,
+            Optional<List<String>> samples,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
@@ -52,6 +56,7 @@ public final class DatasetPart {
         this.sizeBytes = sizeBytes;
         this.numRows = numRows;
         this.originalUrl = originalUrl;
+        this.samples = samples;
         this.additionalProperties = additionalProperties;
     }
 
@@ -111,6 +116,14 @@ public final class DatasetPart {
         return originalUrl;
     }
 
+    /**
+     * @return The first few rows of the parsed file
+     */
+    @JsonProperty("samples")
+    public Optional<List<String>> getSamples() {
+        return samples;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -129,12 +142,14 @@ public final class DatasetPart {
                 && index.equals(other.index)
                 && sizeBytes.equals(other.sizeBytes)
                 && numRows.equals(other.numRows)
-                && originalUrl.equals(other.originalUrl);
+                && originalUrl.equals(other.originalUrl)
+                && samples.equals(other.samples);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.url, this.index, this.sizeBytes, this.numRows, this.originalUrl);
+        return Objects.hash(
+                this.id, this.name, this.url, this.index, this.sizeBytes, this.numRows, this.originalUrl, this.samples);
     }
 
     @java.lang.Override
@@ -178,6 +193,10 @@ public final class DatasetPart {
         _FinalStage originalUrl(Optional<String> originalUrl);
 
         _FinalStage originalUrl(String originalUrl);
+
+        _FinalStage samples(Optional<List<String>> samples);
+
+        _FinalStage samples(List<String> samples);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -185,6 +204,8 @@ public final class DatasetPart {
         private String id;
 
         private String name;
+
+        private Optional<List<String>> samples = Optional.empty();
 
         private Optional<String> originalUrl = Optional.empty();
 
@@ -210,6 +231,7 @@ public final class DatasetPart {
             sizeBytes(other.getSizeBytes());
             numRows(other.getNumRows());
             originalUrl(other.getOriginalUrl());
+            samples(other.getSamples());
             return this;
         }
 
@@ -232,6 +254,23 @@ public final class DatasetPart {
         @JsonSetter("name")
         public _FinalStage name(String name) {
             this.name = name;
+            return this;
+        }
+
+        /**
+         * <p>The first few rows of the parsed file</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage samples(List<String> samples) {
+            this.samples = Optional.of(samples);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "samples", nulls = Nulls.SKIP)
+        public _FinalStage samples(Optional<List<String>> samples) {
+            this.samples = samples;
             return this;
         }
 
@@ -322,7 +361,8 @@ public final class DatasetPart {
 
         @java.lang.Override
         public DatasetPart build() {
-            return new DatasetPart(id, name, url, index, sizeBytes, numRows, originalUrl, additionalProperties);
+            return new DatasetPart(
+                    id, name, url, index, sizeBytes, numRows, originalUrl, samples, additionalProperties);
         }
     }
 }

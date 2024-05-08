@@ -30,7 +30,7 @@ public final class ClientOptions {
                 "X-Fern-SDK-Name",
                 "com.cohere.fern:api-sdk",
                 "X-Fern-SDK-Version",
-                "1.0.4",
+                "1.0.5",
                 "X-Fern-Language",
                 "JAVA"));
         this.headerSuppliers = headerSuppliers;
