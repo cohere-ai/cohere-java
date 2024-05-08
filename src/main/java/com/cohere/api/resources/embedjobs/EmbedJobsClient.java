@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class EmbedJobsClient {
     protected final ClientOptions clientOptions;
@@ -54,12 +55,14 @@ public class EmbedJobsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ListEmbedJobResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ListEmbedJobResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -99,12 +102,14 @@ public class EmbedJobsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), CreateEmbedJobResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CreateEmbedJobResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -138,12 +143,14 @@ public class EmbedJobsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EmbedJob.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmbedJob.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -177,12 +184,14 @@ public class EmbedJobsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -20,17 +20,17 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatDataMetrics.Builder.class)
 public final class ChatDataMetrics {
-    private final Optional<String> numTrainTurns;
+    private final Optional<Long> numTrainTurns;
 
-    private final Optional<String> numEvalTurns;
+    private final Optional<Long> numEvalTurns;
 
     private final Optional<String> preamble;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatDataMetrics(
-            Optional<String> numTrainTurns,
-            Optional<String> numEvalTurns,
+            Optional<Long> numTrainTurns,
+            Optional<Long> numEvalTurns,
             Optional<String> preamble,
             Map<String, Object> additionalProperties) {
         this.numTrainTurns = numTrainTurns;
@@ -43,7 +43,7 @@ public final class ChatDataMetrics {
      * @return The sum of all turns of valid train examples.
      */
     @JsonProperty("num_train_turns")
-    public Optional<String> getNumTrainTurns() {
+    public Optional<Long> getNumTrainTurns() {
         return numTrainTurns;
     }
 
@@ -51,7 +51,7 @@ public final class ChatDataMetrics {
      * @return The sum of all turns of valid eval examples.
      */
     @JsonProperty("num_eval_turns")
-    public Optional<String> getNumEvalTurns() {
+    public Optional<Long> getNumEvalTurns() {
         return numEvalTurns;
     }
 
@@ -96,9 +96,9 @@ public final class ChatDataMetrics {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> numTrainTurns = Optional.empty();
+        private Optional<Long> numTrainTurns = Optional.empty();
 
-        private Optional<String> numEvalTurns = Optional.empty();
+        private Optional<Long> numEvalTurns = Optional.empty();
 
         private Optional<String> preamble = Optional.empty();
 
@@ -115,23 +115,23 @@ public final class ChatDataMetrics {
         }
 
         @JsonSetter(value = "num_train_turns", nulls = Nulls.SKIP)
-        public Builder numTrainTurns(Optional<String> numTrainTurns) {
+        public Builder numTrainTurns(Optional<Long> numTrainTurns) {
             this.numTrainTurns = numTrainTurns;
             return this;
         }
 
-        public Builder numTrainTurns(String numTrainTurns) {
+        public Builder numTrainTurns(Long numTrainTurns) {
             this.numTrainTurns = Optional.of(numTrainTurns);
             return this;
         }
 
         @JsonSetter(value = "num_eval_turns", nulls = Nulls.SKIP)
-        public Builder numEvalTurns(Optional<String> numEvalTurns) {
+        public Builder numEvalTurns(Optional<Long> numEvalTurns) {
             this.numEvalTurns = numEvalTurns;
             return this;
         }
 
-        public Builder numEvalTurns(String numEvalTurns) {
+        public Builder numEvalTurns(Long numEvalTurns) {
             this.numEvalTurns = Optional.of(numEvalTurns);
             return this;
         }

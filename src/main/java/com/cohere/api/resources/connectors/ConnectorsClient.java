@@ -26,6 +26,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class ConnectorsClient {
     protected final ClientOptions clientOptions;
@@ -73,12 +74,14 @@ public class ConnectorsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ListConnectorsResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ListConnectorsResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -118,12 +121,14 @@ public class ConnectorsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), CreateConnectorResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CreateConnectorResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -157,12 +162,14 @@ public class ConnectorsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), GetConnectorResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetConnectorResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -196,13 +203,15 @@ public class ConnectorsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
-                        response.body().string(), new TypeReference<Map<String, Object>>() {});
+                        responseBody.string(), new TypeReference<Map<String, Object>>() {});
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -250,12 +259,14 @@ public class ConnectorsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), UpdateConnectorResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), UpdateConnectorResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -301,12 +312,14 @@ public class ConnectorsClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OAuthAuthorizeResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OAuthAuthorizeResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

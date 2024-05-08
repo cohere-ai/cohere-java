@@ -20,11 +20,11 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = DatasetsGetUsageResponse.Builder.class)
 public final class DatasetsGetUsageResponse {
-    private final Optional<String> organizationUsage;
+    private final Optional<Long> organizationUsage;
 
     private final Map<String, Object> additionalProperties;
 
-    private DatasetsGetUsageResponse(Optional<String> organizationUsage, Map<String, Object> additionalProperties) {
+    private DatasetsGetUsageResponse(Optional<Long> organizationUsage, Map<String, Object> additionalProperties) {
         this.organizationUsage = organizationUsage;
         this.additionalProperties = additionalProperties;
     }
@@ -33,7 +33,7 @@ public final class DatasetsGetUsageResponse {
      * @return The total number of bytes used by the organization.
      */
     @JsonProperty("organization_usage")
-    public Optional<String> getOrganizationUsage() {
+    public Optional<Long> getOrganizationUsage() {
         return organizationUsage;
     }
 
@@ -68,7 +68,7 @@ public final class DatasetsGetUsageResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> organizationUsage = Optional.empty();
+        private Optional<Long> organizationUsage = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -81,12 +81,12 @@ public final class DatasetsGetUsageResponse {
         }
 
         @JsonSetter(value = "organization_usage", nulls = Nulls.SKIP)
-        public Builder organizationUsage(Optional<String> organizationUsage) {
+        public Builder organizationUsage(Optional<Long> organizationUsage) {
             this.organizationUsage = organizationUsage;
             return this;
         }
 
-        public Builder organizationUsage(String organizationUsage) {
+        public Builder organizationUsage(Long organizationUsage) {
             this.organizationUsage = Optional.of(organizationUsage);
             return this;
         }

@@ -20,27 +20,27 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = RerankerDataMetrics.Builder.class)
 public final class RerankerDataMetrics {
-    private final Optional<String> numTrainQueries;
+    private final Optional<Long> numTrainQueries;
 
-    private final Optional<String> numTrainRelevantPassages;
+    private final Optional<Long> numTrainRelevantPassages;
 
-    private final Optional<String> numTrainHardNegatives;
+    private final Optional<Long> numTrainHardNegatives;
 
-    private final Optional<String> numEvalQueries;
+    private final Optional<Long> numEvalQueries;
 
-    private final Optional<String> numEvalRelevantPassages;
+    private final Optional<Long> numEvalRelevantPassages;
 
-    private final Optional<String> numEvalHardNegatives;
+    private final Optional<Long> numEvalHardNegatives;
 
     private final Map<String, Object> additionalProperties;
 
     private RerankerDataMetrics(
-            Optional<String> numTrainQueries,
-            Optional<String> numTrainRelevantPassages,
-            Optional<String> numTrainHardNegatives,
-            Optional<String> numEvalQueries,
-            Optional<String> numEvalRelevantPassages,
-            Optional<String> numEvalHardNegatives,
+            Optional<Long> numTrainQueries,
+            Optional<Long> numTrainRelevantPassages,
+            Optional<Long> numTrainHardNegatives,
+            Optional<Long> numEvalQueries,
+            Optional<Long> numEvalRelevantPassages,
+            Optional<Long> numEvalHardNegatives,
             Map<String, Object> additionalProperties) {
         this.numTrainQueries = numTrainQueries;
         this.numTrainRelevantPassages = numTrainRelevantPassages;
@@ -55,7 +55,7 @@ public final class RerankerDataMetrics {
      * @return The number of training queries.
      */
     @JsonProperty("num_train_queries")
-    public Optional<String> getNumTrainQueries() {
+    public Optional<Long> getNumTrainQueries() {
         return numTrainQueries;
     }
 
@@ -63,7 +63,7 @@ public final class RerankerDataMetrics {
      * @return The sum of all relevant passages of valid training examples.
      */
     @JsonProperty("num_train_relevant_passages")
-    public Optional<String> getNumTrainRelevantPassages() {
+    public Optional<Long> getNumTrainRelevantPassages() {
         return numTrainRelevantPassages;
     }
 
@@ -71,7 +71,7 @@ public final class RerankerDataMetrics {
      * @return The sum of all hard negatives of valid training examples.
      */
     @JsonProperty("num_train_hard_negatives")
-    public Optional<String> getNumTrainHardNegatives() {
+    public Optional<Long> getNumTrainHardNegatives() {
         return numTrainHardNegatives;
     }
 
@@ -79,7 +79,7 @@ public final class RerankerDataMetrics {
      * @return The number of evaluation queries.
      */
     @JsonProperty("num_eval_queries")
-    public Optional<String> getNumEvalQueries() {
+    public Optional<Long> getNumEvalQueries() {
         return numEvalQueries;
     }
 
@@ -87,7 +87,7 @@ public final class RerankerDataMetrics {
      * @return The sum of all relevant passages of valid eval examples.
      */
     @JsonProperty("num_eval_relevant_passages")
-    public Optional<String> getNumEvalRelevantPassages() {
+    public Optional<Long> getNumEvalRelevantPassages() {
         return numEvalRelevantPassages;
     }
 
@@ -95,7 +95,7 @@ public final class RerankerDataMetrics {
      * @return The sum of all hard negatives of valid eval examples.
      */
     @JsonProperty("num_eval_hard_negatives")
-    public Optional<String> getNumEvalHardNegatives() {
+    public Optional<Long> getNumEvalHardNegatives() {
         return numEvalHardNegatives;
     }
 
@@ -141,17 +141,17 @@ public final class RerankerDataMetrics {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> numTrainQueries = Optional.empty();
+        private Optional<Long> numTrainQueries = Optional.empty();
 
-        private Optional<String> numTrainRelevantPassages = Optional.empty();
+        private Optional<Long> numTrainRelevantPassages = Optional.empty();
 
-        private Optional<String> numTrainHardNegatives = Optional.empty();
+        private Optional<Long> numTrainHardNegatives = Optional.empty();
 
-        private Optional<String> numEvalQueries = Optional.empty();
+        private Optional<Long> numEvalQueries = Optional.empty();
 
-        private Optional<String> numEvalRelevantPassages = Optional.empty();
+        private Optional<Long> numEvalRelevantPassages = Optional.empty();
 
-        private Optional<String> numEvalHardNegatives = Optional.empty();
+        private Optional<Long> numEvalHardNegatives = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -169,67 +169,67 @@ public final class RerankerDataMetrics {
         }
 
         @JsonSetter(value = "num_train_queries", nulls = Nulls.SKIP)
-        public Builder numTrainQueries(Optional<String> numTrainQueries) {
+        public Builder numTrainQueries(Optional<Long> numTrainQueries) {
             this.numTrainQueries = numTrainQueries;
             return this;
         }
 
-        public Builder numTrainQueries(String numTrainQueries) {
+        public Builder numTrainQueries(Long numTrainQueries) {
             this.numTrainQueries = Optional.of(numTrainQueries);
             return this;
         }
 
         @JsonSetter(value = "num_train_relevant_passages", nulls = Nulls.SKIP)
-        public Builder numTrainRelevantPassages(Optional<String> numTrainRelevantPassages) {
+        public Builder numTrainRelevantPassages(Optional<Long> numTrainRelevantPassages) {
             this.numTrainRelevantPassages = numTrainRelevantPassages;
             return this;
         }
 
-        public Builder numTrainRelevantPassages(String numTrainRelevantPassages) {
+        public Builder numTrainRelevantPassages(Long numTrainRelevantPassages) {
             this.numTrainRelevantPassages = Optional.of(numTrainRelevantPassages);
             return this;
         }
 
         @JsonSetter(value = "num_train_hard_negatives", nulls = Nulls.SKIP)
-        public Builder numTrainHardNegatives(Optional<String> numTrainHardNegatives) {
+        public Builder numTrainHardNegatives(Optional<Long> numTrainHardNegatives) {
             this.numTrainHardNegatives = numTrainHardNegatives;
             return this;
         }
 
-        public Builder numTrainHardNegatives(String numTrainHardNegatives) {
+        public Builder numTrainHardNegatives(Long numTrainHardNegatives) {
             this.numTrainHardNegatives = Optional.of(numTrainHardNegatives);
             return this;
         }
 
         @JsonSetter(value = "num_eval_queries", nulls = Nulls.SKIP)
-        public Builder numEvalQueries(Optional<String> numEvalQueries) {
+        public Builder numEvalQueries(Optional<Long> numEvalQueries) {
             this.numEvalQueries = numEvalQueries;
             return this;
         }
 
-        public Builder numEvalQueries(String numEvalQueries) {
+        public Builder numEvalQueries(Long numEvalQueries) {
             this.numEvalQueries = Optional.of(numEvalQueries);
             return this;
         }
 
         @JsonSetter(value = "num_eval_relevant_passages", nulls = Nulls.SKIP)
-        public Builder numEvalRelevantPassages(Optional<String> numEvalRelevantPassages) {
+        public Builder numEvalRelevantPassages(Optional<Long> numEvalRelevantPassages) {
             this.numEvalRelevantPassages = numEvalRelevantPassages;
             return this;
         }
 
-        public Builder numEvalRelevantPassages(String numEvalRelevantPassages) {
+        public Builder numEvalRelevantPassages(Long numEvalRelevantPassages) {
             this.numEvalRelevantPassages = Optional.of(numEvalRelevantPassages);
             return this;
         }
 
         @JsonSetter(value = "num_eval_hard_negatives", nulls = Nulls.SKIP)
-        public Builder numEvalHardNegatives(Optional<String> numEvalHardNegatives) {
+        public Builder numEvalHardNegatives(Optional<Long> numEvalHardNegatives) {
             this.numEvalHardNegatives = numEvalHardNegatives;
             return this;
         }
 
-        public Builder numEvalHardNegatives(String numEvalHardNegatives) {
+        public Builder numEvalHardNegatives(Long numEvalHardNegatives) {
             this.numEvalHardNegatives = Optional.of(numEvalHardNegatives);
             return this;
         }

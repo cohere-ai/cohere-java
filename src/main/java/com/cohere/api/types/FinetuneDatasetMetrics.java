@@ -20,27 +20,27 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = FinetuneDatasetMetrics.Builder.class)
 public final class FinetuneDatasetMetrics {
-    private final Optional<String> trainableTokenCount;
+    private final Optional<Long> trainableTokenCount;
 
-    private final Optional<String> totalExamples;
+    private final Optional<Long> totalExamples;
 
-    private final Optional<String> trainExamples;
+    private final Optional<Long> trainExamples;
 
-    private final Optional<String> trainSizeBytes;
+    private final Optional<Long> trainSizeBytes;
 
-    private final Optional<String> evalExamples;
+    private final Optional<Long> evalExamples;
 
-    private final Optional<String> evalSizeBytes;
+    private final Optional<Long> evalSizeBytes;
 
     private final Map<String, Object> additionalProperties;
 
     private FinetuneDatasetMetrics(
-            Optional<String> trainableTokenCount,
-            Optional<String> totalExamples,
-            Optional<String> trainExamples,
-            Optional<String> trainSizeBytes,
-            Optional<String> evalExamples,
-            Optional<String> evalSizeBytes,
+            Optional<Long> trainableTokenCount,
+            Optional<Long> totalExamples,
+            Optional<Long> trainExamples,
+            Optional<Long> trainSizeBytes,
+            Optional<Long> evalExamples,
+            Optional<Long> evalSizeBytes,
             Map<String, Object> additionalProperties) {
         this.trainableTokenCount = trainableTokenCount;
         this.totalExamples = totalExamples;
@@ -55,7 +55,7 @@ public final class FinetuneDatasetMetrics {
      * @return The number of tokens of valid examples that can be used for training.
      */
     @JsonProperty("trainable_token_count")
-    public Optional<String> getTrainableTokenCount() {
+    public Optional<Long> getTrainableTokenCount() {
         return trainableTokenCount;
     }
 
@@ -63,7 +63,7 @@ public final class FinetuneDatasetMetrics {
      * @return The overall number of examples.
      */
     @JsonProperty("total_examples")
-    public Optional<String> getTotalExamples() {
+    public Optional<Long> getTotalExamples() {
         return totalExamples;
     }
 
@@ -71,7 +71,7 @@ public final class FinetuneDatasetMetrics {
      * @return The number of training examples.
      */
     @JsonProperty("train_examples")
-    public Optional<String> getTrainExamples() {
+    public Optional<Long> getTrainExamples() {
         return trainExamples;
     }
 
@@ -79,7 +79,7 @@ public final class FinetuneDatasetMetrics {
      * @return The size in bytes of all training examples.
      */
     @JsonProperty("train_size_bytes")
-    public Optional<String> getTrainSizeBytes() {
+    public Optional<Long> getTrainSizeBytes() {
         return trainSizeBytes;
     }
 
@@ -87,7 +87,7 @@ public final class FinetuneDatasetMetrics {
      * @return Number of evaluation examples.
      */
     @JsonProperty("eval_examples")
-    public Optional<String> getEvalExamples() {
+    public Optional<Long> getEvalExamples() {
         return evalExamples;
     }
 
@@ -95,7 +95,7 @@ public final class FinetuneDatasetMetrics {
      * @return The size in bytes of all eval examples.
      */
     @JsonProperty("eval_size_bytes")
-    public Optional<String> getEvalSizeBytes() {
+    public Optional<Long> getEvalSizeBytes() {
         return evalSizeBytes;
     }
 
@@ -141,17 +141,17 @@ public final class FinetuneDatasetMetrics {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> trainableTokenCount = Optional.empty();
+        private Optional<Long> trainableTokenCount = Optional.empty();
 
-        private Optional<String> totalExamples = Optional.empty();
+        private Optional<Long> totalExamples = Optional.empty();
 
-        private Optional<String> trainExamples = Optional.empty();
+        private Optional<Long> trainExamples = Optional.empty();
 
-        private Optional<String> trainSizeBytes = Optional.empty();
+        private Optional<Long> trainSizeBytes = Optional.empty();
 
-        private Optional<String> evalExamples = Optional.empty();
+        private Optional<Long> evalExamples = Optional.empty();
 
-        private Optional<String> evalSizeBytes = Optional.empty();
+        private Optional<Long> evalSizeBytes = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -169,67 +169,67 @@ public final class FinetuneDatasetMetrics {
         }
 
         @JsonSetter(value = "trainable_token_count", nulls = Nulls.SKIP)
-        public Builder trainableTokenCount(Optional<String> trainableTokenCount) {
+        public Builder trainableTokenCount(Optional<Long> trainableTokenCount) {
             this.trainableTokenCount = trainableTokenCount;
             return this;
         }
 
-        public Builder trainableTokenCount(String trainableTokenCount) {
+        public Builder trainableTokenCount(Long trainableTokenCount) {
             this.trainableTokenCount = Optional.of(trainableTokenCount);
             return this;
         }
 
         @JsonSetter(value = "total_examples", nulls = Nulls.SKIP)
-        public Builder totalExamples(Optional<String> totalExamples) {
+        public Builder totalExamples(Optional<Long> totalExamples) {
             this.totalExamples = totalExamples;
             return this;
         }
 
-        public Builder totalExamples(String totalExamples) {
+        public Builder totalExamples(Long totalExamples) {
             this.totalExamples = Optional.of(totalExamples);
             return this;
         }
 
         @JsonSetter(value = "train_examples", nulls = Nulls.SKIP)
-        public Builder trainExamples(Optional<String> trainExamples) {
+        public Builder trainExamples(Optional<Long> trainExamples) {
             this.trainExamples = trainExamples;
             return this;
         }
 
-        public Builder trainExamples(String trainExamples) {
+        public Builder trainExamples(Long trainExamples) {
             this.trainExamples = Optional.of(trainExamples);
             return this;
         }
 
         @JsonSetter(value = "train_size_bytes", nulls = Nulls.SKIP)
-        public Builder trainSizeBytes(Optional<String> trainSizeBytes) {
+        public Builder trainSizeBytes(Optional<Long> trainSizeBytes) {
             this.trainSizeBytes = trainSizeBytes;
             return this;
         }
 
-        public Builder trainSizeBytes(String trainSizeBytes) {
+        public Builder trainSizeBytes(Long trainSizeBytes) {
             this.trainSizeBytes = Optional.of(trainSizeBytes);
             return this;
         }
 
         @JsonSetter(value = "eval_examples", nulls = Nulls.SKIP)
-        public Builder evalExamples(Optional<String> evalExamples) {
+        public Builder evalExamples(Optional<Long> evalExamples) {
             this.evalExamples = evalExamples;
             return this;
         }
 
-        public Builder evalExamples(String evalExamples) {
+        public Builder evalExamples(Long evalExamples) {
             this.evalExamples = Optional.of(evalExamples);
             return this;
         }
 
         @JsonSetter(value = "eval_size_bytes", nulls = Nulls.SKIP)
-        public Builder evalSizeBytes(Optional<String> evalSizeBytes) {
+        public Builder evalSizeBytes(Optional<Long> evalSizeBytes) {
             this.evalSizeBytes = evalSizeBytes;
             return this;
         }
 
-        public Builder evalSizeBytes(String evalSizeBytes) {
+        public Builder evalSizeBytes(Long evalSizeBytes) {
             this.evalSizeBytes = Optional.of(evalSizeBytes);
             return this;
         }
