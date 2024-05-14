@@ -5,11 +5,11 @@ package com.cohere.api.requests;
 
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.ChatConnector;
-import com.cohere.api.types.ChatMessage;
 import com.cohere.api.types.ChatRequestCitationQuality;
 import com.cohere.api.types.ChatRequestPromptTruncation;
-import com.cohere.api.types.ChatRequestToolResultsItem;
+import com.cohere.api.types.Message;
 import com.cohere.api.types.Tool;
+import com.cohere.api.types.ToolResult;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,7 +33,7 @@ public final class ChatRequest {
 
     private final Optional<String> preamble;
 
-    private final Optional<List<ChatMessage>> chatHistory;
+    private final Optional<List<Message>> chatHistory;
 
     private final Optional<String> conversationId;
 
@@ -71,7 +71,7 @@ public final class ChatRequest {
 
     private final Optional<List<Tool>> tools;
 
-    private final Optional<List<ChatRequestToolResultsItem>> toolResults;
+    private final Optional<List<ToolResult>> toolResults;
 
     private final Map<String, Object> additionalProperties;
 
@@ -79,7 +79,7 @@ public final class ChatRequest {
             String message,
             Optional<String> model,
             Optional<String> preamble,
-            Optional<List<ChatMessage>> chatHistory,
+            Optional<List<Message>> chatHistory,
             Optional<String> conversationId,
             Optional<ChatRequestPromptTruncation> promptTruncation,
             Optional<List<ChatConnector>> connectors,
@@ -98,7 +98,7 @@ public final class ChatRequest {
             Optional<Boolean> rawPrompting,
             Optional<Boolean> returnPrompt,
             Optional<List<Tool>> tools,
-            Optional<List<ChatRequestToolResultsItem>> toolResults,
+            Optional<List<ToolResult>> toolResults,
             Map<String, Object> additionalProperties) {
         this.message = message;
         this.model = model;
@@ -173,7 +173,7 @@ public final class ChatRequest {
      * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("chat_history")
-    public Optional<List<ChatMessage>> getChatHistory() {
+    public Optional<List<Message>> getChatHistory() {
         return chatHistory;
     }
 
@@ -388,7 +388,7 @@ public final class ChatRequest {
      * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments</p>
      */
     @JsonProperty("tool_results")
-    public Optional<List<ChatRequestToolResultsItem>> getToolResults() {
+    public Optional<List<ToolResult>> getToolResults() {
         return toolResults;
     }
 
@@ -483,9 +483,9 @@ public final class ChatRequest {
 
         _FinalStage preamble(String preamble);
 
-        _FinalStage chatHistory(Optional<List<ChatMessage>> chatHistory);
+        _FinalStage chatHistory(Optional<List<Message>> chatHistory);
 
-        _FinalStage chatHistory(List<ChatMessage> chatHistory);
+        _FinalStage chatHistory(List<Message> chatHistory);
 
         _FinalStage conversationId(Optional<String> conversationId);
 
@@ -559,16 +559,16 @@ public final class ChatRequest {
 
         _FinalStage tools(List<Tool> tools);
 
-        _FinalStage toolResults(Optional<List<ChatRequestToolResultsItem>> toolResults);
+        _FinalStage toolResults(Optional<List<ToolResult>> toolResults);
 
-        _FinalStage toolResults(List<ChatRequestToolResultsItem> toolResults);
+        _FinalStage toolResults(List<ToolResult> toolResults);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements MessageStage, _FinalStage {
         private String message;
 
-        private Optional<List<ChatRequestToolResultsItem>> toolResults = Optional.empty();
+        private Optional<List<ToolResult>> toolResults = Optional.empty();
 
         private Optional<List<Tool>> tools = Optional.empty();
 
@@ -606,7 +606,7 @@ public final class ChatRequest {
 
         private Optional<String> conversationId = Optional.empty();
 
-        private Optional<List<ChatMessage>> chatHistory = Optional.empty();
+        private Optional<List<Message>> chatHistory = Optional.empty();
 
         private Optional<String> preamble = Optional.empty();
 
@@ -681,14 +681,14 @@ public final class ChatRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage toolResults(List<ChatRequestToolResultsItem> toolResults) {
+        public _FinalStage toolResults(List<ToolResult> toolResults) {
             this.toolResults = Optional.of(toolResults);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "tool_results", nulls = Nulls.SKIP)
-        public _FinalStage toolResults(Optional<List<ChatRequestToolResultsItem>> toolResults) {
+        public _FinalStage toolResults(Optional<List<ToolResult>> toolResults) {
             this.toolResults = toolResults;
             return this;
         }
@@ -1051,14 +1051,14 @@ public final class ChatRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage chatHistory(List<ChatMessage> chatHistory) {
+        public _FinalStage chatHistory(List<Message> chatHistory) {
             this.chatHistory = Optional.of(chatHistory);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "chat_history", nulls = Nulls.SKIP)
-        public _FinalStage chatHistory(Optional<List<ChatMessage>> chatHistory) {
+        public _FinalStage chatHistory(Optional<List<Message>> chatHistory) {
             this.chatHistory = chatHistory;
             return this;
         }

@@ -10,32 +10,27 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatMessage.Builder.class)
 public final class ChatMessage {
-    private final ChatMessageRole role;
-
     private final String message;
+
+    private final Optional<List<ToolCall>> toolCalls;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatMessage(ChatMessageRole role, String message, Map<String, Object> additionalProperties) {
-        this.role = role;
+    private ChatMessage(String message, Optional<List<ToolCall>> toolCalls, Map<String, Object> additionalProperties) {
         this.message = message;
+        this.toolCalls = toolCalls;
         this.additionalProperties = additionalProperties;
-    }
-
-    /**
-     * @return One of <code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code> to identify who the message is coming from.
-     */
-    @JsonProperty("role")
-    public ChatMessageRole getRole() {
-        return role;
     }
 
     /**
@@ -44,6 +39,11 @@ public final class ChatMessage {
     @JsonProperty("message")
     public String getMessage() {
         return message;
+    }
+
+    @JsonProperty("tool_calls")
+    public Optional<List<ToolCall>> getToolCalls() {
+        return toolCalls;
     }
 
     @java.lang.Override
@@ -58,12 +58,12 @@ public final class ChatMessage {
     }
 
     private boolean equalTo(ChatMessage other) {
-        return role.equals(other.role) && message.equals(other.message);
+        return message.equals(other.message) && toolCalls.equals(other.toolCalls);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.role, this.message);
+        return Objects.hash(this.message, this.toolCalls);
     }
 
     @java.lang.Override
@@ -71,29 +71,29 @@ public final class ChatMessage {
         return ObjectMappers.stringify(this);
     }
 
-    public static RoleStage builder() {
+    public static MessageStage builder() {
         return new Builder();
-    }
-
-    public interface RoleStage {
-        MessageStage role(ChatMessageRole role);
-
-        Builder from(ChatMessage other);
     }
 
     public interface MessageStage {
         _FinalStage message(String message);
+
+        Builder from(ChatMessage other);
     }
 
     public interface _FinalStage {
         ChatMessage build();
+
+        _FinalStage toolCalls(Optional<List<ToolCall>> toolCalls);
+
+        _FinalStage toolCalls(List<ToolCall> toolCalls);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements RoleStage, MessageStage, _FinalStage {
-        private ChatMessageRole role;
-
+    public static final class Builder implements MessageStage, _FinalStage {
         private String message;
+
+        private Optional<List<ToolCall>> toolCalls = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -102,19 +102,8 @@ public final class ChatMessage {
 
         @java.lang.Override
         public Builder from(ChatMessage other) {
-            role(other.getRole());
             message(other.getMessage());
-            return this;
-        }
-
-        /**
-         * <p>One of <code>CHATBOT</code>, <code>SYSTEM</code>, or <code>USER</code> to identify who the message is coming from.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("role")
-        public MessageStage role(ChatMessageRole role) {
-            this.role = role;
+            toolCalls(other.getToolCalls());
             return this;
         }
 
@@ -130,8 +119,21 @@ public final class ChatMessage {
         }
 
         @java.lang.Override
+        public _FinalStage toolCalls(List<ToolCall> toolCalls) {
+            this.toolCalls = Optional.of(toolCalls);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "tool_calls", nulls = Nulls.SKIP)
+        public _FinalStage toolCalls(Optional<List<ToolCall>> toolCalls) {
+            this.toolCalls = toolCalls;
+            return this;
+        }
+
+        @java.lang.Override
         public ChatMessage build() {
-            return new ChatMessage(role, message, additionalProperties);
+            return new ChatMessage(message, toolCalls, additionalProperties);
         }
     }
 }

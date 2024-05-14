@@ -307,7 +307,7 @@ public class FinetuningClient {
                 .newBuilder()
                 .addPathSegments("finetuning/finetuned-models")
                 .addPathSegment(finetunedModelId)
-                .addPathSegments("metrics");
+                .addPathSegments("training-step-metrics");
         if (request.getPageSize().isPresent()) {
             httpUrl.addQueryParameter("page_size", request.getPageSize().get().toString());
         }
