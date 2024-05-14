@@ -39,7 +39,7 @@ public final class NonStreamedChatResponse {
 
     private final Optional<List<ToolCall>> toolCalls;
 
-    private final Optional<List<ChatMessage>> chatHistory;
+    private final Optional<List<Message>> chatHistory;
 
     private final Optional<String> prompt;
 
@@ -57,7 +57,7 @@ public final class NonStreamedChatResponse {
             Optional<List<ChatSearchResult>> searchResults,
             Optional<FinishReason> finishReason,
             Optional<List<ToolCall>> toolCalls,
-            Optional<List<ChatMessage>> chatHistory,
+            Optional<List<Message>> chatHistory,
             Optional<String> prompt,
             Optional<ApiMeta> meta,
             Map<String, Object> additionalProperties) {
@@ -146,7 +146,7 @@ public final class NonStreamedChatResponse {
      * @return A list of previous messages between the user and the model, meant to give the model conversational context for responding to the user's <code>message</code>.
      */
     @JsonProperty("chat_history")
-    public Optional<List<ChatMessage>> getChatHistory() {
+    public Optional<List<Message>> getChatHistory() {
         return chatHistory;
     }
 
@@ -256,9 +256,9 @@ public final class NonStreamedChatResponse {
 
         _FinalStage toolCalls(List<ToolCall> toolCalls);
 
-        _FinalStage chatHistory(Optional<List<ChatMessage>> chatHistory);
+        _FinalStage chatHistory(Optional<List<Message>> chatHistory);
 
-        _FinalStage chatHistory(List<ChatMessage> chatHistory);
+        _FinalStage chatHistory(List<Message> chatHistory);
 
         _FinalStage prompt(Optional<String> prompt);
 
@@ -277,7 +277,7 @@ public final class NonStreamedChatResponse {
 
         private Optional<String> prompt = Optional.empty();
 
-        private Optional<List<ChatMessage>> chatHistory = Optional.empty();
+        private Optional<List<Message>> chatHistory = Optional.empty();
 
         private Optional<List<ToolCall>> toolCalls = Optional.empty();
 
@@ -363,14 +363,14 @@ public final class NonStreamedChatResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage chatHistory(List<ChatMessage> chatHistory) {
+        public _FinalStage chatHistory(List<Message> chatHistory) {
             this.chatHistory = Optional.of(chatHistory);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "chat_history", nulls = Nulls.SKIP)
-        public _FinalStage chatHistory(Optional<List<ChatMessage>> chatHistory) {
+        public _FinalStage chatHistory(Optional<List<Message>> chatHistory) {
             this.chatHistory = chatHistory;
             return this;
         }

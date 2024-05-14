@@ -19,16 +19,15 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ChatRequestToolResultsItem.Builder.class)
-public final class ChatRequestToolResultsItem {
+@JsonDeserialize(builder = ToolResult.Builder.class)
+public final class ToolResult {
     private final ToolCall call;
 
     private final List<Map<String, Object>> outputs;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatRequestToolResultsItem(
-            ToolCall call, List<Map<String, Object>> outputs, Map<String, Object> additionalProperties) {
+    private ToolResult(ToolCall call, List<Map<String, Object>> outputs, Map<String, Object> additionalProperties) {
         this.call = call;
         this.outputs = outputs;
         this.additionalProperties = additionalProperties;
@@ -47,7 +46,7 @@ public final class ChatRequestToolResultsItem {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ChatRequestToolResultsItem && equalTo((ChatRequestToolResultsItem) other);
+        return other instanceof ToolResult && equalTo((ToolResult) other);
     }
 
     @JsonAnyGetter
@@ -55,7 +54,7 @@ public final class ChatRequestToolResultsItem {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ChatRequestToolResultsItem other) {
+    private boolean equalTo(ToolResult other) {
         return call.equals(other.call) && outputs.equals(other.outputs);
     }
 
@@ -76,11 +75,11 @@ public final class ChatRequestToolResultsItem {
     public interface CallStage {
         _FinalStage call(ToolCall call);
 
-        Builder from(ChatRequestToolResultsItem other);
+        Builder from(ToolResult other);
     }
 
     public interface _FinalStage {
-        ChatRequestToolResultsItem build();
+        ToolResult build();
 
         _FinalStage outputs(List<Map<String, Object>> outputs);
 
@@ -101,7 +100,7 @@ public final class ChatRequestToolResultsItem {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(ChatRequestToolResultsItem other) {
+        public Builder from(ToolResult other) {
             call(other.getCall());
             outputs(other.getOutputs());
             return this;
@@ -135,8 +134,8 @@ public final class ChatRequestToolResultsItem {
         }
 
         @java.lang.Override
-        public ChatRequestToolResultsItem build() {
-            return new ChatRequestToolResultsItem(call, outputs, additionalProperties);
+        public ToolResult build() {
+            return new ToolResult(call, outputs, additionalProperties);
         }
     }
 }
