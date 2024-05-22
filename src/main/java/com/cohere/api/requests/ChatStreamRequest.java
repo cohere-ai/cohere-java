@@ -73,6 +73,8 @@ public final class ChatStreamRequest {
 
     private final Optional<List<ToolResult>> toolResults;
 
+    private final Optional<Boolean> forceSingleStep;
+
     private final Map<String, Object> additionalProperties;
 
     private ChatStreamRequest(
@@ -99,6 +101,7 @@ public final class ChatStreamRequest {
             Optional<Boolean> returnPrompt,
             Optional<List<Tool>> tools,
             Optional<List<ToolResult>> toolResults,
+            Optional<Boolean> forceSingleStep,
             Map<String, Object> additionalProperties) {
         this.message = message;
         this.model = model;
@@ -123,6 +126,7 @@ public final class ChatStreamRequest {
         this.returnPrompt = returnPrompt;
         this.tools = tools;
         this.toolResults = toolResults;
+        this.forceSingleStep = forceSingleStep;
         this.additionalProperties = additionalProperties;
     }
 
@@ -392,6 +396,14 @@ public final class ChatStreamRequest {
         return toolResults;
     }
 
+    /**
+     * @return Forces the chat to be single step. Defaults to <code>false</code>.
+     */
+    @JsonProperty("force_single_step")
+    public Optional<Boolean> getForceSingleStep() {
+        return forceSingleStep;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -426,7 +438,8 @@ public final class ChatStreamRequest {
                 && rawPrompting.equals(other.rawPrompting)
                 && returnPrompt.equals(other.returnPrompt)
                 && tools.equals(other.tools)
-                && toolResults.equals(other.toolResults);
+                && toolResults.equals(other.toolResults)
+                && forceSingleStep.equals(other.forceSingleStep);
     }
 
     @java.lang.Override
@@ -454,7 +467,8 @@ public final class ChatStreamRequest {
                 this.rawPrompting,
                 this.returnPrompt,
                 this.tools,
-                this.toolResults);
+                this.toolResults,
+                this.forceSingleStep);
     }
 
     @java.lang.Override
@@ -562,11 +576,17 @@ public final class ChatStreamRequest {
         _FinalStage toolResults(Optional<List<ToolResult>> toolResults);
 
         _FinalStage toolResults(List<ToolResult> toolResults);
+
+        _FinalStage forceSingleStep(Optional<Boolean> forceSingleStep);
+
+        _FinalStage forceSingleStep(Boolean forceSingleStep);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements MessageStage, _FinalStage {
         private String message;
+
+        private Optional<Boolean> forceSingleStep = Optional.empty();
 
         private Optional<List<ToolResult>> toolResults = Optional.empty();
 
@@ -642,6 +662,7 @@ public final class ChatStreamRequest {
             returnPrompt(other.getReturnPrompt());
             tools(other.getTools());
             toolResults(other.getToolResults());
+            forceSingleStep(other.getForceSingleStep());
             return this;
         }
 
@@ -654,6 +675,23 @@ public final class ChatStreamRequest {
         @JsonSetter("message")
         public _FinalStage message(String message) {
             this.message = message;
+            return this;
+        }
+
+        /**
+         * <p>Forces the chat to be single step. Defaults to <code>false</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage forceSingleStep(Boolean forceSingleStep) {
+            this.forceSingleStep = Optional.of(forceSingleStep);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "force_single_step", nulls = Nulls.SKIP)
+        public _FinalStage forceSingleStep(Optional<Boolean> forceSingleStep) {
+            this.forceSingleStep = forceSingleStep;
             return this;
         }
 
@@ -1127,6 +1165,7 @@ public final class ChatStreamRequest {
                     returnPrompt,
                     tools,
                     toolResults,
+                    forceSingleStep,
                     additionalProperties);
         }
     }
