@@ -50,7 +50,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.cohere'
             artifactId = 'cohere-java'
-            version = '1.0.7'
+            version = '1.0.8'
             from components.java
             pom {
                 name = 'cohere'

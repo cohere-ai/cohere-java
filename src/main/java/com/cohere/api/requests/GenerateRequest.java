@@ -173,7 +173,7 @@ public final class GenerateRequest {
     }
 
     /**
-     * @return Identifier of a custom preset. A preset is a combination of parameters, such as prompt, temperature etc. You can create presets in the <a href="https://dashboard.cohere.ai/playground/generate">playground</a>.
+     * @return Identifier of a custom preset. A preset is a combination of parameters, such as prompt, temperature etc. You can create presets in the <a href="https://dashboard.cohere.com/playground/generate">playground</a>.
      * When a preset is specified, the <code>prompt</code> parameter becomes optional, and any included parameters will override the preset's parameters.
      */
     @JsonProperty("preset")
@@ -598,7 +598,7 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>Identifier of a custom preset. A preset is a combination of parameters, such as prompt, temperature etc. You can create presets in the <a href="https://dashboard.cohere.ai/playground/generate">playground</a>.
+         * <p>Identifier of a custom preset. A preset is a combination of parameters, such as prompt, temperature etc. You can create presets in the <a href="https://dashboard.cohere.com/playground/generate">playground</a>.
          * When a preset is specified, the <code>prompt</code> parameter becomes optional, and any included parameters will override the preset's parameters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

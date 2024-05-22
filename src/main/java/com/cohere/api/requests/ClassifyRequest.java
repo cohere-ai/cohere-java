@@ -79,7 +79,7 @@ public final class ClassifyRequest {
     }
 
     /**
-     * @return The ID of a custom playground preset. You can create presets in the <a href="https://dashboard.cohere.ai/playground/classify?model=large">playground</a>. If you use a preset, all other parameters become optional, and any included parameters will override the preset's parameters.
+     * @return The ID of a custom playground preset. You can create presets in the <a href="https://dashboard.cohere.com/playground/classify?model=large">playground</a>. If you use a preset, all other parameters become optional, and any included parameters will override the preset's parameters.
      */
     @JsonProperty("preset")
     public Optional<String> getPreset() {
