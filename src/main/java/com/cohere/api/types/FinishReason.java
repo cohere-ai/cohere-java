@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum FinishReason {
     COMPLETE("COMPLETE"),
 
+    STOP_SEQUENCE("STOP_SEQUENCE"),
+
     ERROR("ERROR"),
 
     ERROR_TOXIC("ERROR_TOXIC"),

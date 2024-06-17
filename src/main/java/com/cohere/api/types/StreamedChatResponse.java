@@ -54,6 +54,10 @@ public final class StreamedChatResponse {
         return new StreamedChatResponse(new StreamEndValue(value));
     }
 
+    public static StreamedChatResponse toolCallsChunk(ChatToolCallsChunkEvent value) {
+        return new StreamedChatResponse(new ToolCallsChunkValue(value));
+    }
+
     public boolean isStreamStart() {
         return value instanceof StreamStartValue;
     }
@@ -80,6 +84,10 @@ public final class StreamedChatResponse {
 
     public boolean isStreamEnd() {
         return value instanceof StreamEndValue;
+    }
+
+    public boolean isToolCallsChunk() {
+        return value instanceof ToolCallsChunkValue;
     }
 
     public boolean _isUnknown() {
@@ -135,6 +143,13 @@ public final class StreamedChatResponse {
         return Optional.empty();
     }
 
+    public Optional<ChatToolCallsChunkEvent> getToolCallsChunk() {
+        if (isToolCallsChunk()) {
+            return Optional.of(((ToolCallsChunkValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -162,6 +177,8 @@ public final class StreamedChatResponse {
 
         T visitStreamEnd(ChatStreamEndEvent streamEnd);
 
+        T visitToolCallsChunk(ChatToolCallsChunkEvent toolCallsChunk);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -177,7 +194,8 @@ public final class StreamedChatResponse {
         @JsonSubTypes.Type(TextGenerationValue.class),
         @JsonSubTypes.Type(CitationGenerationValue.class),
         @JsonSubTypes.Type(ToolCallsGenerationValue.class),
-        @JsonSubTypes.Type(StreamEndValue.class)
+        @JsonSubTypes.Type(StreamEndValue.class),
+        @JsonSubTypes.Type(ToolCallsChunkValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -436,6 +454,44 @@ public final class StreamedChatResponse {
         }
 
         private boolean equalTo(StreamEndValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "StreamedChatResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("tool-calls-chunk")
+    private static final class ToolCallsChunkValue implements Value {
+        @JsonUnwrapped
+        private ChatToolCallsChunkEvent value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private ToolCallsChunkValue() {}
+
+        private ToolCallsChunkValue(ChatToolCallsChunkEvent value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitToolCallsChunk(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof ToolCallsChunkValue && equalTo((ToolCallsChunkValue) other);
+        }
+
+        private boolean equalTo(ToolCallsChunkValue other) {
             return value.equals(other.value);
         }
 

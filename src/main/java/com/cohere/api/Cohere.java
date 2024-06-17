@@ -70,7 +70,7 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
+     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request) {
         return chatStream(request, null);
@@ -78,7 +78,7 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
+     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -119,7 +119,7 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
+     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public NonStreamedChatResponse chat(ChatRequest request) {
         return chat(request, null);
@@ -127,7 +127,7 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use Chat with Streaming and RAG follow <a href="https://docs.cohere.com/docs/cochat-beta#various-ways-of-using-the-chat-endpoint">this guide</a>.
+     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public NonStreamedChatResponse chat(ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())

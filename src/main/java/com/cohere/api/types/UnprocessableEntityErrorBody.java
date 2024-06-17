@@ -18,34 +18,26 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ChatStreamRequestConnectorsSearchOptions.Builder.class)
-public final class ChatStreamRequestConnectorsSearchOptions {
-    private final Optional<Integer> seed;
+@JsonDeserialize(builder = UnprocessableEntityErrorBody.Builder.class)
+public final class UnprocessableEntityErrorBody {
+    private final Optional<String> data;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatStreamRequestConnectorsSearchOptions(Optional<Integer> seed, Map<String, Object> additionalProperties) {
-        this.seed = seed;
+    private UnprocessableEntityErrorBody(Optional<String> data, Map<String, Object> additionalProperties) {
+        this.data = data;
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return If specified, the backend will make a best effort to sample tokens
-     * deterministically, such that repeated requests with the same
-     * seed and parameters should return the same result. However,
-     * determinism cannot be totally guaranteed.
-     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
-     */
-    @JsonProperty("seed")
-    public Optional<Integer> getSeed() {
-        return seed;
+    @JsonProperty("data")
+    public Optional<String> getData() {
+        return data;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ChatStreamRequestConnectorsSearchOptions
-                && equalTo((ChatStreamRequestConnectorsSearchOptions) other);
+        return other instanceof UnprocessableEntityErrorBody && equalTo((UnprocessableEntityErrorBody) other);
     }
 
     @JsonAnyGetter
@@ -53,13 +45,13 @@ public final class ChatStreamRequestConnectorsSearchOptions {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ChatStreamRequestConnectorsSearchOptions other) {
-        return seed.equals(other.seed);
+    private boolean equalTo(UnprocessableEntityErrorBody other) {
+        return data.equals(other.data);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.seed);
+        return Objects.hash(this.data);
     }
 
     @java.lang.Override
@@ -73,31 +65,31 @@ public final class ChatStreamRequestConnectorsSearchOptions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Integer> seed = Optional.empty();
+        private Optional<String> data = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(ChatStreamRequestConnectorsSearchOptions other) {
-            seed(other.getSeed());
+        public Builder from(UnprocessableEntityErrorBody other) {
+            data(other.getData());
             return this;
         }
 
-        @JsonSetter(value = "seed", nulls = Nulls.SKIP)
-        public Builder seed(Optional<Integer> seed) {
-            this.seed = seed;
+        @JsonSetter(value = "data", nulls = Nulls.SKIP)
+        public Builder data(Optional<String> data) {
+            this.data = data;
             return this;
         }
 
-        public Builder seed(Integer seed) {
-            this.seed = Optional.of(seed);
+        public Builder data(String data) {
+            this.data = Optional.of(data);
             return this;
         }
 
-        public ChatStreamRequestConnectorsSearchOptions build() {
-            return new ChatStreamRequestConnectorsSearchOptions(seed, additionalProperties);
+        public UnprocessableEntityErrorBody build() {
+            return new UnprocessableEntityErrorBody(data, additionalProperties);
         }
     }
 }
