@@ -57,7 +57,7 @@ public final class ChatStreamRequest {
 
     private final Optional<Double> p;
 
-    private final Optional<Double> seed;
+    private final Optional<Integer> seed;
 
     private final Optional<List<String>> stopSequences;
 
@@ -93,7 +93,7 @@ public final class ChatStreamRequest {
             Optional<Integer> maxInputTokens,
             Optional<Integer> k,
             Optional<Double> p,
-            Optional<Double> seed,
+            Optional<Integer> seed,
             Optional<List<String>> stopSequences,
             Optional<Double> frequencyPenalty,
             Optional<Double> presencePenalty,
@@ -308,7 +308,7 @@ public final class ChatStreamRequest {
      * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker, Private Deployments
      */
     @JsonProperty("seed")
-    public Optional<Double> getSeed() {
+    public Optional<Integer> getSeed() {
         return seed;
     }
 
@@ -545,9 +545,9 @@ public final class ChatStreamRequest {
 
         _FinalStage p(Double p);
 
-        _FinalStage seed(Optional<Double> seed);
+        _FinalStage seed(Optional<Integer> seed);
 
-        _FinalStage seed(Double seed);
+        _FinalStage seed(Integer seed);
 
         _FinalStage stopSequences(Optional<List<String>> stopSequences);
 
@@ -602,7 +602,7 @@ public final class ChatStreamRequest {
 
         private Optional<List<String>> stopSequences = Optional.empty();
 
-        private Optional<Double> seed = Optional.empty();
+        private Optional<Integer> seed = Optional.empty();
 
         private Optional<Double> p = Optional.empty();
 
@@ -851,14 +851,14 @@ public final class ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage seed(Double seed) {
+        public _FinalStage seed(Integer seed) {
             this.seed = Optional.of(seed);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "seed", nulls = Nulls.SKIP)
-        public _FinalStage seed(Optional<Double> seed) {
+        public _FinalStage seed(Optional<Integer> seed) {
             this.seed = seed;
             return this;
         }
