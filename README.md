@@ -42,7 +42,7 @@ Add the dependency in your `pom.xml`:
 import com.cohere.api.Cohere;
 import com.cohere.api.requests.ChatRequest;
 import com.cohere.api.types.ChatMessage;
-import com.cohere.api.types.ChatMessageRole;
+import com.cohere.api.types.Message;
 import com.cohere.api.types.NonStreamedChatResponse;
 
 import java.util.List;
@@ -56,8 +56,8 @@ public class ChatPost {
                 ChatRequest.builder()
                         .message("What year was he born?")
                         .chatHistory(
-                                List.of(ChatMessage.builder().role(ChatMessageRole.USER).message("Who discovered gravity?").build(),
-                                        ChatMessage.builder().role(ChatMessageRole.CHATBOT).message("The man who is widely credited with discovering gravity is Sir Isaac Newton").build())).build());
+                                List.of(Message.user(ChatMessage.builder().message("Who discovered gravity?").build()),
+                                        Message.chatbot(ChatMessage.builder().message("The man who is widely credited with discovering gravity is Sir Isaac Newton").build()))).build());
 
         System.out.println(response);
     }
