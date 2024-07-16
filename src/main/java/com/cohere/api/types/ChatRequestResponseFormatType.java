@@ -5,16 +5,14 @@ package com.cohere.api.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatRequestCitationQuality {
-    FAST("fast"),
+public enum ChatRequestResponseFormatType {
+    TEXT("text"),
 
-    ACCURATE("accurate"),
-
-    OFF("off");
+    JSON_OBJECT("json_object");
 
     private final String value;
 
-    ChatRequestCitationQuality(String value) {
+    ChatRequestResponseFormatType(String value) {
         this.value = value;
     }
 

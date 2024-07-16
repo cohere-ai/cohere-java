@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ChatStreamRequestCitationQuality {
     FAST("fast"),
 
-    ACCURATE("accurate");
+    ACCURATE("accurate"),
+
+    OFF("off");
 
     private final String value;
 
