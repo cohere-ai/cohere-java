@@ -17,17 +17,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatToolCallsGenerationEvent.Builder.class)
 public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
+    private final Optional<String> text;
+
     private final List<ToolCall> toolCalls;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatToolCallsGenerationEvent(List<ToolCall> toolCalls, Map<String, Object> additionalProperties) {
+    private ChatToolCallsGenerationEvent(
+            Optional<String> text, List<ToolCall> toolCalls, Map<String, Object> additionalProperties) {
+        this.text = text;
         this.toolCalls = toolCalls;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The text generated related to the tool calls generated
+     */
+    @JsonProperty("text")
+    public Optional<String> getText() {
+        return text;
     }
 
     @JsonProperty("tool_calls")
@@ -47,12 +60,12 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
     }
 
     private boolean equalTo(ChatToolCallsGenerationEvent other) {
-        return toolCalls.equals(other.toolCalls);
+        return text.equals(other.text) && toolCalls.equals(other.toolCalls);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.toolCalls);
+        return Objects.hash(this.text, this.toolCalls);
     }
 
     @java.lang.Override
@@ -66,6 +79,8 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<String> text = Optional.empty();
+
         private List<ToolCall> toolCalls = new ArrayList<>();
 
         @JsonAnySetter
@@ -74,7 +89,19 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
         private Builder() {}
 
         public Builder from(ChatToolCallsGenerationEvent other) {
+            text(other.getText());
             toolCalls(other.getToolCalls());
+            return this;
+        }
+
+        @JsonSetter(value = "text", nulls = Nulls.SKIP)
+        public Builder text(Optional<String> text) {
+            this.text = text;
+            return this;
+        }
+
+        public Builder text(String text) {
+            this.text = Optional.of(text);
             return this;
         }
 
@@ -96,7 +123,7 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
         }
 
         public ChatToolCallsGenerationEvent build() {
-            return new ChatToolCallsGenerationEvent(toolCalls, additionalProperties);
+            return new ChatToolCallsGenerationEvent(text, toolCalls, additionalProperties);
         }
     }
 }

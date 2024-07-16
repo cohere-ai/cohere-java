@@ -35,7 +35,7 @@ public final class GenerateRequest {
 
     private final Optional<Double> temperature;
 
-    private final Optional<Double> seed;
+    private final Optional<Integer> seed;
 
     private final Optional<String> preset;
 
@@ -64,7 +64,7 @@ public final class GenerateRequest {
             Optional<Integer> maxTokens,
             Optional<GenerateRequestTruncate> truncate,
             Optional<Double> temperature,
-            Optional<Double> seed,
+            Optional<Integer> seed,
             Optional<String> preset,
             Optional<List<String>> endSequences,
             Optional<List<String>> stopSequences,
@@ -165,10 +165,14 @@ public final class GenerateRequest {
     }
 
     /**
-     * @return If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinsim cannot be totally guaranteed.
+     * @return If specified, the backend will make a best effort to sample tokens
+     * deterministically, such that repeated requests with the same
+     * seed and parameters should return the same result. However,
+     * determinism cannot be totally guaranteed.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
      */
     @JsonProperty("seed")
-    public Optional<Double> getSeed() {
+    public Optional<Integer> getSeed() {
         return seed;
     }
 
@@ -341,9 +345,9 @@ public final class GenerateRequest {
 
         _FinalStage temperature(Double temperature);
 
-        _FinalStage seed(Optional<Double> seed);
+        _FinalStage seed(Optional<Integer> seed);
 
-        _FinalStage seed(Double seed);
+        _FinalStage seed(Integer seed);
 
         _FinalStage preset(Optional<String> preset);
 
@@ -404,7 +408,7 @@ public final class GenerateRequest {
 
         private Optional<String> preset = Optional.empty();
 
-        private Optional<Double> seed = Optional.empty();
+        private Optional<Integer> seed = Optional.empty();
 
         private Optional<Double> temperature = Optional.empty();
 
@@ -616,18 +620,22 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinsim cannot be totally guaranteed.</p>
+         * <p>If specified, the backend will make a best effort to sample tokens
+         * deterministically, such that repeated requests with the same
+         * seed and parameters should return the same result. However,
+         * determinism cannot be totally guaranteed.
+         * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage seed(Double seed) {
+        public _FinalStage seed(Integer seed) {
             this.seed = Optional.of(seed);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "seed", nulls = Nulls.SKIP)
-        public _FinalStage seed(Optional<Double> seed) {
+        public _FinalStage seed(Optional<Integer> seed) {
             this.seed = seed;
             return this;
         }

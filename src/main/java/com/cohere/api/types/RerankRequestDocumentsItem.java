@@ -7,10 +7,12 @@ import com.cohere.api.core.ObjectMappers;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonDeserialize(using = RerankRequestDocumentsItem.Deserializer.class)
@@ -33,7 +35,7 @@ public final class RerankRequestDocumentsItem {
         if (this.type == 0) {
             return visitor.visit((String) this.value);
         } else if (this.type == 1) {
-            return visitor.visit((RerankRequestDocumentsItemText) this.value);
+            return visitor.visit((Map<String, String>) this.value);
         }
         throw new IllegalStateException("Failed to visit value. This should never happen.");
     }
@@ -62,14 +64,14 @@ public final class RerankRequestDocumentsItem {
         return new RerankRequestDocumentsItem(value, 0);
     }
 
-    public static RerankRequestDocumentsItem of(RerankRequestDocumentsItemText value) {
+    public static RerankRequestDocumentsItem of(Map<String, String> value) {
         return new RerankRequestDocumentsItem(value, 1);
     }
 
     public interface Visitor<T> {
         T visit(String value);
 
-        T visit(RerankRequestDocumentsItemText value);
+        T visit(Map<String, String> value);
     }
 
     static final class Deserializer extends StdDeserializer<RerankRequestDocumentsItem> {
@@ -85,7 +87,7 @@ public final class RerankRequestDocumentsItem {
             } catch (IllegalArgumentException e) {
             }
             try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, RerankRequestDocumentsItemText.class));
+                return of(ObjectMappers.JSON_MAPPER.convertValue(value, new TypeReference<Map<String, String>>() {}));
             } catch (IllegalArgumentException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");

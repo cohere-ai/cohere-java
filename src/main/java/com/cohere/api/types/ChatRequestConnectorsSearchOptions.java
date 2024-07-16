@@ -20,58 +20,24 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatRequestConnectorsSearchOptions.Builder.class)
 public final class ChatRequestConnectorsSearchOptions {
-    private final Optional<Object> model;
-
-    private final Optional<Object> temperature;
-
-    private final Optional<Object> maxTokens;
-
-    private final Optional<Object> preamble;
-
-    private final Optional<Double> seed;
+    private final Optional<Integer> seed;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatRequestConnectorsSearchOptions(
-            Optional<Object> model,
-            Optional<Object> temperature,
-            Optional<Object> maxTokens,
-            Optional<Object> preamble,
-            Optional<Double> seed,
-            Map<String, Object> additionalProperties) {
-        this.model = model;
-        this.temperature = temperature;
-        this.maxTokens = maxTokens;
-        this.preamble = preamble;
+    private ChatRequestConnectorsSearchOptions(Optional<Integer> seed, Map<String, Object> additionalProperties) {
         this.seed = seed;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("model")
-    public Optional<Object> getModel() {
-        return model;
-    }
-
-    @JsonProperty("temperature")
-    public Optional<Object> getTemperature() {
-        return temperature;
-    }
-
-    @JsonProperty("max_tokens")
-    public Optional<Object> getMaxTokens() {
-        return maxTokens;
-    }
-
-    @JsonProperty("preamble")
-    public Optional<Object> getPreamble() {
-        return preamble;
-    }
-
     /**
-     * @return If specified, the backend will make a best effort to sample tokens deterministically, such that repeated requests with the same seed and parameters should return the same result. However, determinsim cannot be totally guaranteed.
+     * @return If specified, the backend will make a best effort to sample tokens
+     * deterministically, such that repeated requests with the same
+     * seed and parameters should return the same result. However,
+     * determinism cannot be totally guaranteed.
+     * Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
      */
     @JsonProperty("seed")
-    public Optional<Double> getSeed() {
+    public Optional<Integer> getSeed() {
         return seed;
     }
 
@@ -88,16 +54,12 @@ public final class ChatRequestConnectorsSearchOptions {
     }
 
     private boolean equalTo(ChatRequestConnectorsSearchOptions other) {
-        return model.equals(other.model)
-                && temperature.equals(other.temperature)
-                && maxTokens.equals(other.maxTokens)
-                && preamble.equals(other.preamble)
-                && seed.equals(other.seed);
+        return seed.equals(other.seed);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.model, this.temperature, this.maxTokens, this.preamble, this.seed);
+        return Objects.hash(this.seed);
     }
 
     @java.lang.Override
@@ -111,15 +73,7 @@ public final class ChatRequestConnectorsSearchOptions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Object> model = Optional.empty();
-
-        private Optional<Object> temperature = Optional.empty();
-
-        private Optional<Object> maxTokens = Optional.empty();
-
-        private Optional<Object> preamble = Optional.empty();
-
-        private Optional<Double> seed = Optional.empty();
+        private Optional<Integer> seed = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -127,72 +81,23 @@ public final class ChatRequestConnectorsSearchOptions {
         private Builder() {}
 
         public Builder from(ChatRequestConnectorsSearchOptions other) {
-            model(other.getModel());
-            temperature(other.getTemperature());
-            maxTokens(other.getMaxTokens());
-            preamble(other.getPreamble());
             seed(other.getSeed());
             return this;
         }
 
-        @JsonSetter(value = "model", nulls = Nulls.SKIP)
-        public Builder model(Optional<Object> model) {
-            this.model = model;
-            return this;
-        }
-
-        public Builder model(Object model) {
-            this.model = Optional.of(model);
-            return this;
-        }
-
-        @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
-        public Builder temperature(Optional<Object> temperature) {
-            this.temperature = temperature;
-            return this;
-        }
-
-        public Builder temperature(Object temperature) {
-            this.temperature = Optional.of(temperature);
-            return this;
-        }
-
-        @JsonSetter(value = "max_tokens", nulls = Nulls.SKIP)
-        public Builder maxTokens(Optional<Object> maxTokens) {
-            this.maxTokens = maxTokens;
-            return this;
-        }
-
-        public Builder maxTokens(Object maxTokens) {
-            this.maxTokens = Optional.of(maxTokens);
-            return this;
-        }
-
-        @JsonSetter(value = "preamble", nulls = Nulls.SKIP)
-        public Builder preamble(Optional<Object> preamble) {
-            this.preamble = preamble;
-            return this;
-        }
-
-        public Builder preamble(Object preamble) {
-            this.preamble = Optional.of(preamble);
-            return this;
-        }
-
         @JsonSetter(value = "seed", nulls = Nulls.SKIP)
-        public Builder seed(Optional<Double> seed) {
+        public Builder seed(Optional<Integer> seed) {
             this.seed = seed;
             return this;
         }
 
-        public Builder seed(Double seed) {
+        public Builder seed(Integer seed) {
             this.seed = Optional.of(seed);
             return this;
         }
 
         public ChatRequestConnectorsSearchOptions build() {
-            return new ChatRequestConnectorsSearchOptions(
-                    model, temperature, maxTokens, preamble, seed, additionalProperties);
+            return new ChatRequestConnectorsSearchOptions(seed, additionalProperties);
         }
     }
 }

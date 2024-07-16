@@ -16,29 +16,26 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = RerankRequestDocumentsItemText.Builder.class)
-public final class RerankRequestDocumentsItemText {
-    private final String text;
+@JsonDeserialize(builder = ChatToolCallsChunkEvent.Builder.class)
+public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
+    private final ToolCallDelta toolCallDelta;
 
     private final Map<String, Object> additionalProperties;
 
-    private RerankRequestDocumentsItemText(String text, Map<String, Object> additionalProperties) {
-        this.text = text;
+    private ChatToolCallsChunkEvent(ToolCallDelta toolCallDelta, Map<String, Object> additionalProperties) {
+        this.toolCallDelta = toolCallDelta;
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return The text of the document to rerank.
-     */
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("tool_call_delta")
+    public ToolCallDelta getToolCallDelta() {
+        return toolCallDelta;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof RerankRequestDocumentsItemText && equalTo((RerankRequestDocumentsItemText) other);
+        return other instanceof ChatToolCallsChunkEvent && equalTo((ChatToolCallsChunkEvent) other);
     }
 
     @JsonAnyGetter
@@ -46,13 +43,13 @@ public final class RerankRequestDocumentsItemText {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(RerankRequestDocumentsItemText other) {
-        return text.equals(other.text);
+    private boolean equalTo(ChatToolCallsChunkEvent other) {
+        return toolCallDelta.equals(other.toolCallDelta);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.text);
+        return Objects.hash(this.toolCallDelta);
     }
 
     @java.lang.Override
@@ -60,23 +57,23 @@ public final class RerankRequestDocumentsItemText {
         return ObjectMappers.stringify(this);
     }
 
-    public static TextStage builder() {
+    public static ToolCallDeltaStage builder() {
         return new Builder();
     }
 
-    public interface TextStage {
-        _FinalStage text(String text);
+    public interface ToolCallDeltaStage {
+        _FinalStage toolCallDelta(ToolCallDelta toolCallDelta);
 
-        Builder from(RerankRequestDocumentsItemText other);
+        Builder from(ChatToolCallsChunkEvent other);
     }
 
     public interface _FinalStage {
-        RerankRequestDocumentsItemText build();
+        ChatToolCallsChunkEvent build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TextStage, _FinalStage {
-        private String text;
+    public static final class Builder implements ToolCallDeltaStage, _FinalStage {
+        private ToolCallDelta toolCallDelta;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -84,25 +81,21 @@ public final class RerankRequestDocumentsItemText {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(RerankRequestDocumentsItemText other) {
-            text(other.getText());
-            return this;
-        }
-
-        /**
-         * <p>The text of the document to rerank.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("text")
-        public _FinalStage text(String text) {
-            this.text = text;
+        public Builder from(ChatToolCallsChunkEvent other) {
+            toolCallDelta(other.getToolCallDelta());
             return this;
         }
 
         @java.lang.Override
-        public RerankRequestDocumentsItemText build() {
-            return new RerankRequestDocumentsItemText(text, additionalProperties);
+        @JsonSetter("tool_call_delta")
+        public _FinalStage toolCallDelta(ToolCallDelta toolCallDelta) {
+            this.toolCallDelta = toolCallDelta;
+            return this;
+        }
+
+        @java.lang.Override
+        public ChatToolCallsChunkEvent build() {
+            return new ChatToolCallsChunkEvent(toolCallDelta, additionalProperties);
         }
     }
 }
