@@ -7,8 +7,8 @@ import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.ChatConnector;
 import com.cohere.api.types.ChatRequestCitationQuality;
 import com.cohere.api.types.ChatRequestPromptTruncation;
-import com.cohere.api.types.ChatRequestResponseFormat;
 import com.cohere.api.types.Message;
+import com.cohere.api.types.ResponseFormat;
 import com.cohere.api.types.Tool;
 import com.cohere.api.types.ToolResult;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -76,7 +76,7 @@ public final class ChatRequest {
 
     private final Optional<Boolean> forceSingleStep;
 
-    private final Optional<ChatRequestResponseFormat> responseFormat;
+    private final Optional<ResponseFormat> responseFormat;
 
     private final Map<String, Object> additionalProperties;
 
@@ -105,7 +105,7 @@ public final class ChatRequest {
             Optional<List<Tool>> tools,
             Optional<List<ToolResult>> toolResults,
             Optional<Boolean> forceSingleStep,
-            Optional<ChatRequestResponseFormat> responseFormat,
+            Optional<ResponseFormat> responseFormat,
             Map<String, Object> additionalProperties) {
         this.message = message;
         this.model = model;
@@ -211,7 +211,7 @@ public final class ChatRequest {
 
     /**
      * @return Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.
-     * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).
+     * <p>When specified, the model's reply will be enriched with information found by querying each of the connectors (RAG).
      * Compatible Deployments: Cohere Platform</p>
      */
     @JsonProperty("connectors")
@@ -409,14 +409,8 @@ public final class ChatRequest {
         return forceSingleStep;
     }
 
-    /**
-     * @return Configuration for forcing the model output to adhere to the specified format. Supported on <a href="https://docs.cohere.com/docs/command-r">Command R</a>, <a href="https://docs.cohere.com/docs/command-r-plus">Command R+</a> and newer models.
-     * <p>The model can be forced into outputting JSON objects (with up to 5 levels of nesting) by setting <code>{ &quot;type&quot;: &quot;json_object&quot; }</code>.</p>
-     * <p>A <a href="https://json-schema.org/">JSON Schema</a> can optionally be provided, to ensure a specific structure.</p>
-     * <p><strong>Note</strong>: When using  <code>{ &quot;type&quot;: &quot;json_object&quot; }</code> your <code>message</code> should always explicitly instruct the model to generate a JSON (eg: <em>&quot;Generate a JSON ...&quot;</em>) . Otherwise the model may end up getting stuck generating an infinite stream of characters and eventually run out of context length.</p>
-     */
     @JsonProperty("response_format")
-    public Optional<ChatRequestResponseFormat> getResponseFormat() {
+    public Optional<ResponseFormat> getResponseFormat() {
         return responseFormat;
     }
 
@@ -599,16 +593,16 @@ public final class ChatRequest {
 
         _FinalStage forceSingleStep(Boolean forceSingleStep);
 
-        _FinalStage responseFormat(Optional<ChatRequestResponseFormat> responseFormat);
+        _FinalStage responseFormat(Optional<ResponseFormat> responseFormat);
 
-        _FinalStage responseFormat(ChatRequestResponseFormat responseFormat);
+        _FinalStage responseFormat(ResponseFormat responseFormat);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements MessageStage, _FinalStage {
         private String message;
 
-        private Optional<ChatRequestResponseFormat> responseFormat = Optional.empty();
+        private Optional<ResponseFormat> responseFormat = Optional.empty();
 
         private Optional<Boolean> forceSingleStep = Optional.empty();
 
@@ -703,22 +697,15 @@ public final class ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Configuration for forcing the model output to adhere to the specified format. Supported on <a href="https://docs.cohere.com/docs/command-r">Command R</a>, <a href="https://docs.cohere.com/docs/command-r-plus">Command R+</a> and newer models.</p>
-         * <p>The model can be forced into outputting JSON objects (with up to 5 levels of nesting) by setting <code>{ &quot;type&quot;: &quot;json_object&quot; }</code>.</p>
-         * <p>A <a href="https://json-schema.org/">JSON Schema</a> can optionally be provided, to ensure a specific structure.</p>
-         * <p><strong>Note</strong>: When using  <code>{ &quot;type&quot;: &quot;json_object&quot; }</code> your <code>message</code> should always explicitly instruct the model to generate a JSON (eg: <em>&quot;Generate a JSON ...&quot;</em>) . Otherwise the model may end up getting stuck generating an infinite stream of characters and eventually run out of context length.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
-        public _FinalStage responseFormat(ChatRequestResponseFormat responseFormat) {
+        public _FinalStage responseFormat(ResponseFormat responseFormat) {
             this.responseFormat = Optional.of(responseFormat);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "response_format", nulls = Nulls.SKIP)
-        public _FinalStage responseFormat(Optional<ChatRequestResponseFormat> responseFormat) {
+        public _FinalStage responseFormat(Optional<ResponseFormat> responseFormat) {
             this.responseFormat = responseFormat;
             return this;
         }
@@ -1068,7 +1055,7 @@ public final class ChatRequest {
 
         /**
          * <p>Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.</p>
-         * <p>When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG).
+         * <p>When specified, the model's reply will be enriched with information found by querying each of the connectors (RAG).
          * Compatible Deployments: Cohere Platform</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

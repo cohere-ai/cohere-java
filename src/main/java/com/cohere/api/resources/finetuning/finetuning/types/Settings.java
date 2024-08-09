@@ -28,6 +28,8 @@ public final class Settings {
 
     private final Optional<Boolean> multiLabel;
 
+    private final Optional<WandbConfig> wandb;
+
     private final Map<String, Object> additionalProperties;
 
     private Settings(
@@ -35,11 +37,13 @@ public final class Settings {
             String datasetId,
             Optional<Hyperparameters> hyperparameters,
             Optional<Boolean> multiLabel,
+            Optional<WandbConfig> wandb,
             Map<String, Object> additionalProperties) {
         this.baseModel = baseModel;
         this.datasetId = datasetId;
         this.hyperparameters = hyperparameters;
         this.multiLabel = multiLabel;
+        this.wandb = wandb;
         this.additionalProperties = additionalProperties;
     }
 
@@ -75,6 +79,14 @@ public final class Settings {
         return multiLabel;
     }
 
+    /**
+     * @return The Weights &amp; Biases configuration.
+     */
+    @JsonProperty("wandb")
+    public Optional<WandbConfig> getWandb() {
+        return wandb;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -90,12 +102,13 @@ public final class Settings {
         return baseModel.equals(other.baseModel)
                 && datasetId.equals(other.datasetId)
                 && hyperparameters.equals(other.hyperparameters)
-                && multiLabel.equals(other.multiLabel);
+                && multiLabel.equals(other.multiLabel)
+                && wandb.equals(other.wandb);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.baseModel, this.datasetId, this.hyperparameters, this.multiLabel);
+        return Objects.hash(this.baseModel, this.datasetId, this.hyperparameters, this.multiLabel, this.wandb);
     }
 
     @java.lang.Override
@@ -127,6 +140,10 @@ public final class Settings {
         _FinalStage multiLabel(Optional<Boolean> multiLabel);
 
         _FinalStage multiLabel(Boolean multiLabel);
+
+        _FinalStage wandb(Optional<WandbConfig> wandb);
+
+        _FinalStage wandb(WandbConfig wandb);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -134,6 +151,8 @@ public final class Settings {
         private BaseModel baseModel;
 
         private String datasetId;
+
+        private Optional<WandbConfig> wandb = Optional.empty();
 
         private Optional<Boolean> multiLabel = Optional.empty();
 
@@ -150,6 +169,7 @@ public final class Settings {
             datasetId(other.getDatasetId());
             hyperparameters(other.getHyperparameters());
             multiLabel(other.getMultiLabel());
+            wandb(other.getWandb());
             return this;
         }
 
@@ -172,6 +192,23 @@ public final class Settings {
         @JsonSetter("dataset_id")
         public _FinalStage datasetId(String datasetId) {
             this.datasetId = datasetId;
+            return this;
+        }
+
+        /**
+         * <p>The Weights &amp; Biases configuration.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage wandb(WandbConfig wandb) {
+            this.wandb = Optional.of(wandb);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "wandb", nulls = Nulls.SKIP)
+        public _FinalStage wandb(Optional<WandbConfig> wandb) {
+            this.wandb = wandb;
             return this;
         }
 
@@ -211,7 +248,7 @@ public final class Settings {
 
         @java.lang.Override
         public Settings build() {
-            return new Settings(baseModel, datasetId, hyperparameters, multiLabel, additionalProperties);
+            return new Settings(baseModel, datasetId, hyperparameters, multiLabel, wandb, additionalProperties);
         }
     }
 }

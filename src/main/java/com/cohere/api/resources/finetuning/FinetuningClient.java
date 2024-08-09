@@ -50,7 +50,7 @@ public class FinetuningClient {
             FinetuningListFinetunedModelsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models");
+                .addPathSegments("v1/finetuning/finetuned-models");
         if (request.getPageSize().isPresent()) {
             httpUrl.addQueryParameter("page_size", request.getPageSize().get().toString());
         }
@@ -92,7 +92,7 @@ public class FinetuningClient {
     public CreateFinetunedModelResponse createFinetunedModel(FinetunedModel request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models")
+                .addPathSegments("v1/finetuning/finetuned-models")
                 .build();
         RequestBody body;
         try {
@@ -133,7 +133,7 @@ public class FinetuningClient {
     public GetFinetunedModelResponse getFinetunedModel(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models")
+                .addPathSegments("v1/finetuning/finetuned-models")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -168,7 +168,7 @@ public class FinetuningClient {
     public Map<String, Object> deleteFinetunedModel(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models")
+                .addPathSegments("v1/finetuning/finetuned-models")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -205,7 +205,7 @@ public class FinetuningClient {
             String id, FinetuningUpdateFinetunedModelRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models")
+                .addPathSegments("v1/finetuning/finetuned-models")
                 .addPathSegment(id)
                 .build();
         RequestBody body;
@@ -253,7 +253,7 @@ public class FinetuningClient {
             String finetunedModelId, FinetuningListEventsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models")
+                .addPathSegments("v1/finetuning/finetuned-models")
                 .addPathSegment(finetunedModelId)
                 .addPathSegments("events");
         if (request.getPageSize().isPresent()) {
@@ -305,7 +305,7 @@ public class FinetuningClient {
             String finetunedModelId, FinetuningListTrainingStepMetricsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("finetuning/finetuned-models")
+                .addPathSegments("v1/finetuning/finetuned-models")
                 .addPathSegment(finetunedModelId)
                 .addPathSegments("training-step-metrics");
         if (request.getPageSize().isPresent()) {

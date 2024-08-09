@@ -55,7 +55,7 @@ public class ConnectorsClient {
     public ListConnectorsResponse list(ConnectorsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("connectors");
+                .addPathSegments("v1/connectors");
         if (request.getLimit().isPresent()) {
             httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
         }
@@ -100,7 +100,7 @@ public class ConnectorsClient {
     public CreateConnectorResponse create(CreateConnectorRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("connectors")
+                .addPathSegments("v1/connectors")
                 .build();
         RequestBody body;
         try {
@@ -147,7 +147,7 @@ public class ConnectorsClient {
     public GetConnectorResponse get(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("connectors")
+                .addPathSegments("v1/connectors")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -188,7 +188,7 @@ public class ConnectorsClient {
     public Map<String, Object> delete(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("connectors")
+                .addPathSegments("v1/connectors")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -237,7 +237,7 @@ public class ConnectorsClient {
     public UpdateConnectorResponse update(String id, UpdateConnectorRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("connectors")
+                .addPathSegments("v1/connectors")
                 .addPathSegment(id)
                 .build();
         RequestBody body;
@@ -293,7 +293,7 @@ public class ConnectorsClient {
             String id, ConnectorsOAuthAuthorizeRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("connectors")
+                .addPathSegments("v1/connectors")
                 .addPathSegment(id)
                 .addPathSegments("oauth/authorize");
         if (request.getAfterTokenRedirect().isPresent()) {

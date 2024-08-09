@@ -38,7 +38,7 @@ public class ModelsClient {
     public GetModelResponse get(String model, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("models")
+                .addPathSegments("v1/models")
                 .addPathSegment(model)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -86,7 +86,7 @@ public class ModelsClient {
     public ListModelsResponse list(ModelsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("models");
+                .addPathSegments("v1/models");
         if (request.getPageSize().isPresent()) {
             httpUrl.addQueryParameter("page_size", request.getPageSize().get().toString());
         }

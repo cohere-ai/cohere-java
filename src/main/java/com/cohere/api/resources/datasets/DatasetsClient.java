@@ -56,7 +56,7 @@ public class DatasetsClient {
     public DatasetsListResponse list(DatasetsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("datasets");
+                .addPathSegments("v1/datasets");
         if (request.getDatasetType().isPresent()) {
             httpUrl.addQueryParameter("datasetType", request.getDatasetType().get());
         }
@@ -115,7 +115,7 @@ public class DatasetsClient {
             File data, Optional<File> evalData, DatasetsCreateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("datasets");
+                .addPathSegments("v1/datasets");
         httpUrl.addQueryParameter("name", request.getName());
         httpUrl.addQueryParameter("type", request.getType().toString());
         if (request.getKeepOriginalFile().isPresent()) {
@@ -195,7 +195,7 @@ public class DatasetsClient {
     public DatasetsGetUsageResponse getUsage(RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("datasets/usage")
+                .addPathSegments("v1/datasets/usage")
                 .build();
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -235,7 +235,7 @@ public class DatasetsClient {
     public DatasetsGetResponse get(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("datasets")
+                .addPathSegments("v1/datasets")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -276,7 +276,7 @@ public class DatasetsClient {
     public Map<String, Object> delete(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("datasets")
+                .addPathSegments("v1/datasets")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()

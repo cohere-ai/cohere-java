@@ -83,7 +83,7 @@ public class Cohere {
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("chat")
+                .addPathSegments("v1/chat")
                 .build();
         RequestBody body;
         try {
@@ -132,7 +132,7 @@ public class Cohere {
     public NonStreamedChatResponse chat(ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("chat")
+                .addPathSegments("v1/chat")
                 .build();
         RequestBody body;
         try {
@@ -188,7 +188,7 @@ public class Cohere {
             GenerateStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("generate")
+                .addPathSegments("v1/generate")
                 .build();
         RequestBody body;
         try {
@@ -244,7 +244,7 @@ public class Cohere {
     public Generation generate(GenerateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("generate")
+                .addPathSegments("v1/generate")
                 .build();
         RequestBody body;
         try {
@@ -295,7 +295,7 @@ public class Cohere {
     public EmbedResponse embed(EmbedRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed")
+                .addPathSegments("v1/embed")
                 .build();
         RequestBody body;
         try {
@@ -342,7 +342,7 @@ public class Cohere {
     public RerankResponse rerank(RerankRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("rerank")
+                .addPathSegments("v1/rerank")
                 .build();
         RequestBody body;
         try {
@@ -391,7 +391,7 @@ public class Cohere {
     public ClassifyResponse classify(ClassifyRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("classify")
+                .addPathSegments("v1/classify")
                 .build();
         RequestBody body;
         try {
@@ -446,7 +446,7 @@ public class Cohere {
     public SummarizeResponse summarize(SummarizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("summarize")
+                .addPathSegments("v1/summarize")
                 .build();
         RequestBody body;
         try {
@@ -493,7 +493,7 @@ public class Cohere {
     public TokenizeResponse tokenize(TokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("tokenize")
+                .addPathSegments("v1/tokenize")
                 .build();
         RequestBody body;
         try {
@@ -540,7 +540,7 @@ public class Cohere {
     public DetokenizeResponse detokenize(DetokenizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("detokenize")
+                .addPathSegments("v1/detokenize")
                 .build();
         RequestBody body;
         try {
@@ -587,7 +587,7 @@ public class Cohere {
     public CheckApiKeyResponse checkApiKey(RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("check-api-key")
+                .addPathSegments("v1/check-api-key")
                 .build();
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
