@@ -41,7 +41,7 @@ public class EmbedJobsClient {
     public ListEmbedJobResponse list(RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed-jobs")
+                .addPathSegments("v1/embed-jobs")
                 .build();
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -81,7 +81,7 @@ public class EmbedJobsClient {
     public CreateEmbedJobResponse create(CreateEmbedJobRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed-jobs")
+                .addPathSegments("v1/embed-jobs")
                 .build();
         RequestBody body;
         try {
@@ -128,7 +128,7 @@ public class EmbedJobsClient {
     public EmbedJob get(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed-jobs")
+                .addPathSegments("v1/embed-jobs")
                 .addPathSegment(id)
                 .build();
         Request okhttpRequest = new Request.Builder()
@@ -169,7 +169,7 @@ public class EmbedJobsClient {
     public void cancel(String id, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("embed-jobs")
+                .addPathSegments("v1/embed-jobs")
                 .addPathSegment(id)
                 .addPathSegments("cancel")
                 .build();
