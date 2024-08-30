@@ -47,7 +47,7 @@ public final class CohereBuilder {
             throw new RuntimeException("Please provide token or set the CO_API_KEY environment variable.");
         }
         this.clientOptionsBuilder.addHeader("Authorization", "Bearer " + this.token);
-        if (clientName.isPresent()) {
+        if (clientName != null) {
             this.clientOptionsBuilder.addHeader("X-Client-Name", this.clientName);
         }
         clientOptionsBuilder.environment(this.environment);
