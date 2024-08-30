@@ -167,22 +167,20 @@ public class Cohere {
     }
 
     /**
-     * <blockquote>
-     * 🚧 Warning
-     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
-     * </blockquote>
-     * <p>Generates realistic text conditioned on a given input.</p>
+     * <p>&lt;Warning&gt;
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * &lt;/Warning&gt;
+     * Generates realistic text conditioned on a given input.</p>
      */
     public Iterable<GenerateStreamedResponse> generateStream(GenerateStreamRequest request) {
         return generateStream(request, null);
     }
 
     /**
-     * <blockquote>
-     * 🚧 Warning
-     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
-     * </blockquote>
-     * <p>Generates realistic text conditioned on a given input.</p>
+     * <p>&lt;Warning&gt;
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * &lt;/Warning&gt;
+     * Generates realistic text conditioned on a given input.</p>
      */
     public Iterable<GenerateStreamedResponse> generateStream(
             GenerateStreamRequest request, RequestOptions requestOptions) {
@@ -224,22 +222,20 @@ public class Cohere {
     }
 
     /**
-     * <blockquote>
-     * 🚧 Warning
-     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
-     * </blockquote>
-     * <p>Generates realistic text conditioned on a given input.</p>
+     * <p>&lt;Warning&gt;
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * &lt;/Warning&gt;
+     * Generates realistic text conditioned on a given input.</p>
      */
     public Generation generate(GenerateRequest request) {
         return generate(request, null);
     }
 
     /**
-     * <blockquote>
-     * 🚧 Warning
-     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
-     * </blockquote>
-     * <p>Generates realistic text conditioned on a given input.</p>
+     * <p>&lt;Warning&gt;
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * &lt;/Warning&gt;
+     * Generates realistic text conditioned on a given input.</p>
      */
     public Generation generate(GenerateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -426,22 +422,20 @@ public class Cohere {
     }
 
     /**
-     * <blockquote>
-     * 🚧 Warning
-     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
-     * </blockquote>
-     * <p>Generates a summary in English for a given text.</p>
+     * <p>&lt;Warning&gt;
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * &lt;/Warning&gt;
+     * Generates a summary in English for a given text.</p>
      */
     public SummarizeResponse summarize(SummarizeRequest request) {
         return summarize(request, null);
     }
 
     /**
-     * <blockquote>
-     * 🚧 Warning
-     * <p>This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the <a href="/docs/migrating-from-cogenerate-to-cochat">migration guide</a> to start using the Chat API.</p>
-     * </blockquote>
-     * <p>Generates a summary in English for a given text.</p>
+     * <p>&lt;Warning&gt;
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * &lt;/Warning&gt;
+     * Generates a summary in English for a given text.</p>
      */
     public SummarizeResponse summarize(SummarizeRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
