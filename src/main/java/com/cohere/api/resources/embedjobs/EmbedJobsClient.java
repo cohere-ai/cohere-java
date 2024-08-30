@@ -3,15 +3,33 @@
  */
 package com.cohere.api.resources.embedjobs;
 
-import com.cohere.api.core.ApiError;
 import com.cohere.api.core.ClientOptions;
+import com.cohere.api.core.CohereApiApiError;
+import com.cohere.api.core.CohereApiError;
 import com.cohere.api.core.MediaTypes;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.core.RequestOptions;
+import com.cohere.api.errors.CohereApiBadRequestError;
+import com.cohere.api.errors.CohereApiClientClosedRequestError;
+import com.cohere.api.errors.CohereApiForbiddenError;
+import com.cohere.api.errors.CohereApiGatewayTimeoutError;
+import com.cohere.api.errors.CohereApiInternalServerError;
+import com.cohere.api.errors.CohereApiNotFoundError;
+import com.cohere.api.errors.CohereApiNotImplementedError;
+import com.cohere.api.errors.CohereApiServiceUnavailableError;
+import com.cohere.api.errors.CohereApiTooManyRequestsError;
+import com.cohere.api.errors.CohereApiUnauthorizedError;
+import com.cohere.api.errors.CohereApiUnprocessableEntityError;
 import com.cohere.api.resources.embedjobs.requests.CreateEmbedJobRequest;
+import com.cohere.api.types.ClientClosedRequestErrorBody;
 import com.cohere.api.types.CreateEmbedJobResponse;
 import com.cohere.api.types.EmbedJob;
+import com.cohere.api.types.GatewayTimeoutErrorBody;
 import com.cohere.api.types.ListEmbedJobResponse;
+import com.cohere.api.types.NotImplementedErrorBody;
+import com.cohere.api.types.TooManyRequestsErrorBody;
+import com.cohere.api.types.UnprocessableEntityErrorBody;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -49,22 +67,61 @@ public class EmbedJobsClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
-        try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                client = clientOptions.httpClientWithTimeout(requestOptions);
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ListEmbedJobResponse.class);
             }
-            throw new ApiError(
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new CohereApiBadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new CohereApiUnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 422:
+                        throw new CohereApiUnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, UnprocessableEntityErrorBody.class));
+                    case 429:
+                        throw new CohereApiTooManyRequestsError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, TooManyRequestsErrorBody.class));
+                    case 499:
+                        throw new CohereApiClientClosedRequestError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, ClientClosedRequestErrorBody.class));
+                    case 500:
+                        throw new CohereApiInternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 501:
+                        throw new CohereApiNotImplementedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotImplementedErrorBody.class));
+                    case 503:
+                        throw new CohereApiServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 504:
+                        throw new CohereApiGatewayTimeoutError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GatewayTimeoutErrorBody.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiApiError(
+                    "Error with status code " + response.code(),
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(
-                            responseBody != null ? responseBody.string() : "{}", Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -87,8 +144,8 @@ public class EmbedJobsClient {
         try {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new CohereApiError("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -96,22 +153,61 @@ public class EmbedJobsClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
-        try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                client = clientOptions.httpClientWithTimeout(requestOptions);
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CreateEmbedJobResponse.class);
             }
-            throw new ApiError(
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new CohereApiBadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new CohereApiUnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 422:
+                        throw new CohereApiUnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, UnprocessableEntityErrorBody.class));
+                    case 429:
+                        throw new CohereApiTooManyRequestsError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, TooManyRequestsErrorBody.class));
+                    case 499:
+                        throw new CohereApiClientClosedRequestError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, ClientClosedRequestErrorBody.class));
+                    case 500:
+                        throw new CohereApiInternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 501:
+                        throw new CohereApiNotImplementedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotImplementedErrorBody.class));
+                    case 503:
+                        throw new CohereApiServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 504:
+                        throw new CohereApiGatewayTimeoutError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GatewayTimeoutErrorBody.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiApiError(
+                    "Error with status code " + response.code(),
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(
-                            responseBody != null ? responseBody.string() : "{}", Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -137,22 +233,61 @@ public class EmbedJobsClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
-        try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                client = clientOptions.httpClientWithTimeout(requestOptions);
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmbedJob.class);
             }
-            throw new ApiError(
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new CohereApiBadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new CohereApiUnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 422:
+                        throw new CohereApiUnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, UnprocessableEntityErrorBody.class));
+                    case 429:
+                        throw new CohereApiTooManyRequestsError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, TooManyRequestsErrorBody.class));
+                    case 499:
+                        throw new CohereApiClientClosedRequestError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, ClientClosedRequestErrorBody.class));
+                    case 500:
+                        throw new CohereApiInternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 501:
+                        throw new CohereApiNotImplementedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotImplementedErrorBody.class));
+                    case 503:
+                        throw new CohereApiServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 504:
+                        throw new CohereApiGatewayTimeoutError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GatewayTimeoutErrorBody.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiApiError(
+                    "Error with status code " + response.code(),
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(
-                            responseBody != null ? responseBody.string() : "{}", Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -178,22 +313,61 @@ public class EmbedJobsClient {
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
-        try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                client = clientOptions.httpClientWithTimeout(requestOptions);
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
             }
-            throw new ApiError(
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new CohereApiBadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new CohereApiUnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 422:
+                        throw new CohereApiUnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, UnprocessableEntityErrorBody.class));
+                    case 429:
+                        throw new CohereApiTooManyRequestsError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, TooManyRequestsErrorBody.class));
+                    case 499:
+                        throw new CohereApiClientClosedRequestError(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, ClientClosedRequestErrorBody.class));
+                    case 500:
+                        throw new CohereApiInternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 501:
+                        throw new CohereApiNotImplementedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotImplementedErrorBody.class));
+                    case 503:
+                        throw new CohereApiServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 504:
+                        throw new CohereApiGatewayTimeoutError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GatewayTimeoutErrorBody.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiApiError(
+                    "Error with status code " + response.code(),
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(
-                            responseBody != null ? responseBody.string() : "{}", Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 }
