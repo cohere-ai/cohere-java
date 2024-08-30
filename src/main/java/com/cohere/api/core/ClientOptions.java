@@ -26,16 +26,15 @@ public final class ClientOptions {
         this.environment = environment;
         this.headers = new HashMap<>();
         this.headers.putAll(headers);
-        this.headers.putAll(Map.of(
-                "X-Fern-SDK-Name",
-                "com.cohere.fern:api-sdk",
-                "X-Fern-SDK-Version",
-                "1.3.0",
-                "X-Fern-Language",
-                "JAVA"));
+        this.headers.putAll(new HashMap<String, String>() {
+            {
+                put("X-Fern-Language", "JAVA");
+                put("X-Fern-SDK-Name", "com.cohere.fern:api-sdk");
+                put("X-Fern-SDK-Version", "1.3.1");
+            }
+        });
         this.headerSuppliers = headerSuppliers;
         this.httpClient = httpClient;
-        ;
     }
 
     public Environment environment() {
