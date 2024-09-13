@@ -29,6 +29,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatStreamRequest.Builder.class)
 public final class ChatStreamRequest {
+    private final Optional<String> accepts;
+
     private final String message;
 
     private final Optional<String> model;
@@ -84,6 +86,7 @@ public final class ChatStreamRequest {
     private final Map<String, Object> additionalProperties;
 
     private ChatStreamRequest(
+            Optional<String> accepts,
             String message,
             Optional<String> model,
             Optional<String> preamble,
@@ -111,6 +114,7 @@ public final class ChatStreamRequest {
             Optional<ResponseFormat> responseFormat,
             Optional<ChatStreamRequestSafetyMode> safetyMode,
             Map<String, Object> additionalProperties) {
+        this.accepts = accepts;
         this.message = message;
         this.model = model;
         this.preamble = preamble;
@@ -138,6 +142,14 @@ public final class ChatStreamRequest {
         this.responseFormat = responseFormat;
         this.safetyMode = safetyMode;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.
+     */
+    @JsonProperty("Accepts")
+    public Optional<String> getAccepts() {
+        return accepts;
     }
 
     /**
@@ -451,7 +463,8 @@ public final class ChatStreamRequest {
     }
 
     private boolean equalTo(ChatStreamRequest other) {
-        return message.equals(other.message)
+        return accepts.equals(other.accepts)
+                && message.equals(other.message)
                 && model.equals(other.model)
                 && preamble.equals(other.preamble)
                 && chatHistory.equals(other.chatHistory)
@@ -482,6 +495,7 @@ public final class ChatStreamRequest {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.accepts,
                 this.message,
                 this.model,
                 this.preamble,
@@ -527,6 +541,10 @@ public final class ChatStreamRequest {
 
     public interface _FinalStage {
         ChatStreamRequest build();
+
+        _FinalStage accepts(Optional<String> accepts);
+
+        _FinalStage accepts(String accepts);
 
         _FinalStage model(Optional<String> model);
 
@@ -683,6 +701,8 @@ public final class ChatStreamRequest {
 
         private Optional<String> model = Optional.empty();
 
+        private Optional<String> accepts = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -690,6 +710,7 @@ public final class ChatStreamRequest {
 
         @java.lang.Override
         public Builder from(ChatStreamRequest other) {
+            accepts(other.getAccepts());
             message(other.getMessage());
             model(other.getModel());
             preamble(other.getPreamble());
@@ -1234,9 +1255,27 @@ public final class ChatStreamRequest {
             return this;
         }
 
+        /**
+         * <p>Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accepts(String accepts) {
+            this.accepts = Optional.of(accepts);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Accepts", nulls = Nulls.SKIP)
+        public _FinalStage accepts(Optional<String> accepts) {
+            this.accepts = accepts;
+            return this;
+        }
+
         @java.lang.Override
         public ChatStreamRequest build() {
             return new ChatStreamRequest(
+                    accepts,
                     message,
                     model,
                     preamble,
