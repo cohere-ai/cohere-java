@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,9 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EmbedRequest.Builder.class)
 public final class EmbedRequest {
-    private final List<String> texts;
+    private final Optional<List<String>> texts;
+
+    private final Optional<List<String>> images;
 
     private final Optional<String> model;
 
@@ -38,13 +39,15 @@ public final class EmbedRequest {
     private final Map<String, Object> additionalProperties;
 
     private EmbedRequest(
-            List<String> texts,
+            Optional<List<String>> texts,
+            Optional<List<String>> images,
             Optional<String> model,
             Optional<EmbedInputType> inputType,
             Optional<List<EmbeddingType>> embeddingTypes,
             Optional<EmbedRequestTruncate> truncate,
             Map<String, Object> additionalProperties) {
         this.texts = texts;
+        this.images = images;
         this.model = model;
         this.inputType = inputType;
         this.embeddingTypes = embeddingTypes;
@@ -56,8 +59,17 @@ public final class EmbedRequest {
      * @return An array of strings for the model to embed. Maximum number of texts per call is <code>96</code>. We recommend reducing the length of each text to be under <code>512</code> tokens for optimal quality.
      */
     @JsonProperty("texts")
-    public List<String> getTexts() {
+    public Optional<List<String>> getTexts() {
         return texts;
+    }
+
+    /**
+     * @return An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.
+     * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+     */
+    @JsonProperty("images")
+    public Optional<List<String>> getImages() {
+        return images;
     }
 
     /**
@@ -136,6 +148,7 @@ public final class EmbedRequest {
 
     private boolean equalTo(EmbedRequest other) {
         return texts.equals(other.texts)
+                && images.equals(other.images)
                 && model.equals(other.model)
                 && inputType.equals(other.inputType)
                 && embeddingTypes.equals(other.embeddingTypes)
@@ -144,7 +157,7 @@ public final class EmbedRequest {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.texts, this.model, this.inputType, this.embeddingTypes, this.truncate);
+        return Objects.hash(this.texts, this.images, this.model, this.inputType, this.embeddingTypes, this.truncate);
     }
 
     @java.lang.Override
@@ -158,7 +171,9 @@ public final class EmbedRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private List<String> texts = new ArrayList<>();
+        private Optional<List<String>> texts = Optional.empty();
+
+        private Optional<List<String>> images = Optional.empty();
 
         private Optional<String> model = Optional.empty();
 
@@ -175,6 +190,7 @@ public final class EmbedRequest {
 
         public Builder from(EmbedRequest other) {
             texts(other.getTexts());
+            images(other.getImages());
             model(other.getModel());
             inputType(other.getInputType());
             embeddingTypes(other.getEmbeddingTypes());
@@ -183,19 +199,24 @@ public final class EmbedRequest {
         }
 
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
+        public Builder texts(Optional<List<String>> texts) {
+            this.texts = texts;
+            return this;
+        }
+
         public Builder texts(List<String> texts) {
-            this.texts.clear();
-            this.texts.addAll(texts);
+            this.texts = Optional.of(texts);
             return this;
         }
 
-        public Builder addTexts(String texts) {
-            this.texts.add(texts);
+        @JsonSetter(value = "images", nulls = Nulls.SKIP)
+        public Builder images(Optional<List<String>> images) {
+            this.images = images;
             return this;
         }
 
-        public Builder addAllTexts(List<String> texts) {
-            this.texts.addAll(texts);
+        public Builder images(List<String> images) {
+            this.images = Optional.of(images);
             return this;
         }
 
@@ -244,7 +265,7 @@ public final class EmbedRequest {
         }
 
         public EmbedRequest build() {
-            return new EmbedRequest(texts, model, inputType, embeddingTypes, truncate, additionalProperties);
+            return new EmbedRequest(texts, images, model, inputType, embeddingTypes, truncate, additionalProperties);
         }
     }
 }

@@ -12,7 +12,9 @@ public enum EmbedInputType {
 
     CLASSIFICATION("classification"),
 
-    CLUSTERING("clustering");
+    CLUSTERING("clustering"),
+
+    IMAGE("image");
 
     private final String value;
 

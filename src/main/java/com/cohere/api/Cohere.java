@@ -55,6 +55,8 @@ import com.cohere.api.types.TooManyRequestsErrorBody;
 import com.cohere.api.types.UnprocessableEntityErrorBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -88,7 +90,7 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
+     * To learn how to use the Chat API and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request) {
         return chatStream(request, null);
@@ -96,26 +98,107 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
+     * To learn how to use the Chat API and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public Iterable<StreamedChatResponse> chatStream(ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/chat")
                 .build();
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("message", request.getMessage());
+        if (request.getModel().isPresent()) {
+            properties.put("model", request.getModel());
+        }
+        properties.put("stream", request.getStream());
+        if (request.getPreamble().isPresent()) {
+            properties.put("preamble", request.getPreamble());
+        }
+        if (request.getChatHistory().isPresent()) {
+            properties.put("chat_history", request.getChatHistory());
+        }
+        if (request.getConversationId().isPresent()) {
+            properties.put("conversation_id", request.getConversationId());
+        }
+        if (request.getPromptTruncation().isPresent()) {
+            properties.put("prompt_truncation", request.getPromptTruncation());
+        }
+        if (request.getConnectors().isPresent()) {
+            properties.put("connectors", request.getConnectors());
+        }
+        if (request.getSearchQueriesOnly().isPresent()) {
+            properties.put("search_queries_only", request.getSearchQueriesOnly());
+        }
+        if (request.getDocuments().isPresent()) {
+            properties.put("documents", request.getDocuments());
+        }
+        if (request.getCitationQuality().isPresent()) {
+            properties.put("citation_quality", request.getCitationQuality());
+        }
+        if (request.getTemperature().isPresent()) {
+            properties.put("temperature", request.getTemperature());
+        }
+        if (request.getMaxTokens().isPresent()) {
+            properties.put("max_tokens", request.getMaxTokens());
+        }
+        if (request.getMaxInputTokens().isPresent()) {
+            properties.put("max_input_tokens", request.getMaxInputTokens());
+        }
+        if (request.getK().isPresent()) {
+            properties.put("k", request.getK());
+        }
+        if (request.getP().isPresent()) {
+            properties.put("p", request.getP());
+        }
+        if (request.getSeed().isPresent()) {
+            properties.put("seed", request.getSeed());
+        }
+        if (request.getStopSequences().isPresent()) {
+            properties.put("stop_sequences", request.getStopSequences());
+        }
+        if (request.getFrequencyPenalty().isPresent()) {
+            properties.put("frequency_penalty", request.getFrequencyPenalty());
+        }
+        if (request.getPresencePenalty().isPresent()) {
+            properties.put("presence_penalty", request.getPresencePenalty());
+        }
+        if (request.getRawPrompting().isPresent()) {
+            properties.put("raw_prompting", request.getRawPrompting());
+        }
+        if (request.getReturnPrompt().isPresent()) {
+            properties.put("return_prompt", request.getReturnPrompt());
+        }
+        if (request.getTools().isPresent()) {
+            properties.put("tools", request.getTools());
+        }
+        if (request.getToolResults().isPresent()) {
+            properties.put("tool_results", request.getToolResults());
+        }
+        if (request.getForceSingleStep().isPresent()) {
+            properties.put("force_single_step", request.getForceSingleStep());
+        }
+        if (request.getResponseFormat().isPresent()) {
+            properties.put("response_format", request.getResponseFormat());
+        }
+        if (request.getSafetyMode().isPresent()) {
+            properties.put("safety_mode", request.getSafetyMode());
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new CohereApiError("Failed to serialize request", e);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        Request okhttpRequest = new Request.Builder()
+        Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl)
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        if (request.getAccepts().isPresent()) {
+            _requestBuilder.addHeader("Accepts", request.getAccepts().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -176,7 +259,7 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
+     * To learn how to use the Chat API and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public NonStreamedChatResponse chat(ChatRequest request) {
         return chat(request, null);
@@ -184,26 +267,107 @@ public class Cohere {
 
     /**
      * Generates a text response to a user message.
-     * To learn how to use the Chat API with Streaming and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
+     * To learn how to use the Chat API and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public NonStreamedChatResponse chat(ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/chat")
                 .build();
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("message", request.getMessage());
+        if (request.getModel().isPresent()) {
+            properties.put("model", request.getModel());
+        }
+        properties.put("stream", request.getStream());
+        if (request.getPreamble().isPresent()) {
+            properties.put("preamble", request.getPreamble());
+        }
+        if (request.getChatHistory().isPresent()) {
+            properties.put("chat_history", request.getChatHistory());
+        }
+        if (request.getConversationId().isPresent()) {
+            properties.put("conversation_id", request.getConversationId());
+        }
+        if (request.getPromptTruncation().isPresent()) {
+            properties.put("prompt_truncation", request.getPromptTruncation());
+        }
+        if (request.getConnectors().isPresent()) {
+            properties.put("connectors", request.getConnectors());
+        }
+        if (request.getSearchQueriesOnly().isPresent()) {
+            properties.put("search_queries_only", request.getSearchQueriesOnly());
+        }
+        if (request.getDocuments().isPresent()) {
+            properties.put("documents", request.getDocuments());
+        }
+        if (request.getCitationQuality().isPresent()) {
+            properties.put("citation_quality", request.getCitationQuality());
+        }
+        if (request.getTemperature().isPresent()) {
+            properties.put("temperature", request.getTemperature());
+        }
+        if (request.getMaxTokens().isPresent()) {
+            properties.put("max_tokens", request.getMaxTokens());
+        }
+        if (request.getMaxInputTokens().isPresent()) {
+            properties.put("max_input_tokens", request.getMaxInputTokens());
+        }
+        if (request.getK().isPresent()) {
+            properties.put("k", request.getK());
+        }
+        if (request.getP().isPresent()) {
+            properties.put("p", request.getP());
+        }
+        if (request.getSeed().isPresent()) {
+            properties.put("seed", request.getSeed());
+        }
+        if (request.getStopSequences().isPresent()) {
+            properties.put("stop_sequences", request.getStopSequences());
+        }
+        if (request.getFrequencyPenalty().isPresent()) {
+            properties.put("frequency_penalty", request.getFrequencyPenalty());
+        }
+        if (request.getPresencePenalty().isPresent()) {
+            properties.put("presence_penalty", request.getPresencePenalty());
+        }
+        if (request.getRawPrompting().isPresent()) {
+            properties.put("raw_prompting", request.getRawPrompting());
+        }
+        if (request.getReturnPrompt().isPresent()) {
+            properties.put("return_prompt", request.getReturnPrompt());
+        }
+        if (request.getTools().isPresent()) {
+            properties.put("tools", request.getTools());
+        }
+        if (request.getToolResults().isPresent()) {
+            properties.put("tool_results", request.getToolResults());
+        }
+        if (request.getForceSingleStep().isPresent()) {
+            properties.put("force_single_step", request.getForceSingleStep());
+        }
+        if (request.getResponseFormat().isPresent()) {
+            properties.put("response_format", request.getResponseFormat());
+        }
+        if (request.getSafetyMode().isPresent()) {
+            properties.put("safety_mode", request.getSafetyMode());
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new CohereApiError("Failed to serialize request", e);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        Request okhttpRequest = new Request.Builder()
+        Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl)
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        if (request.getAccepts().isPresent()) {
+            _requestBuilder.addHeader("Accepts", request.getAccepts().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -446,6 +610,15 @@ public class Cohere {
         } catch (IOException e) {
             throw new CohereApiError("Network error executing HTTP request", e);
         }
+    }
+
+    /**
+     * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
+     * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     */
+    public EmbedResponse embed() {
+        return embed(EmbedRequest.builder().build());
     }
 
     /**
