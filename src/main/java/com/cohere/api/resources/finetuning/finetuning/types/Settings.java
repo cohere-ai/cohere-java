@@ -80,7 +80,7 @@ public final class Settings {
     }
 
     /**
-     * @return The Weights &amp; Biases configuration.
+     * @return The Weights &amp; Biases configuration (Chat fine-tuning only).
      */
     @JsonProperty("wandb")
     public Optional<WandbConfig> getWandb() {
@@ -196,7 +196,7 @@ public final class Settings {
         }
 
         /**
-         * <p>The Weights &amp; Biases configuration.</p>
+         * <p>The Weights &amp; Biases configuration (Chat fine-tuning only).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
