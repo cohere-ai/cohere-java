@@ -4,6 +4,7 @@
 package com.cohere.api.resources.v2.types;
 
 import com.cohere.api.core.ObjectMappers;
+import com.cohere.api.types.Document;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;

@@ -68,7 +68,7 @@ public final class BaseModel {
     }
 
     /**
-     * @return The fine-tuning strategy.
+     * @return Deprecated: The fine-tuning strategy.
      */
     @JsonProperty("strategy")
     public Optional<Strategy> getStrategy() {
@@ -165,7 +165,7 @@ public final class BaseModel {
         }
 
         /**
-         * <p>The fine-tuning strategy.</p>
+         * <p>Deprecated: The fine-tuning strategy.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

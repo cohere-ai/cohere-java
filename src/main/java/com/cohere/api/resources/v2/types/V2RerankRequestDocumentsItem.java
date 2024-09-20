@@ -4,23 +4,24 @@
 package com.cohere.api.resources.v2.types;
 
 import com.cohere.api.core.ObjectMappers;
-import com.cohere.api.types.Document;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
-@JsonDeserialize(using = V2ChatStreamRequestDocumentsItem.Deserializer.class)
-public final class V2ChatStreamRequestDocumentsItem {
+@JsonDeserialize(using = V2RerankRequestDocumentsItem.Deserializer.class)
+public final class V2RerankRequestDocumentsItem {
     private final Object value;
 
     private final int type;
 
-    private V2ChatStreamRequestDocumentsItem(Object value, int type) {
+    private V2RerankRequestDocumentsItem(Object value, int type) {
         this.value = value;
         this.type = type;
     }
@@ -34,7 +35,7 @@ public final class V2ChatStreamRequestDocumentsItem {
         if (this.type == 0) {
             return visitor.visit((String) this.value);
         } else if (this.type == 1) {
-            return visitor.visit((Document) this.value);
+            return visitor.visit((Map<String, String>) this.value);
         }
         throw new IllegalStateException("Failed to visit value. This should never happen.");
     }
@@ -42,10 +43,10 @@ public final class V2ChatStreamRequestDocumentsItem {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof V2ChatStreamRequestDocumentsItem && equalTo((V2ChatStreamRequestDocumentsItem) other);
+        return other instanceof V2RerankRequestDocumentsItem && equalTo((V2RerankRequestDocumentsItem) other);
     }
 
-    private boolean equalTo(V2ChatStreamRequestDocumentsItem other) {
+    private boolean equalTo(V2RerankRequestDocumentsItem other) {
         return value.equals(other.value);
     }
 
@@ -59,35 +60,34 @@ public final class V2ChatStreamRequestDocumentsItem {
         return this.value.toString();
     }
 
-    public static V2ChatStreamRequestDocumentsItem of(String value) {
-        return new V2ChatStreamRequestDocumentsItem(value, 0);
+    public static V2RerankRequestDocumentsItem of(String value) {
+        return new V2RerankRequestDocumentsItem(value, 0);
     }
 
-    public static V2ChatStreamRequestDocumentsItem of(Document value) {
-        return new V2ChatStreamRequestDocumentsItem(value, 1);
+    public static V2RerankRequestDocumentsItem of(Map<String, String> value) {
+        return new V2RerankRequestDocumentsItem(value, 1);
     }
 
     public interface Visitor<T> {
         T visit(String value);
 
-        T visit(Document value);
+        T visit(Map<String, String> value);
     }
 
-    static final class Deserializer extends StdDeserializer<V2ChatStreamRequestDocumentsItem> {
+    static final class Deserializer extends StdDeserializer<V2RerankRequestDocumentsItem> {
         Deserializer() {
-            super(V2ChatStreamRequestDocumentsItem.class);
+            super(V2RerankRequestDocumentsItem.class);
         }
 
         @java.lang.Override
-        public V2ChatStreamRequestDocumentsItem deserialize(JsonParser p, DeserializationContext ctxt)
-                throws IOException {
+        public V2RerankRequestDocumentsItem deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, String.class));
             } catch (IllegalArgumentException e) {
             }
             try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, Document.class));
+                return of(ObjectMappers.JSON_MAPPER.convertValue(value, new TypeReference<Map<String, String>>() {}));
             } catch (IllegalArgumentException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");

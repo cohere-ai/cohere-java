@@ -4,12 +4,12 @@
 package com.cohere.api.resources.v2.requests;
 
 import com.cohere.api.core.ObjectMappers;
-import com.cohere.api.resources.v2.types.ChatMessage2;
-import com.cohere.api.resources.v2.types.CitationOptions;
-import com.cohere.api.resources.v2.types.ResponseFormat2;
-import com.cohere.api.resources.v2.types.Tool2;
 import com.cohere.api.resources.v2.types.V2ChatRequestDocumentsItem;
 import com.cohere.api.resources.v2.types.V2ChatRequestSafetyMode;
+import com.cohere.api.types.ChatMessageV2;
+import com.cohere.api.types.CitationOptions;
+import com.cohere.api.types.ResponseFormatV2;
+import com.cohere.api.types.ToolV2;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,15 +30,15 @@ import java.util.Optional;
 public final class V2ChatRequest {
     private final String model;
 
-    private final List<ChatMessage2> messages;
+    private final List<ChatMessageV2> messages;
 
-    private final Optional<List<Tool2>> tools;
+    private final Optional<List<ToolV2>> tools;
 
     private final Optional<List<V2ChatRequestDocumentsItem>> documents;
 
     private final Optional<CitationOptions> citationOptions;
 
-    private final Optional<ResponseFormat2> responseFormat;
+    private final Optional<ResponseFormatV2> responseFormat;
 
     private final Optional<V2ChatRequestSafetyMode> safetyMode;
 
@@ -64,11 +64,11 @@ public final class V2ChatRequest {
 
     private V2ChatRequest(
             String model,
-            List<ChatMessage2> messages,
-            Optional<List<Tool2>> tools,
+            List<ChatMessageV2> messages,
+            Optional<List<ToolV2>> tools,
             Optional<List<V2ChatRequestDocumentsItem>> documents,
             Optional<CitationOptions> citationOptions,
-            Optional<ResponseFormat2> responseFormat,
+            Optional<ResponseFormatV2> responseFormat,
             Optional<V2ChatRequestSafetyMode> safetyMode,
             Optional<Integer> maxTokens,
             Optional<List<String>> stopSequences,
@@ -108,7 +108,7 @@ public final class V2ChatRequest {
     }
 
     @JsonProperty("messages")
-    public List<ChatMessage2> getMessages() {
+    public List<ChatMessageV2> getMessages() {
         return messages;
     }
 
@@ -117,7 +117,7 @@ public final class V2ChatRequest {
      * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> content in the response will be empty and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
      */
     @JsonProperty("tools")
-    public Optional<List<Tool2>> getTools() {
+    public Optional<List<ToolV2>> getTools() {
         return tools;
     }
 
@@ -135,7 +135,7 @@ public final class V2ChatRequest {
     }
 
     @JsonProperty("response_format")
-    public Optional<ResponseFormat2> getResponseFormat() {
+    public Optional<ResponseFormatV2> getResponseFormat() {
         return responseFormat;
     }
 
@@ -306,15 +306,15 @@ public final class V2ChatRequest {
     public interface _FinalStage {
         V2ChatRequest build();
 
-        _FinalStage messages(List<ChatMessage2> messages);
+        _FinalStage messages(List<ChatMessageV2> messages);
 
-        _FinalStage addMessages(ChatMessage2 messages);
+        _FinalStage addMessages(ChatMessageV2 messages);
 
-        _FinalStage addAllMessages(List<ChatMessage2> messages);
+        _FinalStage addAllMessages(List<ChatMessageV2> messages);
 
-        _FinalStage tools(Optional<List<Tool2>> tools);
+        _FinalStage tools(Optional<List<ToolV2>> tools);
 
-        _FinalStage tools(List<Tool2> tools);
+        _FinalStage tools(List<ToolV2> tools);
 
         _FinalStage documents(Optional<List<V2ChatRequestDocumentsItem>> documents);
 
@@ -324,9 +324,9 @@ public final class V2ChatRequest {
 
         _FinalStage citationOptions(CitationOptions citationOptions);
 
-        _FinalStage responseFormat(Optional<ResponseFormat2> responseFormat);
+        _FinalStage responseFormat(Optional<ResponseFormatV2> responseFormat);
 
-        _FinalStage responseFormat(ResponseFormat2 responseFormat);
+        _FinalStage responseFormat(ResponseFormatV2 responseFormat);
 
         _FinalStage safetyMode(Optional<V2ChatRequestSafetyMode> safetyMode);
 
@@ -393,15 +393,15 @@ public final class V2ChatRequest {
 
         private Optional<V2ChatRequestSafetyMode> safetyMode = Optional.empty();
 
-        private Optional<ResponseFormat2> responseFormat = Optional.empty();
+        private Optional<ResponseFormatV2> responseFormat = Optional.empty();
 
         private Optional<CitationOptions> citationOptions = Optional.empty();
 
         private Optional<List<V2ChatRequestDocumentsItem>> documents = Optional.empty();
 
-        private Optional<List<Tool2>> tools = Optional.empty();
+        private Optional<List<ToolV2>> tools = Optional.empty();
 
-        private List<ChatMessage2> messages = new ArrayList<>();
+        private List<ChatMessageV2> messages = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -624,14 +624,14 @@ public final class V2ChatRequest {
         }
 
         @java.lang.Override
-        public _FinalStage responseFormat(ResponseFormat2 responseFormat) {
+        public _FinalStage responseFormat(ResponseFormatV2 responseFormat) {
             this.responseFormat = Optional.of(responseFormat);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "response_format", nulls = Nulls.SKIP)
-        public _FinalStage responseFormat(Optional<ResponseFormat2> responseFormat) {
+        public _FinalStage responseFormat(Optional<ResponseFormatV2> responseFormat) {
             this.responseFormat = responseFormat;
             return this;
         }
@@ -672,33 +672,33 @@ public final class V2ChatRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage tools(List<Tool2> tools) {
+        public _FinalStage tools(List<ToolV2> tools) {
             this.tools = Optional.of(tools);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "tools", nulls = Nulls.SKIP)
-        public _FinalStage tools(Optional<List<Tool2>> tools) {
+        public _FinalStage tools(Optional<List<ToolV2>> tools) {
             this.tools = tools;
             return this;
         }
 
         @java.lang.Override
-        public _FinalStage addAllMessages(List<ChatMessage2> messages) {
+        public _FinalStage addAllMessages(List<ChatMessageV2> messages) {
             this.messages.addAll(messages);
             return this;
         }
 
         @java.lang.Override
-        public _FinalStage addMessages(ChatMessage2 messages) {
+        public _FinalStage addMessages(ChatMessageV2 messages) {
             this.messages.add(messages);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "messages", nulls = Nulls.SKIP)
-        public _FinalStage messages(List<ChatMessage2> messages) {
+        public _FinalStage messages(List<ChatMessageV2> messages) {
             this.messages.clear();
             this.messages.addAll(messages);
             return this;
