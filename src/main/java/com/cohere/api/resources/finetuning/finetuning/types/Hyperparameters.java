@@ -30,6 +30,12 @@ public final class Hyperparameters {
 
     private final Optional<Double> learningRate;
 
+    private final Optional<Integer> loraAlpha;
+
+    private final Optional<Integer> loraRank;
+
+    private final Optional<LoraTargetModules> loraTargetModules;
+
     private final Map<String, Object> additionalProperties;
 
     private Hyperparameters(
@@ -38,12 +44,18 @@ public final class Hyperparameters {
             Optional<Integer> trainBatchSize,
             Optional<Integer> trainEpochs,
             Optional<Double> learningRate,
+            Optional<Integer> loraAlpha,
+            Optional<Integer> loraRank,
+            Optional<LoraTargetModules> loraTargetModules,
             Map<String, Object> additionalProperties) {
         this.earlyStoppingPatience = earlyStoppingPatience;
         this.earlyStoppingThreshold = earlyStoppingThreshold;
         this.trainBatchSize = trainBatchSize;
         this.trainEpochs = trainEpochs;
         this.learningRate = learningRate;
+        this.loraAlpha = loraAlpha;
+        this.loraRank = loraRank;
+        this.loraTargetModules = loraTargetModules;
         this.additionalProperties = additionalProperties;
     }
 
@@ -89,6 +101,32 @@ public final class Hyperparameters {
         return learningRate;
     }
 
+    /**
+     * @return Controls the scaling factor for LoRA updates. Higher values make the
+     * updates more impactful.
+     */
+    @JsonProperty("lora_alpha")
+    public Optional<Integer> getLoraAlpha() {
+        return loraAlpha;
+    }
+
+    /**
+     * @return Specifies the rank for low-rank matrices. Lower ranks reduce parameters
+     * but may limit model flexibility.
+     */
+    @JsonProperty("lora_rank")
+    public Optional<Integer> getLoraRank() {
+        return loraRank;
+    }
+
+    /**
+     * @return The combination of LoRA modules to target.
+     */
+    @JsonProperty("lora_target_modules")
+    public Optional<LoraTargetModules> getLoraTargetModules() {
+        return loraTargetModules;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -105,7 +143,10 @@ public final class Hyperparameters {
                 && earlyStoppingThreshold.equals(other.earlyStoppingThreshold)
                 && trainBatchSize.equals(other.trainBatchSize)
                 && trainEpochs.equals(other.trainEpochs)
-                && learningRate.equals(other.learningRate);
+                && learningRate.equals(other.learningRate)
+                && loraAlpha.equals(other.loraAlpha)
+                && loraRank.equals(other.loraRank)
+                && loraTargetModules.equals(other.loraTargetModules);
     }
 
     @java.lang.Override
@@ -115,7 +156,10 @@ public final class Hyperparameters {
                 this.earlyStoppingThreshold,
                 this.trainBatchSize,
                 this.trainEpochs,
-                this.learningRate);
+                this.learningRate,
+                this.loraAlpha,
+                this.loraRank,
+                this.loraTargetModules);
     }
 
     @java.lang.Override
@@ -139,6 +183,12 @@ public final class Hyperparameters {
 
         private Optional<Double> learningRate = Optional.empty();
 
+        private Optional<Integer> loraAlpha = Optional.empty();
+
+        private Optional<Integer> loraRank = Optional.empty();
+
+        private Optional<LoraTargetModules> loraTargetModules = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -150,6 +200,9 @@ public final class Hyperparameters {
             trainBatchSize(other.getTrainBatchSize());
             trainEpochs(other.getTrainEpochs());
             learningRate(other.getLearningRate());
+            loraAlpha(other.getLoraAlpha());
+            loraRank(other.getLoraRank());
+            loraTargetModules(other.getLoraTargetModules());
             return this;
         }
 
@@ -208,6 +261,39 @@ public final class Hyperparameters {
             return this;
         }
 
+        @JsonSetter(value = "lora_alpha", nulls = Nulls.SKIP)
+        public Builder loraAlpha(Optional<Integer> loraAlpha) {
+            this.loraAlpha = loraAlpha;
+            return this;
+        }
+
+        public Builder loraAlpha(Integer loraAlpha) {
+            this.loraAlpha = Optional.of(loraAlpha);
+            return this;
+        }
+
+        @JsonSetter(value = "lora_rank", nulls = Nulls.SKIP)
+        public Builder loraRank(Optional<Integer> loraRank) {
+            this.loraRank = loraRank;
+            return this;
+        }
+
+        public Builder loraRank(Integer loraRank) {
+            this.loraRank = Optional.of(loraRank);
+            return this;
+        }
+
+        @JsonSetter(value = "lora_target_modules", nulls = Nulls.SKIP)
+        public Builder loraTargetModules(Optional<LoraTargetModules> loraTargetModules) {
+            this.loraTargetModules = loraTargetModules;
+            return this;
+        }
+
+        public Builder loraTargetModules(LoraTargetModules loraTargetModules) {
+            this.loraTargetModules = Optional.of(loraTargetModules);
+            return this;
+        }
+
         public Hyperparameters build() {
             return new Hyperparameters(
                     earlyStoppingPatience,
@@ -215,6 +301,9 @@ public final class Hyperparameters {
                     trainBatchSize,
                     trainEpochs,
                     learningRate,
+                    loraAlpha,
+                    loraRank,
+                    loraTargetModules,
                     additionalProperties);
         }
     }
