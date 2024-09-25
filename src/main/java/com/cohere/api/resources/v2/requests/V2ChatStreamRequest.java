@@ -141,7 +141,7 @@ public final class V2ChatStreamRequest {
 
     /**
      * @return Used to select the <a href="/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
-     * When <code>NONE</code> is specified, the safety instruction will be omitted.
+     * When <code>OFF</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
      * <p><strong>Note</strong>: This parameter is only compatible with models <a href="/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
@@ -604,7 +604,7 @@ public final class V2ChatStreamRequest {
 
         /**
          * <p>Used to select the <a href="/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
-         * When <code>NONE</code> is specified, the safety instruction will be omitted.</p>
+         * When <code>OFF</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
          * <p><strong>Note</strong>: This parameter is only compatible with models <a href="/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>

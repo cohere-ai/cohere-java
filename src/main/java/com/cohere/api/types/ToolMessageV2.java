@@ -10,24 +10,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ToolMessageV2.Builder.class)
 public final class ToolMessageV2 {
     private final String toolCallId;
 
-    private final ToolMessageV2ToolContent toolContent;
+    private final Optional<ToolMessageV2Content> content;
 
     private final Map<String, Object> additionalProperties;
 
     private ToolMessageV2(
-            String toolCallId, ToolMessageV2ToolContent toolContent, Map<String, Object> additionalProperties) {
+            String toolCallId, Optional<ToolMessageV2Content> content, Map<String, Object> additionalProperties) {
         this.toolCallId = toolCallId;
-        this.toolContent = toolContent;
+        this.content = content;
         this.additionalProperties = additionalProperties;
     }
 
@@ -42,9 +44,9 @@ public final class ToolMessageV2 {
     /**
      * @return A single or list of outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks
      */
-    @JsonProperty("tool_content")
-    public ToolMessageV2ToolContent getToolContent() {
-        return toolContent;
+    @JsonProperty("content")
+    public Optional<ToolMessageV2Content> getContent() {
+        return content;
     }
 
     @java.lang.Override
@@ -59,12 +61,12 @@ public final class ToolMessageV2 {
     }
 
     private boolean equalTo(ToolMessageV2 other) {
-        return toolCallId.equals(other.toolCallId) && toolContent.equals(other.toolContent);
+        return toolCallId.equals(other.toolCallId) && content.equals(other.content);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.toolCallId, this.toolContent);
+        return Objects.hash(this.toolCallId, this.content);
     }
 
     @java.lang.Override
@@ -77,24 +79,24 @@ public final class ToolMessageV2 {
     }
 
     public interface ToolCallIdStage {
-        ToolContentStage toolCallId(String toolCallId);
+        _FinalStage toolCallId(String toolCallId);
 
         Builder from(ToolMessageV2 other);
     }
 
-    public interface ToolContentStage {
-        _FinalStage toolContent(ToolMessageV2ToolContent toolContent);
-    }
-
     public interface _FinalStage {
         ToolMessageV2 build();
+
+        _FinalStage content(Optional<ToolMessageV2Content> content);
+
+        _FinalStage content(ToolMessageV2Content content);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ToolCallIdStage, ToolContentStage, _FinalStage {
+    public static final class Builder implements ToolCallIdStage, _FinalStage {
         private String toolCallId;
 
-        private ToolMessageV2ToolContent toolContent;
+        private Optional<ToolMessageV2Content> content = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -104,7 +106,7 @@ public final class ToolMessageV2 {
         @java.lang.Override
         public Builder from(ToolMessageV2 other) {
             toolCallId(other.getToolCallId());
-            toolContent(other.getToolContent());
+            content(other.getContent());
             return this;
         }
 
@@ -114,7 +116,7 @@ public final class ToolMessageV2 {
          */
         @java.lang.Override
         @JsonSetter("tool_call_id")
-        public ToolContentStage toolCallId(String toolCallId) {
+        public _FinalStage toolCallId(String toolCallId) {
             this.toolCallId = toolCallId;
             return this;
         }
@@ -124,15 +126,21 @@ public final class ToolMessageV2 {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("tool_content")
-        public _FinalStage toolContent(ToolMessageV2ToolContent toolContent) {
-            this.toolContent = toolContent;
+        public _FinalStage content(ToolMessageV2Content content) {
+            this.content = Optional.of(content);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "content", nulls = Nulls.SKIP)
+        public _FinalStage content(Optional<ToolMessageV2Content> content) {
+            this.content = content;
             return this;
         }
 
         @java.lang.Override
         public ToolMessageV2 build() {
-            return new ToolMessageV2(toolCallId, toolContent, additionalProperties);
+            return new ToolMessageV2(toolCallId, content, additionalProperties);
         }
     }
 }
