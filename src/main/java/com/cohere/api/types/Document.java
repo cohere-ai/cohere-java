@@ -42,7 +42,7 @@ public final class Document {
     }
 
     /**
-     * @return Unique identifier for this document which will be referenced in citations. If not provided an ID will be automatically generated
+     * @return Unique identifier for this document which will be referenced in citations. If not provided an ID will be automatically generated.
      */
     @JsonProperty("id")
     public Optional<String> getId() {

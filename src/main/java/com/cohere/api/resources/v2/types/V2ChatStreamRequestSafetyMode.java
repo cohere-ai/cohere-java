@@ -10,7 +10,7 @@ public enum V2ChatStreamRequestSafetyMode {
 
     STRICT("STRICT"),
 
-    NONE("NONE");
+    OFF("OFF");
 
     private final String value;
 

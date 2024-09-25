@@ -15,13 +15,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-@JsonDeserialize(using = ToolMessageV2ToolContent.Deserializer.class)
-public final class ToolMessageV2ToolContent {
+@JsonDeserialize(using = ToolMessageV2Content.Deserializer.class)
+public final class ToolMessageV2Content {
     private final Object value;
 
     private final int type;
 
-    private ToolMessageV2ToolContent(Object value, int type) {
+    private ToolMessageV2Content(Object value, int type) {
         this.value = value;
         this.type = type;
     }
@@ -43,10 +43,10 @@ public final class ToolMessageV2ToolContent {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ToolMessageV2ToolContent && equalTo((ToolMessageV2ToolContent) other);
+        return other instanceof ToolMessageV2Content && equalTo((ToolMessageV2Content) other);
     }
 
-    private boolean equalTo(ToolMessageV2ToolContent other) {
+    private boolean equalTo(ToolMessageV2Content other) {
         return value.equals(other.value);
     }
 
@@ -60,12 +60,12 @@ public final class ToolMessageV2ToolContent {
         return this.value.toString();
     }
 
-    public static ToolMessageV2ToolContent of(String value) {
-        return new ToolMessageV2ToolContent(value, 0);
+    public static ToolMessageV2Content of(String value) {
+        return new ToolMessageV2Content(value, 0);
     }
 
-    public static ToolMessageV2ToolContent of(List<ToolContent> value) {
-        return new ToolMessageV2ToolContent(value, 1);
+    public static ToolMessageV2Content of(List<ToolContent> value) {
+        return new ToolMessageV2Content(value, 1);
     }
 
     public interface Visitor<T> {
@@ -74,13 +74,13 @@ public final class ToolMessageV2ToolContent {
         T visit(List<ToolContent> value);
     }
 
-    static final class Deserializer extends StdDeserializer<ToolMessageV2ToolContent> {
+    static final class Deserializer extends StdDeserializer<ToolMessageV2Content> {
         Deserializer() {
-            super(ToolMessageV2ToolContent.class);
+            super(ToolMessageV2Content.class);
         }
 
         @java.lang.Override
-        public ToolMessageV2ToolContent deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public ToolMessageV2Content deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, String.class));
