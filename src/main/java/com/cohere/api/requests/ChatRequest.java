@@ -231,7 +231,7 @@ public final class ChatRequest {
     }
 
     /**
-     * @return Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.
+     * @return Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/v1/docs/creating-and-deploying-a-connector">created</a> one.
      * <p>When specified, the model's reply will be enriched with information found by querying each of the connectors (RAG).</p>
      * <p>Compatible Deployments: Cohere Platform</p>
      */
@@ -440,10 +440,10 @@ public final class ChatRequest {
     }
 
     /**
-     * @return Used to select the <a href="/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
+     * @return Used to select the <a href="https://docs.cohere.com/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
      * When <code>NONE</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
      */
     @JsonProperty("safety_mode")
@@ -753,10 +753,10 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Used to select the <a href="/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
+         * <p>Used to select the <a href="https://docs.cohere.com/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
          * When <code>NONE</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1134,7 +1134,7 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">created</a> one.</p>
+         * <p>Accepts <code>{&quot;id&quot;: &quot;web-search&quot;}</code>, and/or the <code>&quot;id&quot;</code> for a custom <a href="https://docs.cohere.com/docs/connectors">connector</a>, if you've <a href="https://docs.cohere.com/v1/docs/creating-and-deploying-a-connector">created</a> one.</p>
          * <p>When specified, the model's reply will be enriched with information found by querying each of the connectors (RAG).</p>
          * <p>Compatible Deployments: Cohere Platform</p>
          * @return Reference to {@code this} so that method calls can be chained together.

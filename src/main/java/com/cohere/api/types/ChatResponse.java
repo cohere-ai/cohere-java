@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,9 +27,11 @@ public final class ChatResponse {
 
     private final Optional<String> prompt;
 
-    private final Optional<AssistantMessageResponse> message;
+    private final AssistantMessageResponse message;
 
     private final Optional<Usage> usage;
+
+    private final Optional<List<LogprobItem>> logprobs;
 
     private final Map<String, Object> additionalProperties;
 
@@ -36,14 +39,16 @@ public final class ChatResponse {
             String id,
             ChatFinishReason finishReason,
             Optional<String> prompt,
-            Optional<AssistantMessageResponse> message,
+            AssistantMessageResponse message,
             Optional<Usage> usage,
+            Optional<List<LogprobItem>> logprobs,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.finishReason = finishReason;
         this.prompt = prompt;
         this.message = message;
         this.usage = usage;
+        this.logprobs = logprobs;
         this.additionalProperties = additionalProperties;
     }
 
@@ -69,13 +74,18 @@ public final class ChatResponse {
     }
 
     @JsonProperty("message")
-    public Optional<AssistantMessageResponse> getMessage() {
+    public AssistantMessageResponse getMessage() {
         return message;
     }
 
     @JsonProperty("usage")
     public Optional<Usage> getUsage() {
         return usage;
+    }
+
+    @JsonProperty("logprobs")
+    public Optional<List<LogprobItem>> getLogprobs() {
+        return logprobs;
     }
 
     @java.lang.Override
@@ -94,12 +104,13 @@ public final class ChatResponse {
                 && finishReason.equals(other.finishReason)
                 && prompt.equals(other.prompt)
                 && message.equals(other.message)
-                && usage.equals(other.usage);
+                && usage.equals(other.usage)
+                && logprobs.equals(other.logprobs);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.finishReason, this.prompt, this.message, this.usage);
+        return Objects.hash(this.id, this.finishReason, this.prompt, this.message, this.usage, this.logprobs);
     }
 
     @java.lang.Override
@@ -118,7 +129,11 @@ public final class ChatResponse {
     }
 
     public interface FinishReasonStage {
-        _FinalStage finishReason(ChatFinishReason finishReason);
+        MessageStage finishReason(ChatFinishReason finishReason);
+    }
+
+    public interface MessageStage {
+        _FinalStage message(AssistantMessageResponse message);
     }
 
     public interface _FinalStage {
@@ -128,24 +143,26 @@ public final class ChatResponse {
 
         _FinalStage prompt(String prompt);
 
-        _FinalStage message(Optional<AssistantMessageResponse> message);
-
-        _FinalStage message(AssistantMessageResponse message);
-
         _FinalStage usage(Optional<Usage> usage);
 
         _FinalStage usage(Usage usage);
+
+        _FinalStage logprobs(Optional<List<LogprobItem>> logprobs);
+
+        _FinalStage logprobs(List<LogprobItem> logprobs);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IdStage, FinishReasonStage, _FinalStage {
+    public static final class Builder implements IdStage, FinishReasonStage, MessageStage, _FinalStage {
         private String id;
 
         private ChatFinishReason finishReason;
 
-        private Optional<Usage> usage = Optional.empty();
+        private AssistantMessageResponse message;
 
-        private Optional<AssistantMessageResponse> message = Optional.empty();
+        private Optional<List<LogprobItem>> logprobs = Optional.empty();
+
+        private Optional<Usage> usage = Optional.empty();
 
         private Optional<String> prompt = Optional.empty();
 
@@ -161,6 +178,7 @@ public final class ChatResponse {
             prompt(other.getPrompt());
             message(other.getMessage());
             usage(other.getUsage());
+            logprobs(other.getLogprobs());
             return this;
         }
 
@@ -177,8 +195,28 @@ public final class ChatResponse {
 
         @java.lang.Override
         @JsonSetter("finish_reason")
-        public _FinalStage finishReason(ChatFinishReason finishReason) {
+        public MessageStage finishReason(ChatFinishReason finishReason) {
             this.finishReason = finishReason;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("message")
+        public _FinalStage message(AssistantMessageResponse message) {
+            this.message = message;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage logprobs(List<LogprobItem> logprobs) {
+            this.logprobs = Optional.of(logprobs);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "logprobs", nulls = Nulls.SKIP)
+        public _FinalStage logprobs(Optional<List<LogprobItem>> logprobs) {
+            this.logprobs = logprobs;
             return this;
         }
 
@@ -192,19 +230,6 @@ public final class ChatResponse {
         @JsonSetter(value = "usage", nulls = Nulls.SKIP)
         public _FinalStage usage(Optional<Usage> usage) {
             this.usage = usage;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage message(AssistantMessageResponse message) {
-            this.message = Optional.of(message);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "message", nulls = Nulls.SKIP)
-        public _FinalStage message(Optional<AssistantMessageResponse> message) {
-            this.message = message;
             return this;
         }
 
@@ -227,7 +252,7 @@ public final class ChatResponse {
 
         @java.lang.Override
         public ChatResponse build() {
-            return new ChatResponse(id, finishReason, prompt, message, usage, additionalProperties);
+            return new ChatResponse(id, finishReason, prompt, message, usage, logprobs, additionalProperties);
         }
     }
 }

@@ -20,6 +20,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApiMetaBilledUnits.Builder.class)
 public final class ApiMetaBilledUnits {
+    private final Optional<Double> images;
+
     private final Optional<Double> inputTokens;
 
     private final Optional<Double> outputTokens;
@@ -31,16 +33,26 @@ public final class ApiMetaBilledUnits {
     private final Map<String, Object> additionalProperties;
 
     private ApiMetaBilledUnits(
+            Optional<Double> images,
             Optional<Double> inputTokens,
             Optional<Double> outputTokens,
             Optional<Double> searchUnits,
             Optional<Double> classifications,
             Map<String, Object> additionalProperties) {
+        this.images = images;
         this.inputTokens = inputTokens;
         this.outputTokens = outputTokens;
         this.searchUnits = searchUnits;
         this.classifications = classifications;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The number of billed images.
+     */
+    @JsonProperty("images")
+    public Optional<Double> getImages() {
+        return images;
     }
 
     /**
@@ -87,7 +99,8 @@ public final class ApiMetaBilledUnits {
     }
 
     private boolean equalTo(ApiMetaBilledUnits other) {
-        return inputTokens.equals(other.inputTokens)
+        return images.equals(other.images)
+                && inputTokens.equals(other.inputTokens)
                 && outputTokens.equals(other.outputTokens)
                 && searchUnits.equals(other.searchUnits)
                 && classifications.equals(other.classifications);
@@ -95,7 +108,7 @@ public final class ApiMetaBilledUnits {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.inputTokens, this.outputTokens, this.searchUnits, this.classifications);
+        return Objects.hash(this.images, this.inputTokens, this.outputTokens, this.searchUnits, this.classifications);
     }
 
     @java.lang.Override
@@ -109,6 +122,8 @@ public final class ApiMetaBilledUnits {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Double> images = Optional.empty();
+
         private Optional<Double> inputTokens = Optional.empty();
 
         private Optional<Double> outputTokens = Optional.empty();
@@ -123,10 +138,22 @@ public final class ApiMetaBilledUnits {
         private Builder() {}
 
         public Builder from(ApiMetaBilledUnits other) {
+            images(other.getImages());
             inputTokens(other.getInputTokens());
             outputTokens(other.getOutputTokens());
             searchUnits(other.getSearchUnits());
             classifications(other.getClassifications());
+            return this;
+        }
+
+        @JsonSetter(value = "images", nulls = Nulls.SKIP)
+        public Builder images(Optional<Double> images) {
+            this.images = images;
+            return this;
+        }
+
+        public Builder images(Double images) {
+            this.images = Optional.of(images);
             return this;
         }
 
@@ -176,7 +203,7 @@ public final class ApiMetaBilledUnits {
 
         public ApiMetaBilledUnits build() {
             return new ApiMetaBilledUnits(
-                    inputTokens, outputTokens, searchUnits, classifications, additionalProperties);
+                    images, inputTokens, outputTokens, searchUnits, classifications, additionalProperties);
         }
     }
 }

@@ -24,14 +24,18 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
 
     private final Optional<ChatContentDeltaEventDelta> delta;
 
+    private final Optional<LogprobItem> logprobs;
+
     private final Map<String, Object> additionalProperties;
 
     private ChatContentDeltaEvent(
             Optional<Integer> index,
             Optional<ChatContentDeltaEventDelta> delta,
+            Optional<LogprobItem> logprobs,
             Map<String, Object> additionalProperties) {
         this.index = index;
         this.delta = delta;
+        this.logprobs = logprobs;
         this.additionalProperties = additionalProperties;
     }
 
@@ -43,6 +47,11 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
     @JsonProperty("delta")
     public Optional<ChatContentDeltaEventDelta> getDelta() {
         return delta;
+    }
+
+    @JsonProperty("logprobs")
+    public Optional<LogprobItem> getLogprobs() {
+        return logprobs;
     }
 
     @java.lang.Override
@@ -57,12 +66,12 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
     }
 
     private boolean equalTo(ChatContentDeltaEvent other) {
-        return index.equals(other.index) && delta.equals(other.delta);
+        return index.equals(other.index) && delta.equals(other.delta) && logprobs.equals(other.logprobs);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.index, this.delta);
+        return Objects.hash(this.index, this.delta, this.logprobs);
     }
 
     @java.lang.Override
@@ -80,6 +89,8 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
 
         private Optional<ChatContentDeltaEventDelta> delta = Optional.empty();
 
+        private Optional<LogprobItem> logprobs = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -88,6 +99,7 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
         public Builder from(ChatContentDeltaEvent other) {
             index(other.getIndex());
             delta(other.getDelta());
+            logprobs(other.getLogprobs());
             return this;
         }
 
@@ -113,8 +125,19 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
             return this;
         }
 
+        @JsonSetter(value = "logprobs", nulls = Nulls.SKIP)
+        public Builder logprobs(Optional<LogprobItem> logprobs) {
+            this.logprobs = logprobs;
+            return this;
+        }
+
+        public Builder logprobs(LogprobItem logprobs) {
+            this.logprobs = Optional.of(logprobs);
+            return this;
+        }
+
         public ChatContentDeltaEvent build() {
-            return new ChatContentDeltaEvent(index, delta, additionalProperties);
+            return new ChatContentDeltaEvent(index, delta, logprobs, additionalProperties);
         }
     }
 }

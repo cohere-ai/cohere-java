@@ -6,19 +6,15 @@ package com.cohere.api.types;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ChatFinishReason {
-    COMPLETE("complete"),
+    COMPLETE("COMPLETE"),
 
-    STOP_SEQUENCE("stop_sequence"),
+    STOP_SEQUENCE("STOP_SEQUENCE"),
 
-    MAX_TOKENS("max_tokens"),
+    MAX_TOKENS("MAX_TOKENS"),
 
-    TOOL_CALL("tool_call"),
+    TOOL_CALL("TOOL_CALL"),
 
-    ERROR("error"),
-
-    CONTENT_BLOCKED("content_blocked"),
-
-    ERROR_LIMIT("error_limit");
+    ERROR("ERROR");
 
     private final String value;
 

@@ -58,6 +58,10 @@ public final class StreamedChatResponse {
         return new StreamedChatResponse(new ToolCallsChunkValue(value));
     }
 
+    public static StreamedChatResponse debug(ChatDebugEvent value) {
+        return new StreamedChatResponse(new DebugValue(value));
+    }
+
     public boolean isStreamStart() {
         return value instanceof StreamStartValue;
     }
@@ -88,6 +92,10 @@ public final class StreamedChatResponse {
 
     public boolean isToolCallsChunk() {
         return value instanceof ToolCallsChunkValue;
+    }
+
+    public boolean isDebug() {
+        return value instanceof DebugValue;
     }
 
     public boolean _isUnknown() {
@@ -150,6 +158,13 @@ public final class StreamedChatResponse {
         return Optional.empty();
     }
 
+    public Optional<ChatDebugEvent> getDebug() {
+        if (isDebug()) {
+            return Optional.of(((DebugValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -179,6 +194,8 @@ public final class StreamedChatResponse {
 
         T visitToolCallsChunk(ChatToolCallsChunkEvent toolCallsChunk);
 
+        T visitDebug(ChatDebugEvent debug);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -195,7 +212,8 @@ public final class StreamedChatResponse {
         @JsonSubTypes.Type(CitationGenerationValue.class),
         @JsonSubTypes.Type(ToolCallsGenerationValue.class),
         @JsonSubTypes.Type(StreamEndValue.class),
-        @JsonSubTypes.Type(ToolCallsChunkValue.class)
+        @JsonSubTypes.Type(ToolCallsChunkValue.class),
+        @JsonSubTypes.Type(DebugValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -492,6 +510,44 @@ public final class StreamedChatResponse {
         }
 
         private boolean equalTo(ToolCallsChunkValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "StreamedChatResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("debug")
+    private static final class DebugValue implements Value {
+        @JsonUnwrapped
+        private ChatDebugEvent value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private DebugValue() {}
+
+        private DebugValue(ChatDebugEvent value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitDebug(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof DebugValue && equalTo((DebugValue) other);
+        }
+
+        private boolean equalTo(DebugValue other) {
             return value.equals(other.value);
         }
 

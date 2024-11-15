@@ -145,14 +145,14 @@ public class ConnectorsClient {
     }
 
     /**
-     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
+     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/v1/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
      */
     public CreateConnectorResponse create(CreateConnectorRequest request) {
         return create(request, null);
     }
 
     /**
-     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
+     * Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See <a href="https://docs.cohere.com/v1/docs/creating-and-deploying-a-connector">'Creating and Deploying a Connector'</a> for more information.
      */
     public CreateConnectorResponse create(CreateConnectorRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())

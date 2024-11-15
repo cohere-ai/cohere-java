@@ -28,6 +28,8 @@ public final class EmbedFloatsResponse {
 
     private final List<String> texts;
 
+    private final Optional<List<Image>> images;
+
     private final Optional<ApiMeta> meta;
 
     private final Map<String, Object> additionalProperties;
@@ -36,11 +38,13 @@ public final class EmbedFloatsResponse {
             String id,
             List<List<Double>> embeddings,
             List<String> texts,
+            Optional<List<Image>> images,
             Optional<ApiMeta> meta,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.embeddings = embeddings;
         this.texts = texts;
+        this.images = images;
         this.meta = meta;
         this.additionalProperties = additionalProperties;
     }
@@ -66,6 +70,14 @@ public final class EmbedFloatsResponse {
         return texts;
     }
 
+    /**
+     * @return The image entries for which embeddings were returned.
+     */
+    @JsonProperty("images")
+    public Optional<List<Image>> getImages() {
+        return images;
+    }
+
     @JsonProperty("meta")
     public Optional<ApiMeta> getMeta() {
         return meta;
@@ -86,12 +98,13 @@ public final class EmbedFloatsResponse {
         return id.equals(other.id)
                 && embeddings.equals(other.embeddings)
                 && texts.equals(other.texts)
+                && images.equals(other.images)
                 && meta.equals(other.meta);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.embeddings, this.texts, this.meta);
+        return Objects.hash(this.id, this.embeddings, this.texts, this.images, this.meta);
     }
 
     @java.lang.Override
@@ -124,6 +137,10 @@ public final class EmbedFloatsResponse {
 
         _FinalStage addAllTexts(List<String> texts);
 
+        _FinalStage images(Optional<List<Image>> images);
+
+        _FinalStage images(List<Image> images);
+
         _FinalStage meta(Optional<ApiMeta> meta);
 
         _FinalStage meta(ApiMeta meta);
@@ -134,6 +151,8 @@ public final class EmbedFloatsResponse {
         private String id;
 
         private Optional<ApiMeta> meta = Optional.empty();
+
+        private Optional<List<Image>> images = Optional.empty();
 
         private List<String> texts = new ArrayList<>();
 
@@ -149,6 +168,7 @@ public final class EmbedFloatsResponse {
             id(other.getId());
             embeddings(other.getEmbeddings());
             texts(other.getTexts());
+            images(other.getImages());
             meta(other.getMeta());
             return this;
         }
@@ -170,6 +190,23 @@ public final class EmbedFloatsResponse {
         @JsonSetter(value = "meta", nulls = Nulls.SKIP)
         public _FinalStage meta(Optional<ApiMeta> meta) {
             this.meta = meta;
+            return this;
+        }
+
+        /**
+         * <p>The image entries for which embeddings were returned.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage images(List<Image> images) {
+            this.images = Optional.of(images);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "images", nulls = Nulls.SKIP)
+        public _FinalStage images(Optional<List<Image>> images) {
+            this.images = images;
             return this;
         }
 
@@ -231,7 +268,7 @@ public final class EmbedFloatsResponse {
 
         @java.lang.Override
         public EmbedFloatsResponse build() {
-            return new EmbedFloatsResponse(id, embeddings, texts, meta, additionalProperties);
+            return new EmbedFloatsResponse(id, embeddings, texts, images, meta, additionalProperties);
         }
     }
 }

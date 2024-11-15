@@ -30,7 +30,7 @@ public final class JsonResponseFormat {
     }
 
     /**
-     * @return A JSON schema object that the output will adhere to. There are some restrictions we have on the schema, refer to <a href="/docs/structured-outputs-json#schema-constraints">our guide</a> for more information.
+     * @return A JSON schema object that the output will adhere to. There are some restrictions we have on the schema, refer to <a href="https://docs.cohere.com/docs/structured-outputs-json#schema-constraints">our guide</a> for more information.
      * Example (required name and age object):
      * <pre><code class="language-json">{
      *   &quot;type&quot;: &quot;object&quot;,
