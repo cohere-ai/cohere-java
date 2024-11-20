@@ -52,14 +52,16 @@ public class V2Client {
     }
 
     /**
-     * Generates a message from the model in response to a provided conversation. To learn how to use the Chat API with Streaming and RAG follow our Text Generation guides.
+     * Generates a text response to a user message and streams it down, token by token. To learn how to use the Chat API with streaming follow our <a href="https://docs.cohere.com/v2/docs/chat-api">Text Generation guides</a>.
+     * <p>Follow the <a href="https://docs.cohere.com/v2/docs/migrating-v1-to-v2">Migration Guide</a> for instructions on moving from API v1 to API v2.</p>
      */
     public Iterable<StreamedChatResponseV2> chatStream(V2ChatStreamRequest request) {
         return chatStream(request, null);
     }
 
     /**
-     * Generates a message from the model in response to a provided conversation. To learn how to use the Chat API with Streaming and RAG follow our Text Generation guides.
+     * Generates a text response to a user message and streams it down, token by token. To learn how to use the Chat API with streaming follow our <a href="https://docs.cohere.com/v2/docs/chat-api">Text Generation guides</a>.
+     * <p>Follow the <a href="https://docs.cohere.com/v2/docs/migrating-v1-to-v2">Migration Guide</a> for instructions on moving from API v1 to API v2.</p>
      */
     public Iterable<StreamedChatResponseV2> chatStream(V2ChatStreamRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -139,14 +141,16 @@ public class V2Client {
     }
 
     /**
-     * Generates a message from the model in response to a provided conversation. To learn how to use the Chat API with Streaming and RAG follow our Text Generation guides.
+     * Generates a text response to a user message and streams it down, token by token. To learn how to use the Chat API with streaming follow our <a href="https://docs.cohere.com/v2/docs/chat-api">Text Generation guides</a>.
+     * <p>Follow the <a href="https://docs.cohere.com/v2/docs/migrating-v1-to-v2">Migration Guide</a> for instructions on moving from API v1 to API v2.</p>
      */
     public ChatResponse chat(V2ChatRequest request) {
         return chat(request, null);
     }
 
     /**
-     * Generates a message from the model in response to a provided conversation. To learn how to use the Chat API with Streaming and RAG follow our Text Generation guides.
+     * Generates a text response to a user message and streams it down, token by token. To learn how to use the Chat API with streaming follow our <a href="https://docs.cohere.com/v2/docs/chat-api">Text Generation guides</a>.
+     * <p>Follow the <a href="https://docs.cohere.com/v2/docs/migrating-v1-to-v2">Migration Guide</a> for instructions on moving from API v1 to API v2.</p>
      */
     public ChatResponse chat(V2ChatRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -227,7 +231,7 @@ public class V2Client {
     /**
      * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
      * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
-     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
     public EmbedByTypeResponse embed(V2EmbedRequest request) {
         return embed(request, null);
@@ -236,7 +240,7 @@ public class V2Client {
     /**
      * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
      * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
-     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
     public EmbedByTypeResponse embed(V2EmbedRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())

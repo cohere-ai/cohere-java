@@ -432,7 +432,7 @@ public class Cohere {
 
     /**
      * <p>&lt;Warning&gt;
-     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](https://docs.cohere.com/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
      * &lt;/Warning&gt;
      * Generates realistic text conditioned on a given input.</p>
      */
@@ -442,7 +442,7 @@ public class Cohere {
 
     /**
      * <p>&lt;Warning&gt;
-     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](https://docs.cohere.com/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
      * &lt;/Warning&gt;
      * Generates realistic text conditioned on a given input.</p>
      */
@@ -526,7 +526,7 @@ public class Cohere {
 
     /**
      * <p>&lt;Warning&gt;
-     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](https://docs.cohere.com/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
      * &lt;/Warning&gt;
      * Generates realistic text conditioned on a given input.</p>
      */
@@ -536,7 +536,7 @@ public class Cohere {
 
     /**
      * <p>&lt;Warning&gt;
-     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](https://docs.cohere.com/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
      * &lt;/Warning&gt;
      * Generates realistic text conditioned on a given input.</p>
      */
@@ -617,27 +617,27 @@ public class Cohere {
     }
 
     /**
-     * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
-     * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
-     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     * This endpoint returns text and image embeddings. An embedding is a list of floating point numbers that captures semantic information about the content that it represents.
+     * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
     public EmbedResponse embed() {
         return embed(EmbedRequest.builder().build());
     }
 
     /**
-     * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
-     * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
-     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     * This endpoint returns text and image embeddings. An embedding is a list of floating point numbers that captures semantic information about the content that it represents.
+     * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
     public EmbedResponse embed(EmbedRequest request) {
         return embed(request, null);
     }
 
     /**
-     * This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
-     * <p>Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
-     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="/docs/semantic-search">Semantic Search Guide</a>.</p>
+     * This endpoint returns text and image embeddings. An embedding is a list of floating point numbers that captures semantic information about the content that it represents.
+     * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
     public EmbedResponse embed(EmbedRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -891,7 +891,7 @@ public class Cohere {
 
     /**
      * <p>&lt;Warning&gt;
-     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](https://docs.cohere.com/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
      * &lt;/Warning&gt;
      * Generates a summary in English for a given text.</p>
      */
@@ -901,7 +901,7 @@ public class Cohere {
 
     /**
      * <p>&lt;Warning&gt;
-     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
+     * This API is marked as &quot;Legacy&quot; and is no longer maintained. Follow the [migration guide](https://docs.cohere.com/docs/migrating-from-cogenerate-to-cochat) to start using the Chat API.
      * &lt;/Warning&gt;
      * Generates a summary in English for a given text.</p>
      */

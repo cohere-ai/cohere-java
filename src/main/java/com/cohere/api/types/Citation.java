@@ -44,16 +44,25 @@ public final class Citation {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return Start index of the cited snippet in the original source text.
+     */
     @JsonProperty("start")
     public Optional<Integer> getStart() {
         return start;
     }
 
+    /**
+     * @return End index of the cited snippet in the original source text.
+     */
     @JsonProperty("end")
     public Optional<Integer> getEnd() {
         return end;
     }
 
+    /**
+     * @return Text snippet that is being cited.
+     */
     @JsonProperty("text")
     public Optional<String> getText() {
         return text;

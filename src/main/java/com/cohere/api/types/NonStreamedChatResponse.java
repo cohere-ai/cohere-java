@@ -25,6 +25,8 @@ public final class NonStreamedChatResponse {
 
     private final Optional<String> generationId;
 
+    private final Optional<String> responseId;
+
     private final Optional<List<ChatCitation>> citations;
 
     private final Optional<List<Map<String, String>>> documents;
@@ -50,6 +52,7 @@ public final class NonStreamedChatResponse {
     private NonStreamedChatResponse(
             String text,
             Optional<String> generationId,
+            Optional<String> responseId,
             Optional<List<ChatCitation>> citations,
             Optional<List<Map<String, String>>> documents,
             Optional<Boolean> isSearchRequired,
@@ -63,6 +66,7 @@ public final class NonStreamedChatResponse {
             Map<String, Object> additionalProperties) {
         this.text = text;
         this.generationId = generationId;
+        this.responseId = responseId;
         this.citations = citations;
         this.documents = documents;
         this.isSearchRequired = isSearchRequired;
@@ -90,6 +94,14 @@ public final class NonStreamedChatResponse {
     @JsonProperty("generation_id")
     public Optional<String> getGenerationId() {
         return generationId;
+    }
+
+    /**
+     * @return Unique identifier for the response.
+     */
+    @JsonProperty("response_id")
+    public Optional<String> getResponseId() {
+        return responseId;
     }
 
     /**
@@ -177,6 +189,7 @@ public final class NonStreamedChatResponse {
     private boolean equalTo(NonStreamedChatResponse other) {
         return text.equals(other.text)
                 && generationId.equals(other.generationId)
+                && responseId.equals(other.responseId)
                 && citations.equals(other.citations)
                 && documents.equals(other.documents)
                 && isSearchRequired.equals(other.isSearchRequired)
@@ -194,6 +207,7 @@ public final class NonStreamedChatResponse {
         return Objects.hash(
                 this.text,
                 this.generationId,
+                this.responseId,
                 this.citations,
                 this.documents,
                 this.isSearchRequired,
@@ -227,6 +241,10 @@ public final class NonStreamedChatResponse {
         _FinalStage generationId(Optional<String> generationId);
 
         _FinalStage generationId(String generationId);
+
+        _FinalStage responseId(Optional<String> responseId);
+
+        _FinalStage responseId(String responseId);
 
         _FinalStage citations(Optional<List<ChatCitation>> citations);
 
@@ -293,6 +311,8 @@ public final class NonStreamedChatResponse {
 
         private Optional<List<ChatCitation>> citations = Optional.empty();
 
+        private Optional<String> responseId = Optional.empty();
+
         private Optional<String> generationId = Optional.empty();
 
         @JsonAnySetter
@@ -304,6 +324,7 @@ public final class NonStreamedChatResponse {
         public Builder from(NonStreamedChatResponse other) {
             text(other.getText());
             generationId(other.getGenerationId());
+            responseId(other.getResponseId());
             citations(other.getCitations());
             documents(other.getDocuments());
             isSearchRequired(other.getIsSearchRequired());
@@ -487,6 +508,23 @@ public final class NonStreamedChatResponse {
         }
 
         /**
+         * <p>Unique identifier for the response.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseId(String responseId) {
+            this.responseId = Optional.of(responseId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "response_id", nulls = Nulls.SKIP)
+        public _FinalStage responseId(Optional<String> responseId) {
+            this.responseId = responseId;
+            return this;
+        }
+
+        /**
          * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -508,6 +546,7 @@ public final class NonStreamedChatResponse {
             return new NonStreamedChatResponse(
                     text,
                     generationId,
+                    responseId,
                     citations,
                     documents,
                     isSearchRequired,

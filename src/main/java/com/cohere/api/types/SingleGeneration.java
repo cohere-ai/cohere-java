@@ -72,7 +72,7 @@ public final class SingleGeneration {
     }
 
     /**
-     * @return Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.
+     * @return Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="https://docs.cohere.com/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.
      */
     @JsonProperty("token_likelihoods")
     public Optional<List<SingleGenerationTokenLikelihoodsItem>> getTokenLikelihoods() {
@@ -180,7 +180,7 @@ public final class SingleGeneration {
         }
 
         /**
-         * <p>Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.</p>
+         * <p>Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="https://docs.cohere.com/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

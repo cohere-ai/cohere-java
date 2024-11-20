@@ -74,7 +74,7 @@ public final class EmbedRequest {
 
     /**
      * @return Defaults to embed-english-v2.0
-     * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
+     * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
      * <p>Available models and corresponding embedding dimensions:</p>
      * <ul>
      * <li>

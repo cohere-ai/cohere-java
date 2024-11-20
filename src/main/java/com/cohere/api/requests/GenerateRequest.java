@@ -105,7 +105,7 @@ public final class GenerateRequest {
 
     /**
      * @return The identifier of the model to generate with. Currently available models are <code>command</code> (default), <code>command-nightly</code> (experimental), <code>command-light</code>, and <code>command-light-nightly</code> (experimental).
-     * Smaller, &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.
+     * Smaller, &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -715,7 +715,7 @@ public final class GenerateRequest {
 
         /**
          * <p>The identifier of the model to generate with. Currently available models are <code>command</code> (default), <code>command-nightly</code> (experimental), <code>command-light</code>, and <code>command-light-nightly</code> (experimental).
-         * Smaller, &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
+         * Smaller, &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -54,6 +54,9 @@ public final class AssistantMessageResponse {
         return toolCalls;
     }
 
+    /**
+     * @return A chain-of-thought style reflection and plan that the model generates when working with Tools.
+     */
     @JsonProperty("tool_plan")
     public Optional<String> getToolPlan() {
         return toolPlan;

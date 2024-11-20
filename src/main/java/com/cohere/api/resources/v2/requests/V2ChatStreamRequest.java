@@ -60,6 +60,8 @@ public final class V2ChatStreamRequest {
 
     private final Optional<Boolean> returnPrompt;
 
+    private final Optional<Boolean> logprobs;
+
     private final Map<String, Object> additionalProperties;
 
     private V2ChatStreamRequest(
@@ -79,6 +81,7 @@ public final class V2ChatStreamRequest {
             Optional<Double> k,
             Optional<Double> p,
             Optional<Boolean> returnPrompt,
+            Optional<Boolean> logprobs,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.messages = messages;
@@ -96,11 +99,12 @@ public final class V2ChatStreamRequest {
         this.k = k;
         this.p = p;
         this.returnPrompt = returnPrompt;
+        this.logprobs = logprobs;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> (such as command-r or command-r-plus) or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.
+     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> (such as command-r or command-r-plus) or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -140,11 +144,10 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return Used to select the <a href="/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
+     * @return Used to select the <a href="https://docs.cohere.com/v2/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
      * When <code>OFF</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
-     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/v2/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
      */
     @JsonProperty("safety_mode")
     public Optional<V2ChatStreamRequestSafetyMode> getSafetyMode() {
@@ -152,7 +155,8 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.
+     * @return The maximum number of tokens the model will generate as part of the response.
+     * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
      */
     @JsonProperty("max_tokens")
     public Optional<Integer> getMaxTokens() {
@@ -207,7 +211,7 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return Ensures only the top <code>k</code> most likely tokens are considered for generation at each step.
+     * @return Ensures that only the top <code>k</code> most likely tokens are considered for generation at each step. When <code>k</code> is set to <code>0</code>, k-sampling is disabled.
      * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.
      */
     @JsonProperty("k")
@@ -230,6 +234,14 @@ public final class V2ChatStreamRequest {
     @JsonProperty("return_prompt")
     public Optional<Boolean> getReturnPrompt() {
         return returnPrompt;
+    }
+
+    /**
+     * @return Whether to return the log probabilities of the generated tokens. Defaults to false.
+     */
+    @JsonProperty("logprobs")
+    public Optional<Boolean> getLogprobs() {
+        return logprobs;
     }
 
     @JsonProperty("stream")
@@ -264,7 +276,8 @@ public final class V2ChatStreamRequest {
                 && presencePenalty.equals(other.presencePenalty)
                 && k.equals(other.k)
                 && p.equals(other.p)
-                && returnPrompt.equals(other.returnPrompt);
+                && returnPrompt.equals(other.returnPrompt)
+                && logprobs.equals(other.logprobs);
     }
 
     @java.lang.Override
@@ -285,7 +298,8 @@ public final class V2ChatStreamRequest {
                 this.presencePenalty,
                 this.k,
                 this.p,
-                this.returnPrompt);
+                this.returnPrompt,
+                this.logprobs);
     }
 
     @java.lang.Override
@@ -367,11 +381,17 @@ public final class V2ChatStreamRequest {
         _FinalStage returnPrompt(Optional<Boolean> returnPrompt);
 
         _FinalStage returnPrompt(Boolean returnPrompt);
+
+        _FinalStage logprobs(Optional<Boolean> logprobs);
+
+        _FinalStage logprobs(Boolean logprobs);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ModelStage, _FinalStage {
         private String model;
+
+        private Optional<Boolean> logprobs = Optional.empty();
 
         private Optional<Boolean> returnPrompt = Optional.empty();
 
@@ -426,17 +446,35 @@ public final class V2ChatStreamRequest {
             k(other.getK());
             p(other.getP());
             returnPrompt(other.getReturnPrompt());
+            logprobs(other.getLogprobs());
             return this;
         }
 
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> (such as command-r or command-r-plus) or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> (such as command-r or command-r-plus) or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("model")
         public _FinalStage model(String model) {
             this.model = model;
+            return this;
+        }
+
+        /**
+         * <p>Whether to return the log probabilities of the generated tokens. Defaults to false.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage logprobs(Boolean logprobs) {
+            this.logprobs = Optional.of(logprobs);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "logprobs", nulls = Nulls.SKIP)
+        public _FinalStage logprobs(Optional<Boolean> logprobs) {
+            this.logprobs = logprobs;
             return this;
         }
 
@@ -476,7 +514,7 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>Ensures only the top <code>k</code> most likely tokens are considered for generation at each step.
+         * <p>Ensures that only the top <code>k</code> most likely tokens are considered for generation at each step. When <code>k</code> is set to <code>0</code>, k-sampling is disabled.
          * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -586,7 +624,8 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.</p>
+         * <p>The maximum number of tokens the model will generate as part of the response.</p>
+         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -603,11 +642,10 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>Used to select the <a href="/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
+         * <p>Used to select the <a href="https://docs.cohere.com/v2/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
          * When <code>OFF</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/v2/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -723,6 +761,7 @@ public final class V2ChatStreamRequest {
                     k,
                     p,
                     returnPrompt,
+                    logprobs,
                     additionalProperties);
         }
     }

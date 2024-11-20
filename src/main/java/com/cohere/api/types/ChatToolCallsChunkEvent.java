@@ -10,26 +10,37 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatToolCallsChunkEvent.Builder.class)
 public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
     private final ToolCallDelta toolCallDelta;
 
+    private final Optional<String> text;
+
     private final Map<String, Object> additionalProperties;
 
-    private ChatToolCallsChunkEvent(ToolCallDelta toolCallDelta, Map<String, Object> additionalProperties) {
+    private ChatToolCallsChunkEvent(
+            ToolCallDelta toolCallDelta, Optional<String> text, Map<String, Object> additionalProperties) {
         this.toolCallDelta = toolCallDelta;
+        this.text = text;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("tool_call_delta")
     public ToolCallDelta getToolCallDelta() {
         return toolCallDelta;
+    }
+
+    @JsonProperty("text")
+    public Optional<String> getText() {
+        return text;
     }
 
     @java.lang.Override
@@ -44,12 +55,12 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
     }
 
     private boolean equalTo(ChatToolCallsChunkEvent other) {
-        return toolCallDelta.equals(other.toolCallDelta);
+        return toolCallDelta.equals(other.toolCallDelta) && text.equals(other.text);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.toolCallDelta);
+        return Objects.hash(this.toolCallDelta, this.text);
     }
 
     @java.lang.Override
@@ -69,11 +80,17 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
 
     public interface _FinalStage {
         ChatToolCallsChunkEvent build();
+
+        _FinalStage text(Optional<String> text);
+
+        _FinalStage text(String text);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ToolCallDeltaStage, _FinalStage {
         private ToolCallDelta toolCallDelta;
+
+        private Optional<String> text = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -83,6 +100,7 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
         @java.lang.Override
         public Builder from(ChatToolCallsChunkEvent other) {
             toolCallDelta(other.getToolCallDelta());
+            text(other.getText());
             return this;
         }
 
@@ -94,8 +112,21 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
         }
 
         @java.lang.Override
+        public _FinalStage text(String text) {
+            this.text = Optional.of(text);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "text", nulls = Nulls.SKIP)
+        public _FinalStage text(Optional<String> text) {
+            this.text = text;
+            return this;
+        }
+
+        @java.lang.Override
         public ChatToolCallsChunkEvent build() {
-            return new ChatToolCallsChunkEvent(toolCallDelta, additionalProperties);
+            return new ChatToolCallsChunkEvent(toolCallDelta, text, additionalProperties);
         }
     }
 }

@@ -10,24 +10,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ToolMessageV2.Builder.class)
 public final class ToolMessageV2 {
     private final String toolCallId;
 
-    private final Optional<ToolMessageV2Content> content;
+    private final ToolMessageV2Content content;
 
     private final Map<String, Object> additionalProperties;
 
-    private ToolMessageV2(
-            String toolCallId, Optional<ToolMessageV2Content> content, Map<String, Object> additionalProperties) {
+    private ToolMessageV2(String toolCallId, ToolMessageV2Content content, Map<String, Object> additionalProperties) {
         this.toolCallId = toolCallId;
         this.content = content;
         this.additionalProperties = additionalProperties;
@@ -42,10 +39,10 @@ public final class ToolMessageV2 {
     }
 
     /**
-     * @return A single or list of outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks
+     * @return Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks
      */
     @JsonProperty("content")
-    public Optional<ToolMessageV2Content> getContent() {
+    public ToolMessageV2Content getContent() {
         return content;
     }
 
@@ -79,24 +76,24 @@ public final class ToolMessageV2 {
     }
 
     public interface ToolCallIdStage {
-        _FinalStage toolCallId(String toolCallId);
+        ContentStage toolCallId(String toolCallId);
 
         Builder from(ToolMessageV2 other);
     }
 
-    public interface _FinalStage {
-        ToolMessageV2 build();
-
-        _FinalStage content(Optional<ToolMessageV2Content> content);
-
+    public interface ContentStage {
         _FinalStage content(ToolMessageV2Content content);
     }
 
+    public interface _FinalStage {
+        ToolMessageV2 build();
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ToolCallIdStage, _FinalStage {
+    public static final class Builder implements ToolCallIdStage, ContentStage, _FinalStage {
         private String toolCallId;
 
-        private Optional<ToolMessageV2Content> content = Optional.empty();
+        private ToolMessageV2Content content;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -116,24 +113,18 @@ public final class ToolMessageV2 {
          */
         @java.lang.Override
         @JsonSetter("tool_call_id")
-        public _FinalStage toolCallId(String toolCallId) {
+        public ContentStage toolCallId(String toolCallId) {
             this.toolCallId = toolCallId;
             return this;
         }
 
         /**
-         * <p>A single or list of outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks</p>
+         * <p>Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        @JsonSetter("content")
         public _FinalStage content(ToolMessageV2Content content) {
-            this.content = Optional.of(content);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "content", nulls = Nulls.SKIP)
-        public _FinalStage content(Optional<ToolMessageV2Content> content) {
             this.content = content;
             return this;
         }

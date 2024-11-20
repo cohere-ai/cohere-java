@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,9 @@ public final class V2EmbedRequest {
 
     private final String model;
 
-    private final Optional<EmbedInputType> inputType;
+    private final EmbedInputType inputType;
 
-    private final Optional<List<EmbeddingType>> embeddingTypes;
+    private final List<EmbeddingType> embeddingTypes;
 
     private final Optional<V2EmbedRequestTruncate> truncate;
 
@@ -42,8 +43,8 @@ public final class V2EmbedRequest {
             Optional<List<String>> texts,
             Optional<List<String>> images,
             String model,
-            Optional<EmbedInputType> inputType,
-            Optional<List<EmbeddingType>> embeddingTypes,
+            EmbedInputType inputType,
+            List<EmbeddingType> embeddingTypes,
             Optional<V2EmbedRequestTruncate> truncate,
             Map<String, Object> additionalProperties) {
         this.texts = texts;
@@ -74,7 +75,7 @@ public final class V2EmbedRequest {
 
     /**
      * @return Defaults to embed-english-v2.0
-     * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
+     * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
      * <p>Available models and corresponding embedding dimensions:</p>
      * <ul>
      * <li>
@@ -106,7 +107,7 @@ public final class V2EmbedRequest {
     }
 
     @JsonProperty("input_type")
-    public Optional<EmbedInputType> getInputType() {
+    public EmbedInputType getInputType() {
         return inputType;
     }
 
@@ -121,7 +122,7 @@ public final class V2EmbedRequest {
      * </ul>
      */
     @JsonProperty("embedding_types")
-    public Optional<List<EmbeddingType>> getEmbeddingTypes() {
+    public List<EmbeddingType> getEmbeddingTypes() {
         return embeddingTypes;
     }
 
@@ -170,9 +171,13 @@ public final class V2EmbedRequest {
     }
 
     public interface ModelStage {
-        _FinalStage model(String model);
+        InputTypeStage model(String model);
 
         Builder from(V2EmbedRequest other);
+    }
+
+    public interface InputTypeStage {
+        _FinalStage inputType(EmbedInputType inputType);
     }
 
     public interface _FinalStage {
@@ -186,13 +191,11 @@ public final class V2EmbedRequest {
 
         _FinalStage images(List<String> images);
 
-        _FinalStage inputType(Optional<EmbedInputType> inputType);
-
-        _FinalStage inputType(EmbedInputType inputType);
-
-        _FinalStage embeddingTypes(Optional<List<EmbeddingType>> embeddingTypes);
-
         _FinalStage embeddingTypes(List<EmbeddingType> embeddingTypes);
+
+        _FinalStage addEmbeddingTypes(EmbeddingType embeddingTypes);
+
+        _FinalStage addAllEmbeddingTypes(List<EmbeddingType> embeddingTypes);
 
         _FinalStage truncate(Optional<V2EmbedRequestTruncate> truncate);
 
@@ -200,14 +203,14 @@ public final class V2EmbedRequest {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ModelStage, _FinalStage {
+    public static final class Builder implements ModelStage, InputTypeStage, _FinalStage {
         private String model;
+
+        private EmbedInputType inputType;
 
         private Optional<V2EmbedRequestTruncate> truncate = Optional.empty();
 
-        private Optional<List<EmbeddingType>> embeddingTypes = Optional.empty();
-
-        private Optional<EmbedInputType> inputType = Optional.empty();
+        private List<EmbeddingType> embeddingTypes = new ArrayList<>();
 
         private Optional<List<String>> images = Optional.empty();
 
@@ -231,7 +234,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>Defaults to embed-english-v2.0</p>
-         * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
+         * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
          * <p>Available models and corresponding embedding dimensions:</p>
          * <ul>
          * <li>
@@ -260,8 +263,15 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public _FinalStage model(String model) {
+        public InputTypeStage model(String model) {
             this.model = model;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("input_type")
+        public _FinalStage inputType(EmbedInputType inputType) {
+            this.inputType = inputType;
             return this;
         }
 
@@ -296,28 +306,33 @@ public final class V2EmbedRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage embeddingTypes(List<EmbeddingType> embeddingTypes) {
-            this.embeddingTypes = Optional.of(embeddingTypes);
+        public _FinalStage addAllEmbeddingTypes(List<EmbeddingType> embeddingTypes) {
+            this.embeddingTypes.addAll(embeddingTypes);
+            return this;
+        }
+
+        /**
+         * <p>Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.</p>
+         * <ul>
+         * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
+         * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for only v3 models.</li>
+         * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Valid for only v3 models.</li>
+         * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Valid for only v3 models.</li>
+         * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Valid for only v3 models.</li>
+         * </ul>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addEmbeddingTypes(EmbeddingType embeddingTypes) {
+            this.embeddingTypes.add(embeddingTypes);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "embedding_types", nulls = Nulls.SKIP)
-        public _FinalStage embeddingTypes(Optional<List<EmbeddingType>> embeddingTypes) {
-            this.embeddingTypes = embeddingTypes;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage inputType(EmbedInputType inputType) {
-            this.inputType = Optional.of(inputType);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "input_type", nulls = Nulls.SKIP)
-        public _FinalStage inputType(Optional<EmbedInputType> inputType) {
-            this.inputType = inputType;
+        public _FinalStage embeddingTypes(List<EmbeddingType> embeddingTypes) {
+            this.embeddingTypes.clear();
+            this.embeddingTypes.addAll(embeddingTypes);
             return this;
         }
 
