@@ -4,7 +4,6 @@
 package com.cohere.api.resources.v2.requests;
 
 import com.cohere.api.core.ObjectMappers;
-import com.cohere.api.resources.v2.types.V2RerankRequestDocumentsItem;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,39 +26,42 @@ public final class V2RerankRequest {
 
     private final String query;
 
-    private final List<V2RerankRequestDocumentsItem> documents;
+    private final List<String> documents;
 
     private final Optional<Integer> topN;
 
-    private final Optional<List<String>> rankFields;
-
     private final Optional<Boolean> returnDocuments;
 
-    private final Optional<Integer> maxChunksPerDoc;
+    private final Optional<Integer> maxTokensPerDoc;
 
     private final Map<String, Object> additionalProperties;
 
     private V2RerankRequest(
             String model,
             String query,
-            List<V2RerankRequestDocumentsItem> documents,
+            List<String> documents,
             Optional<Integer> topN,
-            Optional<List<String>> rankFields,
             Optional<Boolean> returnDocuments,
-            Optional<Integer> maxChunksPerDoc,
+            Optional<Integer> maxTokensPerDoc,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.query = query;
         this.documents = documents;
         this.topN = topN;
-        this.rankFields = rankFields;
         this.returnDocuments = returnDocuments;
-        this.maxChunksPerDoc = maxChunksPerDoc;
+        this.maxTokensPerDoc = maxTokensPerDoc;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The identifier of the model to use, one of : <code>rerank-english-v3.0</code>, <code>rerank-multilingual-v3.0</code>, <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code>
+     * @return The identifier of the model to use.
+     * <p>Supported models:</p>
+     * <ul>
+     * <li><code>rerank-english-v3.0</code></li>
+     * <li><code>rerank-multilingual-v3.0</code></li>
+     * <li><code>rerank-english-v2.0</code></li>
+     * <li><code>rerank-multilingual-v2.0</code></li>
+     * </ul>
      */
     @JsonProperty("model")
     public String getModel() {
@@ -75,30 +77,22 @@ public final class V2RerankRequest {
     }
 
     /**
-     * @return A list of document objects or strings to rerank.
-     * If a document is provided the text fields is required and all other fields will be preserved in the response.
-     * <p>The total max chunks (length of documents * max_chunks_per_doc) must be less than 10000.</p>
-     * <p>We recommend a maximum of 1,000 documents for optimal endpoint performance.</p>
+     * @return A list of texts that will be compared to the <code>query</code>.
+     * For optimal performance we recommend against sending more than 1,000 documents in a single request.
+     * <p><strong>Note</strong>: long documents will automatically be truncated to the value of <code>max_tokens_per_doc</code>.</p>
+     * <p><strong>Note</strong>: structured data should be formatted as YAML strings for best performance.</p>
      */
     @JsonProperty("documents")
-    public List<V2RerankRequestDocumentsItem> getDocuments() {
+    public List<String> getDocuments() {
         return documents;
     }
 
     /**
-     * @return The number of most relevant documents or indices to return, defaults to the length of the documents
+     * @return Limits the number of returned rerank results to the specified value. If not passed, all the rerank results will be returned.
      */
     @JsonProperty("top_n")
     public Optional<Integer> getTopN() {
         return topN;
-    }
-
-    /**
-     * @return If a JSON object is provided, you can specify which keys you would like to have considered for reranking. The model will rerank based on order of the fields passed in (i.e. rank_fields=['title','author','text'] will rerank using the values in title, author, text  sequentially. If the length of title, author, and text exceeds the context length of the model, the chunking will not re-consider earlier fields). If not provided, the model will use the default text field for ranking.
-     */
-    @JsonProperty("rank_fields")
-    public Optional<List<String>> getRankFields() {
-        return rankFields;
     }
 
     /**
@@ -113,11 +107,11 @@ public final class V2RerankRequest {
     }
 
     /**
-     * @return The maximum number of chunks to produce internally from a document
+     * @return Defaults to <code>4096</code>. Long documents will be automatically truncated to the specified number of tokens.
      */
-    @JsonProperty("max_chunks_per_doc")
-    public Optional<Integer> getMaxChunksPerDoc() {
-        return maxChunksPerDoc;
+    @JsonProperty("max_tokens_per_doc")
+    public Optional<Integer> getMaxTokensPerDoc() {
+        return maxTokensPerDoc;
     }
 
     @java.lang.Override
@@ -136,21 +130,14 @@ public final class V2RerankRequest {
                 && query.equals(other.query)
                 && documents.equals(other.documents)
                 && topN.equals(other.topN)
-                && rankFields.equals(other.rankFields)
                 && returnDocuments.equals(other.returnDocuments)
-                && maxChunksPerDoc.equals(other.maxChunksPerDoc);
+                && maxTokensPerDoc.equals(other.maxTokensPerDoc);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.model,
-                this.query,
-                this.documents,
-                this.topN,
-                this.rankFields,
-                this.returnDocuments,
-                this.maxChunksPerDoc);
+                this.model, this.query, this.documents, this.topN, this.returnDocuments, this.maxTokensPerDoc);
     }
 
     @java.lang.Override
@@ -175,27 +162,23 @@ public final class V2RerankRequest {
     public interface _FinalStage {
         V2RerankRequest build();
 
-        _FinalStage documents(List<V2RerankRequestDocumentsItem> documents);
+        _FinalStage documents(List<String> documents);
 
-        _FinalStage addDocuments(V2RerankRequestDocumentsItem documents);
+        _FinalStage addDocuments(String documents);
 
-        _FinalStage addAllDocuments(List<V2RerankRequestDocumentsItem> documents);
+        _FinalStage addAllDocuments(List<String> documents);
 
         _FinalStage topN(Optional<Integer> topN);
 
         _FinalStage topN(Integer topN);
 
-        _FinalStage rankFields(Optional<List<String>> rankFields);
-
-        _FinalStage rankFields(List<String> rankFields);
-
         _FinalStage returnDocuments(Optional<Boolean> returnDocuments);
 
         _FinalStage returnDocuments(Boolean returnDocuments);
 
-        _FinalStage maxChunksPerDoc(Optional<Integer> maxChunksPerDoc);
+        _FinalStage maxTokensPerDoc(Optional<Integer> maxTokensPerDoc);
 
-        _FinalStage maxChunksPerDoc(Integer maxChunksPerDoc);
+        _FinalStage maxTokensPerDoc(Integer maxTokensPerDoc);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -204,15 +187,13 @@ public final class V2RerankRequest {
 
         private String query;
 
-        private Optional<Integer> maxChunksPerDoc = Optional.empty();
+        private Optional<Integer> maxTokensPerDoc = Optional.empty();
 
         private Optional<Boolean> returnDocuments = Optional.empty();
 
-        private Optional<List<String>> rankFields = Optional.empty();
-
         private Optional<Integer> topN = Optional.empty();
 
-        private List<V2RerankRequestDocumentsItem> documents = new ArrayList<>();
+        private List<String> documents = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -225,14 +206,20 @@ public final class V2RerankRequest {
             query(other.getQuery());
             documents(other.getDocuments());
             topN(other.getTopN());
-            rankFields(other.getRankFields());
             returnDocuments(other.getReturnDocuments());
-            maxChunksPerDoc(other.getMaxChunksPerDoc());
+            maxTokensPerDoc(other.getMaxTokensPerDoc());
             return this;
         }
 
         /**
-         * <p>The identifier of the model to use, one of : <code>rerank-english-v3.0</code>, <code>rerank-multilingual-v3.0</code>, <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code></p>
+         * <p>The identifier of the model to use.</p>
+         * <p>Supported models:</p>
+         * <ul>
+         * <li><code>rerank-english-v3.0</code></li>
+         * <li><code>rerank-multilingual-v3.0</code></li>
+         * <li><code>rerank-english-v2.0</code></li>
+         * <li><code>rerank-multilingual-v2.0</code></li>
+         * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -254,19 +241,19 @@ public final class V2RerankRequest {
         }
 
         /**
-         * <p>The maximum number of chunks to produce internally from a document</p>
+         * <p>Defaults to <code>4096</code>. Long documents will be automatically truncated to the specified number of tokens.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage maxChunksPerDoc(Integer maxChunksPerDoc) {
-            this.maxChunksPerDoc = Optional.of(maxChunksPerDoc);
+        public _FinalStage maxTokensPerDoc(Integer maxTokensPerDoc) {
+            this.maxTokensPerDoc = Optional.of(maxTokensPerDoc);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "max_chunks_per_doc", nulls = Nulls.SKIP)
-        public _FinalStage maxChunksPerDoc(Optional<Integer> maxChunksPerDoc) {
-            this.maxChunksPerDoc = maxChunksPerDoc;
+        @JsonSetter(value = "max_tokens_per_doc", nulls = Nulls.SKIP)
+        public _FinalStage maxTokensPerDoc(Optional<Integer> maxTokensPerDoc) {
+            this.maxTokensPerDoc = maxTokensPerDoc;
             return this;
         }
 
@@ -291,24 +278,7 @@ public final class V2RerankRequest {
         }
 
         /**
-         * <p>If a JSON object is provided, you can specify which keys you would like to have considered for reranking. The model will rerank based on order of the fields passed in (i.e. rank_fields=['title','author','text'] will rerank using the values in title, author, text  sequentially. If the length of title, author, and text exceeds the context length of the model, the chunking will not re-consider earlier fields). If not provided, the model will use the default text field for ranking.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage rankFields(List<String> rankFields) {
-            this.rankFields = Optional.of(rankFields);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "rank_fields", nulls = Nulls.SKIP)
-        public _FinalStage rankFields(Optional<List<String>> rankFields) {
-            this.rankFields = rankFields;
-            return this;
-        }
-
-        /**
-         * <p>The number of most relevant documents or indices to return, defaults to the length of the documents</p>
+         * <p>Limits the number of returned rerank results to the specified value. If not passed, all the rerank results will be returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -325,34 +295,34 @@ public final class V2RerankRequest {
         }
 
         /**
-         * <p>A list of document objects or strings to rerank.
-         * If a document is provided the text fields is required and all other fields will be preserved in the response.</p>
-         * <p>The total max chunks (length of documents * max_chunks_per_doc) must be less than 10000.</p>
-         * <p>We recommend a maximum of 1,000 documents for optimal endpoint performance.</p>
+         * <p>A list of texts that will be compared to the <code>query</code>.
+         * For optimal performance we recommend against sending more than 1,000 documents in a single request.</p>
+         * <p><strong>Note</strong>: long documents will automatically be truncated to the value of <code>max_tokens_per_doc</code>.</p>
+         * <p><strong>Note</strong>: structured data should be formatted as YAML strings for best performance.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllDocuments(List<V2RerankRequestDocumentsItem> documents) {
+        public _FinalStage addAllDocuments(List<String> documents) {
             this.documents.addAll(documents);
             return this;
         }
 
         /**
-         * <p>A list of document objects or strings to rerank.
-         * If a document is provided the text fields is required and all other fields will be preserved in the response.</p>
-         * <p>The total max chunks (length of documents * max_chunks_per_doc) must be less than 10000.</p>
-         * <p>We recommend a maximum of 1,000 documents for optimal endpoint performance.</p>
+         * <p>A list of texts that will be compared to the <code>query</code>.
+         * For optimal performance we recommend against sending more than 1,000 documents in a single request.</p>
+         * <p><strong>Note</strong>: long documents will automatically be truncated to the value of <code>max_tokens_per_doc</code>.</p>
+         * <p><strong>Note</strong>: structured data should be formatted as YAML strings for best performance.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addDocuments(V2RerankRequestDocumentsItem documents) {
+        public _FinalStage addDocuments(String documents) {
             this.documents.add(documents);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
-        public _FinalStage documents(List<V2RerankRequestDocumentsItem> documents) {
+        public _FinalStage documents(List<String> documents) {
             this.documents.clear();
             this.documents.addAll(documents);
             return this;
@@ -361,7 +331,7 @@ public final class V2RerankRequest {
         @java.lang.Override
         public V2RerankRequest build() {
             return new V2RerankRequest(
-                    model, query, documents, topN, rankFields, returnDocuments, maxChunksPerDoc, additionalProperties);
+                    model, query, documents, topN, returnDocuments, maxTokensPerDoc, additionalProperties);
         }
     }
 }

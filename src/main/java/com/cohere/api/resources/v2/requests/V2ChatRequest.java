@@ -34,6 +34,8 @@ public final class V2ChatRequest {
 
     private final Optional<List<ToolV2>> tools;
 
+    private final Optional<Boolean> strictTools;
+
     private final Optional<List<V2ChatRequestDocumentsItem>> documents;
 
     private final Optional<CitationOptions> citationOptions;
@@ -68,6 +70,7 @@ public final class V2ChatRequest {
             String model,
             List<ChatMessageV2> messages,
             Optional<List<ToolV2>> tools,
+            Optional<Boolean> strictTools,
             Optional<List<V2ChatRequestDocumentsItem>> documents,
             Optional<CitationOptions> citationOptions,
             Optional<ResponseFormatV2> responseFormat,
@@ -86,6 +89,7 @@ public final class V2ChatRequest {
         this.model = model;
         this.messages = messages;
         this.tools = tools;
+        this.strictTools = strictTools;
         this.documents = documents;
         this.citationOptions = citationOptions;
         this.responseFormat = responseFormat;
@@ -101,6 +105,17 @@ public final class V2ChatRequest {
         this.returnPrompt = returnPrompt;
         this.logprobs = logprobs;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Defaults to <code>false</code>.
+     * <p>When <code>true</code>, the response will be a SSE stream of events. The final event will contain the complete response, and will have an <code>event_type</code> of <code>&quot;stream-end&quot;</code>.</p>
+     * <p>Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.</p>
+     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+     */
+    @JsonProperty("stream")
+    public Boolean getStream() {
+        return false;
     }
 
     /**
@@ -123,6 +138,15 @@ public final class V2ChatRequest {
     @JsonProperty("tools")
     public Optional<List<ToolV2>> getTools() {
         return tools;
+    }
+
+    /**
+     * @return When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Strict Tools guide</a>.
+     * <p><strong>Note</strong>: The first few requests with a new set of tools will take longer to process.</p>
+     */
+    @JsonProperty("strict_tools")
+    public Optional<Boolean> getStrictTools() {
+        return strictTools;
     }
 
     /**
@@ -237,16 +261,11 @@ public final class V2ChatRequest {
     }
 
     /**
-     * @return Whether to return the log probabilities of the generated tokens. Defaults to false.
+     * @return Defaults to <code>false</code>. When set to <code>true</code>, the log probabilities of the generated tokens will be included in the response.
      */
     @JsonProperty("logprobs")
     public Optional<Boolean> getLogprobs() {
         return logprobs;
-    }
-
-    @JsonProperty("stream")
-    public Boolean getStream() {
-        return false;
     }
 
     @java.lang.Override
@@ -264,6 +283,7 @@ public final class V2ChatRequest {
         return model.equals(other.model)
                 && messages.equals(other.messages)
                 && tools.equals(other.tools)
+                && strictTools.equals(other.strictTools)
                 && documents.equals(other.documents)
                 && citationOptions.equals(other.citationOptions)
                 && responseFormat.equals(other.responseFormat)
@@ -286,6 +306,7 @@ public final class V2ChatRequest {
                 this.model,
                 this.messages,
                 this.tools,
+                this.strictTools,
                 this.documents,
                 this.citationOptions,
                 this.responseFormat,
@@ -329,6 +350,10 @@ public final class V2ChatRequest {
         _FinalStage tools(Optional<List<ToolV2>> tools);
 
         _FinalStage tools(List<ToolV2> tools);
+
+        _FinalStage strictTools(Optional<Boolean> strictTools);
+
+        _FinalStage strictTools(Boolean strictTools);
 
         _FinalStage documents(Optional<List<V2ChatRequestDocumentsItem>> documents);
 
@@ -419,6 +444,8 @@ public final class V2ChatRequest {
 
         private Optional<List<V2ChatRequestDocumentsItem>> documents = Optional.empty();
 
+        private Optional<Boolean> strictTools = Optional.empty();
+
         private Optional<List<ToolV2>> tools = Optional.empty();
 
         private List<ChatMessageV2> messages = new ArrayList<>();
@@ -433,6 +460,7 @@ public final class V2ChatRequest {
             model(other.getModel());
             messages(other.getMessages());
             tools(other.getTools());
+            strictTools(other.getStrictTools());
             documents(other.getDocuments());
             citationOptions(other.getCitationOptions());
             responseFormat(other.getResponseFormat());
@@ -462,7 +490,7 @@ public final class V2ChatRequest {
         }
 
         /**
-         * <p>Whether to return the log probabilities of the generated tokens. Defaults to false.</p>
+         * <p>Defaults to <code>false</code>. When set to <code>true</code>, the log probabilities of the generated tokens will be included in the response.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -705,6 +733,24 @@ public final class V2ChatRequest {
         }
 
         /**
+         * <p>When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Strict Tools guide</a>.</p>
+         * <p><strong>Note</strong>: The first few requests with a new set of tools will take longer to process.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage strictTools(Boolean strictTools) {
+            this.strictTools = Optional.of(strictTools);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "strict_tools", nulls = Nulls.SKIP)
+        public _FinalStage strictTools(Optional<Boolean> strictTools) {
+            this.strictTools = strictTools;
+            return this;
+        }
+
+        /**
          * <p>A list of available tools (functions) that the model may suggest invoking before producing a text response.</p>
          * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> content in the response will be empty and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
@@ -748,6 +794,7 @@ public final class V2ChatRequest {
                     model,
                     messages,
                     tools,
+                    strictTools,
                     documents,
                     citationOptions,
                     responseFormat,
