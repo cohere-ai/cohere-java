@@ -112,7 +112,7 @@ public final class V2EmbedRequest {
     }
 
     /**
-     * @return Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.
+     * @return Specifies the types of embeddings you want to get back. Can be one or more of the following types.
      * <ul>
      * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
      * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for only v3 models.</li>
@@ -295,7 +295,7 @@ public final class V2EmbedRequest {
         }
 
         /**
-         * <p>Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.</p>
+         * <p>Specifies the types of embeddings you want to get back. Can be one or more of the following types.</p>
          * <ul>
          * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
          * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for only v3 models.</li>
@@ -312,7 +312,7 @@ public final class V2EmbedRequest {
         }
 
         /**
-         * <p>Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.</p>
+         * <p>Specifies the types of embeddings you want to get back. Can be one or more of the following types.</p>
          * <ul>
          * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
          * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for only v3 models.</li>
