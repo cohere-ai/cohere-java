@@ -141,7 +141,7 @@ public final class FinetunedModel {
     }
 
     /**
-     * @return read-only. Timestamp for the latest request to this fine-tuned model.
+     * @return read-only. Deprecated: Timestamp for the latest request to this fine-tuned model.
      */
     @JsonProperty("last_used")
     public Optional<OffsetDateTime> getLastUsed() {
@@ -307,7 +307,7 @@ public final class FinetunedModel {
         }
 
         /**
-         * <p>read-only. Timestamp for the latest request to this fine-tuned model.</p>
+         * <p>read-only. Deprecated: Timestamp for the latest request to this fine-tuned model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
