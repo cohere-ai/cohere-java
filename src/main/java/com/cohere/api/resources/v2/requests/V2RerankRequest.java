@@ -54,14 +54,7 @@ public final class V2RerankRequest {
     }
 
     /**
-     * @return The identifier of the model to use.
-     * <p>Supported models:</p>
-     * <ul>
-     * <li><code>rerank-english-v3.0</code></li>
-     * <li><code>rerank-multilingual-v3.0</code></li>
-     * <li><code>rerank-english-v2.0</code></li>
-     * <li><code>rerank-multilingual-v2.0</code></li>
-     * </ul>
+     * @return The identifier of the model to use, eg <code>rerank-v3.5</code>.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -212,14 +205,7 @@ public final class V2RerankRequest {
         }
 
         /**
-         * <p>The identifier of the model to use.</p>
-         * <p>Supported models:</p>
-         * <ul>
-         * <li><code>rerank-english-v3.0</code></li>
-         * <li><code>rerank-multilingual-v3.0</code></li>
-         * <li><code>rerank-english-v2.0</code></li>
-         * <li><code>rerank-multilingual-v2.0</code></li>
-         * </ul>
+         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

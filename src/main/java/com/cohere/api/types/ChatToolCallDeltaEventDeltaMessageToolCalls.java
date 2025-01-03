@@ -18,28 +18,29 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ChatToolCallDeltaEventDeltaToolCall.Builder.class)
-public final class ChatToolCallDeltaEventDeltaToolCall {
-    private final Optional<ChatToolCallDeltaEventDeltaToolCallFunction> function;
+@JsonDeserialize(builder = ChatToolCallDeltaEventDeltaMessageToolCalls.Builder.class)
+public final class ChatToolCallDeltaEventDeltaMessageToolCalls {
+    private final Optional<ChatToolCallDeltaEventDeltaMessageToolCallsFunction> function;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatToolCallDeltaEventDeltaToolCall(
-            Optional<ChatToolCallDeltaEventDeltaToolCallFunction> function, Map<String, Object> additionalProperties) {
+    private ChatToolCallDeltaEventDeltaMessageToolCalls(
+            Optional<ChatToolCallDeltaEventDeltaMessageToolCallsFunction> function,
+            Map<String, Object> additionalProperties) {
         this.function = function;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("function")
-    public Optional<ChatToolCallDeltaEventDeltaToolCallFunction> getFunction() {
+    public Optional<ChatToolCallDeltaEventDeltaMessageToolCallsFunction> getFunction() {
         return function;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ChatToolCallDeltaEventDeltaToolCall
-                && equalTo((ChatToolCallDeltaEventDeltaToolCall) other);
+        return other instanceof ChatToolCallDeltaEventDeltaMessageToolCalls
+                && equalTo((ChatToolCallDeltaEventDeltaMessageToolCalls) other);
     }
 
     @JsonAnyGetter
@@ -47,7 +48,7 @@ public final class ChatToolCallDeltaEventDeltaToolCall {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ChatToolCallDeltaEventDeltaToolCall other) {
+    private boolean equalTo(ChatToolCallDeltaEventDeltaMessageToolCalls other) {
         return function.equals(other.function);
     }
 
@@ -67,31 +68,31 @@ public final class ChatToolCallDeltaEventDeltaToolCall {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<ChatToolCallDeltaEventDeltaToolCallFunction> function = Optional.empty();
+        private Optional<ChatToolCallDeltaEventDeltaMessageToolCallsFunction> function = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(ChatToolCallDeltaEventDeltaToolCall other) {
+        public Builder from(ChatToolCallDeltaEventDeltaMessageToolCalls other) {
             function(other.getFunction());
             return this;
         }
 
         @JsonSetter(value = "function", nulls = Nulls.SKIP)
-        public Builder function(Optional<ChatToolCallDeltaEventDeltaToolCallFunction> function) {
+        public Builder function(Optional<ChatToolCallDeltaEventDeltaMessageToolCallsFunction> function) {
             this.function = function;
             return this;
         }
 
-        public Builder function(ChatToolCallDeltaEventDeltaToolCallFunction function) {
+        public Builder function(ChatToolCallDeltaEventDeltaMessageToolCallsFunction function) {
             this.function = Optional.of(function);
             return this;
         }
 
-        public ChatToolCallDeltaEventDeltaToolCall build() {
-            return new ChatToolCallDeltaEventDeltaToolCall(function, additionalProperties);
+        public ChatToolCallDeltaEventDeltaMessageToolCalls build() {
+            return new ChatToolCallDeltaEventDeltaMessageToolCalls(function, additionalProperties);
         }
     }
 }

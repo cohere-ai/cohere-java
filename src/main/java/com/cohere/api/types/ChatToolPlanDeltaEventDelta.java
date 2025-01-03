@@ -20,18 +20,19 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatToolPlanDeltaEventDelta.Builder.class)
 public final class ChatToolPlanDeltaEventDelta {
-    private final Optional<String> toolPlan;
+    private final Optional<ChatToolPlanDeltaEventDeltaMessage> message;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatToolPlanDeltaEventDelta(Optional<String> toolPlan, Map<String, Object> additionalProperties) {
-        this.toolPlan = toolPlan;
+    private ChatToolPlanDeltaEventDelta(
+            Optional<ChatToolPlanDeltaEventDeltaMessage> message, Map<String, Object> additionalProperties) {
+        this.message = message;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("tool_plan")
-    public Optional<String> getToolPlan() {
-        return toolPlan;
+    @JsonProperty("message")
+    public Optional<ChatToolPlanDeltaEventDeltaMessage> getMessage() {
+        return message;
     }
 
     @java.lang.Override
@@ -46,12 +47,12 @@ public final class ChatToolPlanDeltaEventDelta {
     }
 
     private boolean equalTo(ChatToolPlanDeltaEventDelta other) {
-        return toolPlan.equals(other.toolPlan);
+        return message.equals(other.message);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.toolPlan);
+        return Objects.hash(this.message);
     }
 
     @java.lang.Override
@@ -65,7 +66,7 @@ public final class ChatToolPlanDeltaEventDelta {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> toolPlan = Optional.empty();
+        private Optional<ChatToolPlanDeltaEventDeltaMessage> message = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -73,23 +74,23 @@ public final class ChatToolPlanDeltaEventDelta {
         private Builder() {}
 
         public Builder from(ChatToolPlanDeltaEventDelta other) {
-            toolPlan(other.getToolPlan());
+            message(other.getMessage());
             return this;
         }
 
-        @JsonSetter(value = "tool_plan", nulls = Nulls.SKIP)
-        public Builder toolPlan(Optional<String> toolPlan) {
-            this.toolPlan = toolPlan;
+        @JsonSetter(value = "message", nulls = Nulls.SKIP)
+        public Builder message(Optional<ChatToolPlanDeltaEventDeltaMessage> message) {
+            this.message = message;
             return this;
         }
 
-        public Builder toolPlan(String toolPlan) {
-            this.toolPlan = Optional.of(toolPlan);
+        public Builder message(ChatToolPlanDeltaEventDeltaMessage message) {
+            this.message = Optional.of(message);
             return this;
         }
 
         public ChatToolPlanDeltaEventDelta build() {
-            return new ChatToolPlanDeltaEventDelta(toolPlan, additionalProperties);
+            return new ChatToolPlanDeltaEventDelta(message, additionalProperties);
         }
     }
 }

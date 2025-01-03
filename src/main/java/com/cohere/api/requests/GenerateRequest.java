@@ -239,9 +239,9 @@ public final class GenerateRequest {
     }
 
     /**
-     * @return One of <code>GENERATION|ALL|NONE</code> to specify how and if the token likelihoods are returned with the response. Defaults to <code>NONE</code>.
+     * @return One of <code>GENERATION|NONE</code> to specify how and if the token likelihoods are returned with the response. Defaults to <code>NONE</code>.
      * <p>If <code>GENERATION</code> is selected, the token likelihoods will only be provided for generated text.</p>
-     * <p>If <code>ALL</code> is selected, the token likelihoods will be provided both for the prompt and the generated text.</p>
+     * <p>WARNING: <code>ALL</code> is deprecated, and will be removed in a future release.</p>
      */
     @JsonProperty("return_likelihoods")
     public Optional<GenerateRequestReturnLikelihoods> getReturnLikelihoods() {
@@ -476,9 +476,9 @@ public final class GenerateRequest {
         }
 
         /**
-         * <p>One of <code>GENERATION|ALL|NONE</code> to specify how and if the token likelihoods are returned with the response. Defaults to <code>NONE</code>.</p>
+         * <p>One of <code>GENERATION|NONE</code> to specify how and if the token likelihoods are returned with the response. Defaults to <code>NONE</code>.</p>
          * <p>If <code>GENERATION</code> is selected, the token likelihoods will only be provided for generated text.</p>
-         * <p>If <code>ALL</code> is selected, the token likelihoods will be provided both for the prompt and the generated text.</p>
+         * <p>WARNING: <code>ALL</code> is deprecated, and will be removed in a future release.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

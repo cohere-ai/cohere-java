@@ -20,19 +20,19 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatToolCallDeltaEventDelta.Builder.class)
 public final class ChatToolCallDeltaEventDelta {
-    private final Optional<ChatToolCallDeltaEventDeltaToolCall> toolCall;
+    private final Optional<ChatToolCallDeltaEventDeltaMessage> message;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatToolCallDeltaEventDelta(
-            Optional<ChatToolCallDeltaEventDeltaToolCall> toolCall, Map<String, Object> additionalProperties) {
-        this.toolCall = toolCall;
+            Optional<ChatToolCallDeltaEventDeltaMessage> message, Map<String, Object> additionalProperties) {
+        this.message = message;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("tool_call")
-    public Optional<ChatToolCallDeltaEventDeltaToolCall> getToolCall() {
-        return toolCall;
+    @JsonProperty("message")
+    public Optional<ChatToolCallDeltaEventDeltaMessage> getMessage() {
+        return message;
     }
 
     @java.lang.Override
@@ -47,12 +47,12 @@ public final class ChatToolCallDeltaEventDelta {
     }
 
     private boolean equalTo(ChatToolCallDeltaEventDelta other) {
-        return toolCall.equals(other.toolCall);
+        return message.equals(other.message);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.toolCall);
+        return Objects.hash(this.message);
     }
 
     @java.lang.Override
@@ -66,7 +66,7 @@ public final class ChatToolCallDeltaEventDelta {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<ChatToolCallDeltaEventDeltaToolCall> toolCall = Optional.empty();
+        private Optional<ChatToolCallDeltaEventDeltaMessage> message = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -74,23 +74,23 @@ public final class ChatToolCallDeltaEventDelta {
         private Builder() {}
 
         public Builder from(ChatToolCallDeltaEventDelta other) {
-            toolCall(other.getToolCall());
+            message(other.getMessage());
             return this;
         }
 
-        @JsonSetter(value = "tool_call", nulls = Nulls.SKIP)
-        public Builder toolCall(Optional<ChatToolCallDeltaEventDeltaToolCall> toolCall) {
-            this.toolCall = toolCall;
+        @JsonSetter(value = "message", nulls = Nulls.SKIP)
+        public Builder message(Optional<ChatToolCallDeltaEventDeltaMessage> message) {
+            this.message = message;
             return this;
         }
 
-        public Builder toolCall(ChatToolCallDeltaEventDeltaToolCall toolCall) {
-            this.toolCall = Optional.of(toolCall);
+        public Builder message(ChatToolCallDeltaEventDeltaMessage message) {
+            this.message = Optional.of(message);
             return this;
         }
 
         public ChatToolCallDeltaEventDelta build() {
-            return new ChatToolCallDeltaEventDelta(toolCall, additionalProperties);
+            return new ChatToolCallDeltaEventDelta(message, additionalProperties);
         }
     }
 }
