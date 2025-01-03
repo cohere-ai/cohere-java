@@ -444,6 +444,7 @@ public final class ChatRequest {
      * When <code>NONE</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
      * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
      */
     @JsonProperty("safety_mode")
@@ -757,6 +758,7 @@ public final class ChatRequest {
          * When <code>NONE</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
          * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

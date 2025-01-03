@@ -18,13 +18,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = ChatToolCallDeltaEventDeltaToolCallFunction.Builder.class)
-public final class ChatToolCallDeltaEventDeltaToolCallFunction {
+@JsonDeserialize(builder = ChatToolCallDeltaEventDeltaMessageToolCallsFunction.Builder.class)
+public final class ChatToolCallDeltaEventDeltaMessageToolCallsFunction {
     private final Optional<String> arguments;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatToolCallDeltaEventDeltaToolCallFunction(
+    private ChatToolCallDeltaEventDeltaMessageToolCallsFunction(
             Optional<String> arguments, Map<String, Object> additionalProperties) {
         this.arguments = arguments;
         this.additionalProperties = additionalProperties;
@@ -38,8 +38,8 @@ public final class ChatToolCallDeltaEventDeltaToolCallFunction {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ChatToolCallDeltaEventDeltaToolCallFunction
-                && equalTo((ChatToolCallDeltaEventDeltaToolCallFunction) other);
+        return other instanceof ChatToolCallDeltaEventDeltaMessageToolCallsFunction
+                && equalTo((ChatToolCallDeltaEventDeltaMessageToolCallsFunction) other);
     }
 
     @JsonAnyGetter
@@ -47,7 +47,7 @@ public final class ChatToolCallDeltaEventDeltaToolCallFunction {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ChatToolCallDeltaEventDeltaToolCallFunction other) {
+    private boolean equalTo(ChatToolCallDeltaEventDeltaMessageToolCallsFunction other) {
         return arguments.equals(other.arguments);
     }
 
@@ -74,7 +74,7 @@ public final class ChatToolCallDeltaEventDeltaToolCallFunction {
 
         private Builder() {}
 
-        public Builder from(ChatToolCallDeltaEventDeltaToolCallFunction other) {
+        public Builder from(ChatToolCallDeltaEventDeltaMessageToolCallsFunction other) {
             arguments(other.getArguments());
             return this;
         }
@@ -90,8 +90,8 @@ public final class ChatToolCallDeltaEventDeltaToolCallFunction {
             return this;
         }
 
-        public ChatToolCallDeltaEventDeltaToolCallFunction build() {
-            return new ChatToolCallDeltaEventDeltaToolCallFunction(arguments, additionalProperties);
+        public ChatToolCallDeltaEventDeltaMessageToolCallsFunction build() {
+            return new ChatToolCallDeltaEventDeltaMessageToolCallsFunction(arguments, additionalProperties);
         }
     }
 }

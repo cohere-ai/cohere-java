@@ -32,6 +32,7 @@ public final class CitationOptions {
     /**
      * @return Defaults to <code>&quot;accurate&quot;</code>.
      * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.
+     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;fast&quot;</code> and <code>&quot;off&quot;</code> modes. Its default is <code>&quot;fast&quot;</code>.</p>
      */
     @JsonProperty("mode")
     public Optional<CitationOptionsMode> getMode() {

@@ -141,7 +141,7 @@ public final class V2ChatRequest {
     }
 
     /**
-     * @return When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Strict Tools guide</a>.
+     * @return When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Structured Outputs (Tools) guide</a>.
      * <p><strong>Note</strong>: The first few requests with a new set of tools will take longer to process.</p>
      */
     @JsonProperty("strict_tools")
@@ -172,6 +172,7 @@ public final class V2ChatRequest {
      * When <code>OFF</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
      * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/v2/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
      */
     @JsonProperty("safety_mode")
     public Optional<V2ChatRequestSafetyMode> getSafetyMode() {
@@ -674,6 +675,7 @@ public final class V2ChatRequest {
          * When <code>OFF</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
          * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/v2/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -733,7 +735,7 @@ public final class V2ChatRequest {
         }
 
         /**
-         * <p>When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Strict Tools guide</a>.</p>
+         * <p>When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Structured Outputs (Tools) guide</a>.</p>
          * <p><strong>Note</strong>: The first few requests with a new set of tools will take longer to process.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

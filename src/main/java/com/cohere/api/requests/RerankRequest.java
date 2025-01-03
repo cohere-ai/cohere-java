@@ -59,7 +59,7 @@ public final class RerankRequest {
     }
 
     /**
-     * @return The identifier of the model to use, one of : <code>rerank-english-v3.0</code>, <code>rerank-multilingual-v3.0</code>, <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code>
+     * @return The identifier of the model to use, eg <code>rerank-v3.5</code>.
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -348,7 +348,7 @@ public final class RerankRequest {
         }
 
         /**
-         * <p>The identifier of the model to use, one of : <code>rerank-english-v3.0</code>, <code>rerank-multilingual-v3.0</code>, <code>rerank-english-v2.0</code>, <code>rerank-multilingual-v2.0</code></p>
+         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
