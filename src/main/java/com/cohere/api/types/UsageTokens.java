@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UsageTokens.Builder.class)
 public final class UsageTokens {
     private final Optional<Double> inputTokens;
@@ -102,7 +102,7 @@ public final class UsageTokens {
         }
 
         public Builder inputTokens(Double inputTokens) {
-            this.inputTokens = Optional.of(inputTokens);
+            this.inputTokens = Optional.ofNullable(inputTokens);
             return this;
         }
 
@@ -113,7 +113,7 @@ public final class UsageTokens {
         }
 
         public Builder outputTokens(Double outputTokens) {
-            this.outputTokens = Optional.of(outputTokens);
+            this.outputTokens = Optional.ofNullable(outputTokens);
             return this;
         }
 

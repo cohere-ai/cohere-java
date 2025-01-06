@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CitationStartEventDeltaMessage.Builder.class)
 public final class CitationStartEventDeltaMessage {
     private final Optional<Citation> citations;
@@ -84,7 +84,7 @@ public final class CitationStartEventDeltaMessage {
         }
 
         public Builder citations(Citation citations) {
-            this.citations = Optional.of(citations);
+            this.citations = Optional.ofNullable(citations);
             return this;
         }
 

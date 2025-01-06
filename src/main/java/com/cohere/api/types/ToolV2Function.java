@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolV2Function.Builder.class)
 public final class ToolV2Function {
     private final Optional<String> name;
@@ -119,7 +119,7 @@ public final class ToolV2Function {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -130,7 +130,7 @@ public final class ToolV2Function {
         }
 
         public Builder description(String description) {
-            this.description = Optional.of(description);
+            this.description = Optional.ofNullable(description);
             return this;
         }
 
@@ -141,7 +141,7 @@ public final class ToolV2Function {
         }
 
         public Builder parameters(Map<String, Object> parameters) {
-            this.parameters = Optional.of(parameters);
+            this.parameters = Optional.ofNullable(parameters);
             return this;
         }
 

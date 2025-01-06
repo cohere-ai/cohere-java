@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FinetuneDatasetMetrics.Builder.class)
 public final class FinetuneDatasetMetrics {
     private final Optional<Long> trainableTokenCount;
@@ -175,7 +175,7 @@ public final class FinetuneDatasetMetrics {
         }
 
         public Builder trainableTokenCount(Long trainableTokenCount) {
-            this.trainableTokenCount = Optional.of(trainableTokenCount);
+            this.trainableTokenCount = Optional.ofNullable(trainableTokenCount);
             return this;
         }
 
@@ -186,7 +186,7 @@ public final class FinetuneDatasetMetrics {
         }
 
         public Builder totalExamples(Long totalExamples) {
-            this.totalExamples = Optional.of(totalExamples);
+            this.totalExamples = Optional.ofNullable(totalExamples);
             return this;
         }
 
@@ -197,7 +197,7 @@ public final class FinetuneDatasetMetrics {
         }
 
         public Builder trainExamples(Long trainExamples) {
-            this.trainExamples = Optional.of(trainExamples);
+            this.trainExamples = Optional.ofNullable(trainExamples);
             return this;
         }
 
@@ -208,7 +208,7 @@ public final class FinetuneDatasetMetrics {
         }
 
         public Builder trainSizeBytes(Long trainSizeBytes) {
-            this.trainSizeBytes = Optional.of(trainSizeBytes);
+            this.trainSizeBytes = Optional.ofNullable(trainSizeBytes);
             return this;
         }
 
@@ -219,7 +219,7 @@ public final class FinetuneDatasetMetrics {
         }
 
         public Builder evalExamples(Long evalExamples) {
-            this.evalExamples = Optional.of(evalExamples);
+            this.evalExamples = Optional.ofNullable(evalExamples);
             return this;
         }
 
@@ -230,7 +230,7 @@ public final class FinetuneDatasetMetrics {
         }
 
         public Builder evalSizeBytes(Long evalSizeBytes) {
-            this.evalSizeBytes = Optional.of(evalSizeBytes);
+            this.evalSizeBytes = Optional.ofNullable(evalSizeBytes);
             return this;
         }
 

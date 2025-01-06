@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Citation.Builder.class)
 public final class Citation {
     private final Optional<Integer> start;
@@ -135,7 +135,7 @@ public final class Citation {
         }
 
         public Builder start(Integer start) {
-            this.start = Optional.of(start);
+            this.start = Optional.ofNullable(start);
             return this;
         }
 
@@ -146,7 +146,7 @@ public final class Citation {
         }
 
         public Builder end(Integer end) {
-            this.end = Optional.of(end);
+            this.end = Optional.ofNullable(end);
             return this;
         }
 
@@ -157,7 +157,7 @@ public final class Citation {
         }
 
         public Builder text(String text) {
-            this.text = Optional.of(text);
+            this.text = Optional.ofNullable(text);
             return this;
         }
 
@@ -168,7 +168,7 @@ public final class Citation {
         }
 
         public Builder sources(List<Source> sources) {
-            this.sources = Optional.of(sources);
+            this.sources = Optional.ofNullable(sources);
             return this;
         }
 

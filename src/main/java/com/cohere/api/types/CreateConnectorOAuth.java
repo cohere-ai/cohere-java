@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CreateConnectorOAuth.Builder.class)
 public final class CreateConnectorOAuth {
     private final Optional<String> clientId;
@@ -153,7 +153,7 @@ public final class CreateConnectorOAuth {
         }
 
         public Builder clientId(String clientId) {
-            this.clientId = Optional.of(clientId);
+            this.clientId = Optional.ofNullable(clientId);
             return this;
         }
 
@@ -164,7 +164,7 @@ public final class CreateConnectorOAuth {
         }
 
         public Builder clientSecret(String clientSecret) {
-            this.clientSecret = Optional.of(clientSecret);
+            this.clientSecret = Optional.ofNullable(clientSecret);
             return this;
         }
 
@@ -175,7 +175,7 @@ public final class CreateConnectorOAuth {
         }
 
         public Builder authorizeUrl(String authorizeUrl) {
-            this.authorizeUrl = Optional.of(authorizeUrl);
+            this.authorizeUrl = Optional.ofNullable(authorizeUrl);
             return this;
         }
 
@@ -186,7 +186,7 @@ public final class CreateConnectorOAuth {
         }
 
         public Builder tokenUrl(String tokenUrl) {
-            this.tokenUrl = Optional.of(tokenUrl);
+            this.tokenUrl = Optional.ofNullable(tokenUrl);
             return this;
         }
 
@@ -197,7 +197,7 @@ public final class CreateConnectorOAuth {
         }
 
         public Builder scope(String scope) {
-            this.scope = Optional.of(scope);
+            this.scope = Optional.ofNullable(scope);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CitationOptions.Builder.class)
 public final class CitationOptions {
     private final Optional<CitationOptionsMode> mode;
@@ -89,7 +89,7 @@ public final class CitationOptions {
         }
 
         public Builder mode(CitationOptionsMode mode) {
-            this.mode = Optional.of(mode);
+            this.mode = Optional.ofNullable(mode);
             return this;
         }
 

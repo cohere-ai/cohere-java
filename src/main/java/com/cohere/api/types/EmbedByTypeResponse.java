@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmbedByTypeResponse.Builder.class)
 public final class EmbedByTypeResponse {
     private final String id;
@@ -117,13 +118,13 @@ public final class EmbedByTypeResponse {
     }
 
     public interface IdStage {
-        EmbeddingsStage id(String id);
+        EmbeddingsStage id(@NotNull String id);
 
         Builder from(EmbedByTypeResponse other);
     }
 
     public interface EmbeddingsStage {
-        _FinalStage embeddings(EmbedByTypeResponseEmbeddings embeddings);
+        _FinalStage embeddings(@NotNull EmbedByTypeResponseEmbeddings embeddings);
     }
 
     public interface _FinalStage {
@@ -173,8 +174,8 @@ public final class EmbedByTypeResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public EmbeddingsStage id(String id) {
-            this.id = id;
+        public EmbeddingsStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -184,14 +185,14 @@ public final class EmbedByTypeResponse {
          */
         @java.lang.Override
         @JsonSetter("embeddings")
-        public _FinalStage embeddings(EmbedByTypeResponseEmbeddings embeddings) {
-            this.embeddings = embeddings;
+        public _FinalStage embeddings(@NotNull EmbedByTypeResponseEmbeddings embeddings) {
+            this.embeddings = Objects.requireNonNull(embeddings, "embeddings must not be null");
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.of(meta);
+            this.meta = Optional.ofNullable(meta);
             return this;
         }
 
@@ -208,7 +209,7 @@ public final class EmbedByTypeResponse {
          */
         @java.lang.Override
         public _FinalStage images(List<Image> images) {
-            this.images = Optional.of(images);
+            this.images = Optional.ofNullable(images);
             return this;
         }
 

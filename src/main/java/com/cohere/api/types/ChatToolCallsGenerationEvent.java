@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatToolCallsGenerationEvent.Builder.class)
 public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
     private final Optional<String> text;
@@ -101,7 +101,7 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
         }
 
         public Builder text(String text) {
-            this.text = Optional.of(text);
+            this.text = Optional.ofNullable(text);
             return this;
         }
 
