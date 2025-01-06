@@ -19,8 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FinetuningUpdateFinetunedModelRequest.Builder.class)
 public final class FinetuningUpdateFinetunedModelRequest {
     private final String name;
@@ -186,13 +187,13 @@ public final class FinetuningUpdateFinetunedModelRequest {
     }
 
     public interface NameStage {
-        SettingsStage name(String name);
+        SettingsStage name(@NotNull String name);
 
         Builder from(FinetuningUpdateFinetunedModelRequest other);
     }
 
     public interface SettingsStage {
-        _FinalStage settings(Settings settings);
+        _FinalStage settings(@NotNull Settings settings);
     }
 
     public interface _FinalStage {
@@ -272,8 +273,8 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public SettingsStage name(String name) {
-            this.name = name;
+        public SettingsStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -283,8 +284,8 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         @JsonSetter("settings")
-        public _FinalStage settings(Settings settings) {
-            this.settings = settings;
+        public _FinalStage settings(@NotNull Settings settings) {
+            this.settings = Objects.requireNonNull(settings, "settings must not be null");
             return this;
         }
 
@@ -294,7 +295,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage lastUsed(OffsetDateTime lastUsed) {
-            this.lastUsed = Optional.of(lastUsed);
+            this.lastUsed = Optional.ofNullable(lastUsed);
             return this;
         }
 
@@ -311,7 +312,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage completedAt(OffsetDateTime completedAt) {
-            this.completedAt = Optional.of(completedAt);
+            this.completedAt = Optional.ofNullable(completedAt);
             return this;
         }
 
@@ -328,7 +329,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = Optional.of(updatedAt);
+            this.updatedAt = Optional.ofNullable(updatedAt);
             return this;
         }
 
@@ -345,7 +346,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.of(createdAt);
+            this.createdAt = Optional.ofNullable(createdAt);
             return this;
         }
 
@@ -362,7 +363,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage status(Status status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -379,7 +380,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage organizationId(String organizationId) {
-            this.organizationId = Optional.of(organizationId);
+            this.organizationId = Optional.ofNullable(organizationId);
             return this;
         }
 
@@ -396,7 +397,7 @@ public final class FinetuningUpdateFinetunedModelRequest {
          */
         @java.lang.Override
         public _FinalStage creatorId(String creatorId) {
-            this.creatorId = Optional.of(creatorId);
+            this.creatorId = Optional.ofNullable(creatorId);
             return this;
         }
 

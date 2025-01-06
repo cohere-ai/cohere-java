@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolMessageV2.Builder.class)
 public final class ToolMessageV2 {
     private final String toolCallId;
@@ -76,13 +77,13 @@ public final class ToolMessageV2 {
     }
 
     public interface ToolCallIdStage {
-        ContentStage toolCallId(String toolCallId);
+        ContentStage toolCallId(@NotNull String toolCallId);
 
         Builder from(ToolMessageV2 other);
     }
 
     public interface ContentStage {
-        _FinalStage content(ToolMessageV2Content content);
+        _FinalStage content(@NotNull ToolMessageV2Content content);
     }
 
     public interface _FinalStage {
@@ -113,8 +114,8 @@ public final class ToolMessageV2 {
          */
         @java.lang.Override
         @JsonSetter("tool_call_id")
-        public ContentStage toolCallId(String toolCallId) {
-            this.toolCallId = toolCallId;
+        public ContentStage toolCallId(@NotNull String toolCallId) {
+            this.toolCallId = Objects.requireNonNull(toolCallId, "toolCallId must not be null");
             return this;
         }
 
@@ -124,8 +125,8 @@ public final class ToolMessageV2 {
          */
         @java.lang.Override
         @JsonSetter("content")
-        public _FinalStage content(ToolMessageV2Content content) {
-            this.content = content;
+        public _FinalStage content(@NotNull ToolMessageV2Content content) {
+            this.content = Objects.requireNonNull(content, "content must not be null");
             return this;
         }
 

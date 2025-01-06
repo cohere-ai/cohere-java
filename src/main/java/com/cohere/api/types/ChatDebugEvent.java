@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatDebugEvent.Builder.class)
 public final class ChatDebugEvent implements IChatStreamEvent {
     private final Optional<String> prompt;
@@ -84,7 +84,7 @@ public final class ChatDebugEvent implements IChatStreamEvent {
         }
 
         public Builder prompt(String prompt) {
-            this.prompt = Optional.of(prompt);
+            this.prompt = Optional.ofNullable(prompt);
             return this;
         }
 

@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ConnectorOAuth.Builder.class)
 public final class ConnectorOAuth {
     private final Optional<String> clientId;
@@ -121,13 +122,13 @@ public final class ConnectorOAuth {
     }
 
     public interface AuthorizeUrlStage {
-        TokenUrlStage authorizeUrl(String authorizeUrl);
+        TokenUrlStage authorizeUrl(@NotNull String authorizeUrl);
 
         Builder from(ConnectorOAuth other);
     }
 
     public interface TokenUrlStage {
-        _FinalStage tokenUrl(String tokenUrl);
+        _FinalStage tokenUrl(@NotNull String tokenUrl);
     }
 
     public interface _FinalStage {
@@ -179,8 +180,8 @@ public final class ConnectorOAuth {
          */
         @java.lang.Override
         @JsonSetter("authorize_url")
-        public TokenUrlStage authorizeUrl(String authorizeUrl) {
-            this.authorizeUrl = authorizeUrl;
+        public TokenUrlStage authorizeUrl(@NotNull String authorizeUrl) {
+            this.authorizeUrl = Objects.requireNonNull(authorizeUrl, "authorizeUrl must not be null");
             return this;
         }
 
@@ -190,8 +191,8 @@ public final class ConnectorOAuth {
          */
         @java.lang.Override
         @JsonSetter("token_url")
-        public _FinalStage tokenUrl(String tokenUrl) {
-            this.tokenUrl = tokenUrl;
+        public _FinalStage tokenUrl(@NotNull String tokenUrl) {
+            this.tokenUrl = Objects.requireNonNull(tokenUrl, "tokenUrl must not be null");
             return this;
         }
 
@@ -201,7 +202,7 @@ public final class ConnectorOAuth {
          */
         @java.lang.Override
         public _FinalStage scope(String scope) {
-            this.scope = Optional.of(scope);
+            this.scope = Optional.ofNullable(scope);
             return this;
         }
 
@@ -218,7 +219,7 @@ public final class ConnectorOAuth {
          */
         @java.lang.Override
         public _FinalStage clientSecret(String clientSecret) {
-            this.clientSecret = Optional.of(clientSecret);
+            this.clientSecret = Optional.ofNullable(clientSecret);
             return this;
         }
 
@@ -235,7 +236,7 @@ public final class ConnectorOAuth {
          */
         @java.lang.Override
         public _FinalStage clientId(String clientId) {
-            this.clientId = Optional.of(clientId);
+            this.clientId = Optional.ofNullable(clientId);
             return this;
         }
 

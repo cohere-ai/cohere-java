@@ -17,8 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SingleGeneration.Builder.class)
 public final class SingleGeneration {
     private final String id;
@@ -113,13 +114,13 @@ public final class SingleGeneration {
     }
 
     public interface IdStage {
-        TextStage id(String id);
+        TextStage id(@NotNull String id);
 
         Builder from(SingleGeneration other);
     }
 
     public interface TextStage {
-        _FinalStage text(String text);
+        _FinalStage text(@NotNull String text);
     }
 
     public interface _FinalStage {
@@ -167,15 +168,15 @@ public final class SingleGeneration {
 
         @java.lang.Override
         @JsonSetter("id")
-        public TextStage id(String id) {
-            this.id = id;
+        public TextStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("text")
-        public _FinalStage text(String text) {
-            this.text = text;
+        public _FinalStage text(@NotNull String text) {
+            this.text = Objects.requireNonNull(text, "text must not be null");
             return this;
         }
 
@@ -185,7 +186,7 @@ public final class SingleGeneration {
          */
         @java.lang.Override
         public _FinalStage tokenLikelihoods(List<SingleGenerationTokenLikelihoodsItem> tokenLikelihoods) {
-            this.tokenLikelihoods = Optional.of(tokenLikelihoods);
+            this.tokenLikelihoods = Optional.ofNullable(tokenLikelihoods);
             return this;
         }
 
@@ -198,7 +199,7 @@ public final class SingleGeneration {
 
         @java.lang.Override
         public _FinalStage likelihood(Double likelihood) {
-            this.likelihood = Optional.of(likelihood);
+            this.likelihood = Optional.ofNullable(likelihood);
             return this;
         }
 
@@ -215,7 +216,7 @@ public final class SingleGeneration {
          */
         @java.lang.Override
         public _FinalStage index(Integer index) {
-            this.index = Optional.of(index);
+            this.index = Optional.ofNullable(index);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ParseInfo.Builder.class)
 public final class ParseInfo {
     private final Optional<String> separator;
@@ -96,7 +96,7 @@ public final class ParseInfo {
         }
 
         public Builder separator(String separator) {
-            this.separator = Optional.of(separator);
+            this.separator = Optional.ofNullable(separator);
             return this;
         }
 
@@ -107,7 +107,7 @@ public final class ParseInfo {
         }
 
         public Builder delimiter(String delimiter) {
-            this.delimiter = Optional.of(delimiter);
+            this.delimiter = Optional.ofNullable(delimiter);
             return this;
         }
 

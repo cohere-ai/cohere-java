@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CreateFinetunedModelResponse.Builder.class)
 public final class CreateFinetunedModelResponse {
     private final Optional<FinetunedModel> finetunedModel;
@@ -88,7 +88,7 @@ public final class CreateFinetunedModelResponse {
         }
 
         public Builder finetunedModel(FinetunedModel finetunedModel) {
-            this.finetunedModel = Optional.of(finetunedModel);
+            this.finetunedModel = Optional.ofNullable(finetunedModel);
             return this;
         }
 

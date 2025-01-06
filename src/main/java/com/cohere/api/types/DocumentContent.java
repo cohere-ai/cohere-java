@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DocumentContent.Builder.class)
 public final class DocumentContent {
     private final Document document;
@@ -62,7 +63,7 @@ public final class DocumentContent {
     }
 
     public interface DocumentStage {
-        _FinalStage document(Document document);
+        _FinalStage document(@NotNull Document document);
 
         Builder from(DocumentContent other);
     }
@@ -88,8 +89,8 @@ public final class DocumentContent {
 
         @java.lang.Override
         @JsonSetter("document")
-        public _FinalStage document(Document document) {
-            this.document = document;
+        public _FinalStage document(@NotNull Document document) {
+            this.document = Objects.requireNonNull(document, "document must not be null");
             return this;
         }
 

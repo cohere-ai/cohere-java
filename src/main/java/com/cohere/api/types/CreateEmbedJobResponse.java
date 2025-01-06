@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CreateEmbedJobResponse.Builder.class)
 public final class CreateEmbedJobResponse {
     private final String jobId;
@@ -72,7 +73,7 @@ public final class CreateEmbedJobResponse {
     }
 
     public interface JobIdStage {
-        _FinalStage jobId(String jobId);
+        _FinalStage jobId(@NotNull String jobId);
 
         Builder from(CreateEmbedJobResponse other);
     }
@@ -105,14 +106,14 @@ public final class CreateEmbedJobResponse {
 
         @java.lang.Override
         @JsonSetter("job_id")
-        public _FinalStage jobId(String jobId) {
-            this.jobId = jobId;
+        public _FinalStage jobId(@NotNull String jobId) {
+            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.of(meta);
+            this.meta = Optional.ofNullable(meta);
             return this;
         }
 

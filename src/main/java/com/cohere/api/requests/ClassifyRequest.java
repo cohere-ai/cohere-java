@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ClassifyRequest.Builder.class)
 public final class ClassifyRequest {
     private final List<String> inputs;
@@ -179,7 +179,7 @@ public final class ClassifyRequest {
         }
 
         public Builder examples(List<ClassifyExample> examples) {
-            this.examples = Optional.of(examples);
+            this.examples = Optional.ofNullable(examples);
             return this;
         }
 
@@ -190,7 +190,7 @@ public final class ClassifyRequest {
         }
 
         public Builder model(String model) {
-            this.model = Optional.of(model);
+            this.model = Optional.ofNullable(model);
             return this;
         }
 
@@ -201,7 +201,7 @@ public final class ClassifyRequest {
         }
 
         public Builder preset(String preset) {
-            this.preset = Optional.of(preset);
+            this.preset = Optional.ofNullable(preset);
             return this;
         }
 
@@ -212,7 +212,7 @@ public final class ClassifyRequest {
         }
 
         public Builder truncate(ClassifyRequestTruncate truncate) {
-            this.truncate = Optional.of(truncate);
+            this.truncate = Optional.ofNullable(truncate);
             return this;
         }
 

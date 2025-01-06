@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListFinetunedModelsResponse.Builder.class)
 public final class ListFinetunedModelsResponse {
     private final Optional<List<FinetunedModel>> finetunedModels;
@@ -123,7 +123,7 @@ public final class ListFinetunedModelsResponse {
         }
 
         public Builder finetunedModels(List<FinetunedModel> finetunedModels) {
-            this.finetunedModels = Optional.of(finetunedModels);
+            this.finetunedModels = Optional.ofNullable(finetunedModels);
             return this;
         }
 
@@ -134,7 +134,7 @@ public final class ListFinetunedModelsResponse {
         }
 
         public Builder nextPageToken(String nextPageToken) {
-            this.nextPageToken = Optional.of(nextPageToken);
+            this.nextPageToken = Optional.ofNullable(nextPageToken);
             return this;
         }
 
@@ -145,7 +145,7 @@ public final class ListFinetunedModelsResponse {
         }
 
         public Builder totalSize(Integer totalSize) {
-            this.totalSize = Optional.of(totalSize);
+            this.totalSize = Optional.ofNullable(totalSize);
             return this;
         }
 

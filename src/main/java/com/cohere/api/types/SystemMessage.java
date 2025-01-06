@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SystemMessage.Builder.class)
 public final class SystemMessage {
     private final SystemMessageContent content;
@@ -62,7 +63,7 @@ public final class SystemMessage {
     }
 
     public interface ContentStage {
-        _FinalStage content(SystemMessageContent content);
+        _FinalStage content(@NotNull SystemMessageContent content);
 
         Builder from(SystemMessage other);
     }
@@ -88,8 +89,8 @@ public final class SystemMessage {
 
         @java.lang.Override
         @JsonSetter("content")
-        public _FinalStage content(SystemMessageContent content) {
-            this.content = content;
+        public _FinalStage content(@NotNull SystemMessageContent content) {
+            this.content = Objects.requireNonNull(content, "content must not be null");
             return this;
         }
 

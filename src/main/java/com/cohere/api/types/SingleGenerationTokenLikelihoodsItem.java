@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SingleGenerationTokenLikelihoodsItem.Builder.class)
 public final class SingleGenerationTokenLikelihoodsItem {
     private final String token;
@@ -72,7 +73,7 @@ public final class SingleGenerationTokenLikelihoodsItem {
     }
 
     public interface TokenStage {
-        LikelihoodStage token(String token);
+        LikelihoodStage token(@NotNull String token);
 
         Builder from(SingleGenerationTokenLikelihoodsItem other);
     }
@@ -105,8 +106,8 @@ public final class SingleGenerationTokenLikelihoodsItem {
 
         @java.lang.Override
         @JsonSetter("token")
-        public LikelihoodStage token(String token) {
-            this.token = token;
+        public LikelihoodStage token(@NotNull String token) {
+            this.token = Objects.requireNonNull(token, "token must not be null");
             return this;
         }
 

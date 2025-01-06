@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatMessageEndEvent.Builder.class)
 public final class ChatMessageEndEvent implements IChatStreamEventType {
     private final Optional<String> id;
@@ -96,7 +96,7 @@ public final class ChatMessageEndEvent implements IChatStreamEventType {
         }
 
         public Builder id(String id) {
-            this.id = Optional.of(id);
+            this.id = Optional.ofNullable(id);
             return this;
         }
 
@@ -107,7 +107,7 @@ public final class ChatMessageEndEvent implements IChatStreamEventType {
         }
 
         public Builder delta(ChatMessageEndEventDelta delta) {
-            this.delta = Optional.of(delta);
+            this.delta = Optional.ofNullable(delta);
             return this;
         }
 

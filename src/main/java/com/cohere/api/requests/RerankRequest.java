@@ -19,8 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RerankRequest.Builder.class)
 public final class RerankRequest {
     private final Optional<String> model;
@@ -163,7 +164,7 @@ public final class RerankRequest {
     }
 
     public interface QueryStage {
-        _FinalStage query(String query);
+        _FinalStage query(@NotNull String query);
 
         Builder from(RerankRequest other);
     }
@@ -237,8 +238,8 @@ public final class RerankRequest {
          */
         @java.lang.Override
         @JsonSetter("query")
-        public _FinalStage query(String query) {
-            this.query = query;
+        public _FinalStage query(@NotNull String query) {
+            this.query = Objects.requireNonNull(query, "query must not be null");
             return this;
         }
 
@@ -248,7 +249,7 @@ public final class RerankRequest {
          */
         @java.lang.Override
         public _FinalStage maxChunksPerDoc(Integer maxChunksPerDoc) {
-            this.maxChunksPerDoc = Optional.of(maxChunksPerDoc);
+            this.maxChunksPerDoc = Optional.ofNullable(maxChunksPerDoc);
             return this;
         }
 
@@ -268,7 +269,7 @@ public final class RerankRequest {
          */
         @java.lang.Override
         public _FinalStage returnDocuments(Boolean returnDocuments) {
-            this.returnDocuments = Optional.of(returnDocuments);
+            this.returnDocuments = Optional.ofNullable(returnDocuments);
             return this;
         }
 
@@ -285,7 +286,7 @@ public final class RerankRequest {
          */
         @java.lang.Override
         public _FinalStage rankFields(List<String> rankFields) {
-            this.rankFields = Optional.of(rankFields);
+            this.rankFields = Optional.ofNullable(rankFields);
             return this;
         }
 
@@ -302,7 +303,7 @@ public final class RerankRequest {
          */
         @java.lang.Override
         public _FinalStage topN(Integer topN) {
-            this.topN = Optional.of(topN);
+            this.topN = Optional.ofNullable(topN);
             return this;
         }
 
@@ -353,7 +354,7 @@ public final class RerankRequest {
          */
         @java.lang.Override
         public _FinalStage model(String model) {
-            this.model = Optional.of(model);
+            this.model = Optional.ofNullable(model);
             return this;
         }
 

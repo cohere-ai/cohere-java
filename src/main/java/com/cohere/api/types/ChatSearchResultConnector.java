@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatSearchResultConnector.Builder.class)
 public final class ChatSearchResultConnector {
     private final String id;
@@ -65,7 +66,7 @@ public final class ChatSearchResultConnector {
     }
 
     public interface IdStage {
-        _FinalStage id(String id);
+        _FinalStage id(@NotNull String id);
 
         Builder from(ChatSearchResultConnector other);
     }
@@ -95,8 +96,8 @@ public final class ChatSearchResultConnector {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public _FinalStage id(String id) {
-            this.id = id;
+        public _FinalStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 

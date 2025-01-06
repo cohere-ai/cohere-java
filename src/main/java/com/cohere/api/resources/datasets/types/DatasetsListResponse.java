@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DatasetsListResponse.Builder.class)
 public final class DatasetsListResponse {
     private final Optional<List<Dataset>> datasets;
@@ -86,7 +86,7 @@ public final class DatasetsListResponse {
         }
 
         public Builder datasets(List<Dataset> datasets) {
-            this.datasets = Optional.of(datasets);
+            this.datasets = Optional.ofNullable(datasets);
             return this;
         }
 

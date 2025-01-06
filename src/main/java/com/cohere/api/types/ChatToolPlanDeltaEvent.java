@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatToolPlanDeltaEvent.Builder.class)
 public final class ChatToolPlanDeltaEvent implements IChatStreamEventType {
     private final Optional<ChatToolPlanDeltaEventDelta> delta;
@@ -85,7 +85,7 @@ public final class ChatToolPlanDeltaEvent implements IChatStreamEventType {
         }
 
         public Builder delta(ChatToolPlanDeltaEventDelta delta) {
-            this.delta = Optional.of(delta);
+            this.delta = Optional.ofNullable(delta);
             return this;
         }
 

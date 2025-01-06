@@ -21,8 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = V2EmbedRequest.Builder.class)
 public final class V2EmbedRequest {
     private final Optional<List<String>> texts;
@@ -171,13 +172,13 @@ public final class V2EmbedRequest {
     }
 
     public interface ModelStage {
-        InputTypeStage model(String model);
+        InputTypeStage model(@NotNull String model);
 
         Builder from(V2EmbedRequest other);
     }
 
     public interface InputTypeStage {
-        _FinalStage inputType(EmbedInputType inputType);
+        _FinalStage inputType(@NotNull EmbedInputType inputType);
     }
 
     public interface _FinalStage {
@@ -263,15 +264,15 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public InputTypeStage model(String model) {
-            this.model = model;
+        public InputTypeStage model(@NotNull String model) {
+            this.model = Objects.requireNonNull(model, "model must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("input_type")
-        public _FinalStage inputType(EmbedInputType inputType) {
-            this.inputType = inputType;
+        public _FinalStage inputType(@NotNull EmbedInputType inputType) {
+            this.inputType = Objects.requireNonNull(inputType, "inputType must not be null");
             return this;
         }
 
@@ -283,7 +284,7 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         public _FinalStage truncate(V2EmbedRequestTruncate truncate) {
-            this.truncate = Optional.of(truncate);
+            this.truncate = Optional.ofNullable(truncate);
             return this;
         }
 
@@ -343,7 +344,7 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         public _FinalStage images(List<String> images) {
-            this.images = Optional.of(images);
+            this.images = Optional.ofNullable(images);
             return this;
         }
 
@@ -360,7 +361,7 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         public _FinalStage texts(List<String> texts) {
-            this.texts = Optional.of(texts);
+            this.texts = Optional.ofNullable(texts);
             return this;
         }
 

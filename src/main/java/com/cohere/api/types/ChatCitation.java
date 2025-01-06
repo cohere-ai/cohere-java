@@ -17,8 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatCitation.Builder.class)
 public final class ChatCitation {
     private final int start;
@@ -115,7 +116,7 @@ public final class ChatCitation {
     }
 
     public interface TextStage {
-        _FinalStage text(String text);
+        _FinalStage text(@NotNull String text);
     }
 
     public interface _FinalStage {
@@ -180,8 +181,8 @@ public final class ChatCitation {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public _FinalStage text(String text) {
-            this.text = text;
+        public _FinalStage text(@NotNull String text) {
+            this.text = Objects.requireNonNull(text, "text must not be null");
             return this;
         }
 

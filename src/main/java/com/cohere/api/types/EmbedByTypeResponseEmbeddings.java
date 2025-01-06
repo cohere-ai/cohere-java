@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmbedByTypeResponseEmbeddings.Builder.class)
 public final class EmbedByTypeResponseEmbeddings {
     private final Optional<List<List<Double>>> float_;
@@ -154,7 +154,7 @@ public final class EmbedByTypeResponseEmbeddings {
         }
 
         public Builder float_(List<List<Double>> float_) {
-            this.float_ = Optional.of(float_);
+            this.float_ = Optional.ofNullable(float_);
             return this;
         }
 
@@ -165,7 +165,7 @@ public final class EmbedByTypeResponseEmbeddings {
         }
 
         public Builder int8(List<List<Integer>> int8) {
-            this.int8 = Optional.of(int8);
+            this.int8 = Optional.ofNullable(int8);
             return this;
         }
 
@@ -176,7 +176,7 @@ public final class EmbedByTypeResponseEmbeddings {
         }
 
         public Builder uint8(List<List<Integer>> uint8) {
-            this.uint8 = Optional.of(uint8);
+            this.uint8 = Optional.ofNullable(uint8);
             return this;
         }
 
@@ -187,7 +187,7 @@ public final class EmbedByTypeResponseEmbeddings {
         }
 
         public Builder binary(List<List<Integer>> binary) {
-            this.binary = Optional.of(binary);
+            this.binary = Optional.ofNullable(binary);
             return this;
         }
 
@@ -198,7 +198,7 @@ public final class EmbedByTypeResponseEmbeddings {
         }
 
         public Builder ubinary(List<List<Integer>> ubinary) {
-            this.ubinary = Optional.of(ubinary);
+            this.ubinary = Optional.ofNullable(ubinary);
             return this;
         }
 

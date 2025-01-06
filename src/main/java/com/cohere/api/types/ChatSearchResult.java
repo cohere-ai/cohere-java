@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatSearchResult.Builder.class)
 public final class ChatSearchResult {
     private final Optional<ChatSearchQuery> searchQuery;
@@ -121,7 +122,7 @@ public final class ChatSearchResult {
     }
 
     public interface ConnectorStage {
-        _FinalStage connector(ChatSearchResultConnector connector);
+        _FinalStage connector(@NotNull ChatSearchResultConnector connector);
 
         Builder from(ChatSearchResult other);
     }
@@ -181,8 +182,8 @@ public final class ChatSearchResult {
          */
         @java.lang.Override
         @JsonSetter("connector")
-        public _FinalStage connector(ChatSearchResultConnector connector) {
-            this.connector = connector;
+        public _FinalStage connector(@NotNull ChatSearchResultConnector connector) {
+            this.connector = Objects.requireNonNull(connector, "connector must not be null");
             return this;
         }
 
@@ -192,7 +193,7 @@ public final class ChatSearchResult {
          */
         @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
-            this.continueOnFailure = Optional.of(continueOnFailure);
+            this.continueOnFailure = Optional.ofNullable(continueOnFailure);
             return this;
         }
 
@@ -209,7 +210,7 @@ public final class ChatSearchResult {
          */
         @java.lang.Override
         public _FinalStage errorMessage(String errorMessage) {
-            this.errorMessage = Optional.of(errorMessage);
+            this.errorMessage = Optional.ofNullable(errorMessage);
             return this;
         }
 
@@ -250,7 +251,7 @@ public final class ChatSearchResult {
 
         @java.lang.Override
         public _FinalStage searchQuery(ChatSearchQuery searchQuery) {
-            this.searchQuery = Optional.of(searchQuery);
+            this.searchQuery = Optional.ofNullable(searchQuery);
             return this;
         }
 

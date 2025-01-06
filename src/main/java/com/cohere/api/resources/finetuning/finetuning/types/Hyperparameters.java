@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Hyperparameters.Builder.class)
 public final class Hyperparameters {
     private final Optional<Integer> earlyStoppingPatience;
@@ -213,7 +213,7 @@ public final class Hyperparameters {
         }
 
         public Builder earlyStoppingPatience(Integer earlyStoppingPatience) {
-            this.earlyStoppingPatience = Optional.of(earlyStoppingPatience);
+            this.earlyStoppingPatience = Optional.ofNullable(earlyStoppingPatience);
             return this;
         }
 
@@ -224,7 +224,7 @@ public final class Hyperparameters {
         }
 
         public Builder earlyStoppingThreshold(Double earlyStoppingThreshold) {
-            this.earlyStoppingThreshold = Optional.of(earlyStoppingThreshold);
+            this.earlyStoppingThreshold = Optional.ofNullable(earlyStoppingThreshold);
             return this;
         }
 
@@ -235,7 +235,7 @@ public final class Hyperparameters {
         }
 
         public Builder trainBatchSize(Integer trainBatchSize) {
-            this.trainBatchSize = Optional.of(trainBatchSize);
+            this.trainBatchSize = Optional.ofNullable(trainBatchSize);
             return this;
         }
 
@@ -246,7 +246,7 @@ public final class Hyperparameters {
         }
 
         public Builder trainEpochs(Integer trainEpochs) {
-            this.trainEpochs = Optional.of(trainEpochs);
+            this.trainEpochs = Optional.ofNullable(trainEpochs);
             return this;
         }
 
@@ -257,7 +257,7 @@ public final class Hyperparameters {
         }
 
         public Builder learningRate(Double learningRate) {
-            this.learningRate = Optional.of(learningRate);
+            this.learningRate = Optional.ofNullable(learningRate);
             return this;
         }
 
@@ -268,7 +268,7 @@ public final class Hyperparameters {
         }
 
         public Builder loraAlpha(Integer loraAlpha) {
-            this.loraAlpha = Optional.of(loraAlpha);
+            this.loraAlpha = Optional.ofNullable(loraAlpha);
             return this;
         }
 
@@ -279,7 +279,7 @@ public final class Hyperparameters {
         }
 
         public Builder loraRank(Integer loraRank) {
-            this.loraRank = Optional.of(loraRank);
+            this.loraRank = Optional.ofNullable(loraRank);
             return this;
         }
 
@@ -290,7 +290,7 @@ public final class Hyperparameters {
         }
 
         public Builder loraTargetModules(LoraTargetModules loraTargetModules) {
-            this.loraTargetModules = Optional.of(loraTargetModules);
+            this.loraTargetModules = Optional.ofNullable(loraTargetModules);
             return this;
         }
 

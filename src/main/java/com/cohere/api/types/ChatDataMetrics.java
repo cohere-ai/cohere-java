@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatDataMetrics.Builder.class)
 public final class ChatDataMetrics {
     private final Optional<Long> numTrainTurns;
@@ -121,7 +121,7 @@ public final class ChatDataMetrics {
         }
 
         public Builder numTrainTurns(Long numTrainTurns) {
-            this.numTrainTurns = Optional.of(numTrainTurns);
+            this.numTrainTurns = Optional.ofNullable(numTrainTurns);
             return this;
         }
 
@@ -132,7 +132,7 @@ public final class ChatDataMetrics {
         }
 
         public Builder numEvalTurns(Long numEvalTurns) {
-            this.numEvalTurns = Optional.of(numEvalTurns);
+            this.numEvalTurns = Optional.ofNullable(numEvalTurns);
             return this;
         }
 
@@ -143,7 +143,7 @@ public final class ChatDataMetrics {
         }
 
         public Builder preamble(String preamble) {
-            this.preamble = Optional.of(preamble);
+            this.preamble = Optional.ofNullable(preamble);
             return this;
         }
 

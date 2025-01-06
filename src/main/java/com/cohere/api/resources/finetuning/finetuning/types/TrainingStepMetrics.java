@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TrainingStepMetrics.Builder.class)
 public final class TrainingStepMetrics {
     private final Optional<OffsetDateTime> createdAt;
@@ -122,7 +122,7 @@ public final class TrainingStepMetrics {
         }
 
         public Builder createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.of(createdAt);
+            this.createdAt = Optional.ofNullable(createdAt);
             return this;
         }
 
@@ -133,7 +133,7 @@ public final class TrainingStepMetrics {
         }
 
         public Builder stepNumber(Integer stepNumber) {
-            this.stepNumber = Optional.of(stepNumber);
+            this.stepNumber = Optional.ofNullable(stepNumber);
             return this;
         }
 
@@ -144,7 +144,7 @@ public final class TrainingStepMetrics {
         }
 
         public Builder metrics(Map<String, Double> metrics) {
-            this.metrics = Optional.of(metrics);
+            this.metrics = Optional.ofNullable(metrics);
             return this;
         }
 

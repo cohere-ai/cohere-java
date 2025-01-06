@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatSearchResultsEvent.Builder.class)
 public final class ChatSearchResultsEvent implements IChatStreamEvent {
     private final Optional<List<ChatSearchResult>> searchResults;
@@ -105,7 +105,7 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
         }
 
         public Builder searchResults(List<ChatSearchResult> searchResults) {
-            this.searchResults = Optional.of(searchResults);
+            this.searchResults = Optional.ofNullable(searchResults);
             return this;
         }
 
@@ -116,7 +116,7 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
         }
 
         public Builder documents(List<Map<String, String>> documents) {
-            this.documents = Optional.of(documents);
+            this.documents = Optional.ofNullable(documents);
             return this;
         }
 

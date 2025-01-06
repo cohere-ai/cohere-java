@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatToolCallEndEvent.Builder.class)
 public final class ChatToolCallEndEvent implements IChatStreamEventType {
     private final Optional<Integer> index;
@@ -84,7 +84,7 @@ public final class ChatToolCallEndEvent implements IChatStreamEventType {
         }
 
         public Builder index(Integer index) {
-            this.index = Optional.of(index);
+            this.index = Optional.ofNullable(index);
             return this;
         }
 

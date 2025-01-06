@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetModelResponse.Builder.class)
 public final class GetModelResponse {
     private final Optional<String> name;
@@ -176,7 +176,7 @@ public final class GetModelResponse {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -187,7 +187,7 @@ public final class GetModelResponse {
         }
 
         public Builder endpoints(List<CompatibleEndpoint> endpoints) {
-            this.endpoints = Optional.of(endpoints);
+            this.endpoints = Optional.ofNullable(endpoints);
             return this;
         }
 
@@ -198,7 +198,7 @@ public final class GetModelResponse {
         }
 
         public Builder finetuned(Boolean finetuned) {
-            this.finetuned = Optional.of(finetuned);
+            this.finetuned = Optional.ofNullable(finetuned);
             return this;
         }
 
@@ -209,7 +209,7 @@ public final class GetModelResponse {
         }
 
         public Builder contextLength(Double contextLength) {
-            this.contextLength = Optional.of(contextLength);
+            this.contextLength = Optional.ofNullable(contextLength);
             return this;
         }
 
@@ -220,7 +220,7 @@ public final class GetModelResponse {
         }
 
         public Builder tokenizerUrl(String tokenizerUrl) {
-            this.tokenizerUrl = Optional.of(tokenizerUrl);
+            this.tokenizerUrl = Optional.ofNullable(tokenizerUrl);
             return this;
         }
 
@@ -231,7 +231,7 @@ public final class GetModelResponse {
         }
 
         public Builder defaultEndpoints(List<CompatibleEndpoint> defaultEndpoints) {
-            this.defaultEndpoints = Optional.of(defaultEndpoints);
+            this.defaultEndpoints = Optional.ofNullable(defaultEndpoints);
             return this;
         }
 

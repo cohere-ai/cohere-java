@@ -19,8 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ClassifyResponseClassificationsItem.Builder.class)
 public final class ClassifyResponseClassificationsItem {
     private final String id;
@@ -31,9 +32,9 @@ public final class ClassifyResponseClassificationsItem {
 
     private final List<String> predictions;
 
-    private final Optional<Double> confidence;
+    private final Optional<Float> confidence;
 
-    private final List<Double> confidences;
+    private final List<Float> confidences;
 
     private final Map<String, ClassifyResponseClassificationsItemLabelsValue> labels;
 
@@ -46,8 +47,8 @@ public final class ClassifyResponseClassificationsItem {
             Optional<String> input,
             Optional<String> prediction,
             List<String> predictions,
-            Optional<Double> confidence,
-            List<Double> confidences,
+            Optional<Float> confidence,
+            List<Float> confidences,
             Map<String, ClassifyResponseClassificationsItemLabelsValue> labels,
             ClassifyResponseClassificationsItemClassificationType classificationType,
             Map<String, Object> additionalProperties) {
@@ -95,7 +96,7 @@ public final class ClassifyResponseClassificationsItem {
      * @return The confidence score for the top predicted class (only filled for single-label classification)
      */
     @JsonProperty("confidence")
-    public Optional<Double> getConfidence() {
+    public Optional<Float> getConfidence() {
         return confidence;
     }
 
@@ -103,7 +104,7 @@ public final class ClassifyResponseClassificationsItem {
      * @return An array containing the confidence scores of all the predictions in the same order
      */
     @JsonProperty("confidences")
-    public List<Double> getConfidences() {
+    public List<Float> getConfidences() {
         return confidences;
     }
 
@@ -169,13 +170,14 @@ public final class ClassifyResponseClassificationsItem {
     }
 
     public interface IdStage {
-        ClassificationTypeStage id(String id);
+        ClassificationTypeStage id(@NotNull String id);
 
         Builder from(ClassifyResponseClassificationsItem other);
     }
 
     public interface ClassificationTypeStage {
-        _FinalStage classificationType(ClassifyResponseClassificationsItemClassificationType classificationType);
+        _FinalStage classificationType(
+                @NotNull ClassifyResponseClassificationsItemClassificationType classificationType);
     }
 
     public interface _FinalStage {
@@ -195,15 +197,15 @@ public final class ClassifyResponseClassificationsItem {
 
         _FinalStage addAllPredictions(List<String> predictions);
 
-        _FinalStage confidence(Optional<Double> confidence);
+        _FinalStage confidence(Optional<Float> confidence);
 
-        _FinalStage confidence(Double confidence);
+        _FinalStage confidence(Float confidence);
 
-        _FinalStage confidences(List<Double> confidences);
+        _FinalStage confidences(List<Float> confidences);
 
-        _FinalStage addConfidences(Double confidences);
+        _FinalStage addConfidences(Float confidences);
 
-        _FinalStage addAllConfidences(List<Double> confidences);
+        _FinalStage addAllConfidences(List<Float> confidences);
 
         _FinalStage labels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels);
 
@@ -220,9 +222,9 @@ public final class ClassifyResponseClassificationsItem {
 
         private Map<String, ClassifyResponseClassificationsItemLabelsValue> labels = new LinkedHashMap<>();
 
-        private List<Double> confidences = new ArrayList<>();
+        private List<Float> confidences = new ArrayList<>();
 
-        private Optional<Double> confidence = Optional.empty();
+        private Optional<Float> confidence = Optional.empty();
 
         private List<String> predictions = new ArrayList<>();
 
@@ -250,8 +252,8 @@ public final class ClassifyResponseClassificationsItem {
 
         @java.lang.Override
         @JsonSetter("id")
-        public ClassificationTypeStage id(String id) {
-            this.id = id;
+        public ClassificationTypeStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -262,8 +264,8 @@ public final class ClassifyResponseClassificationsItem {
         @java.lang.Override
         @JsonSetter("classification_type")
         public _FinalStage classificationType(
-                ClassifyResponseClassificationsItemClassificationType classificationType) {
-            this.classificationType = classificationType;
+                @NotNull ClassifyResponseClassificationsItemClassificationType classificationType) {
+            this.classificationType = Objects.requireNonNull(classificationType, "classificationType must not be null");
             return this;
         }
 
@@ -300,7 +302,7 @@ public final class ClassifyResponseClassificationsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllConfidences(List<Double> confidences) {
+        public _FinalStage addAllConfidences(List<Float> confidences) {
             this.confidences.addAll(confidences);
             return this;
         }
@@ -310,14 +312,14 @@ public final class ClassifyResponseClassificationsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addConfidences(Double confidences) {
+        public _FinalStage addConfidences(Float confidences) {
             this.confidences.add(confidences);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "confidences", nulls = Nulls.SKIP)
-        public _FinalStage confidences(List<Double> confidences) {
+        public _FinalStage confidences(List<Float> confidences) {
             this.confidences.clear();
             this.confidences.addAll(confidences);
             return this;
@@ -328,14 +330,14 @@ public final class ClassifyResponseClassificationsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage confidence(Double confidence) {
-            this.confidence = Optional.of(confidence);
+        public _FinalStage confidence(Float confidence) {
+            this.confidence = Optional.ofNullable(confidence);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "confidence", nulls = Nulls.SKIP)
-        public _FinalStage confidence(Optional<Double> confidence) {
+        public _FinalStage confidence(Optional<Float> confidence) {
             this.confidence = confidence;
             return this;
         }
@@ -374,7 +376,7 @@ public final class ClassifyResponseClassificationsItem {
          */
         @java.lang.Override
         public _FinalStage prediction(String prediction) {
-            this.prediction = Optional.of(prediction);
+            this.prediction = Optional.ofNullable(prediction);
             return this;
         }
 
@@ -391,7 +393,7 @@ public final class ClassifyResponseClassificationsItem {
          */
         @java.lang.Override
         public _FinalStage input(String input) {
-            this.input = Optional.of(input);
+            this.input = Optional.ofNullable(input);
             return this;
         }
 

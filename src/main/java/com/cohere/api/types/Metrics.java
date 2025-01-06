@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Metrics.Builder.class)
 public final class Metrics {
     private final Optional<FinetuneDatasetMetrics> finetuneDatasetMetrics;
@@ -98,7 +98,7 @@ public final class Metrics {
         }
 
         public Builder finetuneDatasetMetrics(FinetuneDatasetMetrics finetuneDatasetMetrics) {
-            this.finetuneDatasetMetrics = Optional.of(finetuneDatasetMetrics);
+            this.finetuneDatasetMetrics = Optional.ofNullable(finetuneDatasetMetrics);
             return this;
         }
 
@@ -109,7 +109,7 @@ public final class Metrics {
         }
 
         public Builder embedData(MetricsEmbedData embedData) {
-            this.embedData = Optional.of(embedData);
+            this.embedData = Optional.ofNullable(embedData);
             return this;
         }
 

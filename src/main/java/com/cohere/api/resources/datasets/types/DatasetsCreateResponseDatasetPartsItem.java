@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DatasetsCreateResponseDatasetPartsItem.Builder.class)
 public final class DatasetsCreateResponseDatasetPartsItem {
     private final Optional<String> name;
@@ -136,7 +136,7 @@ public final class DatasetsCreateResponseDatasetPartsItem {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -147,7 +147,7 @@ public final class DatasetsCreateResponseDatasetPartsItem {
         }
 
         public Builder numRows(Double numRows) {
-            this.numRows = Optional.of(numRows);
+            this.numRows = Optional.ofNullable(numRows);
             return this;
         }
 
@@ -158,7 +158,7 @@ public final class DatasetsCreateResponseDatasetPartsItem {
         }
 
         public Builder samples(List<String> samples) {
-            this.samples = Optional.of(samples);
+            this.samples = Optional.ofNullable(samples);
             return this;
         }
 
@@ -169,7 +169,7 @@ public final class DatasetsCreateResponseDatasetPartsItem {
         }
 
         public Builder partKind(String partKind) {
-            this.partKind = Optional.of(partKind);
+            this.partKind = Optional.ofNullable(partKind);
             return this;
         }
 

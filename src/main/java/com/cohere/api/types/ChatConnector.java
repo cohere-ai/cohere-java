@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatConnector.Builder.class)
 public final class ChatConnector {
     private final String id;
@@ -110,7 +111,7 @@ public final class ChatConnector {
     }
 
     public interface IdStage {
-        _FinalStage id(String id);
+        _FinalStage id(@NotNull String id);
 
         Builder from(ChatConnector other);
     }
@@ -161,8 +162,8 @@ public final class ChatConnector {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public _FinalStage id(String id) {
-            this.id = id;
+        public _FinalStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -173,7 +174,7 @@ public final class ChatConnector {
          */
         @java.lang.Override
         public _FinalStage options(Map<String, Object> options) {
-            this.options = Optional.of(options);
+            this.options = Optional.ofNullable(options);
             return this;
         }
 
@@ -191,7 +192,7 @@ public final class ChatConnector {
          */
         @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
-            this.continueOnFailure = Optional.of(continueOnFailure);
+            this.continueOnFailure = Optional.ofNullable(continueOnFailure);
             return this;
         }
 
@@ -208,7 +209,7 @@ public final class ChatConnector {
          */
         @java.lang.Override
         public _FinalStage userAccessToken(String userAccessToken) {
-            this.userAccessToken = Optional.of(userAccessToken);
+            this.userAccessToken = Optional.ofNullable(userAccessToken);
             return this;
         }
 

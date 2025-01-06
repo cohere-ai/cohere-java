@@ -6,12 +6,12 @@ package com.cohere.api.core;
 /**
  * This class serves as the base exception for all errors in the SDK.
  */
-public class CohereApiError extends RuntimeException {
-    public CohereApiError(String message) {
+public class CohereException extends RuntimeException {
+    public CohereException(String message) {
         super(message);
     }
 
-    public CohereApiError(String message, Exception e) {
+    public CohereException(String message, Exception e) {
         super(message, e);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Document.Builder.class)
 public final class Document {
     private final Map<String, String> data;
@@ -119,7 +119,7 @@ public final class Document {
         }
 
         public Builder id(String id) {
-            this.id = Optional.of(id);
+            this.id = Optional.ofNullable(id);
             return this;
         }
 

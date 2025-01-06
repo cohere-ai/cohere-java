@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatSearchQueriesGenerationEvent.Builder.class)
 public final class ChatSearchQueriesGenerationEvent implements IChatStreamEvent {
     private final List<ChatSearchQuery> searchQueries;

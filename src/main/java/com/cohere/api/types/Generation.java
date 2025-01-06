@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Generation.Builder.class)
 public final class Generation {
     private final String id;
@@ -104,7 +105,7 @@ public final class Generation {
     }
 
     public interface IdStage {
-        _FinalStage id(String id);
+        _FinalStage id(@NotNull String id);
 
         Builder from(Generation other);
     }
@@ -153,14 +154,14 @@ public final class Generation {
 
         @java.lang.Override
         @JsonSetter("id")
-        public _FinalStage id(String id) {
-            this.id = id;
+        public _FinalStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.of(meta);
+            this.meta = Optional.ofNullable(meta);
             return this;
         }
 
@@ -205,7 +206,7 @@ public final class Generation {
          */
         @java.lang.Override
         public _FinalStage prompt(String prompt) {
-            this.prompt = Optional.of(prompt);
+            this.prompt = Optional.ofNullable(prompt);
             return this;
         }
 

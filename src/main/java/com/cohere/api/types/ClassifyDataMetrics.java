@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ClassifyDataMetrics.Builder.class)
 public final class ClassifyDataMetrics {
     private final Optional<List<LabelMetric>> labelMetrics;
@@ -85,7 +85,7 @@ public final class ClassifyDataMetrics {
         }
 
         public Builder labelMetrics(List<LabelMetric> labelMetrics) {
-            this.labelMetrics = Optional.of(labelMetrics);
+            this.labelMetrics = Optional.ofNullable(labelMetrics);
             return this;
         }
 

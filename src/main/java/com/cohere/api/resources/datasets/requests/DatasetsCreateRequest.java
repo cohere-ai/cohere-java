@@ -17,8 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DatasetsCreateRequest.Builder.class)
 public final class DatasetsCreateRequest {
     private final String name;
@@ -183,13 +184,13 @@ public final class DatasetsCreateRequest {
     }
 
     public interface NameStage {
-        TypeStage name(String name);
+        TypeStage name(@NotNull String name);
 
         Builder from(DatasetsCreateRequest other);
     }
 
     public interface TypeStage {
-        _FinalStage type(DatasetType type);
+        _FinalStage type(@NotNull DatasetType type);
     }
 
     public interface _FinalStage {
@@ -269,8 +270,8 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public TypeStage name(String name) {
-            this.name = name;
+        public TypeStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -280,8 +281,8 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("type")
-        public _FinalStage type(DatasetType type) {
-            this.type = type;
+        public _FinalStage type(@NotNull DatasetType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 
@@ -291,7 +292,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage dryRun(Boolean dryRun) {
-            this.dryRun = Optional.of(dryRun);
+            this.dryRun = Optional.ofNullable(dryRun);
             return this;
         }
 
@@ -308,7 +309,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage csvDelimiter(String csvDelimiter) {
-            this.csvDelimiter = Optional.of(csvDelimiter);
+            this.csvDelimiter = Optional.ofNullable(csvDelimiter);
             return this;
         }
 
@@ -325,7 +326,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage textSeparator(String textSeparator) {
-            this.textSeparator = Optional.of(textSeparator);
+            this.textSeparator = Optional.ofNullable(textSeparator);
             return this;
         }
 
@@ -342,7 +343,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage optionalFields(String optionalFields) {
-            this.optionalFields = Optional.of(optionalFields);
+            this.optionalFields = Optional.ofNullable(optionalFields);
             return this;
         }
 
@@ -359,7 +360,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage keepFields(String keepFields) {
-            this.keepFields = Optional.of(keepFields);
+            this.keepFields = Optional.ofNullable(keepFields);
             return this;
         }
 
@@ -376,7 +377,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage skipMalformedInput(Boolean skipMalformedInput) {
-            this.skipMalformedInput = Optional.of(skipMalformedInput);
+            this.skipMalformedInput = Optional.ofNullable(skipMalformedInput);
             return this;
         }
 
@@ -393,7 +394,7 @@ public final class DatasetsCreateRequest {
          */
         @java.lang.Override
         public _FinalStage keepOriginalFile(Boolean keepOriginalFile) {
-            this.keepOriginalFile = Optional.of(keepOriginalFile);
+            this.keepOriginalFile = Optional.ofNullable(keepOriginalFile);
             return this;
         }
 
