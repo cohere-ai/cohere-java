@@ -12,32 +12,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = NotImplementedErrorBody.Builder.class)
-public final class NotImplementedErrorBody {
-    private final Optional<String> data;
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonDeserialize(builder = EmbedInput.Builder.class)
+public final class EmbedInput {
+    private final List<EmbedContent> content;
 
     private final Map<String, Object> additionalProperties;
 
-    private NotImplementedErrorBody(Optional<String> data, Map<String, Object> additionalProperties) {
-        this.data = data;
+    private EmbedInput(List<EmbedContent> content, Map<String, Object> additionalProperties) {
+        this.content = content;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("data")
-    public Optional<String> getData() {
-        return data;
+    /**
+     * @return An array of objects containing the input data for the model to embed.
+     */
+    @JsonProperty("content")
+    public List<EmbedContent> getContent() {
+        return content;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof NotImplementedErrorBody && equalTo((NotImplementedErrorBody) other);
+        return other instanceof EmbedInput && equalTo((EmbedInput) other);
     }
 
     @JsonAnyGetter
@@ -45,13 +49,13 @@ public final class NotImplementedErrorBody {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(NotImplementedErrorBody other) {
-        return data.equals(other.data);
+    private boolean equalTo(EmbedInput other) {
+        return content.equals(other.content);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.data);
+        return Objects.hash(this.content);
     }
 
     @java.lang.Override
@@ -65,31 +69,37 @@ public final class NotImplementedErrorBody {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> data = Optional.empty();
+        private List<EmbedContent> content = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(NotImplementedErrorBody other) {
-            data(other.getData());
+        public Builder from(EmbedInput other) {
+            content(other.getContent());
             return this;
         }
 
-        @JsonSetter(value = "data", nulls = Nulls.SKIP)
-        public Builder data(Optional<String> data) {
-            this.data = data;
+        @JsonSetter(value = "content", nulls = Nulls.SKIP)
+        public Builder content(List<EmbedContent> content) {
+            this.content.clear();
+            this.content.addAll(content);
             return this;
         }
 
-        public Builder data(String data) {
-            this.data = Optional.of(data);
+        public Builder addContent(EmbedContent content) {
+            this.content.add(content);
             return this;
         }
 
-        public NotImplementedErrorBody build() {
-            return new NotImplementedErrorBody(data, additionalProperties);
+        public Builder addAllContent(List<EmbedContent> content) {
+            this.content.addAll(content);
+            return this;
+        }
+
+        public EmbedInput build() {
+            return new EmbedInput(content, additionalProperties);
         }
     }
 }

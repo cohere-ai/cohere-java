@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListEmbedJobResponse.Builder.class)
 public final class ListEmbedJobResponse {
     private final Optional<List<EmbedJob>> embedJobs;
@@ -85,7 +85,7 @@ public final class ListEmbedJobResponse {
         }
 
         public Builder embedJobs(List<EmbedJob> embedJobs) {
-            this.embedJobs = Optional.of(embedJobs);
+            this.embedJobs = Optional.ofNullable(embedJobs);
             return this;
         }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListEventsResponse.Builder.class)
 public final class ListEventsResponse {
     private final Optional<List<Event>> events;
@@ -123,7 +123,7 @@ public final class ListEventsResponse {
         }
 
         public Builder events(List<Event> events) {
-            this.events = Optional.of(events);
+            this.events = Optional.ofNullable(events);
             return this;
         }
 
@@ -134,7 +134,7 @@ public final class ListEventsResponse {
         }
 
         public Builder nextPageToken(String nextPageToken) {
-            this.nextPageToken = Optional.of(nextPageToken);
+            this.nextPageToken = Optional.ofNullable(nextPageToken);
             return this;
         }
 
@@ -145,7 +145,7 @@ public final class ListEventsResponse {
         }
 
         public Builder totalSize(Integer totalSize) {
-            this.totalSize = Optional.of(totalSize);
+            this.totalSize = Optional.ofNullable(totalSize);
             return this;
         }
 

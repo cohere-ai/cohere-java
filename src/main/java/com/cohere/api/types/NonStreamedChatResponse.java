@@ -17,8 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NonStreamedChatResponse.Builder.class)
 public final class NonStreamedChatResponse {
     private final String text;
@@ -230,7 +231,7 @@ public final class NonStreamedChatResponse {
     }
 
     public interface TextStage {
-        _FinalStage text(String text);
+        _FinalStage text(@NotNull String text);
 
         Builder from(NonStreamedChatResponse other);
     }
@@ -344,14 +345,14 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public _FinalStage text(String text) {
-            this.text = text;
+        public _FinalStage text(@NotNull String text) {
+            this.text = Objects.requireNonNull(text, "text must not be null");
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.of(meta);
+            this.meta = Optional.ofNullable(meta);
             return this;
         }
 
@@ -368,7 +369,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage prompt(String prompt) {
-            this.prompt = Optional.of(prompt);
+            this.prompt = Optional.ofNullable(prompt);
             return this;
         }
 
@@ -385,7 +386,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage chatHistory(List<Message> chatHistory) {
-            this.chatHistory = Optional.of(chatHistory);
+            this.chatHistory = Optional.ofNullable(chatHistory);
             return this;
         }
 
@@ -398,7 +399,7 @@ public final class NonStreamedChatResponse {
 
         @java.lang.Override
         public _FinalStage toolCalls(List<ToolCall> toolCalls) {
-            this.toolCalls = Optional.of(toolCalls);
+            this.toolCalls = Optional.ofNullable(toolCalls);
             return this;
         }
 
@@ -411,7 +412,7 @@ public final class NonStreamedChatResponse {
 
         @java.lang.Override
         public _FinalStage finishReason(FinishReason finishReason) {
-            this.finishReason = Optional.of(finishReason);
+            this.finishReason = Optional.ofNullable(finishReason);
             return this;
         }
 
@@ -428,7 +429,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage searchResults(List<ChatSearchResult> searchResults) {
-            this.searchResults = Optional.of(searchResults);
+            this.searchResults = Optional.ofNullable(searchResults);
             return this;
         }
 
@@ -445,7 +446,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage searchQueries(List<ChatSearchQuery> searchQueries) {
-            this.searchQueries = Optional.of(searchQueries);
+            this.searchQueries = Optional.ofNullable(searchQueries);
             return this;
         }
 
@@ -462,7 +463,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage isSearchRequired(Boolean isSearchRequired) {
-            this.isSearchRequired = Optional.of(isSearchRequired);
+            this.isSearchRequired = Optional.ofNullable(isSearchRequired);
             return this;
         }
 
@@ -479,7 +480,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage documents(List<Map<String, String>> documents) {
-            this.documents = Optional.of(documents);
+            this.documents = Optional.ofNullable(documents);
             return this;
         }
 
@@ -496,7 +497,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage citations(List<ChatCitation> citations) {
-            this.citations = Optional.of(citations);
+            this.citations = Optional.ofNullable(citations);
             return this;
         }
 
@@ -513,7 +514,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage responseId(String responseId) {
-            this.responseId = Optional.of(responseId);
+            this.responseId = Optional.ofNullable(responseId);
             return this;
         }
 
@@ -530,7 +531,7 @@ public final class NonStreamedChatResponse {
          */
         @java.lang.Override
         public _FinalStage generationId(String generationId) {
-            this.generationId = Optional.of(generationId);
+            this.generationId = Optional.ofNullable(generationId);
             return this;
         }
 

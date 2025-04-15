@@ -3,16 +3,15 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiApiError;
-import com.cohere.api.types.ClientClosedRequestErrorBody;
+import com.cohere.api.core.CohereApiException;
 
-public final class CohereApiClientClosedRequestError extends CohereApiApiError {
+public final class ClientClosedRequestError extends CohereApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final ClientClosedRequestErrorBody body;
+    private final Object body;
 
-    public CohereApiClientClosedRequestError(ClientClosedRequestErrorBody body) {
+    public ClientClosedRequestError(Object body) {
         super("ClientClosedRequestError", 499, body);
         this.body = body;
     }
@@ -21,7 +20,7 @@ public final class CohereApiClientClosedRequestError extends CohereApiApiError {
      * @return the body
      */
     @java.lang.Override
-    public ClientClosedRequestErrorBody body() {
+    public Object body() {
         return this.body;
     }
 }

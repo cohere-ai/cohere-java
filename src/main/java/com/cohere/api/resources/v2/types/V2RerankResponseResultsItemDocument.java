@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = V2RerankResponseResultsItemDocument.Builder.class)
 public final class V2RerankResponseResultsItemDocument {
     private final String text;
@@ -66,7 +67,7 @@ public final class V2RerankResponseResultsItemDocument {
     }
 
     public interface TextStage {
-        _FinalStage text(String text);
+        _FinalStage text(@NotNull String text);
 
         Builder from(V2RerankResponseResultsItemDocument other);
     }
@@ -96,8 +97,8 @@ public final class V2RerankResponseResultsItemDocument {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public _FinalStage text(String text) {
-            this.text = text;
+        public _FinalStage text(@NotNull String text) {
+            this.text = Objects.requireNonNull(text, "text must not be null");
             return this;
         }
 

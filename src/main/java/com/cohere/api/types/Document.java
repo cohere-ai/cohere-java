@@ -18,26 +18,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Document.Builder.class)
 public final class Document {
-    private final Map<String, String> data;
+    private final Map<String, Object> data;
 
     private final Optional<String> id;
 
     private final Map<String, Object> additionalProperties;
 
-    private Document(Map<String, String> data, Optional<String> id, Map<String, Object> additionalProperties) {
+    private Document(Map<String, Object> data, Optional<String> id, Map<String, Object> additionalProperties) {
         this.data = data;
         this.id = id;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return A relevant documents that the model can cite to generate a more accurate reply. Each document is a string-string dictionary.
+     * @return A relevant document that the model can cite to generate a more accurate reply. Each document is a string-any dictionary.
      */
     @JsonProperty("data")
-    public Map<String, String> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 
@@ -80,7 +80,7 @@ public final class Document {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Map<String, String> data = new LinkedHashMap<>();
+        private Map<String, Object> data = new LinkedHashMap<>();
 
         private Optional<String> id = Optional.empty();
 
@@ -96,18 +96,18 @@ public final class Document {
         }
 
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
-        public Builder data(Map<String, String> data) {
+        public Builder data(Map<String, Object> data) {
             this.data.clear();
             this.data.putAll(data);
             return this;
         }
 
-        public Builder putAllData(Map<String, String> data) {
+        public Builder putAllData(Map<String, Object> data) {
             this.data.putAll(data);
             return this;
         }
 
-        public Builder data(String key, String value) {
+        public Builder data(String key, Object value) {
             this.data.put(key, value);
             return this;
         }
@@ -119,7 +119,7 @@ public final class Document {
         }
 
         public Builder id(String id) {
-            this.id = Optional.of(id);
+            this.id = Optional.ofNullable(id);
             return this;
         }
 

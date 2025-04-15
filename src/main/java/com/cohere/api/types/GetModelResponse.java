@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetModelResponse.Builder.class)
 public final class GetModelResponse {
     private final Optional<String> name;
@@ -31,7 +31,11 @@ public final class GetModelResponse {
 
     private final Optional<String> tokenizerUrl;
 
+    private final Optional<Boolean> supportsVision;
+
     private final Optional<List<CompatibleEndpoint>> defaultEndpoints;
+
+    private final Optional<List<String>> features;
 
     private final Map<String, Object> additionalProperties;
 
@@ -41,14 +45,18 @@ public final class GetModelResponse {
             Optional<Boolean> finetuned,
             Optional<Double> contextLength,
             Optional<String> tokenizerUrl,
+            Optional<Boolean> supportsVision,
             Optional<List<CompatibleEndpoint>> defaultEndpoints,
+            Optional<List<String>> features,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.endpoints = endpoints;
         this.finetuned = finetuned;
         this.contextLength = contextLength;
         this.tokenizerUrl = tokenizerUrl;
+        this.supportsVision = supportsVision;
         this.defaultEndpoints = defaultEndpoints;
+        this.features = features;
         this.additionalProperties = additionalProperties;
     }
 
@@ -93,11 +101,27 @@ public final class GetModelResponse {
     }
 
     /**
+     * @return Whether the model supports image inputs or not.
+     */
+    @JsonProperty("supports_vision")
+    public Optional<Boolean> getSupportsVision() {
+        return supportsVision;
+    }
+
+    /**
      * @return The API endpoints that the model is default to.
      */
     @JsonProperty("default_endpoints")
     public Optional<List<CompatibleEndpoint>> getDefaultEndpoints() {
         return defaultEndpoints;
+    }
+
+    /**
+     * @return The features that the model supports.
+     */
+    @JsonProperty("features")
+    public Optional<List<String>> getFeatures() {
+        return features;
     }
 
     @java.lang.Override
@@ -117,7 +141,9 @@ public final class GetModelResponse {
                 && finetuned.equals(other.finetuned)
                 && contextLength.equals(other.contextLength)
                 && tokenizerUrl.equals(other.tokenizerUrl)
-                && defaultEndpoints.equals(other.defaultEndpoints);
+                && supportsVision.equals(other.supportsVision)
+                && defaultEndpoints.equals(other.defaultEndpoints)
+                && features.equals(other.features);
     }
 
     @java.lang.Override
@@ -128,7 +154,9 @@ public final class GetModelResponse {
                 this.finetuned,
                 this.contextLength,
                 this.tokenizerUrl,
-                this.defaultEndpoints);
+                this.supportsVision,
+                this.defaultEndpoints,
+                this.features);
     }
 
     @java.lang.Override
@@ -152,7 +180,11 @@ public final class GetModelResponse {
 
         private Optional<String> tokenizerUrl = Optional.empty();
 
+        private Optional<Boolean> supportsVision = Optional.empty();
+
         private Optional<List<CompatibleEndpoint>> defaultEndpoints = Optional.empty();
+
+        private Optional<List<String>> features = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -165,7 +197,9 @@ public final class GetModelResponse {
             finetuned(other.getFinetuned());
             contextLength(other.getContextLength());
             tokenizerUrl(other.getTokenizerUrl());
+            supportsVision(other.getSupportsVision());
             defaultEndpoints(other.getDefaultEndpoints());
+            features(other.getFeatures());
             return this;
         }
 
@@ -176,7 +210,7 @@ public final class GetModelResponse {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -187,7 +221,7 @@ public final class GetModelResponse {
         }
 
         public Builder endpoints(List<CompatibleEndpoint> endpoints) {
-            this.endpoints = Optional.of(endpoints);
+            this.endpoints = Optional.ofNullable(endpoints);
             return this;
         }
 
@@ -198,7 +232,7 @@ public final class GetModelResponse {
         }
 
         public Builder finetuned(Boolean finetuned) {
-            this.finetuned = Optional.of(finetuned);
+            this.finetuned = Optional.ofNullable(finetuned);
             return this;
         }
 
@@ -209,7 +243,7 @@ public final class GetModelResponse {
         }
 
         public Builder contextLength(Double contextLength) {
-            this.contextLength = Optional.of(contextLength);
+            this.contextLength = Optional.ofNullable(contextLength);
             return this;
         }
 
@@ -220,7 +254,18 @@ public final class GetModelResponse {
         }
 
         public Builder tokenizerUrl(String tokenizerUrl) {
-            this.tokenizerUrl = Optional.of(tokenizerUrl);
+            this.tokenizerUrl = Optional.ofNullable(tokenizerUrl);
+            return this;
+        }
+
+        @JsonSetter(value = "supports_vision", nulls = Nulls.SKIP)
+        public Builder supportsVision(Optional<Boolean> supportsVision) {
+            this.supportsVision = supportsVision;
+            return this;
+        }
+
+        public Builder supportsVision(Boolean supportsVision) {
+            this.supportsVision = Optional.ofNullable(supportsVision);
             return this;
         }
 
@@ -231,13 +276,32 @@ public final class GetModelResponse {
         }
 
         public Builder defaultEndpoints(List<CompatibleEndpoint> defaultEndpoints) {
-            this.defaultEndpoints = Optional.of(defaultEndpoints);
+            this.defaultEndpoints = Optional.ofNullable(defaultEndpoints);
+            return this;
+        }
+
+        @JsonSetter(value = "features", nulls = Nulls.SKIP)
+        public Builder features(Optional<List<String>> features) {
+            this.features = features;
+            return this;
+        }
+
+        public Builder features(List<String> features) {
+            this.features = Optional.ofNullable(features);
             return this;
         }
 
         public GetModelResponse build() {
             return new GetModelResponse(
-                    name, endpoints, finetuned, contextLength, tokenizerUrl, defaultEndpoints, additionalProperties);
+                    name,
+                    endpoints,
+                    finetuned,
+                    contextLength,
+                    tokenizerUrl,
+                    supportsVision,
+                    defaultEndpoints,
+                    features,
+                    additionalProperties);
         }
     }
 }

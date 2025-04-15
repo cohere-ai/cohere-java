@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CitationOptions.Builder.class)
 public final class CitationOptions {
     private final Optional<CitationOptionsMode> mode;
@@ -32,7 +32,7 @@ public final class CitationOptions {
     /**
      * @return Defaults to <code>&quot;accurate&quot;</code>.
      * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.
-     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;fast&quot;</code> and <code>&quot;off&quot;</code> modes. Its default is <code>&quot;fast&quot;</code>.</p>
+     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and <code>command-a-03-2025</code> only support <code>&quot;fast&quot;</code> and <code>&quot;off&quot;</code> modes. The default is <code>&quot;fast&quot;</code>.</p>
      */
     @JsonProperty("mode")
     public Optional<CitationOptionsMode> getMode() {
@@ -89,7 +89,7 @@ public final class CitationOptions {
         }
 
         public Builder mode(CitationOptionsMode mode) {
-            this.mode = Optional.of(mode);
+            this.mode = Optional.ofNullable(mode);
             return this;
         }
 
