@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GenerateStreamEvent.Builder.class)
 public final class GenerateStreamEvent implements IGenerateStreamEvent {
     private final Map<String, Object> additionalProperties;

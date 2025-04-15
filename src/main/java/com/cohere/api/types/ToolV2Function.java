@@ -13,25 +13,27 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolV2Function.Builder.class)
 public final class ToolV2Function {
-    private final Optional<String> name;
+    private final String name;
 
     private final Optional<String> description;
 
-    private final Optional<Map<String, Object>> parameters;
+    private final Map<String, Object> parameters;
 
     private final Map<String, Object> additionalProperties;
 
     private ToolV2Function(
-            Optional<String> name,
+            String name,
             Optional<String> description,
-            Optional<Map<String, Object>> parameters,
+            Map<String, Object> parameters,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.description = description;
@@ -43,7 +45,7 @@ public final class ToolV2Function {
      * @return The name of the function.
      */
     @JsonProperty("name")
-    public Optional<String> getName() {
+    public String getName() {
         return name;
     }
 
@@ -59,7 +61,7 @@ public final class ToolV2Function {
      * @return The parameters of the function as a JSON schema.
      */
     @JsonProperty("parameters")
-    public Optional<Map<String, Object>> getParameters() {
+    public Map<String, Object> getParameters() {
         return parameters;
     }
 
@@ -88,23 +90,44 @@ public final class ToolV2Function {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static NameStage builder() {
         return new Builder();
     }
 
+    public interface NameStage {
+        _FinalStage name(@NotNull String name);
+
+        Builder from(ToolV2Function other);
+    }
+
+    public interface _FinalStage {
+        ToolV2Function build();
+
+        _FinalStage description(Optional<String> description);
+
+        _FinalStage description(String description);
+
+        _FinalStage parameters(Map<String, Object> parameters);
+
+        _FinalStage putAllParameters(Map<String, Object> parameters);
+
+        _FinalStage parameters(String key, Object value);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> name = Optional.empty();
+    public static final class Builder implements NameStage, _FinalStage {
+        private String name;
+
+        private Map<String, Object> parameters = new LinkedHashMap<>();
 
         private Optional<String> description = Optional.empty();
-
-        private Optional<Map<String, Object>> parameters = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(ToolV2Function other) {
             name(other.getName());
             description(other.getDescription());
@@ -112,39 +135,63 @@ public final class ToolV2Function {
             return this;
         }
 
-        @JsonSetter(value = "name", nulls = Nulls.SKIP)
-        public Builder name(Optional<String> name) {
-            this.name = name;
+        /**
+         * <p>The name of the function.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("name")
+        public _FinalStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
-        public Builder name(String name) {
-            this.name = Optional.of(name);
+        /**
+         * <p>The parameters of the function as a JSON schema.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parameters(String key, Object value) {
+            this.parameters.put(key, value);
             return this;
         }
 
+        /**
+         * <p>The parameters of the function as a JSON schema.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage putAllParameters(Map<String, Object> parameters) {
+            this.parameters.putAll(parameters);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
+        public _FinalStage parameters(Map<String, Object> parameters) {
+            this.parameters.clear();
+            this.parameters.putAll(parameters);
+            return this;
+        }
+
+        /**
+         * <p>The description of the function.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage description(String description) {
+            this.description = Optional.ofNullable(description);
+            return this;
+        }
+
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
-        public Builder description(Optional<String> description) {
+        public _FinalStage description(Optional<String> description) {
             this.description = description;
             return this;
         }
 
-        public Builder description(String description) {
-            this.description = Optional.of(description);
-            return this;
-        }
-
-        @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
-        public Builder parameters(Optional<Map<String, Object>> parameters) {
-            this.parameters = parameters;
-            return this;
-        }
-
-        public Builder parameters(Map<String, Object> parameters) {
-            this.parameters = Optional.of(parameters);
-            return this;
-        }
-
+        @java.lang.Override
         public ToolV2Function build() {
             return new ToolV2Function(name, description, parameters, additionalProperties);
         }

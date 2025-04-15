@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = LabelMetric.Builder.class)
 public final class LabelMetric {
     private final Optional<Long> totalExamples;
@@ -120,7 +120,7 @@ public final class LabelMetric {
         }
 
         public Builder totalExamples(Long totalExamples) {
-            this.totalExamples = Optional.of(totalExamples);
+            this.totalExamples = Optional.ofNullable(totalExamples);
             return this;
         }
 
@@ -131,7 +131,7 @@ public final class LabelMetric {
         }
 
         public Builder label(String label) {
-            this.label = Optional.of(label);
+            this.label = Optional.ofNullable(label);
             return this;
         }
 
@@ -142,7 +142,7 @@ public final class LabelMetric {
         }
 
         public Builder samples(List<String> samples) {
-            this.samples = Optional.of(samples);
+            this.samples = Optional.ofNullable(samples);
             return this;
         }
 

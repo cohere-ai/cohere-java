@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UpdateConnectorRequest.Builder.class)
 public final class UpdateConnectorRequest {
     private final Optional<String> name;
@@ -183,7 +183,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -194,7 +194,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder url(String url) {
-            this.url = Optional.of(url);
+            this.url = Optional.ofNullable(url);
             return this;
         }
 
@@ -205,7 +205,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder excludes(List<String> excludes) {
-            this.excludes = Optional.of(excludes);
+            this.excludes = Optional.ofNullable(excludes);
             return this;
         }
 
@@ -216,7 +216,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder oauth(CreateConnectorOAuth oauth) {
-            this.oauth = Optional.of(oauth);
+            this.oauth = Optional.ofNullable(oauth);
             return this;
         }
 
@@ -227,7 +227,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder active(Boolean active) {
-            this.active = Optional.of(active);
+            this.active = Optional.ofNullable(active);
             return this;
         }
 
@@ -238,7 +238,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder continueOnFailure(Boolean continueOnFailure) {
-            this.continueOnFailure = Optional.of(continueOnFailure);
+            this.continueOnFailure = Optional.ofNullable(continueOnFailure);
             return this;
         }
 
@@ -249,7 +249,7 @@ public final class UpdateConnectorRequest {
         }
 
         public Builder serviceAuth(CreateConnectorServiceAuth serviceAuth) {
-            this.serviceAuth = Optional.of(serviceAuth);
+            this.serviceAuth = Optional.ofNullable(serviceAuth);
             return this;
         }
 

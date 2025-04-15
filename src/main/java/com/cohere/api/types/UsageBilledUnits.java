@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UsageBilledUnits.Builder.class)
 public final class UsageBilledUnits {
     private final Optional<Double> inputTokens;
@@ -137,7 +137,7 @@ public final class UsageBilledUnits {
         }
 
         public Builder inputTokens(Double inputTokens) {
-            this.inputTokens = Optional.of(inputTokens);
+            this.inputTokens = Optional.ofNullable(inputTokens);
             return this;
         }
 
@@ -148,7 +148,7 @@ public final class UsageBilledUnits {
         }
 
         public Builder outputTokens(Double outputTokens) {
-            this.outputTokens = Optional.of(outputTokens);
+            this.outputTokens = Optional.ofNullable(outputTokens);
             return this;
         }
 
@@ -159,7 +159,7 @@ public final class UsageBilledUnits {
         }
 
         public Builder searchUnits(Double searchUnits) {
-            this.searchUnits = Optional.of(searchUnits);
+            this.searchUnits = Optional.ofNullable(searchUnits);
             return this;
         }
 
@@ -170,7 +170,7 @@ public final class UsageBilledUnits {
         }
 
         public Builder classifications(Double classifications) {
-            this.classifications = Optional.of(classifications);
+            this.classifications = Optional.ofNullable(classifications);
             return this;
         }
 

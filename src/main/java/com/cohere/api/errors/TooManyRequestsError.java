@@ -3,16 +3,15 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiApiError;
-import com.cohere.api.types.TooManyRequestsErrorBody;
+import com.cohere.api.core.CohereApiException;
 
-public final class CohereApiTooManyRequestsError extends CohereApiApiError {
+public final class TooManyRequestsError extends CohereApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final TooManyRequestsErrorBody body;
+    private final Object body;
 
-    public CohereApiTooManyRequestsError(TooManyRequestsErrorBody body) {
+    public TooManyRequestsError(Object body) {
         super("TooManyRequestsError", 429, body);
         this.body = body;
     }
@@ -21,7 +20,7 @@ public final class CohereApiTooManyRequestsError extends CohereApiApiError {
      * @return the body
      */
     @java.lang.Override
-    public TooManyRequestsErrorBody body() {
+    public Object body() {
         return this.body;
     }
 }

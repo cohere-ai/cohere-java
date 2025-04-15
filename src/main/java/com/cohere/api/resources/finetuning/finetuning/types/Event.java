@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Event.Builder.class)
 public final class Event {
     private final Optional<String> userId;
@@ -120,7 +120,7 @@ public final class Event {
         }
 
         public Builder userId(String userId) {
-            this.userId = Optional.of(userId);
+            this.userId = Optional.ofNullable(userId);
             return this;
         }
 
@@ -131,7 +131,7 @@ public final class Event {
         }
 
         public Builder status(Status status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -142,7 +142,7 @@ public final class Event {
         }
 
         public Builder createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.of(createdAt);
+            this.createdAt = Optional.ofNullable(createdAt);
             return this;
         }
 

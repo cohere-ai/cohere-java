@@ -10,34 +10,33 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = GatewayTimeoutErrorBody.Builder.class)
-public final class GatewayTimeoutErrorBody {
-    private final Optional<String> data;
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonDeserialize(builder = ImageUrl.Builder.class)
+public final class ImageUrl {
+    private final String url;
 
     private final Map<String, Object> additionalProperties;
 
-    private GatewayTimeoutErrorBody(Optional<String> data, Map<String, Object> additionalProperties) {
-        this.data = data;
+    private ImageUrl(String url, Map<String, Object> additionalProperties) {
+        this.url = url;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("data")
-    public Optional<String> getData() {
-        return data;
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof GatewayTimeoutErrorBody && equalTo((GatewayTimeoutErrorBody) other);
+        return other instanceof ImageUrl && equalTo((ImageUrl) other);
     }
 
     @JsonAnyGetter
@@ -45,13 +44,13 @@ public final class GatewayTimeoutErrorBody {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(GatewayTimeoutErrorBody other) {
-        return data.equals(other.data);
+    private boolean equalTo(ImageUrl other) {
+        return url.equals(other.url);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.data);
+        return Objects.hash(this.url);
     }
 
     @java.lang.Override
@@ -59,37 +58,45 @@ public final class GatewayTimeoutErrorBody {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static UrlStage builder() {
         return new Builder();
     }
 
+    public interface UrlStage {
+        _FinalStage url(@NotNull String url);
+
+        Builder from(ImageUrl other);
+    }
+
+    public interface _FinalStage {
+        ImageUrl build();
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> data = Optional.empty();
+    public static final class Builder implements UrlStage, _FinalStage {
+        private String url;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(GatewayTimeoutErrorBody other) {
-            data(other.getData());
+        @java.lang.Override
+        public Builder from(ImageUrl other) {
+            url(other.getUrl());
             return this;
         }
 
-        @JsonSetter(value = "data", nulls = Nulls.SKIP)
-        public Builder data(Optional<String> data) {
-            this.data = data;
+        @java.lang.Override
+        @JsonSetter("url")
+        public _FinalStage url(@NotNull String url) {
+            this.url = Objects.requireNonNull(url, "url must not be null");
             return this;
         }
 
-        public Builder data(String data) {
-            this.data = Optional.of(data);
-            return this;
-        }
-
-        public GatewayTimeoutErrorBody build() {
-            return new GatewayTimeoutErrorBody(data, additionalProperties);
+        @java.lang.Override
+        public ImageUrl build() {
+            return new ImageUrl(url, additionalProperties);
         }
     }
 }

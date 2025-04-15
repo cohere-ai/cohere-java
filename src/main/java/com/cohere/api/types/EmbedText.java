@@ -17,27 +17,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = UnprocessableEntityErrorBody.Builder.class)
-public final class UnprocessableEntityErrorBody {
-    private final Optional<String> data;
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonDeserialize(builder = EmbedText.Builder.class)
+public final class EmbedText {
+    private final Optional<String> text;
 
     private final Map<String, Object> additionalProperties;
 
-    private UnprocessableEntityErrorBody(Optional<String> data, Map<String, Object> additionalProperties) {
-        this.data = data;
+    private EmbedText(Optional<String> text, Map<String, Object> additionalProperties) {
+        this.text = text;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("data")
-    public Optional<String> getData() {
-        return data;
+    @JsonProperty("text")
+    public Optional<String> getText() {
+        return text;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof UnprocessableEntityErrorBody && equalTo((UnprocessableEntityErrorBody) other);
+        return other instanceof EmbedText && equalTo((EmbedText) other);
     }
 
     @JsonAnyGetter
@@ -45,13 +45,13 @@ public final class UnprocessableEntityErrorBody {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(UnprocessableEntityErrorBody other) {
-        return data.equals(other.data);
+    private boolean equalTo(EmbedText other) {
+        return text.equals(other.text);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.data);
+        return Objects.hash(this.text);
     }
 
     @java.lang.Override
@@ -65,31 +65,31 @@ public final class UnprocessableEntityErrorBody {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> data = Optional.empty();
+        private Optional<String> text = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(UnprocessableEntityErrorBody other) {
-            data(other.getData());
+        public Builder from(EmbedText other) {
+            text(other.getText());
             return this;
         }
 
-        @JsonSetter(value = "data", nulls = Nulls.SKIP)
-        public Builder data(Optional<String> data) {
-            this.data = data;
+        @JsonSetter(value = "text", nulls = Nulls.SKIP)
+        public Builder text(Optional<String> text) {
+            this.text = text;
             return this;
         }
 
-        public Builder data(String data) {
-            this.data = Optional.of(data);
+        public Builder text(String text) {
+            this.text = Optional.ofNullable(text);
             return this;
         }
 
-        public UnprocessableEntityErrorBody build() {
-            return new UnprocessableEntityErrorBody(data, additionalProperties);
+        public EmbedText build() {
+            return new EmbedText(text, additionalProperties);
         }
     }
 }

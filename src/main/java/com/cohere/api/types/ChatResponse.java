@@ -17,8 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatResponse.Builder.class)
 public final class ChatResponse {
     private final String id;
@@ -123,17 +124,17 @@ public final class ChatResponse {
     }
 
     public interface IdStage {
-        FinishReasonStage id(String id);
+        FinishReasonStage id(@NotNull String id);
 
         Builder from(ChatResponse other);
     }
 
     public interface FinishReasonStage {
-        MessageStage finishReason(ChatFinishReason finishReason);
+        MessageStage finishReason(@NotNull ChatFinishReason finishReason);
     }
 
     public interface MessageStage {
-        _FinalStage message(AssistantMessageResponse message);
+        _FinalStage message(@NotNull AssistantMessageResponse message);
     }
 
     public interface _FinalStage {
@@ -188,28 +189,28 @@ public final class ChatResponse {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public FinishReasonStage id(String id) {
-            this.id = id;
+        public FinishReasonStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("finish_reason")
-        public MessageStage finishReason(ChatFinishReason finishReason) {
-            this.finishReason = finishReason;
+        public MessageStage finishReason(@NotNull ChatFinishReason finishReason) {
+            this.finishReason = Objects.requireNonNull(finishReason, "finishReason must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("message")
-        public _FinalStage message(AssistantMessageResponse message) {
-            this.message = message;
+        public _FinalStage message(@NotNull AssistantMessageResponse message) {
+            this.message = Objects.requireNonNull(message, "message must not be null");
             return this;
         }
 
         @java.lang.Override
         public _FinalStage logprobs(List<LogprobItem> logprobs) {
-            this.logprobs = Optional.of(logprobs);
+            this.logprobs = Optional.ofNullable(logprobs);
             return this;
         }
 
@@ -222,7 +223,7 @@ public final class ChatResponse {
 
         @java.lang.Override
         public _FinalStage usage(Usage usage) {
-            this.usage = Optional.of(usage);
+            this.usage = Optional.ofNullable(usage);
             return this;
         }
 
@@ -239,7 +240,7 @@ public final class ChatResponse {
          */
         @java.lang.Override
         public _FinalStage prompt(String prompt) {
-            this.prompt = Optional.of(prompt);
+            this.prompt = Optional.ofNullable(prompt);
             return this;
         }
 

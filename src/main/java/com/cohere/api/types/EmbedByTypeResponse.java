@@ -12,21 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmbedByTypeResponse.Builder.class)
 public final class EmbedByTypeResponse {
     private final String id;
 
     private final EmbedByTypeResponseEmbeddings embeddings;
 
-    private final List<String> texts;
+    private final Optional<List<String>> texts;
 
     private final Optional<List<Image>> images;
 
@@ -37,7 +37,7 @@ public final class EmbedByTypeResponse {
     private EmbedByTypeResponse(
             String id,
             EmbedByTypeResponseEmbeddings embeddings,
-            List<String> texts,
+            Optional<List<String>> texts,
             Optional<List<Image>> images,
             Optional<ApiMeta> meta,
             Map<String, Object> additionalProperties) {
@@ -66,7 +66,7 @@ public final class EmbedByTypeResponse {
      * @return The text entries for which embeddings were returned.
      */
     @JsonProperty("texts")
-    public List<String> getTexts() {
+    public Optional<List<String>> getTexts() {
         return texts;
     }
 
@@ -117,23 +117,21 @@ public final class EmbedByTypeResponse {
     }
 
     public interface IdStage {
-        EmbeddingsStage id(String id);
+        EmbeddingsStage id(@NotNull String id);
 
         Builder from(EmbedByTypeResponse other);
     }
 
     public interface EmbeddingsStage {
-        _FinalStage embeddings(EmbedByTypeResponseEmbeddings embeddings);
+        _FinalStage embeddings(@NotNull EmbedByTypeResponseEmbeddings embeddings);
     }
 
     public interface _FinalStage {
         EmbedByTypeResponse build();
 
+        _FinalStage texts(Optional<List<String>> texts);
+
         _FinalStage texts(List<String> texts);
-
-        _FinalStage addTexts(String texts);
-
-        _FinalStage addAllTexts(List<String> texts);
 
         _FinalStage images(Optional<List<Image>> images);
 
@@ -154,7 +152,7 @@ public final class EmbedByTypeResponse {
 
         private Optional<List<Image>> images = Optional.empty();
 
-        private List<String> texts = new ArrayList<>();
+        private Optional<List<String>> texts = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -173,8 +171,8 @@ public final class EmbedByTypeResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public EmbeddingsStage id(String id) {
-            this.id = id;
+        public EmbeddingsStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -184,14 +182,14 @@ public final class EmbedByTypeResponse {
          */
         @java.lang.Override
         @JsonSetter("embeddings")
-        public _FinalStage embeddings(EmbedByTypeResponseEmbeddings embeddings) {
-            this.embeddings = embeddings;
+        public _FinalStage embeddings(@NotNull EmbedByTypeResponseEmbeddings embeddings) {
+            this.embeddings = Objects.requireNonNull(embeddings, "embeddings must not be null");
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.of(meta);
+            this.meta = Optional.ofNullable(meta);
             return this;
         }
 
@@ -208,7 +206,7 @@ public final class EmbedByTypeResponse {
          */
         @java.lang.Override
         public _FinalStage images(List<Image> images) {
-            this.images = Optional.of(images);
+            this.images = Optional.ofNullable(images);
             return this;
         }
 
@@ -224,26 +222,15 @@ public final class EmbedByTypeResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllTexts(List<String> texts) {
-            this.texts.addAll(texts);
-            return this;
-        }
-
-        /**
-         * <p>The text entries for which embeddings were returned.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage addTexts(String texts) {
-            this.texts.add(texts);
+        public _FinalStage texts(List<String> texts) {
+            this.texts = Optional.ofNullable(texts);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
-        public _FinalStage texts(List<String> texts) {
-            this.texts.clear();
-            this.texts.addAll(texts);
+        public _FinalStage texts(Optional<List<String>> texts) {
+            this.texts = texts;
             return this;
         }
 

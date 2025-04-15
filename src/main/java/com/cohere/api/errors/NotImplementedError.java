@@ -3,16 +3,15 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiApiError;
-import com.cohere.api.types.NotImplementedErrorBody;
+import com.cohere.api.core.CohereApiException;
 
-public final class CohereApiNotImplementedError extends CohereApiApiError {
+public final class NotImplementedError extends CohereApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final NotImplementedErrorBody body;
+    private final Object body;
 
-    public CohereApiNotImplementedError(NotImplementedErrorBody body) {
+    public NotImplementedError(Object body) {
         super("NotImplementedError", 501, body);
         this.body = body;
     }
@@ -21,7 +20,7 @@ public final class CohereApiNotImplementedError extends CohereApiApiError {
      * @return the body
      */
     @java.lang.Override
-    public NotImplementedErrorBody body() {
+    public Object body() {
         return this.body;
     }
 }

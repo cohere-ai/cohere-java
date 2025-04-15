@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatSearchQuery.Builder.class)
 public final class ChatSearchQuery {
     private final String text;
@@ -76,13 +77,13 @@ public final class ChatSearchQuery {
     }
 
     public interface TextStage {
-        GenerationIdStage text(String text);
+        GenerationIdStage text(@NotNull String text);
 
         Builder from(ChatSearchQuery other);
     }
 
     public interface GenerationIdStage {
-        _FinalStage generationId(String generationId);
+        _FinalStage generationId(@NotNull String generationId);
     }
 
     public interface _FinalStage {
@@ -113,8 +114,8 @@ public final class ChatSearchQuery {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public GenerationIdStage text(String text) {
-            this.text = text;
+        public GenerationIdStage text(@NotNull String text) {
+            this.text = Objects.requireNonNull(text, "text must not be null");
             return this;
         }
 
@@ -124,8 +125,8 @@ public final class ChatSearchQuery {
          */
         @java.lang.Override
         @JsonSetter("generation_id")
-        public _FinalStage generationId(String generationId) {
-            this.generationId = generationId;
+        public _FinalStage generationId(@NotNull String generationId) {
+            this.generationId = Objects.requireNonNull(generationId, "generationId must not be null");
             return this;
         }
 

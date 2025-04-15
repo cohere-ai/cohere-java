@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CheckApiKeyResponse.Builder.class)
 public final class CheckApiKeyResponse {
     private final boolean valid;
@@ -131,7 +131,7 @@ public final class CheckApiKeyResponse {
 
         @java.lang.Override
         public _FinalStage ownerId(String ownerId) {
-            this.ownerId = Optional.of(ownerId);
+            this.ownerId = Optional.ofNullable(ownerId);
             return this;
         }
 
@@ -144,7 +144,7 @@ public final class CheckApiKeyResponse {
 
         @java.lang.Override
         public _FinalStage organizationId(String organizationId) {
-            this.organizationId = Optional.of(organizationId);
+            this.organizationId = Optional.ofNullable(organizationId);
             return this;
         }
 
