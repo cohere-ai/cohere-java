@@ -17,8 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DetokenizeRequest.Builder.class)
 public final class DetokenizeRequest {
     private final List<Integer> tokens;
@@ -79,7 +80,7 @@ public final class DetokenizeRequest {
     }
 
     public interface ModelStage {
-        _FinalStage model(String model);
+        _FinalStage model(@NotNull String model);
 
         Builder from(DetokenizeRequest other);
     }
@@ -118,8 +119,8 @@ public final class DetokenizeRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public _FinalStage model(String model) {
-            this.model = model;
+        public _FinalStage model(@NotNull String model) {
+            this.model = Objects.requireNonNull(model, "model must not be null");
             return this;
         }
 

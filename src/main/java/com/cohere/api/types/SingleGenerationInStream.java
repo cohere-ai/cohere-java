@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SingleGenerationInStream.Builder.class)
 public final class SingleGenerationInStream {
     private final String id;
@@ -102,17 +103,17 @@ public final class SingleGenerationInStream {
     }
 
     public interface IdStage {
-        TextStage id(String id);
+        TextStage id(@NotNull String id);
 
         Builder from(SingleGenerationInStream other);
     }
 
     public interface TextStage {
-        FinishReasonStage text(String text);
+        FinishReasonStage text(@NotNull String text);
     }
 
     public interface FinishReasonStage {
-        _FinalStage finishReason(FinishReason finishReason);
+        _FinalStage finishReason(@NotNull FinishReason finishReason);
     }
 
     public interface _FinalStage {
@@ -149,8 +150,8 @@ public final class SingleGenerationInStream {
 
         @java.lang.Override
         @JsonSetter("id")
-        public TextStage id(String id) {
-            this.id = id;
+        public TextStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -160,15 +161,15 @@ public final class SingleGenerationInStream {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public FinishReasonStage text(String text) {
-            this.text = text;
+        public FinishReasonStage text(@NotNull String text) {
+            this.text = Objects.requireNonNull(text, "text must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("finish_reason")
-        public _FinalStage finishReason(FinishReason finishReason) {
-            this.finishReason = finishReason;
+        public _FinalStage finishReason(@NotNull FinishReason finishReason) {
+            this.finishReason = Objects.requireNonNull(finishReason, "finishReason must not be null");
             return this;
         }
 
@@ -178,7 +179,7 @@ public final class SingleGenerationInStream {
          */
         @java.lang.Override
         public _FinalStage index(Integer index) {
-            this.index = Optional.of(index);
+            this.index = Optional.ofNullable(index);
             return this;
         }
 

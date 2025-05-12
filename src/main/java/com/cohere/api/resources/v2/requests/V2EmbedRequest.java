@@ -5,6 +5,7 @@ package com.cohere.api.resources.v2.requests;
 
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.resources.v2.types.V2EmbedRequestTruncate;
+import com.cohere.api.types.EmbedInput;
 import com.cohere.api.types.EmbedInputType;
 import com.cohere.api.types.EmbeddingType;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -21,8 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = V2EmbedRequest.Builder.class)
 public final class V2EmbedRequest {
     private final Optional<List<String>> texts;
@@ -32,6 +34,12 @@ public final class V2EmbedRequest {
     private final String model;
 
     private final EmbedInputType inputType;
+
+    private final Optional<List<EmbedInput>> inputs;
+
+    private final Optional<Integer> maxTokens;
+
+    private final Optional<Integer> outputDimension;
 
     private final List<EmbeddingType> embeddingTypes;
 
@@ -44,6 +52,9 @@ public final class V2EmbedRequest {
             Optional<List<String>> images,
             String model,
             EmbedInputType inputType,
+            Optional<List<EmbedInput>> inputs,
+            Optional<Integer> maxTokens,
+            Optional<Integer> outputDimension,
             List<EmbeddingType> embeddingTypes,
             Optional<V2EmbedRequestTruncate> truncate,
             Map<String, Object> additionalProperties) {
@@ -51,6 +62,9 @@ public final class V2EmbedRequest {
         this.images = images;
         this.model = model;
         this.inputType = inputType;
+        this.inputs = inputs;
+        this.maxTokens = maxTokens;
+        this.outputDimension = outputDimension;
         this.embeddingTypes = embeddingTypes;
         this.truncate = truncate;
         this.additionalProperties = additionalProperties;
@@ -112,6 +126,31 @@ public final class V2EmbedRequest {
     }
 
     /**
+     * @return An array of inputs for the model to embed. Maximum number of inputs per call is <code>96</code>. An input can contain a mix of text and image components.
+     */
+    @JsonProperty("inputs")
+    public Optional<List<EmbedInput>> getInputs() {
+        return inputs;
+    }
+
+    /**
+     * @return The maximum number of tokens to embed per input. If the input text is longer than this, it will be truncated according to the <code>truncate</code> parameter.
+     */
+    @JsonProperty("max_tokens")
+    public Optional<Integer> getMaxTokens() {
+        return maxTokens;
+    }
+
+    /**
+     * @return The number of dimensions of the output embedding. This is only available for <code>embed-v4</code> and newer models.
+     * Possible values are <code>256</code>, <code>512</code>, <code>1024</code>, and <code>1536</code>. The default is <code>1536</code>.
+     */
+    @JsonProperty("output_dimension")
+    public Optional<Integer> getOutputDimension() {
+        return outputDimension;
+    }
+
+    /**
      * @return Specifies the types of embeddings you want to get back. Can be one or more of the following types.
      * <ul>
      * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
@@ -152,13 +191,25 @@ public final class V2EmbedRequest {
                 && images.equals(other.images)
                 && model.equals(other.model)
                 && inputType.equals(other.inputType)
+                && inputs.equals(other.inputs)
+                && maxTokens.equals(other.maxTokens)
+                && outputDimension.equals(other.outputDimension)
                 && embeddingTypes.equals(other.embeddingTypes)
                 && truncate.equals(other.truncate);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.texts, this.images, this.model, this.inputType, this.embeddingTypes, this.truncate);
+        return Objects.hash(
+                this.texts,
+                this.images,
+                this.model,
+                this.inputType,
+                this.inputs,
+                this.maxTokens,
+                this.outputDimension,
+                this.embeddingTypes,
+                this.truncate);
     }
 
     @java.lang.Override
@@ -171,13 +222,13 @@ public final class V2EmbedRequest {
     }
 
     public interface ModelStage {
-        InputTypeStage model(String model);
+        InputTypeStage model(@NotNull String model);
 
         Builder from(V2EmbedRequest other);
     }
 
     public interface InputTypeStage {
-        _FinalStage inputType(EmbedInputType inputType);
+        _FinalStage inputType(@NotNull EmbedInputType inputType);
     }
 
     public interface _FinalStage {
@@ -190,6 +241,18 @@ public final class V2EmbedRequest {
         _FinalStage images(Optional<List<String>> images);
 
         _FinalStage images(List<String> images);
+
+        _FinalStage inputs(Optional<List<EmbedInput>> inputs);
+
+        _FinalStage inputs(List<EmbedInput> inputs);
+
+        _FinalStage maxTokens(Optional<Integer> maxTokens);
+
+        _FinalStage maxTokens(Integer maxTokens);
+
+        _FinalStage outputDimension(Optional<Integer> outputDimension);
+
+        _FinalStage outputDimension(Integer outputDimension);
 
         _FinalStage embeddingTypes(List<EmbeddingType> embeddingTypes);
 
@@ -212,6 +275,12 @@ public final class V2EmbedRequest {
 
         private List<EmbeddingType> embeddingTypes = new ArrayList<>();
 
+        private Optional<Integer> outputDimension = Optional.empty();
+
+        private Optional<Integer> maxTokens = Optional.empty();
+
+        private Optional<List<EmbedInput>> inputs = Optional.empty();
+
         private Optional<List<String>> images = Optional.empty();
 
         private Optional<List<String>> texts = Optional.empty();
@@ -227,6 +296,9 @@ public final class V2EmbedRequest {
             images(other.getImages());
             model(other.getModel());
             inputType(other.getInputType());
+            inputs(other.getInputs());
+            maxTokens(other.getMaxTokens());
+            outputDimension(other.getOutputDimension());
             embeddingTypes(other.getEmbeddingTypes());
             truncate(other.getTruncate());
             return this;
@@ -263,15 +335,15 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public InputTypeStage model(String model) {
-            this.model = model;
+        public InputTypeStage model(@NotNull String model) {
+            this.model = Objects.requireNonNull(model, "model must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("input_type")
-        public _FinalStage inputType(EmbedInputType inputType) {
-            this.inputType = inputType;
+        public _FinalStage inputType(@NotNull EmbedInputType inputType) {
+            this.inputType = Objects.requireNonNull(inputType, "inputType must not be null");
             return this;
         }
 
@@ -283,7 +355,7 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         public _FinalStage truncate(V2EmbedRequestTruncate truncate) {
-            this.truncate = Optional.of(truncate);
+            this.truncate = Optional.ofNullable(truncate);
             return this;
         }
 
@@ -337,13 +409,65 @@ public final class V2EmbedRequest {
         }
 
         /**
+         * <p>The number of dimensions of the output embedding. This is only available for <code>embed-v4</code> and newer models.
+         * Possible values are <code>256</code>, <code>512</code>, <code>1024</code>, and <code>1536</code>. The default is <code>1536</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage outputDimension(Integer outputDimension) {
+            this.outputDimension = Optional.ofNullable(outputDimension);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "output_dimension", nulls = Nulls.SKIP)
+        public _FinalStage outputDimension(Optional<Integer> outputDimension) {
+            this.outputDimension = outputDimension;
+            return this;
+        }
+
+        /**
+         * <p>The maximum number of tokens to embed per input. If the input text is longer than this, it will be truncated according to the <code>truncate</code> parameter.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage maxTokens(Integer maxTokens) {
+            this.maxTokens = Optional.ofNullable(maxTokens);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "max_tokens", nulls = Nulls.SKIP)
+        public _FinalStage maxTokens(Optional<Integer> maxTokens) {
+            this.maxTokens = maxTokens;
+            return this;
+        }
+
+        /**
+         * <p>An array of inputs for the model to embed. Maximum number of inputs per call is <code>96</code>. An input can contain a mix of text and image components.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage inputs(List<EmbedInput> inputs) {
+            this.inputs = Optional.ofNullable(inputs);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "inputs", nulls = Nulls.SKIP)
+        public _FinalStage inputs(Optional<List<EmbedInput>> inputs) {
+            this.inputs = inputs;
+            return this;
+        }
+
+        /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
          * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         public _FinalStage images(List<String> images) {
-            this.images = Optional.of(images);
+            this.images = Optional.ofNullable(images);
             return this;
         }
 
@@ -360,7 +484,7 @@ public final class V2EmbedRequest {
          */
         @java.lang.Override
         public _FinalStage texts(List<String> texts) {
-            this.texts = Optional.of(texts);
+            this.texts = Optional.ofNullable(texts);
             return this;
         }
 
@@ -373,7 +497,17 @@ public final class V2EmbedRequest {
 
         @java.lang.Override
         public V2EmbedRequest build() {
-            return new V2EmbedRequest(texts, images, model, inputType, embeddingTypes, truncate, additionalProperties);
+            return new V2EmbedRequest(
+                    texts,
+                    images,
+                    model,
+                    inputType,
+                    inputs,
+                    maxTokens,
+                    outputDimension,
+                    embeddingTypes,
+                    truncate,
+                    additionalProperties);
         }
     }
 }

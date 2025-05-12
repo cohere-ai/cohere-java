@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetConnectorResponse.Builder.class)
 public final class GetConnectorResponse {
     private final Connector connector;
@@ -62,7 +63,7 @@ public final class GetConnectorResponse {
     }
 
     public interface ConnectorStage {
-        _FinalStage connector(Connector connector);
+        _FinalStage connector(@NotNull Connector connector);
 
         Builder from(GetConnectorResponse other);
     }
@@ -88,8 +89,8 @@ public final class GetConnectorResponse {
 
         @java.lang.Override
         @JsonSetter("connector")
-        public _FinalStage connector(Connector connector) {
-            this.connector = connector;
+        public _FinalStage connector(@NotNull Connector connector) {
+            this.connector = Objects.requireNonNull(connector, "connector must not be null");
             return this;
         }
 

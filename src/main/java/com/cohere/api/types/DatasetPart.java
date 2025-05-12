@@ -17,8 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DatasetPart.Builder.class)
 public final class DatasetPart {
     private final String id;
@@ -162,13 +163,13 @@ public final class DatasetPart {
     }
 
     public interface IdStage {
-        NameStage id(String id);
+        NameStage id(@NotNull String id);
 
         Builder from(DatasetPart other);
     }
 
     public interface NameStage {
-        _FinalStage name(String name);
+        _FinalStage name(@NotNull String name);
     }
 
     public interface _FinalStage {
@@ -241,8 +242,8 @@ public final class DatasetPart {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public NameStage id(String id) {
-            this.id = id;
+        public NameStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -252,8 +253,8 @@ public final class DatasetPart {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public _FinalStage name(String name) {
-            this.name = name;
+        public _FinalStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -263,7 +264,7 @@ public final class DatasetPart {
          */
         @java.lang.Override
         public _FinalStage samples(List<String> samples) {
-            this.samples = Optional.of(samples);
+            this.samples = Optional.ofNullable(samples);
             return this;
         }
 
@@ -280,7 +281,7 @@ public final class DatasetPart {
          */
         @java.lang.Override
         public _FinalStage originalUrl(String originalUrl) {
-            this.originalUrl = Optional.of(originalUrl);
+            this.originalUrl = Optional.ofNullable(originalUrl);
             return this;
         }
 
@@ -297,7 +298,7 @@ public final class DatasetPart {
          */
         @java.lang.Override
         public _FinalStage numRows(Integer numRows) {
-            this.numRows = Optional.of(numRows);
+            this.numRows = Optional.ofNullable(numRows);
             return this;
         }
 
@@ -314,7 +315,7 @@ public final class DatasetPart {
          */
         @java.lang.Override
         public _FinalStage sizeBytes(Integer sizeBytes) {
-            this.sizeBytes = Optional.of(sizeBytes);
+            this.sizeBytes = Optional.ofNullable(sizeBytes);
             return this;
         }
 
@@ -331,7 +332,7 @@ public final class DatasetPart {
          */
         @java.lang.Override
         public _FinalStage index(Integer index) {
-            this.index = Optional.of(index);
+            this.index = Optional.ofNullable(index);
             return this;
         }
 
@@ -348,7 +349,7 @@ public final class DatasetPart {
          */
         @java.lang.Override
         public _FinalStage url(String url) {
-            this.url = Optional.of(url);
+            this.url = Optional.ofNullable(url);
             return this;
         }
 

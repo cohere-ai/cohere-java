@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Image.Builder.class)
 public final class Image {
     private final long width;
@@ -111,7 +112,7 @@ public final class Image {
     }
 
     public interface FormatStage {
-        BitDepthStage format(String format);
+        BitDepthStage format(@NotNull String format);
     }
 
     public interface BitDepthStage {
@@ -174,8 +175,8 @@ public final class Image {
          */
         @java.lang.Override
         @JsonSetter("format")
-        public BitDepthStage format(String format) {
-            this.format = format;
+        public BitDepthStage format(@NotNull String format) {
+            this.format = Objects.requireNonNull(format, "format must not be null");
             return this;
         }
 

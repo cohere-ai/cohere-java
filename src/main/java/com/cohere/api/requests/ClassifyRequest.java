@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ClassifyRequest.Builder.class)
 public final class ClassifyRequest {
     private final List<String> inputs;
@@ -71,7 +71,7 @@ public final class ClassifyRequest {
     }
 
     /**
-     * @return The identifier of the model. Currently available models are <code>embed-multilingual-v2.0</code>, <code>embed-english-light-v2.0</code>, and <code>embed-english-v2.0</code> (default). Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/fine-tuning">Fine-tuned models</a> can also be supplied with their full ID.
+     * @return ID of a <a href="https://docs.cohere.com/v2/docs/classify-starting-the-training">Fine-tuned</a> Classify model
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -179,7 +179,7 @@ public final class ClassifyRequest {
         }
 
         public Builder examples(List<ClassifyExample> examples) {
-            this.examples = Optional.of(examples);
+            this.examples = Optional.ofNullable(examples);
             return this;
         }
 
@@ -190,7 +190,7 @@ public final class ClassifyRequest {
         }
 
         public Builder model(String model) {
-            this.model = Optional.of(model);
+            this.model = Optional.ofNullable(model);
             return this;
         }
 
@@ -201,7 +201,7 @@ public final class ClassifyRequest {
         }
 
         public Builder preset(String preset) {
-            this.preset = Optional.of(preset);
+            this.preset = Optional.ofNullable(preset);
             return this;
         }
 
@@ -212,7 +212,7 @@ public final class ClassifyRequest {
         }
 
         public Builder truncate(ClassifyRequestTruncate truncate) {
-            this.truncate = Optional.of(truncate);
+            this.truncate = Optional.ofNullable(truncate);
             return this;
         }
 

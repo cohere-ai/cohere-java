@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListTrainingStepMetricsResponse.Builder.class)
 public final class ListTrainingStepMetricsResponse {
     private final Optional<List<TrainingStepMetrics>> stepMetrics;
@@ -106,7 +106,7 @@ public final class ListTrainingStepMetricsResponse {
         }
 
         public Builder stepMetrics(List<TrainingStepMetrics> stepMetrics) {
-            this.stepMetrics = Optional.of(stepMetrics);
+            this.stepMetrics = Optional.ofNullable(stepMetrics);
             return this;
         }
 
@@ -117,7 +117,7 @@ public final class ListTrainingStepMetricsResponse {
         }
 
         public Builder nextPageToken(String nextPageToken) {
-            this.nextPageToken = Optional.of(nextPageToken);
+            this.nextPageToken = Optional.ofNullable(nextPageToken);
             return this;
         }
 

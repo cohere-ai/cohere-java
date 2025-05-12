@@ -6,6 +6,7 @@ package com.cohere.api.resources.v2.requests;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.resources.v2.types.V2ChatStreamRequestDocumentsItem;
 import com.cohere.api.resources.v2.types.V2ChatStreamRequestSafetyMode;
+import com.cohere.api.resources.v2.types.V2ChatStreamRequestToolChoice;
 import com.cohere.api.types.ChatMessageV2;
 import com.cohere.api.types.CitationOptions;
 import com.cohere.api.types.ResponseFormatV2;
@@ -24,8 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = V2ChatStreamRequest.Builder.class)
 public final class V2ChatStreamRequest {
     private final String model;
@@ -48,21 +50,23 @@ public final class V2ChatStreamRequest {
 
     private final Optional<List<String>> stopSequences;
 
-    private final Optional<Double> temperature;
+    private final Optional<Float> temperature;
 
     private final Optional<Integer> seed;
 
-    private final Optional<Double> frequencyPenalty;
+    private final Optional<Float> frequencyPenalty;
 
-    private final Optional<Double> presencePenalty;
+    private final Optional<Float> presencePenalty;
 
-    private final Optional<Double> k;
+    private final Optional<Float> k;
 
-    private final Optional<Double> p;
+    private final Optional<Float> p;
 
     private final Optional<Boolean> returnPrompt;
 
     private final Optional<Boolean> logprobs;
+
+    private final Optional<V2ChatStreamRequestToolChoice> toolChoice;
 
     private final Map<String, Object> additionalProperties;
 
@@ -77,14 +81,15 @@ public final class V2ChatStreamRequest {
             Optional<V2ChatStreamRequestSafetyMode> safetyMode,
             Optional<Integer> maxTokens,
             Optional<List<String>> stopSequences,
-            Optional<Double> temperature,
+            Optional<Float> temperature,
             Optional<Integer> seed,
-            Optional<Double> frequencyPenalty,
-            Optional<Double> presencePenalty,
-            Optional<Double> k,
-            Optional<Double> p,
+            Optional<Float> frequencyPenalty,
+            Optional<Float> presencePenalty,
+            Optional<Float> k,
+            Optional<Float> p,
             Optional<Boolean> returnPrompt,
             Optional<Boolean> logprobs,
+            Optional<V2ChatStreamRequestToolChoice> toolChoice,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.messages = messages;
@@ -104,6 +109,7 @@ public final class V2ChatStreamRequest {
         this.p = p;
         this.returnPrompt = returnPrompt;
         this.logprobs = logprobs;
+        this.toolChoice = toolChoice;
         this.additionalProperties = additionalProperties;
     }
 
@@ -111,7 +117,6 @@ public final class V2ChatStreamRequest {
      * @return Defaults to <code>false</code>.
      * <p>When <code>true</code>, the response will be a SSE stream of events. The final event will contain the complete response, and will have an <code>event_type</code> of <code>&quot;stream-end&quot;</code>.</p>
      * <p>Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.</p>
-     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
      */
     @JsonProperty("stream")
     public Boolean getStream() {
@@ -119,7 +124,7 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> (such as command-r or command-r-plus) or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.
+     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -171,8 +176,8 @@ public final class V2ChatStreamRequest {
      * @return Used to select the <a href="https://docs.cohere.com/v2/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
      * When <code>OFF</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/v2/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
-     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
+     * <p><strong>Note</strong>: This parameter is only compatible newer Cohere models, starting with <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a> and <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a>.</p>
+     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and newer models only support <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
      */
     @JsonProperty("safety_mode")
     public Optional<V2ChatStreamRequestSafetyMode> getSafetyMode() {
@@ -202,7 +207,7 @@ public final class V2ChatStreamRequest {
      * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
      */
     @JsonProperty("temperature")
-    public Optional<Double> getTemperature() {
+    public Optional<Float> getTemperature() {
         return temperature;
     }
 
@@ -222,7 +227,7 @@ public final class V2ChatStreamRequest {
      * Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
      */
     @JsonProperty("frequency_penalty")
-    public Optional<Double> getFrequencyPenalty() {
+    public Optional<Float> getFrequencyPenalty() {
         return frequencyPenalty;
     }
 
@@ -231,7 +236,7 @@ public final class V2ChatStreamRequest {
      * Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
      */
     @JsonProperty("presence_penalty")
-    public Optional<Double> getPresencePenalty() {
+    public Optional<Float> getPresencePenalty() {
         return presencePenalty;
     }
 
@@ -240,7 +245,7 @@ public final class V2ChatStreamRequest {
      * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.
      */
     @JsonProperty("k")
-    public Optional<Double> getK() {
+    public Optional<Float> getK() {
         return k;
     }
 
@@ -249,7 +254,7 @@ public final class V2ChatStreamRequest {
      * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.
      */
     @JsonProperty("p")
-    public Optional<Double> getP() {
+    public Optional<Float> getP() {
         return p;
     }
 
@@ -267,6 +272,18 @@ public final class V2ChatStreamRequest {
     @JsonProperty("logprobs")
     public Optional<Boolean> getLogprobs() {
         return logprobs;
+    }
+
+    /**
+     * @return Used to control whether or not the model will be forced to use a tool when answering. When <code>REQUIRED</code> is specified, the model will be forced to use at least one of the user-defined tools, and the <code>tools</code> parameter must be passed in the request.
+     * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
+     * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.
+     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
+     * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
+     */
+    @JsonProperty("tool_choice")
+    public Optional<V2ChatStreamRequestToolChoice> getToolChoice() {
+        return toolChoice;
     }
 
     @java.lang.Override
@@ -298,7 +315,8 @@ public final class V2ChatStreamRequest {
                 && k.equals(other.k)
                 && p.equals(other.p)
                 && returnPrompt.equals(other.returnPrompt)
-                && logprobs.equals(other.logprobs);
+                && logprobs.equals(other.logprobs)
+                && toolChoice.equals(other.toolChoice);
     }
 
     @java.lang.Override
@@ -321,7 +339,8 @@ public final class V2ChatStreamRequest {
                 this.k,
                 this.p,
                 this.returnPrompt,
-                this.logprobs);
+                this.logprobs,
+                this.toolChoice);
     }
 
     @java.lang.Override
@@ -334,7 +353,7 @@ public final class V2ChatStreamRequest {
     }
 
     public interface ModelStage {
-        _FinalStage model(String model);
+        _FinalStage model(@NotNull String model);
 
         Builder from(V2ChatStreamRequest other);
     }
@@ -380,29 +399,29 @@ public final class V2ChatStreamRequest {
 
         _FinalStage stopSequences(List<String> stopSequences);
 
-        _FinalStage temperature(Optional<Double> temperature);
+        _FinalStage temperature(Optional<Float> temperature);
 
-        _FinalStage temperature(Double temperature);
+        _FinalStage temperature(Float temperature);
 
         _FinalStage seed(Optional<Integer> seed);
 
         _FinalStage seed(Integer seed);
 
-        _FinalStage frequencyPenalty(Optional<Double> frequencyPenalty);
+        _FinalStage frequencyPenalty(Optional<Float> frequencyPenalty);
 
-        _FinalStage frequencyPenalty(Double frequencyPenalty);
+        _FinalStage frequencyPenalty(Float frequencyPenalty);
 
-        _FinalStage presencePenalty(Optional<Double> presencePenalty);
+        _FinalStage presencePenalty(Optional<Float> presencePenalty);
 
-        _FinalStage presencePenalty(Double presencePenalty);
+        _FinalStage presencePenalty(Float presencePenalty);
 
-        _FinalStage k(Optional<Double> k);
+        _FinalStage k(Optional<Float> k);
 
-        _FinalStage k(Double k);
+        _FinalStage k(Float k);
 
-        _FinalStage p(Optional<Double> p);
+        _FinalStage p(Optional<Float> p);
 
-        _FinalStage p(Double p);
+        _FinalStage p(Float p);
 
         _FinalStage returnPrompt(Optional<Boolean> returnPrompt);
 
@@ -411,27 +430,33 @@ public final class V2ChatStreamRequest {
         _FinalStage logprobs(Optional<Boolean> logprobs);
 
         _FinalStage logprobs(Boolean logprobs);
+
+        _FinalStage toolChoice(Optional<V2ChatStreamRequestToolChoice> toolChoice);
+
+        _FinalStage toolChoice(V2ChatStreamRequestToolChoice toolChoice);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ModelStage, _FinalStage {
         private String model;
 
+        private Optional<V2ChatStreamRequestToolChoice> toolChoice = Optional.empty();
+
         private Optional<Boolean> logprobs = Optional.empty();
 
         private Optional<Boolean> returnPrompt = Optional.empty();
 
-        private Optional<Double> p = Optional.empty();
+        private Optional<Float> p = Optional.empty();
 
-        private Optional<Double> k = Optional.empty();
+        private Optional<Float> k = Optional.empty();
 
-        private Optional<Double> presencePenalty = Optional.empty();
+        private Optional<Float> presencePenalty = Optional.empty();
 
-        private Optional<Double> frequencyPenalty = Optional.empty();
+        private Optional<Float> frequencyPenalty = Optional.empty();
 
         private Optional<Integer> seed = Optional.empty();
 
-        private Optional<Double> temperature = Optional.empty();
+        private Optional<Float> temperature = Optional.empty();
 
         private Optional<List<String>> stopSequences = Optional.empty();
 
@@ -476,17 +501,39 @@ public final class V2ChatStreamRequest {
             p(other.getP());
             returnPrompt(other.getReturnPrompt());
             logprobs(other.getLogprobs());
+            toolChoice(other.getToolChoice());
             return this;
         }
 
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> (such as command-r or command-r-plus) or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("model")
-        public _FinalStage model(String model) {
-            this.model = model;
+        public _FinalStage model(@NotNull String model) {
+            this.model = Objects.requireNonNull(model, "model must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Used to control whether or not the model will be forced to use a tool when answering. When <code>REQUIRED</code> is specified, the model will be forced to use at least one of the user-defined tools, and the <code>tools</code> parameter must be passed in the request.
+         * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
+         * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.</p>
+         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
+         * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage toolChoice(V2ChatStreamRequestToolChoice toolChoice) {
+            this.toolChoice = Optional.ofNullable(toolChoice);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "tool_choice", nulls = Nulls.SKIP)
+        public _FinalStage toolChoice(Optional<V2ChatStreamRequestToolChoice> toolChoice) {
+            this.toolChoice = toolChoice;
             return this;
         }
 
@@ -496,7 +543,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage logprobs(Boolean logprobs) {
-            this.logprobs = Optional.of(logprobs);
+            this.logprobs = Optional.ofNullable(logprobs);
             return this;
         }
 
@@ -513,7 +560,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage returnPrompt(Boolean returnPrompt) {
-            this.returnPrompt = Optional.of(returnPrompt);
+            this.returnPrompt = Optional.ofNullable(returnPrompt);
             return this;
         }
 
@@ -530,14 +577,14 @@ public final class V2ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage p(Double p) {
-            this.p = Optional.of(p);
+        public _FinalStage p(Float p) {
+            this.p = Optional.ofNullable(p);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "p", nulls = Nulls.SKIP)
-        public _FinalStage p(Optional<Double> p) {
+        public _FinalStage p(Optional<Float> p) {
             this.p = p;
             return this;
         }
@@ -548,14 +595,14 @@ public final class V2ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage k(Double k) {
-            this.k = Optional.of(k);
+        public _FinalStage k(Float k) {
+            this.k = Optional.ofNullable(k);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "k", nulls = Nulls.SKIP)
-        public _FinalStage k(Optional<Double> k) {
+        public _FinalStage k(Optional<Float> k) {
             this.k = k;
             return this;
         }
@@ -566,14 +613,14 @@ public final class V2ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage presencePenalty(Double presencePenalty) {
-            this.presencePenalty = Optional.of(presencePenalty);
+        public _FinalStage presencePenalty(Float presencePenalty) {
+            this.presencePenalty = Optional.ofNullable(presencePenalty);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "presence_penalty", nulls = Nulls.SKIP)
-        public _FinalStage presencePenalty(Optional<Double> presencePenalty) {
+        public _FinalStage presencePenalty(Optional<Float> presencePenalty) {
             this.presencePenalty = presencePenalty;
             return this;
         }
@@ -584,14 +631,14 @@ public final class V2ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage frequencyPenalty(Double frequencyPenalty) {
-            this.frequencyPenalty = Optional.of(frequencyPenalty);
+        public _FinalStage frequencyPenalty(Float frequencyPenalty) {
+            this.frequencyPenalty = Optional.ofNullable(frequencyPenalty);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "frequency_penalty", nulls = Nulls.SKIP)
-        public _FinalStage frequencyPenalty(Optional<Double> frequencyPenalty) {
+        public _FinalStage frequencyPenalty(Optional<Float> frequencyPenalty) {
             this.frequencyPenalty = frequencyPenalty;
             return this;
         }
@@ -605,7 +652,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage seed(Integer seed) {
-            this.seed = Optional.of(seed);
+            this.seed = Optional.ofNullable(seed);
             return this;
         }
 
@@ -623,14 +670,14 @@ public final class V2ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage temperature(Double temperature) {
-            this.temperature = Optional.of(temperature);
+        public _FinalStage temperature(Float temperature) {
+            this.temperature = Optional.ofNullable(temperature);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
-        public _FinalStage temperature(Optional<Double> temperature) {
+        public _FinalStage temperature(Optional<Float> temperature) {
             this.temperature = temperature;
             return this;
         }
@@ -641,7 +688,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage stopSequences(List<String> stopSequences) {
-            this.stopSequences = Optional.of(stopSequences);
+            this.stopSequences = Optional.ofNullable(stopSequences);
             return this;
         }
 
@@ -659,7 +706,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage maxTokens(Integer maxTokens) {
-            this.maxTokens = Optional.of(maxTokens);
+            this.maxTokens = Optional.ofNullable(maxTokens);
             return this;
         }
 
@@ -674,13 +721,13 @@ public final class V2ChatStreamRequest {
          * <p>Used to select the <a href="https://docs.cohere.com/v2/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
          * When <code>OFF</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/v2/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
-         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
+         * <p><strong>Note</strong>: This parameter is only compatible newer Cohere models, starting with <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a> and <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a>.</p>
+         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and newer models only support <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         public _FinalStage safetyMode(V2ChatStreamRequestSafetyMode safetyMode) {
-            this.safetyMode = Optional.of(safetyMode);
+            this.safetyMode = Optional.ofNullable(safetyMode);
             return this;
         }
 
@@ -693,7 +740,7 @@ public final class V2ChatStreamRequest {
 
         @java.lang.Override
         public _FinalStage responseFormat(ResponseFormatV2 responseFormat) {
-            this.responseFormat = Optional.of(responseFormat);
+            this.responseFormat = Optional.ofNullable(responseFormat);
             return this;
         }
 
@@ -706,7 +753,7 @@ public final class V2ChatStreamRequest {
 
         @java.lang.Override
         public _FinalStage citationOptions(CitationOptions citationOptions) {
-            this.citationOptions = Optional.of(citationOptions);
+            this.citationOptions = Optional.ofNullable(citationOptions);
             return this;
         }
 
@@ -723,7 +770,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage documents(List<V2ChatStreamRequestDocumentsItem> documents) {
-            this.documents = Optional.of(documents);
+            this.documents = Optional.ofNullable(documents);
             return this;
         }
 
@@ -741,7 +788,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage strictTools(Boolean strictTools) {
-            this.strictTools = Optional.of(strictTools);
+            this.strictTools = Optional.ofNullable(strictTools);
             return this;
         }
 
@@ -759,7 +806,7 @@ public final class V2ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage tools(List<ToolV2> tools) {
-            this.tools = Optional.of(tools);
+            this.tools = Optional.ofNullable(tools);
             return this;
         }
 
@@ -811,6 +858,7 @@ public final class V2ChatStreamRequest {
                     p,
                     returnPrompt,
                     logprobs,
+                    toolChoice,
                     additionalProperties);
         }
     }

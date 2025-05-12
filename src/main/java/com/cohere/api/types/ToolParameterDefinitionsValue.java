@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolParameterDefinitionsValue.Builder.class)
 public final class ToolParameterDefinitionsValue {
     private final Optional<String> description;
@@ -93,7 +94,7 @@ public final class ToolParameterDefinitionsValue {
     }
 
     public interface TypeStage {
-        _FinalStage type(String type);
+        _FinalStage type(@NotNull String type);
 
         Builder from(ToolParameterDefinitionsValue other);
     }
@@ -137,8 +138,8 @@ public final class ToolParameterDefinitionsValue {
          */
         @java.lang.Override
         @JsonSetter("type")
-        public _FinalStage type(String type) {
-            this.type = type;
+        public _FinalStage type(@NotNull String type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 
@@ -148,7 +149,7 @@ public final class ToolParameterDefinitionsValue {
          */
         @java.lang.Override
         public _FinalStage required(Boolean required) {
-            this.required = Optional.of(required);
+            this.required = Optional.ofNullable(required);
             return this;
         }
 
@@ -165,7 +166,7 @@ public final class ToolParameterDefinitionsValue {
          */
         @java.lang.Override
         public _FinalStage description(String description) {
-            this.description = Optional.of(description);
+            this.description = Optional.ofNullable(description);
             return this;
         }
 

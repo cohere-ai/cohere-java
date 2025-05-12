@@ -19,21 +19,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = LogprobItem.Builder.class)
 public final class LogprobItem {
     private final Optional<String> text;
 
     private final List<Integer> tokenIds;
 
-    private final Optional<List<Double>> logprobs;
+    private final Optional<List<Float>> logprobs;
 
     private final Map<String, Object> additionalProperties;
 
     private LogprobItem(
             Optional<String> text,
             List<Integer> tokenIds,
-            Optional<List<Double>> logprobs,
+            Optional<List<Float>> logprobs,
             Map<String, Object> additionalProperties) {
         this.text = text;
         this.tokenIds = tokenIds;
@@ -61,7 +61,7 @@ public final class LogprobItem {
      * @return The log probability of each token used to construct the text chunk.
      */
     @JsonProperty("logprobs")
-    public Optional<List<Double>> getLogprobs() {
+    public Optional<List<Float>> getLogprobs() {
         return logprobs;
     }
 
@@ -100,7 +100,7 @@ public final class LogprobItem {
 
         private List<Integer> tokenIds = new ArrayList<>();
 
-        private Optional<List<Double>> logprobs = Optional.empty();
+        private Optional<List<Float>> logprobs = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -121,7 +121,7 @@ public final class LogprobItem {
         }
 
         public Builder text(String text) {
-            this.text = Optional.of(text);
+            this.text = Optional.ofNullable(text);
             return this;
         }
 
@@ -143,13 +143,13 @@ public final class LogprobItem {
         }
 
         @JsonSetter(value = "logprobs", nulls = Nulls.SKIP)
-        public Builder logprobs(Optional<List<Double>> logprobs) {
+        public Builder logprobs(Optional<List<Float>> logprobs) {
             this.logprobs = logprobs;
             return this;
         }
 
-        public Builder logprobs(List<Double> logprobs) {
-            this.logprobs = Optional.of(logprobs);
+        public Builder logprobs(List<Float> logprobs) {
+            this.logprobs = Optional.ofNullable(logprobs);
             return this;
         }
 

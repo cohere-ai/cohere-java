@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetricsEmbedDataFieldsItem.Builder.class)
 public final class MetricsEmbedDataFieldsItem {
     private final Optional<String> name;
@@ -102,7 +102,7 @@ public final class MetricsEmbedDataFieldsItem {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -113,7 +113,7 @@ public final class MetricsEmbedDataFieldsItem {
         }
 
         public Builder count(Double count) {
-            this.count = Optional.of(count);
+            this.count = Optional.ofNullable(count);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolSource.Builder.class)
 public final class ToolSource {
     private final Optional<String> id;
@@ -99,7 +99,7 @@ public final class ToolSource {
         }
 
         public Builder id(String id) {
-            this.id = Optional.of(id);
+            this.id = Optional.ofNullable(id);
             return this;
         }
 
@@ -110,7 +110,7 @@ public final class ToolSource {
         }
 
         public Builder toolOutput(Map<String, Object> toolOutput) {
-            this.toolOutput = Optional.of(toolOutput);
+            this.toolOutput = Optional.ofNullable(toolOutput);
             return this;
         }
 
