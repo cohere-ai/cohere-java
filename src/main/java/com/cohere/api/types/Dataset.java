@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = Dataset.Builder.class)
 public final class Dataset {
     private final String id;
@@ -215,29 +214,29 @@ public final class Dataset {
     }
 
     public interface IdStage {
-        NameStage id(@NotNull String id);
+        NameStage id(String id);
 
         Builder from(Dataset other);
     }
 
     public interface NameStage {
-        CreatedAtStage name(@NotNull String name);
+        CreatedAtStage name(String name);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        DatasetTypeStage updatedAt(@NotNull OffsetDateTime updatedAt);
+        DatasetTypeStage updatedAt(OffsetDateTime updatedAt);
     }
 
     public interface DatasetTypeStage {
-        ValidationStatusStage datasetType(@NotNull DatasetType datasetType);
+        ValidationStatusStage datasetType(DatasetType datasetType);
     }
 
     public interface ValidationStatusStage {
-        _FinalStage validationStatus(@NotNull DatasetValidationStatus validationStatus);
+        _FinalStage validationStatus(DatasetValidationStatus validationStatus);
     }
 
     public interface _FinalStage {
@@ -329,8 +328,8 @@ public final class Dataset {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public NameStage id(@NotNull String id) {
-            this.id = Objects.requireNonNull(id, "id must not be null");
+        public NameStage id(String id) {
+            this.id = id;
             return this;
         }
 
@@ -340,8 +339,8 @@ public final class Dataset {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public CreatedAtStage name(@NotNull String name) {
-            this.name = Objects.requireNonNull(name, "name must not be null");
+        public CreatedAtStage name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -351,8 +350,8 @@ public final class Dataset {
          */
         @java.lang.Override
         @JsonSetter("created_at")
-        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
-            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
+        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = createdAt;
             return this;
         }
 
@@ -362,22 +361,22 @@ public final class Dataset {
          */
         @java.lang.Override
         @JsonSetter("updated_at")
-        public DatasetTypeStage updatedAt(@NotNull OffsetDateTime updatedAt) {
-            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
+        public DatasetTypeStage updatedAt(OffsetDateTime updatedAt) {
+            this.updatedAt = updatedAt;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("dataset_type")
-        public ValidationStatusStage datasetType(@NotNull DatasetType datasetType) {
-            this.datasetType = Objects.requireNonNull(datasetType, "datasetType must not be null");
+        public ValidationStatusStage datasetType(DatasetType datasetType) {
+            this.datasetType = datasetType;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("validation_status")
-        public _FinalStage validationStatus(@NotNull DatasetValidationStatus validationStatus) {
-            this.validationStatus = Objects.requireNonNull(validationStatus, "validationStatus must not be null");
+        public _FinalStage validationStatus(DatasetValidationStatus validationStatus) {
+            this.validationStatus = validationStatus;
             return this;
         }
 
@@ -387,7 +386,7 @@ public final class Dataset {
          */
         @java.lang.Override
         public _FinalStage validationWarnings(List<String> validationWarnings) {
-            this.validationWarnings = Optional.ofNullable(validationWarnings);
+            this.validationWarnings = Optional.of(validationWarnings);
             return this;
         }
 
@@ -404,7 +403,7 @@ public final class Dataset {
          */
         @java.lang.Override
         public _FinalStage datasetParts(List<DatasetPart> datasetParts) {
-            this.datasetParts = Optional.ofNullable(datasetParts);
+            this.datasetParts = Optional.of(datasetParts);
             return this;
         }
 
@@ -417,7 +416,7 @@ public final class Dataset {
 
         @java.lang.Override
         public _FinalStage preserveFields(List<String> preserveFields) {
-            this.preserveFields = Optional.ofNullable(preserveFields);
+            this.preserveFields = Optional.of(preserveFields);
             return this;
         }
 
@@ -430,7 +429,7 @@ public final class Dataset {
 
         @java.lang.Override
         public _FinalStage requiredFields(List<String> requiredFields) {
-            this.requiredFields = Optional.ofNullable(requiredFields);
+            this.requiredFields = Optional.of(requiredFields);
             return this;
         }
 
@@ -447,7 +446,7 @@ public final class Dataset {
          */
         @java.lang.Override
         public _FinalStage schema(String schema) {
-            this.schema = Optional.ofNullable(schema);
+            this.schema = Optional.of(schema);
             return this;
         }
 
@@ -464,7 +463,7 @@ public final class Dataset {
          */
         @java.lang.Override
         public _FinalStage validationError(String validationError) {
-            this.validationError = Optional.ofNullable(validationError);
+            this.validationError = Optional.of(validationError);
             return this;
         }
 

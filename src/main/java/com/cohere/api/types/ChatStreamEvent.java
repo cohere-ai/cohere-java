@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatStreamEvent.Builder.class)
 public final class ChatStreamEvent implements IChatStreamEvent {
     private final Map<String, Object> additionalProperties;

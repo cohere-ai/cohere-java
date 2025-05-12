@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = MetricsEmbedData.Builder.class)
 public final class MetricsEmbedData {
     private final Optional<List<MetricsEmbedDataFieldsItem>> fields;
@@ -89,7 +89,7 @@ public final class MetricsEmbedData {
         }
 
         public Builder fields(List<MetricsEmbedDataFieldsItem> fields) {
-            this.fields = Optional.ofNullable(fields);
+            this.fields = Optional.of(fields);
             return this;
         }
 

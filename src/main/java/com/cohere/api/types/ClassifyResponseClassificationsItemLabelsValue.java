@@ -17,21 +17,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ClassifyResponseClassificationsItemLabelsValue.Builder.class)
 public final class ClassifyResponseClassificationsItemLabelsValue {
-    private final Optional<Float> confidence;
+    private final Optional<Double> confidence;
 
     private final Map<String, Object> additionalProperties;
 
     private ClassifyResponseClassificationsItemLabelsValue(
-            Optional<Float> confidence, Map<String, Object> additionalProperties) {
+            Optional<Double> confidence, Map<String, Object> additionalProperties) {
         this.confidence = confidence;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("confidence")
-    public Optional<Float> getConfidence() {
+    public Optional<Double> getConfidence() {
         return confidence;
     }
 
@@ -67,7 +67,7 @@ public final class ClassifyResponseClassificationsItemLabelsValue {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Float> confidence = Optional.empty();
+        private Optional<Double> confidence = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -80,13 +80,13 @@ public final class ClassifyResponseClassificationsItemLabelsValue {
         }
 
         @JsonSetter(value = "confidence", nulls = Nulls.SKIP)
-        public Builder confidence(Optional<Float> confidence) {
+        public Builder confidence(Optional<Double> confidence) {
             this.confidence = confidence;
             return this;
         }
 
-        public Builder confidence(Float confidence) {
-            this.confidence = Optional.ofNullable(confidence);
+        public Builder confidence(Double confidence) {
+            this.confidence = Optional.of(confidence);
             return this;
         }
 

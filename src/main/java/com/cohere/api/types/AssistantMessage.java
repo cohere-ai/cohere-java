@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = AssistantMessage.Builder.class)
 public final class AssistantMessage {
     private final Optional<List<ToolCallV2>> toolCalls;
@@ -129,7 +129,7 @@ public final class AssistantMessage {
         }
 
         public Builder toolCalls(List<ToolCallV2> toolCalls) {
-            this.toolCalls = Optional.ofNullable(toolCalls);
+            this.toolCalls = Optional.of(toolCalls);
             return this;
         }
 
@@ -140,7 +140,7 @@ public final class AssistantMessage {
         }
 
         public Builder toolPlan(String toolPlan) {
-            this.toolPlan = Optional.ofNullable(toolPlan);
+            this.toolPlan = Optional.of(toolPlan);
             return this;
         }
 
@@ -151,7 +151,7 @@ public final class AssistantMessage {
         }
 
         public Builder content(AssistantMessageContent content) {
-            this.content = Optional.ofNullable(content);
+            this.content = Optional.of(content);
             return this;
         }
 
@@ -162,7 +162,7 @@ public final class AssistantMessage {
         }
 
         public Builder citations(List<Citation> citations) {
-            this.citations = Optional.ofNullable(citations);
+            this.citations = Optional.of(citations);
             return this;
         }
 

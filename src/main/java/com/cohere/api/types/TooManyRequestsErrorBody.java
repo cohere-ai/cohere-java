@@ -17,27 +17,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = EmbedImage.Builder.class)
-public final class EmbedImage {
-    private final Optional<EmbedImageUrl> imageUrl;
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonDeserialize(builder = TooManyRequestsErrorBody.Builder.class)
+public final class TooManyRequestsErrorBody {
+    private final Optional<String> data;
 
     private final Map<String, Object> additionalProperties;
 
-    private EmbedImage(Optional<EmbedImageUrl> imageUrl, Map<String, Object> additionalProperties) {
-        this.imageUrl = imageUrl;
+    private TooManyRequestsErrorBody(Optional<String> data, Map<String, Object> additionalProperties) {
+        this.data = data;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("image_url")
-    public Optional<EmbedImageUrl> getImageUrl() {
-        return imageUrl;
+    @JsonProperty("data")
+    public Optional<String> getData() {
+        return data;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof EmbedImage && equalTo((EmbedImage) other);
+        return other instanceof TooManyRequestsErrorBody && equalTo((TooManyRequestsErrorBody) other);
     }
 
     @JsonAnyGetter
@@ -45,13 +45,13 @@ public final class EmbedImage {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(EmbedImage other) {
-        return imageUrl.equals(other.imageUrl);
+    private boolean equalTo(TooManyRequestsErrorBody other) {
+        return data.equals(other.data);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.imageUrl);
+        return Objects.hash(this.data);
     }
 
     @java.lang.Override
@@ -65,31 +65,31 @@ public final class EmbedImage {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<EmbedImageUrl> imageUrl = Optional.empty();
+        private Optional<String> data = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(EmbedImage other) {
-            imageUrl(other.getImageUrl());
+        public Builder from(TooManyRequestsErrorBody other) {
+            data(other.getData());
             return this;
         }
 
-        @JsonSetter(value = "image_url", nulls = Nulls.SKIP)
-        public Builder imageUrl(Optional<EmbedImageUrl> imageUrl) {
-            this.imageUrl = imageUrl;
+        @JsonSetter(value = "data", nulls = Nulls.SKIP)
+        public Builder data(Optional<String> data) {
+            this.data = data;
             return this;
         }
 
-        public Builder imageUrl(EmbedImageUrl imageUrl) {
-            this.imageUrl = Optional.ofNullable(imageUrl);
+        public Builder data(String data) {
+            this.data = Optional.of(data);
             return this;
         }
 
-        public EmbedImage build() {
-            return new EmbedImage(imageUrl, additionalProperties);
+        public TooManyRequestsErrorBody build() {
+            return new TooManyRequestsErrorBody(data, additionalProperties);
         }
     }
 }

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ClassifyExample.Builder.class)
 public final class ClassifyExample {
     private final Optional<String> text;
@@ -95,7 +95,7 @@ public final class ClassifyExample {
         }
 
         public Builder text(String text) {
-            this.text = Optional.ofNullable(text);
+            this.text = Optional.of(text);
             return this;
         }
 
@@ -106,7 +106,7 @@ public final class ClassifyExample {
         }
 
         public Builder label(String label) {
-            this.label = Optional.ofNullable(label);
+            this.label = Optional.of(label);
             return this;
         }
 

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = V2RerankResponse.Builder.class)
 public final class V2RerankResponse {
     private final Optional<String> id;
@@ -116,7 +116,7 @@ public final class V2RerankResponse {
         }
 
         public Builder id(String id) {
-            this.id = Optional.ofNullable(id);
+            this.id = Optional.of(id);
             return this;
         }
 
@@ -144,7 +144,7 @@ public final class V2RerankResponse {
         }
 
         public Builder meta(ApiMeta meta) {
-            this.meta = Optional.ofNullable(meta);
+            this.meta = Optional.of(meta);
             return this;
         }
 

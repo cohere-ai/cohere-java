@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatCitationGenerationEvent.Builder.class)
 public final class ChatCitationGenerationEvent implements IChatStreamEvent {
     private final List<ChatCitation> citations;

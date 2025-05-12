@@ -3,15 +3,15 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiException;
+import com.cohere.api.core.CohereApiApiError;
 
-public final class NotFoundError extends CohereApiException {
+public final class CohereApiNotFoundError extends CohereApiApiError {
     /**
      * The body of the response that triggered the exception.
      */
     private final Object body;
 
-    public NotFoundError(Object body) {
+    public CohereApiNotFoundError(Object body) {
         super("NotFoundError", 404, body);
         this.body = body;
     }

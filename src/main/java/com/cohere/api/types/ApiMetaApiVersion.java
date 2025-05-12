@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApiMetaApiVersion.Builder.class)
 public final class ApiMetaApiVersion {
     private final String version;
@@ -87,7 +86,7 @@ public final class ApiMetaApiVersion {
     }
 
     public interface VersionStage {
-        _FinalStage version(@NotNull String version);
+        _FinalStage version(String version);
 
         Builder from(ApiMetaApiVersion other);
     }
@@ -127,14 +126,14 @@ public final class ApiMetaApiVersion {
 
         @java.lang.Override
         @JsonSetter("version")
-        public _FinalStage version(@NotNull String version) {
-            this.version = Objects.requireNonNull(version, "version must not be null");
+        public _FinalStage version(String version) {
+            this.version = version;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage isExperimental(Boolean isExperimental) {
-            this.isExperimental = Optional.ofNullable(isExperimental);
+            this.isExperimental = Optional.of(isExperimental);
             return this;
         }
 
@@ -147,7 +146,7 @@ public final class ApiMetaApiVersion {
 
         @java.lang.Override
         public _FinalStage isDeprecated(Boolean isDeprecated) {
-            this.isDeprecated = Optional.ofNullable(isDeprecated);
+            this.isDeprecated = Optional.of(isDeprecated);
             return this;
         }
 

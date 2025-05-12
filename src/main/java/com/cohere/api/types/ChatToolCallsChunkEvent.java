@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatToolCallsChunkEvent.Builder.class)
 public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
     private final ToolCallDelta toolCallDelta;
@@ -74,7 +73,7 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
     }
 
     public interface ToolCallDeltaStage {
-        _FinalStage toolCallDelta(@NotNull ToolCallDelta toolCallDelta);
+        _FinalStage toolCallDelta(ToolCallDelta toolCallDelta);
 
         Builder from(ChatToolCallsChunkEvent other);
     }
@@ -107,14 +106,14 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
 
         @java.lang.Override
         @JsonSetter("tool_call_delta")
-        public _FinalStage toolCallDelta(@NotNull ToolCallDelta toolCallDelta) {
-            this.toolCallDelta = Objects.requireNonNull(toolCallDelta, "toolCallDelta must not be null");
+        public _FinalStage toolCallDelta(ToolCallDelta toolCallDelta) {
+            this.toolCallDelta = toolCallDelta;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage text(String text) {
-            this.text = Optional.ofNullable(text);
+            this.text = Optional.of(text);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = SummarizeResponse.Builder.class)
 public final class SummarizeResponse {
     private final Optional<String> id;
@@ -116,7 +116,7 @@ public final class SummarizeResponse {
         }
 
         public Builder id(String id) {
-            this.id = Optional.ofNullable(id);
+            this.id = Optional.of(id);
             return this;
         }
 
@@ -127,7 +127,7 @@ public final class SummarizeResponse {
         }
 
         public Builder summary(String summary) {
-            this.summary = Optional.ofNullable(summary);
+            this.summary = Optional.of(summary);
             return this;
         }
 
@@ -138,7 +138,7 @@ public final class SummarizeResponse {
         }
 
         public Builder meta(ApiMeta meta) {
-            this.meta = Optional.ofNullable(meta);
+            this.meta = Optional.of(meta);
             return this;
         }
 

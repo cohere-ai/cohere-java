@@ -17,21 +17,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = RerankResponseResultsItem.Builder.class)
 public final class RerankResponseResultsItem {
     private final Optional<RerankResponseResultsItemDocument> document;
 
     private final int index;
 
-    private final float relevanceScore;
+    private final double relevanceScore;
 
     private final Map<String, Object> additionalProperties;
 
     private RerankResponseResultsItem(
             Optional<RerankResponseResultsItemDocument> document,
             int index,
-            float relevanceScore,
+            double relevanceScore,
             Map<String, Object> additionalProperties) {
         this.document = document;
         this.index = index;
@@ -59,7 +59,7 @@ public final class RerankResponseResultsItem {
      * @return Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45
      */
     @JsonProperty("relevance_score")
-    public float getRelevanceScore() {
+    public double getRelevanceScore() {
         return relevanceScore;
     }
 
@@ -99,7 +99,7 @@ public final class RerankResponseResultsItem {
     }
 
     public interface RelevanceScoreStage {
-        _FinalStage relevanceScore(float relevanceScore);
+        _FinalStage relevanceScore(double relevanceScore);
     }
 
     public interface _FinalStage {
@@ -114,7 +114,7 @@ public final class RerankResponseResultsItem {
     public static final class Builder implements IndexStage, RelevanceScoreStage, _FinalStage {
         private int index;
 
-        private float relevanceScore;
+        private double relevanceScore;
 
         private Optional<RerankResponseResultsItemDocument> document = Optional.empty();
 
@@ -148,7 +148,7 @@ public final class RerankResponseResultsItem {
          */
         @java.lang.Override
         @JsonSetter("relevance_score")
-        public _FinalStage relevanceScore(float relevanceScore) {
+        public _FinalStage relevanceScore(double relevanceScore) {
             this.relevanceScore = relevanceScore;
             return this;
         }
@@ -159,7 +159,7 @@ public final class RerankResponseResultsItem {
          */
         @java.lang.Override
         public _FinalStage document(RerankResponseResultsItemDocument document) {
-            this.document = Optional.ofNullable(document);
+            this.document = Optional.of(document);
             return this;
         }
 

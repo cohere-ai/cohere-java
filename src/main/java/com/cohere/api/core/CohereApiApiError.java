@@ -6,7 +6,7 @@ package com.cohere.api.core;
 /**
  * This exception type will be thrown for any non-2XX API responses.
  */
-public class CohereApiException extends CohereException {
+public class CohereApiApiError extends CohereApiError {
     /**
      * The error code of the response that triggered the exception.
      */
@@ -17,7 +17,7 @@ public class CohereApiException extends CohereException {
      */
     private final Object body;
 
-    public CohereApiException(String message, int statusCode, Object body) {
+    public CohereApiApiError(String message, int statusCode, Object body) {
         super(message);
         this.statusCode = statusCode;
         this.body = body;
@@ -39,7 +39,7 @@ public class CohereApiException extends CohereException {
 
     @java.lang.Override
     public String toString() {
-        return "CohereApiException{" + "message: " + getMessage() + ", statusCode: " + statusCode + ", body: " + body
+        return "CohereApiApiError{" + "message: " + getMessage() + ", statusCode: " + statusCode + ", body: " + body
                 + "}";
     }
 }

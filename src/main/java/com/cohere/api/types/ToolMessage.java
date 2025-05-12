@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ToolMessage.Builder.class)
 public final class ToolMessage {
     private final Optional<List<ToolResult>> toolResults;
@@ -85,7 +85,7 @@ public final class ToolMessage {
         }
 
         public Builder toolResults(List<ToolResult> toolResults) {
-            this.toolResults = Optional.ofNullable(toolResults);
+            this.toolResults = Optional.of(toolResults);
             return this;
         }
 

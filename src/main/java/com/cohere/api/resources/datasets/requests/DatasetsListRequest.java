@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = DatasetsListRequest.Builder.class)
 public final class DatasetsListRequest {
     private final Optional<String> datasetType;
@@ -171,7 +171,7 @@ public final class DatasetsListRequest {
         }
 
         public Builder datasetType(String datasetType) {
-            this.datasetType = Optional.ofNullable(datasetType);
+            this.datasetType = Optional.of(datasetType);
             return this;
         }
 
@@ -182,7 +182,7 @@ public final class DatasetsListRequest {
         }
 
         public Builder before(OffsetDateTime before) {
-            this.before = Optional.ofNullable(before);
+            this.before = Optional.of(before);
             return this;
         }
 
@@ -193,7 +193,7 @@ public final class DatasetsListRequest {
         }
 
         public Builder after(OffsetDateTime after) {
-            this.after = Optional.ofNullable(after);
+            this.after = Optional.of(after);
             return this;
         }
 
@@ -204,7 +204,7 @@ public final class DatasetsListRequest {
         }
 
         public Builder limit(Double limit) {
-            this.limit = Optional.ofNullable(limit);
+            this.limit = Optional.of(limit);
             return this;
         }
 
@@ -215,7 +215,7 @@ public final class DatasetsListRequest {
         }
 
         public Builder offset(Double offset) {
-            this.offset = Optional.ofNullable(offset);
+            this.offset = Optional.of(offset);
             return this;
         }
 
@@ -226,7 +226,7 @@ public final class DatasetsListRequest {
         }
 
         public Builder validationStatus(DatasetValidationStatus validationStatus) {
-            this.validationStatus = Optional.ofNullable(validationStatus);
+            this.validationStatus = Optional.of(validationStatus);
             return this;
         }
 

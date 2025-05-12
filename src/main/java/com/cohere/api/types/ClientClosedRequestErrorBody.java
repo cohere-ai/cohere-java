@@ -10,33 +10,34 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = EmbedImageUrl.Builder.class)
-public final class EmbedImageUrl {
-    private final String url;
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonDeserialize(builder = ClientClosedRequestErrorBody.Builder.class)
+public final class ClientClosedRequestErrorBody {
+    private final Optional<String> data;
 
     private final Map<String, Object> additionalProperties;
 
-    private EmbedImageUrl(String url, Map<String, Object> additionalProperties) {
-        this.url = url;
+    private ClientClosedRequestErrorBody(Optional<String> data, Map<String, Object> additionalProperties) {
+        this.data = data;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("url")
-    public String getUrl() {
-        return url;
+    @JsonProperty("data")
+    public Optional<String> getData() {
+        return data;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof EmbedImageUrl && equalTo((EmbedImageUrl) other);
+        return other instanceof ClientClosedRequestErrorBody && equalTo((ClientClosedRequestErrorBody) other);
     }
 
     @JsonAnyGetter
@@ -44,13 +45,13 @@ public final class EmbedImageUrl {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(EmbedImageUrl other) {
-        return url.equals(other.url);
+    private boolean equalTo(ClientClosedRequestErrorBody other) {
+        return data.equals(other.data);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.url);
+        return Objects.hash(this.data);
     }
 
     @java.lang.Override
@@ -58,45 +59,37 @@ public final class EmbedImageUrl {
         return ObjectMappers.stringify(this);
     }
 
-    public static UrlStage builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    public interface UrlStage {
-        _FinalStage url(@NotNull String url);
-
-        Builder from(EmbedImageUrl other);
-    }
-
-    public interface _FinalStage {
-        EmbedImageUrl build();
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements UrlStage, _FinalStage {
-        private String url;
+    public static final class Builder {
+        private Optional<String> data = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @java.lang.Override
-        public Builder from(EmbedImageUrl other) {
-            url(other.getUrl());
+        public Builder from(ClientClosedRequestErrorBody other) {
+            data(other.getData());
             return this;
         }
 
-        @java.lang.Override
-        @JsonSetter("url")
-        public _FinalStage url(@NotNull String url) {
-            this.url = Objects.requireNonNull(url, "url must not be null");
+        @JsonSetter(value = "data", nulls = Nulls.SKIP)
+        public Builder data(Optional<String> data) {
+            this.data = data;
             return this;
         }
 
-        @java.lang.Override
-        public EmbedImageUrl build() {
-            return new EmbedImageUrl(url, additionalProperties);
+        public Builder data(String data) {
+            this.data = Optional.of(data);
+            return this;
+        }
+
+        public ClientClosedRequestErrorBody build() {
+            return new ClientClosedRequestErrorBody(data, additionalProperties);
         }
     }
 }

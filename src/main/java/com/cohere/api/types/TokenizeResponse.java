@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = TokenizeResponse.Builder.class)
 public final class TokenizeResponse {
     private final List<Integer> tokens;
@@ -149,7 +149,7 @@ public final class TokenizeResponse {
         }
 
         public Builder meta(ApiMeta meta) {
-            this.meta = Optional.ofNullable(meta);
+            this.meta = Optional.of(meta);
             return this;
         }
 

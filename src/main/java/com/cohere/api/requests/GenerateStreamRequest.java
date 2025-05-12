@@ -19,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = GenerateStreamRequest.Builder.class)
 public final class GenerateStreamRequest {
     private final String prompt;
@@ -318,7 +317,7 @@ public final class GenerateStreamRequest {
     }
 
     public interface PromptStage {
-        _FinalStage prompt(@NotNull String prompt);
+        _FinalStage prompt(String prompt);
 
         Builder from(GenerateStreamRequest other);
     }
@@ -454,8 +453,8 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         @JsonSetter("prompt")
-        public _FinalStage prompt(@NotNull String prompt) {
-            this.prompt = Objects.requireNonNull(prompt, "prompt must not be null");
+        public _FinalStage prompt(String prompt) {
+            this.prompt = prompt;
             return this;
         }
 
@@ -465,7 +464,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage rawPrompting(Boolean rawPrompting) {
-            this.rawPrompting = Optional.ofNullable(rawPrompting);
+            this.rawPrompting = Optional.of(rawPrompting);
             return this;
         }
 
@@ -484,7 +483,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage returnLikelihoods(GenerateStreamRequestReturnLikelihoods returnLikelihoods) {
-            this.returnLikelihoods = Optional.ofNullable(returnLikelihoods);
+            this.returnLikelihoods = Optional.of(returnLikelihoods);
             return this;
         }
 
@@ -503,7 +502,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage presencePenalty(Double presencePenalty) {
-            this.presencePenalty = Optional.ofNullable(presencePenalty);
+            this.presencePenalty = Optional.of(presencePenalty);
             return this;
         }
 
@@ -521,7 +520,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage frequencyPenalty(Double frequencyPenalty) {
-            this.frequencyPenalty = Optional.ofNullable(frequencyPenalty);
+            this.frequencyPenalty = Optional.of(frequencyPenalty);
             return this;
         }
 
@@ -539,7 +538,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage p(Double p) {
-            this.p = Optional.ofNullable(p);
+            this.p = Optional.of(p);
             return this;
         }
 
@@ -557,7 +556,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage k(Integer k) {
-            this.k = Optional.ofNullable(k);
+            this.k = Optional.of(k);
             return this;
         }
 
@@ -574,7 +573,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage stopSequences(List<String> stopSequences) {
-            this.stopSequences = Optional.ofNullable(stopSequences);
+            this.stopSequences = Optional.of(stopSequences);
             return this;
         }
 
@@ -591,7 +590,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage endSequences(List<String> endSequences) {
-            this.endSequences = Optional.ofNullable(endSequences);
+            this.endSequences = Optional.of(endSequences);
             return this;
         }
 
@@ -609,7 +608,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage preset(String preset) {
-            this.preset = Optional.ofNullable(preset);
+            this.preset = Optional.of(preset);
             return this;
         }
 
@@ -630,7 +629,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage seed(Integer seed) {
-            this.seed = Optional.ofNullable(seed);
+            this.seed = Optional.of(seed);
             return this;
         }
 
@@ -648,7 +647,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage temperature(Double temperature) {
-            this.temperature = Optional.ofNullable(temperature);
+            this.temperature = Optional.of(temperature);
             return this;
         }
 
@@ -667,7 +666,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage truncate(GenerateStreamRequestTruncate truncate) {
-            this.truncate = Optional.ofNullable(truncate);
+            this.truncate = Optional.of(truncate);
             return this;
         }
 
@@ -686,7 +685,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage maxTokens(Integer maxTokens) {
-            this.maxTokens = Optional.ofNullable(maxTokens);
+            this.maxTokens = Optional.of(maxTokens);
             return this;
         }
 
@@ -703,7 +702,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage numGenerations(Integer numGenerations) {
-            this.numGenerations = Optional.ofNullable(numGenerations);
+            this.numGenerations = Optional.of(numGenerations);
             return this;
         }
 
@@ -721,7 +720,7 @@ public final class GenerateStreamRequest {
          */
         @java.lang.Override
         public _FinalStage model(String model) {
-            this.model = Optional.ofNullable(model);
+            this.model = Optional.of(model);
             return this;
         }
 

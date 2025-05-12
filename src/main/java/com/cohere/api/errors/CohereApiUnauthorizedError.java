@@ -3,16 +3,16 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiException;
+import com.cohere.api.core.CohereApiApiError;
 
-public final class BadRequestError extends CohereApiException {
+public final class CohereApiUnauthorizedError extends CohereApiApiError {
     /**
      * The body of the response that triggered the exception.
      */
     private final Object body;
 
-    public BadRequestError(Object body) {
-        super("BadRequestError", 400, body);
+    public CohereApiUnauthorizedError(Object body) {
+        super("UnauthorizedError", 401, body);
         this.body = body;
     }
 

@@ -17,9 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EmbedJob.Builder.class)
 public final class EmbedJob {
     private final String jobId;
@@ -181,29 +180,29 @@ public final class EmbedJob {
     }
 
     public interface JobIdStage {
-        StatusStage jobId(@NotNull String jobId);
+        StatusStage jobId(String jobId);
 
         Builder from(EmbedJob other);
     }
 
     public interface StatusStage {
-        CreatedAtStage status(@NotNull EmbedJobStatus status);
+        CreatedAtStage status(EmbedJobStatus status);
     }
 
     public interface CreatedAtStage {
-        InputDatasetIdStage createdAt(@NotNull OffsetDateTime createdAt);
+        InputDatasetIdStage createdAt(OffsetDateTime createdAt);
     }
 
     public interface InputDatasetIdStage {
-        ModelStage inputDatasetId(@NotNull String inputDatasetId);
+        ModelStage inputDatasetId(String inputDatasetId);
     }
 
     public interface ModelStage {
-        TruncateStage model(@NotNull String model);
+        TruncateStage model(String model);
     }
 
     public interface TruncateStage {
-        _FinalStage truncate(@NotNull EmbedJobTruncate truncate);
+        _FinalStage truncate(EmbedJobTruncate truncate);
     }
 
     public interface _FinalStage {
@@ -274,8 +273,8 @@ public final class EmbedJob {
          */
         @java.lang.Override
         @JsonSetter("job_id")
-        public StatusStage jobId(@NotNull String jobId) {
-            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
+        public StatusStage jobId(String jobId) {
+            this.jobId = jobId;
             return this;
         }
 
@@ -285,8 +284,8 @@ public final class EmbedJob {
          */
         @java.lang.Override
         @JsonSetter("status")
-        public CreatedAtStage status(@NotNull EmbedJobStatus status) {
-            this.status = Objects.requireNonNull(status, "status must not be null");
+        public CreatedAtStage status(EmbedJobStatus status) {
+            this.status = status;
             return this;
         }
 
@@ -296,8 +295,8 @@ public final class EmbedJob {
          */
         @java.lang.Override
         @JsonSetter("created_at")
-        public InputDatasetIdStage createdAt(@NotNull OffsetDateTime createdAt) {
-            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
+        public InputDatasetIdStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = createdAt;
             return this;
         }
 
@@ -307,8 +306,8 @@ public final class EmbedJob {
          */
         @java.lang.Override
         @JsonSetter("input_dataset_id")
-        public ModelStage inputDatasetId(@NotNull String inputDatasetId) {
-            this.inputDatasetId = Objects.requireNonNull(inputDatasetId, "inputDatasetId must not be null");
+        public ModelStage inputDatasetId(String inputDatasetId) {
+            this.inputDatasetId = inputDatasetId;
             return this;
         }
 
@@ -318,8 +317,8 @@ public final class EmbedJob {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public TruncateStage model(@NotNull String model) {
-            this.model = Objects.requireNonNull(model, "model must not be null");
+        public TruncateStage model(String model) {
+            this.model = model;
             return this;
         }
 
@@ -329,14 +328,14 @@ public final class EmbedJob {
          */
         @java.lang.Override
         @JsonSetter("truncate")
-        public _FinalStage truncate(@NotNull EmbedJobTruncate truncate) {
-            this.truncate = Objects.requireNonNull(truncate, "truncate must not be null");
+        public _FinalStage truncate(EmbedJobTruncate truncate) {
+            this.truncate = truncate;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.ofNullable(meta);
+            this.meta = Optional.of(meta);
             return this;
         }
 
@@ -353,7 +352,7 @@ public final class EmbedJob {
          */
         @java.lang.Override
         public _FinalStage outputDatasetId(String outputDatasetId) {
-            this.outputDatasetId = Optional.ofNullable(outputDatasetId);
+            this.outputDatasetId = Optional.of(outputDatasetId);
             return this;
         }
 
@@ -370,7 +369,7 @@ public final class EmbedJob {
          */
         @java.lang.Override
         public _FinalStage name(String name) {
-            this.name = Optional.ofNullable(name);
+            this.name = Optional.of(name);
             return this;
         }
 

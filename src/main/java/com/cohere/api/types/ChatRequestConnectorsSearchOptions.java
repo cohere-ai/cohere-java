@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatRequestConnectorsSearchOptions.Builder.class)
 public final class ChatRequestConnectorsSearchOptions {
     private final Optional<Integer> seed;
@@ -92,7 +92,7 @@ public final class ChatRequestConnectorsSearchOptions {
         }
 
         public Builder seed(Integer seed) {
-            this.seed = Optional.ofNullable(seed);
+            this.seed = Optional.of(seed);
             return this;
         }
 

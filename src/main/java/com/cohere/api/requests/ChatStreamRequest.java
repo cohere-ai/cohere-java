@@ -25,9 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatStreamRequest.Builder.class)
 public final class ChatStreamRequest {
     private final Optional<String> accepts;
@@ -52,7 +51,7 @@ public final class ChatStreamRequest {
 
     private final Optional<ChatStreamRequestCitationQuality> citationQuality;
 
-    private final Optional<Float> temperature;
+    private final Optional<Double> temperature;
 
     private final Optional<Integer> maxTokens;
 
@@ -98,7 +97,7 @@ public final class ChatStreamRequest {
             Optional<Boolean> searchQueriesOnly,
             Optional<List<Map<String, String>>> documents,
             Optional<ChatStreamRequestCitationQuality> citationQuality,
-            Optional<Float> temperature,
+            Optional<Double> temperature,
             Optional<Integer> maxTokens,
             Optional<Integer> maxInputTokens,
             Optional<Integer> k,
@@ -163,7 +162,8 @@ public final class ChatStreamRequest {
     }
 
     /**
-     * @return The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.
+     * @return Defaults to <code>command-r-plus-08-2024</code>.
+     * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
      * <p>Compatible Deployments: Cohere Platform, Private Deployments</p>
      */
     @JsonProperty("model")
@@ -287,7 +287,7 @@ public final class ChatStreamRequest {
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
      */
     @JsonProperty("temperature")
-    public Optional<Float> getTemperature() {
+    public Optional<Double> getTemperature() {
         return temperature;
     }
 
@@ -443,8 +443,8 @@ public final class ChatStreamRequest {
      * @return Used to select the <a href="https://docs.cohere.com/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
      * When <code>NONE</code> is specified, the safety instruction will be omitted.
      * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-     * <p><strong>Note</strong>: This parameter is only compatible newer Cohere models, starting with <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a> and <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a>.</p>
-     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and newer models only support <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
+     * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
      */
     @JsonProperty("safety_mode")
@@ -535,7 +535,7 @@ public final class ChatStreamRequest {
     }
 
     public interface MessageStage {
-        _FinalStage message(@NotNull String message);
+        _FinalStage message(String message);
 
         Builder from(ChatStreamRequest other);
     }
@@ -583,9 +583,9 @@ public final class ChatStreamRequest {
 
         _FinalStage citationQuality(ChatStreamRequestCitationQuality citationQuality);
 
-        _FinalStage temperature(Optional<Float> temperature);
+        _FinalStage temperature(Optional<Double> temperature);
 
-        _FinalStage temperature(Float temperature);
+        _FinalStage temperature(Double temperature);
 
         _FinalStage maxTokens(Optional<Integer> maxTokens);
 
@@ -682,7 +682,7 @@ public final class ChatStreamRequest {
 
         private Optional<Integer> maxTokens = Optional.empty();
 
-        private Optional<Float> temperature = Optional.empty();
+        private Optional<Double> temperature = Optional.empty();
 
         private Optional<ChatStreamRequestCitationQuality> citationQuality = Optional.empty();
 
@@ -748,8 +748,8 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         @JsonSetter("message")
-        public _FinalStage message(@NotNull String message) {
-            this.message = Objects.requireNonNull(message, "message must not be null");
+        public _FinalStage message(String message) {
+            this.message = message;
             return this;
         }
 
@@ -757,14 +757,14 @@ public final class ChatStreamRequest {
          * <p>Used to select the <a href="https://docs.cohere.com/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
          * When <code>NONE</code> is specified, the safety instruction will be omitted.</p>
          * <p>Safety modes are not yet configurable in combination with <code>tools</code>, <code>tool_results</code> and <code>documents</code> parameters.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible newer Cohere models, starting with <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a> and <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a>.</p>
-         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and newer models only support <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
+         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a>, <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a> and newer.</p>
+         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> only supports <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         public _FinalStage safetyMode(ChatStreamRequestSafetyMode safetyMode) {
-            this.safetyMode = Optional.ofNullable(safetyMode);
+            this.safetyMode = Optional.of(safetyMode);
             return this;
         }
 
@@ -777,7 +777,7 @@ public final class ChatStreamRequest {
 
         @java.lang.Override
         public _FinalStage responseFormat(ResponseFormat responseFormat) {
-            this.responseFormat = Optional.ofNullable(responseFormat);
+            this.responseFormat = Optional.of(responseFormat);
             return this;
         }
 
@@ -794,7 +794,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage forceSingleStep(Boolean forceSingleStep) {
-            this.forceSingleStep = Optional.ofNullable(forceSingleStep);
+            this.forceSingleStep = Optional.of(forceSingleStep);
             return this;
         }
 
@@ -830,7 +830,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage toolResults(List<ToolResult> toolResults) {
-            this.toolResults = Optional.ofNullable(toolResults);
+            this.toolResults = Optional.of(toolResults);
             return this;
         }
 
@@ -849,7 +849,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage tools(List<Tool> tools) {
-            this.tools = Optional.ofNullable(tools);
+            this.tools = Optional.of(tools);
             return this;
         }
 
@@ -866,7 +866,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage returnPrompt(Boolean returnPrompt) {
-            this.returnPrompt = Optional.ofNullable(returnPrompt);
+            this.returnPrompt = Optional.of(returnPrompt);
             return this;
         }
 
@@ -885,7 +885,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage rawPrompting(Boolean rawPrompting) {
-            this.rawPrompting = Optional.ofNullable(rawPrompting);
+            this.rawPrompting = Optional.of(rawPrompting);
             return this;
         }
 
@@ -904,7 +904,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage presencePenalty(Double presencePenalty) {
-            this.presencePenalty = Optional.ofNullable(presencePenalty);
+            this.presencePenalty = Optional.of(presencePenalty);
             return this;
         }
 
@@ -923,7 +923,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage frequencyPenalty(Double frequencyPenalty) {
-            this.frequencyPenalty = Optional.ofNullable(frequencyPenalty);
+            this.frequencyPenalty = Optional.of(frequencyPenalty);
             return this;
         }
 
@@ -941,7 +941,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage stopSequences(List<String> stopSequences) {
-            this.stopSequences = Optional.ofNullable(stopSequences);
+            this.stopSequences = Optional.of(stopSequences);
             return this;
         }
 
@@ -962,7 +962,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage seed(Integer seed) {
-            this.seed = Optional.ofNullable(seed);
+            this.seed = Optional.of(seed);
             return this;
         }
 
@@ -981,7 +981,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage p(Double p) {
-            this.p = Optional.ofNullable(p);
+            this.p = Optional.of(p);
             return this;
         }
 
@@ -1000,7 +1000,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage k(Integer k) {
-            this.k = Optional.ofNullable(k);
+            this.k = Optional.of(k);
             return this;
         }
 
@@ -1019,7 +1019,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage maxInputTokens(Integer maxInputTokens) {
-            this.maxInputTokens = Optional.ofNullable(maxInputTokens);
+            this.maxInputTokens = Optional.of(maxInputTokens);
             return this;
         }
 
@@ -1037,7 +1037,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage maxTokens(Integer maxTokens) {
-            this.maxTokens = Optional.ofNullable(maxTokens);
+            this.maxTokens = Optional.of(maxTokens);
             return this;
         }
 
@@ -1056,14 +1056,14 @@ public final class ChatStreamRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage temperature(Float temperature) {
-            this.temperature = Optional.ofNullable(temperature);
+        public _FinalStage temperature(Double temperature) {
+            this.temperature = Optional.of(temperature);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
-        public _FinalStage temperature(Optional<Float> temperature) {
+        public _FinalStage temperature(Optional<Double> temperature) {
             this.temperature = temperature;
             return this;
         }
@@ -1076,7 +1076,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage citationQuality(ChatStreamRequestCitationQuality citationQuality) {
-            this.citationQuality = Optional.ofNullable(citationQuality);
+            this.citationQuality = Optional.of(citationQuality);
             return this;
         }
 
@@ -1105,7 +1105,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage documents(List<Map<String, String>> documents) {
-            this.documents = Optional.ofNullable(documents);
+            this.documents = Optional.of(documents);
             return this;
         }
 
@@ -1124,7 +1124,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage searchQueriesOnly(Boolean searchQueriesOnly) {
-            this.searchQueriesOnly = Optional.ofNullable(searchQueriesOnly);
+            this.searchQueriesOnly = Optional.of(searchQueriesOnly);
             return this;
         }
 
@@ -1143,7 +1143,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage connectors(List<ChatConnector> connectors) {
-            this.connectors = Optional.ofNullable(connectors);
+            this.connectors = Optional.of(connectors);
             return this;
         }
 
@@ -1169,7 +1169,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage promptTruncation(ChatStreamRequestPromptTruncation promptTruncation) {
-            this.promptTruncation = Optional.ofNullable(promptTruncation);
+            this.promptTruncation = Optional.of(promptTruncation);
             return this;
         }
 
@@ -1188,7 +1188,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage conversationId(String conversationId) {
-            this.conversationId = Optional.ofNullable(conversationId);
+            this.conversationId = Optional.of(conversationId);
             return this;
         }
 
@@ -1208,7 +1208,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage chatHistory(List<Message> chatHistory) {
-            this.chatHistory = Optional.ofNullable(chatHistory);
+            this.chatHistory = Optional.of(chatHistory);
             return this;
         }
 
@@ -1227,7 +1227,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage preamble(String preamble) {
-            this.preamble = Optional.ofNullable(preamble);
+            this.preamble = Optional.of(preamble);
             return this;
         }
 
@@ -1239,13 +1239,14 @@ public final class ChatStreamRequest {
         }
 
         /**
+         * <p>Defaults to <code>command-r-plus-08-2024</code>.</p>
          * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * <p>Compatible Deployments: Cohere Platform, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         public _FinalStage model(String model) {
-            this.model = Optional.ofNullable(model);
+            this.model = Optional.of(model);
             return this;
         }
 
@@ -1262,7 +1263,7 @@ public final class ChatStreamRequest {
          */
         @java.lang.Override
         public _FinalStage accepts(String accepts) {
-            this.accepts = Optional.ofNullable(accepts);
+            this.accepts = Optional.of(accepts);
             return this;
         }
 

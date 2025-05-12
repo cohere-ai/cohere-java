@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ToolCall.Builder.class)
 public final class ToolCall {
     private final String name;
@@ -79,7 +78,7 @@ public final class ToolCall {
     }
 
     public interface NameStage {
-        _FinalStage name(@NotNull String name);
+        _FinalStage name(String name);
 
         Builder from(ToolCall other);
     }
@@ -118,8 +117,8 @@ public final class ToolCall {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public _FinalStage name(@NotNull String name) {
-            this.name = Objects.requireNonNull(name, "name must not be null");
+        public _FinalStage name(String name) {
+            this.name = name;
             return this;
         }
 

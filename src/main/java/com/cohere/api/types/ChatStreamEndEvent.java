@@ -14,9 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatStreamEndEvent.Builder.class)
 public final class ChatStreamEndEvent implements IChatStreamEvent {
     private final ChatStreamEndEventFinishReason finishReason;
@@ -86,13 +85,13 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
     }
 
     public interface FinishReasonStage {
-        ResponseStage finishReason(@NotNull ChatStreamEndEventFinishReason finishReason);
+        ResponseStage finishReason(ChatStreamEndEventFinishReason finishReason);
 
         Builder from(ChatStreamEndEvent other);
     }
 
     public interface ResponseStage {
-        _FinalStage response(@NotNull NonStreamedChatResponse response);
+        _FinalStage response(NonStreamedChatResponse response);
     }
 
     public interface _FinalStage {
@@ -129,8 +128,8 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
          */
         @java.lang.Override
         @JsonSetter("finish_reason")
-        public ResponseStage finishReason(@NotNull ChatStreamEndEventFinishReason finishReason) {
-            this.finishReason = Objects.requireNonNull(finishReason, "finishReason must not be null");
+        public ResponseStage finishReason(ChatStreamEndEventFinishReason finishReason) {
+            this.finishReason = finishReason;
             return this;
         }
 
@@ -140,8 +139,8 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
          */
         @java.lang.Override
         @JsonSetter("response")
-        public _FinalStage response(@NotNull NonStreamedChatResponse response) {
-            this.response = Objects.requireNonNull(response, "response must not be null");
+        public _FinalStage response(NonStreamedChatResponse response) {
+            this.response = response;
             return this;
         }
 

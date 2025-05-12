@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ConnectorsOAuthAuthorizeRequest.Builder.class)
 public final class ConnectorsOAuthAuthorizeRequest {
     private final Optional<String> afterTokenRedirect;
@@ -88,7 +88,7 @@ public final class ConnectorsOAuthAuthorizeRequest {
         }
 
         public Builder afterTokenRedirect(String afterTokenRedirect) {
-            this.afterTokenRedirect = Optional.ofNullable(afterTokenRedirect);
+            this.afterTokenRedirect = Optional.of(afterTokenRedirect);
             return this;
         }
 

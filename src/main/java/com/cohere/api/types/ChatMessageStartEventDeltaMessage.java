@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatMessageStartEventDeltaMessage.Builder.class)
 public final class ChatMessageStartEventDeltaMessage {
     private final Optional<String> role;
@@ -87,7 +87,7 @@ public final class ChatMessageStartEventDeltaMessage {
         }
 
         public Builder role(String role) {
-            this.role = Optional.ofNullable(role);
+            this.role = Optional.of(role);
             return this;
         }
 

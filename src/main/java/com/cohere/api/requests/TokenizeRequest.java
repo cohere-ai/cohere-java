@@ -14,9 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = TokenizeRequest.Builder.class)
 public final class TokenizeRequest {
     private final String text;
@@ -77,13 +76,13 @@ public final class TokenizeRequest {
     }
 
     public interface TextStage {
-        ModelStage text(@NotNull String text);
+        ModelStage text(String text);
 
         Builder from(TokenizeRequest other);
     }
 
     public interface ModelStage {
-        _FinalStage model(@NotNull String model);
+        _FinalStage model(String model);
     }
 
     public interface _FinalStage {
@@ -114,8 +113,8 @@ public final class TokenizeRequest {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public ModelStage text(@NotNull String text) {
-            this.text = Objects.requireNonNull(text, "text must not be null");
+        public ModelStage text(String text) {
+            this.text = text;
             return this;
         }
 
@@ -125,8 +124,8 @@ public final class TokenizeRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public _FinalStage model(@NotNull String model) {
-            this.model = Objects.requireNonNull(model, "model must not be null");
+        public _FinalStage model(String model) {
+            this.model = model;
             return this;
         }
 

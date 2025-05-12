@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = RerankerDataMetrics.Builder.class)
 public final class RerankerDataMetrics {
     private final Optional<Long> numTrainQueries;
@@ -175,7 +175,7 @@ public final class RerankerDataMetrics {
         }
 
         public Builder numTrainQueries(Long numTrainQueries) {
-            this.numTrainQueries = Optional.ofNullable(numTrainQueries);
+            this.numTrainQueries = Optional.of(numTrainQueries);
             return this;
         }
 
@@ -186,7 +186,7 @@ public final class RerankerDataMetrics {
         }
 
         public Builder numTrainRelevantPassages(Long numTrainRelevantPassages) {
-            this.numTrainRelevantPassages = Optional.ofNullable(numTrainRelevantPassages);
+            this.numTrainRelevantPassages = Optional.of(numTrainRelevantPassages);
             return this;
         }
 
@@ -197,7 +197,7 @@ public final class RerankerDataMetrics {
         }
 
         public Builder numTrainHardNegatives(Long numTrainHardNegatives) {
-            this.numTrainHardNegatives = Optional.ofNullable(numTrainHardNegatives);
+            this.numTrainHardNegatives = Optional.of(numTrainHardNegatives);
             return this;
         }
 
@@ -208,7 +208,7 @@ public final class RerankerDataMetrics {
         }
 
         public Builder numEvalQueries(Long numEvalQueries) {
-            this.numEvalQueries = Optional.ofNullable(numEvalQueries);
+            this.numEvalQueries = Optional.of(numEvalQueries);
             return this;
         }
 
@@ -219,7 +219,7 @@ public final class RerankerDataMetrics {
         }
 
         public Builder numEvalRelevantPassages(Long numEvalRelevantPassages) {
-            this.numEvalRelevantPassages = Optional.ofNullable(numEvalRelevantPassages);
+            this.numEvalRelevantPassages = Optional.of(numEvalRelevantPassages);
             return this;
         }
 
@@ -230,7 +230,7 @@ public final class RerankerDataMetrics {
         }
 
         public Builder numEvalHardNegatives(Long numEvalHardNegatives) {
-            this.numEvalHardNegatives = Optional.ofNullable(numEvalHardNegatives);
+            this.numEvalHardNegatives = Optional.of(numEvalHardNegatives);
             return this;
         }
 

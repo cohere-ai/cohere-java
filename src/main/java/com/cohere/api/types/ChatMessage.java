@@ -17,9 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatMessage.Builder.class)
 public final class ChatMessage {
     private final String message;
@@ -77,7 +76,7 @@ public final class ChatMessage {
     }
 
     public interface MessageStage {
-        _FinalStage message(@NotNull String message);
+        _FinalStage message(String message);
 
         Builder from(ChatMessage other);
     }
@@ -114,14 +113,14 @@ public final class ChatMessage {
          */
         @java.lang.Override
         @JsonSetter("message")
-        public _FinalStage message(@NotNull String message) {
-            this.message = Objects.requireNonNull(message, "message must not be null");
+        public _FinalStage message(String message) {
+            this.message = message;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage toolCalls(List<ToolCall> toolCalls) {
-            this.toolCalls = Optional.ofNullable(toolCalls);
+            this.toolCalls = Optional.of(toolCalls);
             return this;
         }
 

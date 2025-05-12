@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EmbedRequest.Builder.class)
 public final class EmbedRequest {
     private final Optional<List<String>> texts;
@@ -205,7 +205,7 @@ public final class EmbedRequest {
         }
 
         public Builder texts(List<String> texts) {
-            this.texts = Optional.ofNullable(texts);
+            this.texts = Optional.of(texts);
             return this;
         }
 
@@ -216,7 +216,7 @@ public final class EmbedRequest {
         }
 
         public Builder images(List<String> images) {
-            this.images = Optional.ofNullable(images);
+            this.images = Optional.of(images);
             return this;
         }
 
@@ -227,7 +227,7 @@ public final class EmbedRequest {
         }
 
         public Builder model(String model) {
-            this.model = Optional.ofNullable(model);
+            this.model = Optional.of(model);
             return this;
         }
 
@@ -238,7 +238,7 @@ public final class EmbedRequest {
         }
 
         public Builder inputType(EmbedInputType inputType) {
-            this.inputType = Optional.ofNullable(inputType);
+            this.inputType = Optional.of(inputType);
             return this;
         }
 
@@ -249,7 +249,7 @@ public final class EmbedRequest {
         }
 
         public Builder embeddingTypes(List<EmbeddingType> embeddingTypes) {
-            this.embeddingTypes = Optional.ofNullable(embeddingTypes);
+            this.embeddingTypes = Optional.of(embeddingTypes);
             return this;
         }
 
@@ -260,7 +260,7 @@ public final class EmbedRequest {
         }
 
         public Builder truncate(EmbedRequestTruncate truncate) {
-            this.truncate = Optional.ofNullable(truncate);
+            this.truncate = Optional.of(truncate);
             return this;
         }
 

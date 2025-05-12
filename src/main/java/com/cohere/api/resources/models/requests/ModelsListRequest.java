@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ModelsListRequest.Builder.class)
 public final class ModelsListRequest {
     private final Optional<Double> pageSize;
@@ -139,7 +139,7 @@ public final class ModelsListRequest {
         }
 
         public Builder pageSize(Double pageSize) {
-            this.pageSize = Optional.ofNullable(pageSize);
+            this.pageSize = Optional.of(pageSize);
             return this;
         }
 
@@ -150,7 +150,7 @@ public final class ModelsListRequest {
         }
 
         public Builder pageToken(String pageToken) {
-            this.pageToken = Optional.ofNullable(pageToken);
+            this.pageToken = Optional.of(pageToken);
             return this;
         }
 
@@ -161,7 +161,7 @@ public final class ModelsListRequest {
         }
 
         public Builder endpoint(CompatibleEndpoint endpoint) {
-            this.endpoint = Optional.ofNullable(endpoint);
+            this.endpoint = Optional.of(endpoint);
             return this;
         }
 
@@ -172,7 +172,7 @@ public final class ModelsListRequest {
         }
 
         public Builder defaultOnly(Boolean defaultOnly) {
-            this.defaultOnly = Optional.ofNullable(defaultOnly);
+            this.defaultOnly = Optional.of(defaultOnly);
             return this;
         }
 

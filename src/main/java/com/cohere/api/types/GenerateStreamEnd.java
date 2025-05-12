@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = GenerateStreamEnd.Builder.class)
 public final class GenerateStreamEnd implements IGenerateStreamEvent {
     private final boolean isFinished;
@@ -93,7 +92,7 @@ public final class GenerateStreamEnd implements IGenerateStreamEvent {
     }
 
     public interface ResponseStage {
-        _FinalStage response(@NotNull GenerateStreamEndResponse response);
+        _FinalStage response(GenerateStreamEndResponse response);
     }
 
     public interface _FinalStage {
@@ -134,14 +133,14 @@ public final class GenerateStreamEnd implements IGenerateStreamEvent {
 
         @java.lang.Override
         @JsonSetter("response")
-        public _FinalStage response(@NotNull GenerateStreamEndResponse response) {
-            this.response = Objects.requireNonNull(response, "response must not be null");
+        public _FinalStage response(GenerateStreamEndResponse response) {
+            this.response = response;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage finishReason(FinishReason finishReason) {
-            this.finishReason = Optional.ofNullable(finishReason);
+            this.finishReason = Optional.of(finishReason);
             return this;
         }
 

@@ -30,16 +30,8 @@ public final class Content {
         return new Content(new TextValue(value));
     }
 
-    public static Content imageUrl(ImageContent value) {
-        return new Content(new ImageUrlValue(value));
-    }
-
     public boolean isText() {
         return value instanceof TextValue;
-    }
-
-    public boolean isImageUrl() {
-        return value instanceof ImageUrlValue;
     }
 
     public boolean _isUnknown() {
@@ -49,13 +41,6 @@ public final class Content {
     public Optional<TextContent> getText() {
         if (isText()) {
             return Optional.of(((TextValue) value).value);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<ImageContent> getImageUrl() {
-        if (isImageUrl()) {
-            return Optional.of(((ImageUrlValue) value).value);
         }
         return Optional.empty();
     }
@@ -75,13 +60,11 @@ public final class Content {
     public interface Visitor<T> {
         T visitText(TextContent text);
 
-        T visitImageUrl(ImageContent imageUrl);
-
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes({@JsonSubTypes.Type(TextValue.class), @JsonSubTypes.Type(ImageUrlValue.class)})
+    @JsonSubTypes(@JsonSubTypes.Type(TextValue.class))
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -111,44 +94,6 @@ public final class Content {
         }
 
         private boolean equalTo(TextValue other) {
-            return value.equals(other.value);
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            return Objects.hash(this.value);
-        }
-
-        @java.lang.Override
-        public String toString() {
-            return "Content{" + "value: " + value + "}";
-        }
-    }
-
-    @JsonTypeName("image_url")
-    private static final class ImageUrlValue implements Value {
-        @JsonUnwrapped
-        private ImageContent value;
-
-        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private ImageUrlValue() {}
-
-        private ImageUrlValue(ImageContent value) {
-            this.value = value;
-        }
-
-        @java.lang.Override
-        public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitImageUrl(value);
-        }
-
-        @java.lang.Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            return other instanceof ImageUrlValue && equalTo((ImageUrlValue) other);
-        }
-
-        private boolean equalTo(ImageUrlValue other) {
             return value.equals(other.value);
         }
 

@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = Settings.Builder.class)
 public final class Settings {
     private final BaseModel baseModel;
@@ -122,13 +121,13 @@ public final class Settings {
     }
 
     public interface BaseModelStage {
-        DatasetIdStage baseModel(@NotNull BaseModel baseModel);
+        DatasetIdStage baseModel(BaseModel baseModel);
 
         Builder from(Settings other);
     }
 
     public interface DatasetIdStage {
-        _FinalStage datasetId(@NotNull String datasetId);
+        _FinalStage datasetId(String datasetId);
     }
 
     public interface _FinalStage {
@@ -180,8 +179,8 @@ public final class Settings {
          */
         @java.lang.Override
         @JsonSetter("base_model")
-        public DatasetIdStage baseModel(@NotNull BaseModel baseModel) {
-            this.baseModel = Objects.requireNonNull(baseModel, "baseModel must not be null");
+        public DatasetIdStage baseModel(BaseModel baseModel) {
+            this.baseModel = baseModel;
             return this;
         }
 
@@ -191,8 +190,8 @@ public final class Settings {
          */
         @java.lang.Override
         @JsonSetter("dataset_id")
-        public _FinalStage datasetId(@NotNull String datasetId) {
-            this.datasetId = Objects.requireNonNull(datasetId, "datasetId must not be null");
+        public _FinalStage datasetId(String datasetId) {
+            this.datasetId = datasetId;
             return this;
         }
 
@@ -202,7 +201,7 @@ public final class Settings {
          */
         @java.lang.Override
         public _FinalStage wandb(WandbConfig wandb) {
-            this.wandb = Optional.ofNullable(wandb);
+            this.wandb = Optional.of(wandb);
             return this;
         }
 
@@ -219,7 +218,7 @@ public final class Settings {
          */
         @java.lang.Override
         public _FinalStage multiLabel(Boolean multiLabel) {
-            this.multiLabel = Optional.ofNullable(multiLabel);
+            this.multiLabel = Optional.of(multiLabel);
             return this;
         }
 
@@ -236,7 +235,7 @@ public final class Settings {
          */
         @java.lang.Override
         public _FinalStage hyperparameters(Hyperparameters hyperparameters) {
-            this.hyperparameters = Optional.ofNullable(hyperparameters);
+            this.hyperparameters = Optional.of(hyperparameters);
             return this;
         }
 

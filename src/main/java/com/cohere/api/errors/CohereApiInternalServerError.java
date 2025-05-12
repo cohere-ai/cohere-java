@@ -3,16 +3,16 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiException;
+import com.cohere.api.core.CohereApiApiError;
 
-public final class ServiceUnavailableError extends CohereApiException {
+public final class CohereApiInternalServerError extends CohereApiApiError {
     /**
      * The body of the response that triggered the exception.
      */
     private final Object body;
 
-    public ServiceUnavailableError(Object body) {
-        super("ServiceUnavailableError", 503, body);
+    public CohereApiInternalServerError(Object body) {
+        super("InternalServerError", 500, body);
         this.body = body;
     }
 

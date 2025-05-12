@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ClassifyResponse.Builder.class)
 public final class ClassifyResponse {
     private final String id;
@@ -87,7 +86,7 @@ public final class ClassifyResponse {
     }
 
     public interface IdStage {
-        _FinalStage id(@NotNull String id);
+        _FinalStage id(String id);
 
         Builder from(ClassifyResponse other);
     }
@@ -129,14 +128,14 @@ public final class ClassifyResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public _FinalStage id(@NotNull String id) {
-            this.id = Objects.requireNonNull(id, "id must not be null");
+        public _FinalStage id(String id) {
+            this.id = id;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage meta(ApiMeta meta) {
-            this.meta = Optional.ofNullable(meta);
+            this.meta = Optional.of(meta);
             return this;
         }
 

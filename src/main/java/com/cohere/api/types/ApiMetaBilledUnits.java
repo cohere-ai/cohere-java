@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApiMetaBilledUnits.Builder.class)
 public final class ApiMetaBilledUnits {
     private final Optional<Double> images;
@@ -153,7 +153,7 @@ public final class ApiMetaBilledUnits {
         }
 
         public Builder images(Double images) {
-            this.images = Optional.ofNullable(images);
+            this.images = Optional.of(images);
             return this;
         }
 
@@ -164,7 +164,7 @@ public final class ApiMetaBilledUnits {
         }
 
         public Builder inputTokens(Double inputTokens) {
-            this.inputTokens = Optional.ofNullable(inputTokens);
+            this.inputTokens = Optional.of(inputTokens);
             return this;
         }
 
@@ -175,7 +175,7 @@ public final class ApiMetaBilledUnits {
         }
 
         public Builder outputTokens(Double outputTokens) {
-            this.outputTokens = Optional.ofNullable(outputTokens);
+            this.outputTokens = Optional.of(outputTokens);
             return this;
         }
 
@@ -186,7 +186,7 @@ public final class ApiMetaBilledUnits {
         }
 
         public Builder searchUnits(Double searchUnits) {
-            this.searchUnits = Optional.ofNullable(searchUnits);
+            this.searchUnits = Optional.of(searchUnits);
             return this;
         }
 
@@ -197,7 +197,7 @@ public final class ApiMetaBilledUnits {
         }
 
         public Builder classifications(Double classifications) {
-            this.classifications = Optional.ofNullable(classifications);
+            this.classifications = Optional.of(classifications);
             return this;
         }
 

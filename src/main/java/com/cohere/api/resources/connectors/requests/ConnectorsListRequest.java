@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ConnectorsListRequest.Builder.class)
 public final class ConnectorsListRequest {
     private final Optional<Double> limit;
@@ -102,7 +102,7 @@ public final class ConnectorsListRequest {
         }
 
         public Builder limit(Double limit) {
-            this.limit = Optional.ofNullable(limit);
+            this.limit = Optional.of(limit);
             return this;
         }
 
@@ -113,7 +113,7 @@ public final class ConnectorsListRequest {
         }
 
         public Builder offset(Double offset) {
-            this.offset = Optional.ofNullable(offset);
+            this.offset = Optional.of(offset);
             return this;
         }
 

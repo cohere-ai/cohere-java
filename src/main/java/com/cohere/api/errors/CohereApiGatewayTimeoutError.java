@@ -3,15 +3,16 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiException;
+import com.cohere.api.core.CohereApiApiError;
+import com.cohere.api.types.GatewayTimeoutErrorBody;
 
-public final class GatewayTimeoutError extends CohereApiException {
+public final class CohereApiGatewayTimeoutError extends CohereApiApiError {
     /**
      * The body of the response that triggered the exception.
      */
-    private final Object body;
+    private final GatewayTimeoutErrorBody body;
 
-    public GatewayTimeoutError(Object body) {
+    public CohereApiGatewayTimeoutError(GatewayTimeoutErrorBody body) {
         super("GatewayTimeoutError", 504, body);
         this.body = body;
     }
@@ -20,7 +21,7 @@ public final class GatewayTimeoutError extends CohereApiException {
      * @return the body
      */
     @java.lang.Override
-    public Object body() {
+    public GatewayTimeoutErrorBody body() {
         return this.body;
     }
 }

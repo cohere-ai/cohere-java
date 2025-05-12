@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatMessageEndEventDelta.Builder.class)
 public final class ChatMessageEndEventDelta {
     private final Optional<ChatFinishReason> finishReason;
@@ -96,7 +96,7 @@ public final class ChatMessageEndEventDelta {
         }
 
         public Builder finishReason(ChatFinishReason finishReason) {
-            this.finishReason = Optional.ofNullable(finishReason);
+            this.finishReason = Optional.of(finishReason);
             return this;
         }
 
@@ -107,7 +107,7 @@ public final class ChatMessageEndEventDelta {
         }
 
         public Builder usage(Usage usage) {
-            this.usage = Optional.ofNullable(usage);
+            this.usage = Optional.of(usage);
             return this;
         }
 

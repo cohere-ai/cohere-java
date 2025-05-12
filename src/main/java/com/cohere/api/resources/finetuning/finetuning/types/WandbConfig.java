@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = WandbConfig.Builder.class)
 public final class WandbConfig {
     private final String project;
@@ -91,13 +90,13 @@ public final class WandbConfig {
     }
 
     public interface ProjectStage {
-        ApiKeyStage project(@NotNull String project);
+        ApiKeyStage project(String project);
 
         Builder from(WandbConfig other);
     }
 
     public interface ApiKeyStage {
-        _FinalStage apiKey(@NotNull String apiKey);
+        _FinalStage apiKey(String apiKey);
     }
 
     public interface _FinalStage {
@@ -135,8 +134,8 @@ public final class WandbConfig {
          */
         @java.lang.Override
         @JsonSetter("project")
-        public ApiKeyStage project(@NotNull String project) {
-            this.project = Objects.requireNonNull(project, "project must not be null");
+        public ApiKeyStage project(String project) {
+            this.project = project;
             return this;
         }
 
@@ -146,8 +145,8 @@ public final class WandbConfig {
          */
         @java.lang.Override
         @JsonSetter("api_key")
-        public _FinalStage apiKey(@NotNull String apiKey) {
-            this.apiKey = Objects.requireNonNull(apiKey, "apiKey must not be null");
+        public _FinalStage apiKey(String apiKey) {
+            this.apiKey = apiKey;
             return this;
         }
 
@@ -157,7 +156,7 @@ public final class WandbConfig {
          */
         @java.lang.Override
         public _FinalStage entity(String entity) {
-            this.entity = Optional.ofNullable(entity);
+            this.entity = Optional.of(entity);
             return this;
         }
 

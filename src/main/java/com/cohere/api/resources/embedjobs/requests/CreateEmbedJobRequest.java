@@ -20,9 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CreateEmbedJobRequest.Builder.class)
 public final class CreateEmbedJobRequest {
     private final String model;
@@ -151,17 +150,17 @@ public final class CreateEmbedJobRequest {
     }
 
     public interface ModelStage {
-        DatasetIdStage model(@NotNull String model);
+        DatasetIdStage model(String model);
 
         Builder from(CreateEmbedJobRequest other);
     }
 
     public interface DatasetIdStage {
-        InputTypeStage datasetId(@NotNull String datasetId);
+        InputTypeStage datasetId(String datasetId);
     }
 
     public interface InputTypeStage {
-        _FinalStage inputType(@NotNull EmbedInputType inputType);
+        _FinalStage inputType(EmbedInputType inputType);
     }
 
     public interface _FinalStage {
@@ -223,8 +222,8 @@ public final class CreateEmbedJobRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public DatasetIdStage model(@NotNull String model) {
-            this.model = Objects.requireNonNull(model, "model must not be null");
+        public DatasetIdStage model(String model) {
+            this.model = model;
             return this;
         }
 
@@ -234,15 +233,15 @@ public final class CreateEmbedJobRequest {
          */
         @java.lang.Override
         @JsonSetter("dataset_id")
-        public InputTypeStage datasetId(@NotNull String datasetId) {
-            this.datasetId = Objects.requireNonNull(datasetId, "datasetId must not be null");
+        public InputTypeStage datasetId(String datasetId) {
+            this.datasetId = datasetId;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("input_type")
-        public _FinalStage inputType(@NotNull EmbedInputType inputType) {
-            this.inputType = Objects.requireNonNull(inputType, "inputType must not be null");
+        public _FinalStage inputType(EmbedInputType inputType) {
+            this.inputType = inputType;
             return this;
         }
 
@@ -253,7 +252,7 @@ public final class CreateEmbedJobRequest {
          */
         @java.lang.Override
         public _FinalStage truncate(CreateEmbedJobRequestTruncate truncate) {
-            this.truncate = Optional.ofNullable(truncate);
+            this.truncate = Optional.of(truncate);
             return this;
         }
 
@@ -277,7 +276,7 @@ public final class CreateEmbedJobRequest {
          */
         @java.lang.Override
         public _FinalStage embeddingTypes(List<EmbeddingType> embeddingTypes) {
-            this.embeddingTypes = Optional.ofNullable(embeddingTypes);
+            this.embeddingTypes = Optional.of(embeddingTypes);
             return this;
         }
 
@@ -294,7 +293,7 @@ public final class CreateEmbedJobRequest {
          */
         @java.lang.Override
         public _FinalStage name(String name) {
-            this.name = Optional.ofNullable(name);
+            this.name = Optional.of(name);
             return this;
         }
 

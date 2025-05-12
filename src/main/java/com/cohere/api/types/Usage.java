@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = Usage.Builder.class)
 public final class Usage {
     private final Optional<UsageBilledUnits> billedUnits;
@@ -98,7 +98,7 @@ public final class Usage {
         }
 
         public Builder billedUnits(UsageBilledUnits billedUnits) {
-            this.billedUnits = Optional.ofNullable(billedUnits);
+            this.billedUnits = Optional.of(billedUnits);
             return this;
         }
 
@@ -109,7 +109,7 @@ public final class Usage {
         }
 
         public Builder tokens(UsageTokens tokens) {
-            this.tokens = Optional.ofNullable(tokens);
+            this.tokens = Optional.of(tokens);
             return this;
         }
 

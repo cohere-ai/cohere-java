@@ -14,9 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CreateConnectorServiceAuth.Builder.class)
 public final class CreateConnectorServiceAuth {
     private final AuthTokenType type;
@@ -74,13 +73,13 @@ public final class CreateConnectorServiceAuth {
     }
 
     public interface TypeStage {
-        TokenStage type(@NotNull AuthTokenType type);
+        TokenStage type(AuthTokenType type);
 
         Builder from(CreateConnectorServiceAuth other);
     }
 
     public interface TokenStage {
-        _FinalStage token(@NotNull String token);
+        _FinalStage token(String token);
     }
 
     public interface _FinalStage {
@@ -107,8 +106,8 @@ public final class CreateConnectorServiceAuth {
 
         @java.lang.Override
         @JsonSetter("type")
-        public TokenStage type(@NotNull AuthTokenType type) {
-            this.type = Objects.requireNonNull(type, "type must not be null");
+        public TokenStage type(AuthTokenType type) {
+            this.type = type;
             return this;
         }
 
@@ -118,8 +117,8 @@ public final class CreateConnectorServiceAuth {
          */
         @java.lang.Override
         @JsonSetter("token")
-        public _FinalStage token(@NotNull String token) {
-            this.token = Objects.requireNonNull(token, "token must not be null");
+        public _FinalStage token(String token) {
+            this.token = token;
             return this;
         }
 

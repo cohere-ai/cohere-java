@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = FinetuningListEventsRequest.Builder.class)
 public final class FinetuningListEventsRequest {
     private final Optional<Integer> pageSize;
@@ -40,8 +40,7 @@ public final class FinetuningListEventsRequest {
     }
 
     /**
-     * @return Maximum number of results to be returned by the server. If 0, defaults to
-     * 50.
+     * @return Maximum number of results to be returned by the server. If 0, defaults to 50.
      */
     @JsonProperty("page_size")
     public Optional<Integer> getPageSize() {
@@ -126,7 +125,7 @@ public final class FinetuningListEventsRequest {
         }
 
         public Builder pageSize(Integer pageSize) {
-            this.pageSize = Optional.ofNullable(pageSize);
+            this.pageSize = Optional.of(pageSize);
             return this;
         }
 
@@ -137,7 +136,7 @@ public final class FinetuningListEventsRequest {
         }
 
         public Builder pageToken(String pageToken) {
-            this.pageToken = Optional.ofNullable(pageToken);
+            this.pageToken = Optional.of(pageToken);
             return this;
         }
 
@@ -148,7 +147,7 @@ public final class FinetuningListEventsRequest {
         }
 
         public Builder orderBy(String orderBy) {
-            this.orderBy = Optional.ofNullable(orderBy);
+            this.orderBy = Optional.of(orderBy);
             return this;
         }
 

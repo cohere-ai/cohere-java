@@ -17,9 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = GenerateStreamEndResponse.Builder.class)
 public final class GenerateStreamEndResponse {
     private final String id;
@@ -86,7 +85,7 @@ public final class GenerateStreamEndResponse {
     }
 
     public interface IdStage {
-        _FinalStage id(@NotNull String id);
+        _FinalStage id(String id);
 
         Builder from(GenerateStreamEndResponse other);
     }
@@ -126,14 +125,14 @@ public final class GenerateStreamEndResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public _FinalStage id(@NotNull String id) {
-            this.id = Objects.requireNonNull(id, "id must not be null");
+        public _FinalStage id(String id) {
+            this.id = id;
             return this;
         }
 
         @java.lang.Override
         public _FinalStage generations(List<SingleGenerationInStream> generations) {
-            this.generations = Optional.ofNullable(generations);
+            this.generations = Optional.of(generations);
             return this;
         }
 
@@ -146,7 +145,7 @@ public final class GenerateStreamEndResponse {
 
         @java.lang.Override
         public _FinalStage prompt(String prompt) {
-            this.prompt = Optional.ofNullable(prompt);
+            this.prompt = Optional.of(prompt);
             return this;
         }
 

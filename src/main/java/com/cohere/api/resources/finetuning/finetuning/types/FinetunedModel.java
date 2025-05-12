@@ -17,9 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = FinetunedModel.Builder.class)
 public final class FinetunedModel {
     private final Optional<String> id;
@@ -198,13 +197,13 @@ public final class FinetunedModel {
     }
 
     public interface NameStage {
-        SettingsStage name(@NotNull String name);
+        SettingsStage name(String name);
 
         Builder from(FinetunedModel other);
     }
 
     public interface SettingsStage {
-        _FinalStage settings(@NotNull Settings settings);
+        _FinalStage settings(Settings settings);
     }
 
     public interface _FinalStage {
@@ -291,8 +290,8 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public SettingsStage name(@NotNull String name) {
-            this.name = Objects.requireNonNull(name, "name must not be null");
+        public SettingsStage name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -302,8 +301,8 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         @JsonSetter("settings")
-        public _FinalStage settings(@NotNull Settings settings) {
-            this.settings = Objects.requireNonNull(settings, "settings must not be null");
+        public _FinalStage settings(Settings settings) {
+            this.settings = settings;
             return this;
         }
 
@@ -313,7 +312,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage lastUsed(OffsetDateTime lastUsed) {
-            this.lastUsed = Optional.ofNullable(lastUsed);
+            this.lastUsed = Optional.of(lastUsed);
             return this;
         }
 
@@ -330,7 +329,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage completedAt(OffsetDateTime completedAt) {
-            this.completedAt = Optional.ofNullable(completedAt);
+            this.completedAt = Optional.of(completedAt);
             return this;
         }
 
@@ -347,7 +346,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = Optional.ofNullable(updatedAt);
+            this.updatedAt = Optional.of(updatedAt);
             return this;
         }
 
@@ -364,7 +363,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.ofNullable(createdAt);
+            this.createdAt = Optional.of(createdAt);
             return this;
         }
 
@@ -381,7 +380,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage status(Status status) {
-            this.status = Optional.ofNullable(status);
+            this.status = Optional.of(status);
             return this;
         }
 
@@ -398,7 +397,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage organizationId(String organizationId) {
-            this.organizationId = Optional.ofNullable(organizationId);
+            this.organizationId = Optional.of(organizationId);
             return this;
         }
 
@@ -415,7 +414,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage creatorId(String creatorId) {
-            this.creatorId = Optional.ofNullable(creatorId);
+            this.creatorId = Optional.of(creatorId);
             return this;
         }
 
@@ -432,7 +431,7 @@ public final class FinetunedModel {
          */
         @java.lang.Override
         public _FinalStage id(String id) {
-            this.id = Optional.ofNullable(id);
+            this.id = Optional.of(id);
             return this;
         }
 

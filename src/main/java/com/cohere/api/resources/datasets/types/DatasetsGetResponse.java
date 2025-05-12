@@ -15,9 +15,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = DatasetsGetResponse.Builder.class)
 public final class DatasetsGetResponse {
     private final Dataset dataset;
@@ -64,7 +63,7 @@ public final class DatasetsGetResponse {
     }
 
     public interface DatasetStage {
-        _FinalStage dataset(@NotNull Dataset dataset);
+        _FinalStage dataset(Dataset dataset);
 
         Builder from(DatasetsGetResponse other);
     }
@@ -90,8 +89,8 @@ public final class DatasetsGetResponse {
 
         @java.lang.Override
         @JsonSetter("dataset")
-        public _FinalStage dataset(@NotNull Dataset dataset) {
-            this.dataset = Objects.requireNonNull(dataset, "dataset must not be null");
+        public _FinalStage dataset(Dataset dataset) {
+            this.dataset = dataset;
             return this;
         }
 

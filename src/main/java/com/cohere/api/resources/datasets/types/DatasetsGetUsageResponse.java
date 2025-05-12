@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = DatasetsGetUsageResponse.Builder.class)
 public final class DatasetsGetUsageResponse {
     private final Optional<Long> organizationUsage;
@@ -87,7 +87,7 @@ public final class DatasetsGetUsageResponse {
         }
 
         public Builder organizationUsage(Long organizationUsage) {
-            this.organizationUsage = Optional.ofNullable(organizationUsage);
+            this.organizationUsage = Optional.of(organizationUsage);
             return this;
         }
 

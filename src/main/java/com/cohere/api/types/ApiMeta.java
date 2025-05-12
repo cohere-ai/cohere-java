@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApiMeta.Builder.class)
 public final class ApiMeta {
     private final Optional<ApiMetaApiVersion> apiVersion;
@@ -126,7 +126,7 @@ public final class ApiMeta {
         }
 
         public Builder apiVersion(ApiMetaApiVersion apiVersion) {
-            this.apiVersion = Optional.ofNullable(apiVersion);
+            this.apiVersion = Optional.of(apiVersion);
             return this;
         }
 
@@ -137,7 +137,7 @@ public final class ApiMeta {
         }
 
         public Builder billedUnits(ApiMetaBilledUnits billedUnits) {
-            this.billedUnits = Optional.ofNullable(billedUnits);
+            this.billedUnits = Optional.of(billedUnits);
             return this;
         }
 
@@ -148,7 +148,7 @@ public final class ApiMeta {
         }
 
         public Builder tokens(ApiMetaTokens tokens) {
-            this.tokens = Optional.ofNullable(tokens);
+            this.tokens = Optional.of(tokens);
             return this;
         }
 
@@ -159,7 +159,7 @@ public final class ApiMeta {
         }
 
         public Builder warnings(List<String> warnings) {
-            this.warnings = Optional.ofNullable(warnings);
+            this.warnings = Optional.of(warnings);
             return this;
         }
 

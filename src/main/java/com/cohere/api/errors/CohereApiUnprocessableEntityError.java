@@ -3,15 +3,16 @@
  */
 package com.cohere.api.errors;
 
-import com.cohere.api.core.CohereApiException;
+import com.cohere.api.core.CohereApiApiError;
+import com.cohere.api.types.UnprocessableEntityErrorBody;
 
-public final class UnprocessableEntityError extends CohereApiException {
+public final class CohereApiUnprocessableEntityError extends CohereApiApiError {
     /**
      * The body of the response that triggered the exception.
      */
-    private final Object body;
+    private final UnprocessableEntityErrorBody body;
 
-    public UnprocessableEntityError(Object body) {
+    public CohereApiUnprocessableEntityError(UnprocessableEntityErrorBody body) {
         super("UnprocessableEntityError", 422, body);
         this.body = body;
     }
@@ -20,7 +21,7 @@ public final class UnprocessableEntityError extends CohereApiException {
      * @return the body
      */
     @java.lang.Override
-    public Object body() {
+    public UnprocessableEntityErrorBody body() {
         return this.body;
     }
 }

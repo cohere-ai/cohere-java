@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = GenerateStreamError.Builder.class)
 public final class GenerateStreamError implements IGenerateStreamEvent {
     private final Optional<Integer> index;
@@ -109,11 +108,11 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
     }
 
     public interface FinishReasonStage {
-        ErrStage finishReason(@NotNull FinishReason finishReason);
+        ErrStage finishReason(FinishReason finishReason);
     }
 
     public interface ErrStage {
-        _FinalStage err(@NotNull String err);
+        _FinalStage err(String err);
     }
 
     public interface _FinalStage {
@@ -157,8 +156,8 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
 
         @java.lang.Override
         @JsonSetter("finish_reason")
-        public ErrStage finishReason(@NotNull FinishReason finishReason) {
-            this.finishReason = Objects.requireNonNull(finishReason, "finishReason must not be null");
+        public ErrStage finishReason(FinishReason finishReason) {
+            this.finishReason = finishReason;
             return this;
         }
 
@@ -168,8 +167,8 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
          */
         @java.lang.Override
         @JsonSetter("err")
-        public _FinalStage err(@NotNull String err) {
-            this.err = Objects.requireNonNull(err, "err must not be null");
+        public _FinalStage err(String err) {
+            this.err = err;
             return this;
         }
 
@@ -179,7 +178,7 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
          */
         @java.lang.Override
         public _FinalStage index(Integer index) {
-            this.index = Optional.ofNullable(index);
+            this.index = Optional.of(index);
             return this;
         }
 

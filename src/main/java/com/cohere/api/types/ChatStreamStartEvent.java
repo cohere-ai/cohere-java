@@ -14,9 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatStreamStartEvent.Builder.class)
 public final class ChatStreamStartEvent implements IChatStreamEvent {
     private final String generationId;
@@ -66,7 +65,7 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
     }
 
     public interface GenerationIdStage {
-        _FinalStage generationId(@NotNull String generationId);
+        _FinalStage generationId(String generationId);
 
         Builder from(ChatStreamStartEvent other);
     }
@@ -96,8 +95,8 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
          */
         @java.lang.Override
         @JsonSetter("generation_id")
-        public _FinalStage generationId(@NotNull String generationId) {
-            this.generationId = Objects.requireNonNull(generationId, "generationId must not be null");
+        public _FinalStage generationId(String generationId) {
+            this.generationId = generationId;
             return this;
         }
 

@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = V2RerankRequest.Builder.class)
 public final class V2RerankRequest {
     private final String model;
@@ -144,13 +143,13 @@ public final class V2RerankRequest {
     }
 
     public interface ModelStage {
-        QueryStage model(@NotNull String model);
+        QueryStage model(String model);
 
         Builder from(V2RerankRequest other);
     }
 
     public interface QueryStage {
-        _FinalStage query(@NotNull String query);
+        _FinalStage query(String query);
     }
 
     public interface _FinalStage {
@@ -211,8 +210,8 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         @JsonSetter("model")
-        public QueryStage model(@NotNull String model) {
-            this.model = Objects.requireNonNull(model, "model must not be null");
+        public QueryStage model(String model) {
+            this.model = model;
             return this;
         }
 
@@ -222,8 +221,8 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         @JsonSetter("query")
-        public _FinalStage query(@NotNull String query) {
-            this.query = Objects.requireNonNull(query, "query must not be null");
+        public _FinalStage query(String query) {
+            this.query = query;
             return this;
         }
 
@@ -233,7 +232,7 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         public _FinalStage maxTokensPerDoc(Integer maxTokensPerDoc) {
-            this.maxTokensPerDoc = Optional.ofNullable(maxTokensPerDoc);
+            this.maxTokensPerDoc = Optional.of(maxTokensPerDoc);
             return this;
         }
 
@@ -253,7 +252,7 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         public _FinalStage returnDocuments(Boolean returnDocuments) {
-            this.returnDocuments = Optional.ofNullable(returnDocuments);
+            this.returnDocuments = Optional.of(returnDocuments);
             return this;
         }
 
@@ -270,7 +269,7 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         public _FinalStage topN(Integer topN) {
-            this.topN = Optional.ofNullable(topN);
+            this.topN = Optional.of(topN);
             return this;
         }
 

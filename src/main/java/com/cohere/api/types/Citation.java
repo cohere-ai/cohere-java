@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = Citation.Builder.class)
 public final class Citation {
     private final Optional<Integer> start;
@@ -29,8 +29,6 @@ public final class Citation {
 
     private final Optional<List<Source>> sources;
 
-    private final Optional<CitationType> type;
-
     private final Map<String, Object> additionalProperties;
 
     private Citation(
@@ -38,13 +36,11 @@ public final class Citation {
             Optional<Integer> end,
             Optional<String> text,
             Optional<List<Source>> sources,
-            Optional<CitationType> type,
             Map<String, Object> additionalProperties) {
         this.start = start;
         this.end = end;
         this.text = text;
         this.sources = sources;
-        this.type = type;
         this.additionalProperties = additionalProperties;
     }
 
@@ -77,11 +73,6 @@ public final class Citation {
         return sources;
     }
 
-    @JsonProperty("type")
-    public Optional<CitationType> getType() {
-        return type;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -97,13 +88,12 @@ public final class Citation {
         return start.equals(other.start)
                 && end.equals(other.end)
                 && text.equals(other.text)
-                && sources.equals(other.sources)
-                && type.equals(other.type);
+                && sources.equals(other.sources);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.start, this.end, this.text, this.sources, this.type);
+        return Objects.hash(this.start, this.end, this.text, this.sources);
     }
 
     @java.lang.Override
@@ -125,8 +115,6 @@ public final class Citation {
 
         private Optional<List<Source>> sources = Optional.empty();
 
-        private Optional<CitationType> type = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -137,7 +125,6 @@ public final class Citation {
             end(other.getEnd());
             text(other.getText());
             sources(other.getSources());
-            type(other.getType());
             return this;
         }
 
@@ -148,7 +135,7 @@ public final class Citation {
         }
 
         public Builder start(Integer start) {
-            this.start = Optional.ofNullable(start);
+            this.start = Optional.of(start);
             return this;
         }
 
@@ -159,7 +146,7 @@ public final class Citation {
         }
 
         public Builder end(Integer end) {
-            this.end = Optional.ofNullable(end);
+            this.end = Optional.of(end);
             return this;
         }
 
@@ -170,7 +157,7 @@ public final class Citation {
         }
 
         public Builder text(String text) {
-            this.text = Optional.ofNullable(text);
+            this.text = Optional.of(text);
             return this;
         }
 
@@ -181,23 +168,12 @@ public final class Citation {
         }
 
         public Builder sources(List<Source> sources) {
-            this.sources = Optional.ofNullable(sources);
-            return this;
-        }
-
-        @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<CitationType> type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder type(CitationType type) {
-            this.type = Optional.ofNullable(type);
+            this.sources = Optional.of(sources);
             return this;
         }
 
         public Citation build() {
-            return new Citation(start, end, text, sources, type, additionalProperties);
+            return new Citation(start, end, text, sources, additionalProperties);
         }
     }
 }

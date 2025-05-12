@@ -19,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CreateConnectorRequest.Builder.class)
 public final class CreateConnectorRequest {
     private final String name;
@@ -172,13 +171,13 @@ public final class CreateConnectorRequest {
     }
 
     public interface NameStage {
-        UrlStage name(@NotNull String name);
+        UrlStage name(String name);
 
         Builder from(CreateConnectorRequest other);
     }
 
     public interface UrlStage {
-        _FinalStage url(@NotNull String url);
+        _FinalStage url(String url);
     }
 
     public interface _FinalStage {
@@ -251,8 +250,8 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public UrlStage name(@NotNull String name) {
-            this.name = Objects.requireNonNull(name, "name must not be null");
+        public UrlStage name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -262,8 +261,8 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         @JsonSetter("url")
-        public _FinalStage url(@NotNull String url) {
-            this.url = Objects.requireNonNull(url, "url must not be null");
+        public _FinalStage url(String url) {
+            this.url = url;
             return this;
         }
 
@@ -273,7 +272,7 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         public _FinalStage serviceAuth(CreateConnectorServiceAuth serviceAuth) {
-            this.serviceAuth = Optional.ofNullable(serviceAuth);
+            this.serviceAuth = Optional.of(serviceAuth);
             return this;
         }
 
@@ -290,7 +289,7 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
-            this.continueOnFailure = Optional.ofNullable(continueOnFailure);
+            this.continueOnFailure = Optional.of(continueOnFailure);
             return this;
         }
 
@@ -307,7 +306,7 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         public _FinalStage active(Boolean active) {
-            this.active = Optional.ofNullable(active);
+            this.active = Optional.of(active);
             return this;
         }
 
@@ -324,7 +323,7 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         public _FinalStage oauth(CreateConnectorOAuth oauth) {
-            this.oauth = Optional.ofNullable(oauth);
+            this.oauth = Optional.of(oauth);
             return this;
         }
 
@@ -341,7 +340,7 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         public _FinalStage excludes(List<String> excludes) {
-            this.excludes = Optional.ofNullable(excludes);
+            this.excludes = Optional.of(excludes);
             return this;
         }
 
@@ -358,7 +357,7 @@ public final class CreateConnectorRequest {
          */
         @java.lang.Override
         public _FinalStage description(String description) {
-            this.description = Optional.ofNullable(description);
+            this.description = Optional.of(description);
             return this;
         }
 

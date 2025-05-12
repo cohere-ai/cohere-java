@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ListModelsResponse.Builder.class)
 public final class ListModelsResponse {
     private final List<GetModelResponse> models;
@@ -118,7 +118,7 @@ public final class ListModelsResponse {
         }
 
         public Builder nextPageToken(String nextPageToken) {
-            this.nextPageToken = Optional.ofNullable(nextPageToken);
+            this.nextPageToken = Optional.of(nextPageToken);
             return this;
         }
 

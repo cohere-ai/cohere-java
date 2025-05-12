@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = JsonResponseFormat.Builder.class)
 public final class JsonResponseFormat {
     private final Optional<Map<String, Object>> schema;
@@ -35,8 +35,8 @@ public final class JsonResponseFormat {
      * <pre><code class="language-json">{
      *   &quot;type&quot;: &quot;object&quot;,
      *   &quot;properties&quot;: {
-     *     &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
-     *     &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+     *     &quot;name&quot;: { &quot;type&quot;: &quot;string&quot; },
+     *     &quot;age&quot;: { &quot;type&quot;: &quot;integer&quot; }
      *   },
      *   &quot;required&quot;: [&quot;name&quot;, &quot;age&quot;]
      * }
@@ -98,7 +98,7 @@ public final class JsonResponseFormat {
         }
 
         public Builder schema(Map<String, Object> schema) {
-            this.schema = Optional.ofNullable(schema);
+            this.schema = Optional.of(schema);
             return this;
         }
 

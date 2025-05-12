@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatContentDeltaEventDeltaMessage.Builder.class)
 public final class ChatContentDeltaEventDeltaMessage {
     private final Optional<ChatContentDeltaEventDeltaMessageContent> content;
@@ -85,7 +85,7 @@ public final class ChatContentDeltaEventDeltaMessage {
         }
 
         public Builder content(ChatContentDeltaEventDeltaMessageContent content) {
-            this.content = Optional.ofNullable(content);
+            this.content = Optional.of(content);
             return this;
         }
 

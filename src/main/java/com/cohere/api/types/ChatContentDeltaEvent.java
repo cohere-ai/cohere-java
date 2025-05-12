@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatContentDeltaEvent.Builder.class)
 public final class ChatContentDeltaEvent implements IChatStreamEventType {
     private final Optional<Integer> index;
@@ -110,7 +110,7 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
         }
 
         public Builder index(Integer index) {
-            this.index = Optional.ofNullable(index);
+            this.index = Optional.of(index);
             return this;
         }
 
@@ -121,7 +121,7 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
         }
 
         public Builder delta(ChatContentDeltaEventDelta delta) {
-            this.delta = Optional.ofNullable(delta);
+            this.delta = Optional.of(delta);
             return this;
         }
 
@@ -132,7 +132,7 @@ public final class ChatContentDeltaEvent implements IChatStreamEventType {
         }
 
         public Builder logprobs(LogprobItem logprobs) {
-            this.logprobs = Optional.ofNullable(logprobs);
+            this.logprobs = Optional.of(logprobs);
             return this;
         }
 

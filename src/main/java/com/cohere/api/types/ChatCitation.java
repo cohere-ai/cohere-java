@@ -17,10 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ChatCitation.Builder.class)
 public final class ChatCitation {
     private final int start;
@@ -31,22 +29,14 @@ public final class ChatCitation {
 
     private final List<String> documentIds;
 
-    private final Optional<ChatCitationType> type;
-
     private final Map<String, Object> additionalProperties;
 
     private ChatCitation(
-            int start,
-            int end,
-            String text,
-            List<String> documentIds,
-            Optional<ChatCitationType> type,
-            Map<String, Object> additionalProperties) {
+            int start, int end, String text, List<String> documentIds, Map<String, Object> additionalProperties) {
         this.start = start;
         this.end = end;
         this.text = text;
         this.documentIds = documentIds;
-        this.type = type;
         this.additionalProperties = additionalProperties;
     }
 
@@ -82,14 +72,6 @@ public final class ChatCitation {
         return documentIds;
     }
 
-    /**
-     * @return The type of citation which indicates what part of the response the citation is for.
-     */
-    @JsonProperty("type")
-    public Optional<ChatCitationType> getType() {
-        return type;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -105,13 +87,12 @@ public final class ChatCitation {
         return start == other.start
                 && end == other.end
                 && text.equals(other.text)
-                && documentIds.equals(other.documentIds)
-                && type.equals(other.type);
+                && documentIds.equals(other.documentIds);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.start, this.end, this.text, this.documentIds, this.type);
+        return Objects.hash(this.start, this.end, this.text, this.documentIds);
     }
 
     @java.lang.Override
@@ -134,7 +115,7 @@ public final class ChatCitation {
     }
 
     public interface TextStage {
-        _FinalStage text(@NotNull String text);
+        _FinalStage text(String text);
     }
 
     public interface _FinalStage {
@@ -145,10 +126,6 @@ public final class ChatCitation {
         _FinalStage addDocumentIds(String documentIds);
 
         _FinalStage addAllDocumentIds(List<String> documentIds);
-
-        _FinalStage type(Optional<ChatCitationType> type);
-
-        _FinalStage type(ChatCitationType type);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -158,8 +135,6 @@ public final class ChatCitation {
         private int end;
 
         private String text;
-
-        private Optional<ChatCitationType> type = Optional.empty();
 
         private List<String> documentIds = new ArrayList<>();
 
@@ -174,7 +149,6 @@ public final class ChatCitation {
             end(other.getEnd());
             text(other.getText());
             documentIds(other.getDocumentIds());
-            type(other.getType());
             return this;
         }
 
@@ -206,25 +180,8 @@ public final class ChatCitation {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public _FinalStage text(@NotNull String text) {
-            this.text = Objects.requireNonNull(text, "text must not be null");
-            return this;
-        }
-
-        /**
-         * <p>The type of citation which indicates what part of the response the citation is for.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage type(ChatCitationType type) {
-            this.type = Optional.ofNullable(type);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public _FinalStage type(Optional<ChatCitationType> type) {
-            this.type = type;
+        public _FinalStage text(String text) {
+            this.text = text;
             return this;
         }
 
@@ -258,7 +215,7 @@ public final class ChatCitation {
 
         @java.lang.Override
         public ChatCitation build() {
-            return new ChatCitation(start, end, text, documentIds, type, additionalProperties);
+            return new ChatCitation(start, end, text, documentIds, additionalProperties);
         }
     }
 }

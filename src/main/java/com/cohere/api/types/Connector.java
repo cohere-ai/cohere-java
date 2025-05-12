@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = Connector.Builder.class)
 public final class Connector {
     private final String id;
@@ -243,21 +242,21 @@ public final class Connector {
     }
 
     public interface IdStage {
-        NameStage id(@NotNull String id);
+        NameStage id(String id);
 
         Builder from(Connector other);
     }
 
     public interface NameStage {
-        CreatedAtStage name(@NotNull String name);
+        CreatedAtStage name(String name);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
+        _FinalStage updatedAt(OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -358,8 +357,8 @@ public final class Connector {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public NameStage id(@NotNull String id) {
-            this.id = Objects.requireNonNull(id, "id must not be null");
+        public NameStage id(String id) {
+            this.id = id;
             return this;
         }
 
@@ -369,8 +368,8 @@ public final class Connector {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public CreatedAtStage name(@NotNull String name) {
-            this.name = Objects.requireNonNull(name, "name must not be null");
+        public CreatedAtStage name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -380,8 +379,8 @@ public final class Connector {
          */
         @java.lang.Override
         @JsonSetter("created_at")
-        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
-            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
+        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = createdAt;
             return this;
         }
 
@@ -391,8 +390,8 @@ public final class Connector {
          */
         @java.lang.Override
         @JsonSetter("updated_at")
-        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
-            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
+        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
+            this.updatedAt = updatedAt;
             return this;
         }
 
@@ -402,7 +401,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage continueOnFailure(Boolean continueOnFailure) {
-            this.continueOnFailure = Optional.ofNullable(continueOnFailure);
+            this.continueOnFailure = Optional.of(continueOnFailure);
             return this;
         }
 
@@ -419,7 +418,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage active(Boolean active) {
-            this.active = Optional.ofNullable(active);
+            this.active = Optional.of(active);
             return this;
         }
 
@@ -436,7 +435,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage authStatus(ConnectorAuthStatus authStatus) {
-            this.authStatus = Optional.ofNullable(authStatus);
+            this.authStatus = Optional.of(authStatus);
             return this;
         }
 
@@ -453,7 +452,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage oauth(ConnectorOAuth oauth) {
-            this.oauth = Optional.ofNullable(oauth);
+            this.oauth = Optional.of(oauth);
             return this;
         }
 
@@ -470,7 +469,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage authType(String authType) {
-            this.authType = Optional.ofNullable(authType);
+            this.authType = Optional.of(authType);
             return this;
         }
 
@@ -487,7 +486,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage excludes(List<String> excludes) {
-            this.excludes = Optional.ofNullable(excludes);
+            this.excludes = Optional.of(excludes);
             return this;
         }
 
@@ -504,7 +503,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage url(String url) {
-            this.url = Optional.ofNullable(url);
+            this.url = Optional.of(url);
             return this;
         }
 
@@ -521,7 +520,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage description(String description) {
-            this.description = Optional.ofNullable(description);
+            this.description = Optional.of(description);
             return this;
         }
 
@@ -539,7 +538,7 @@ public final class Connector {
          */
         @java.lang.Override
         public _FinalStage organizationId(String organizationId) {
-            this.organizationId = Optional.ofNullable(organizationId);
+            this.organizationId = Optional.of(organizationId);
             return this;
         }
 

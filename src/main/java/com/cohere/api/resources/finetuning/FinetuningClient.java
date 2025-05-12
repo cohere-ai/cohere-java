@@ -4,17 +4,17 @@
 package com.cohere.api.resources.finetuning;
 
 import com.cohere.api.core.ClientOptions;
-import com.cohere.api.core.CohereApiException;
-import com.cohere.api.core.CohereException;
+import com.cohere.api.core.CohereApiApiError;
+import com.cohere.api.core.CohereApiError;
 import com.cohere.api.core.MediaTypes;
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.core.RequestOptions;
-import com.cohere.api.errors.BadRequestError;
-import com.cohere.api.errors.ForbiddenError;
-import com.cohere.api.errors.InternalServerError;
-import com.cohere.api.errors.NotFoundError;
-import com.cohere.api.errors.ServiceUnavailableError;
-import com.cohere.api.errors.UnauthorizedError;
+import com.cohere.api.errors.CohereApiBadRequestError;
+import com.cohere.api.errors.CohereApiForbiddenError;
+import com.cohere.api.errors.CohereApiInternalServerError;
+import com.cohere.api.errors.CohereApiNotFoundError;
+import com.cohere.api.errors.CohereApiServiceUnavailableError;
+import com.cohere.api.errors.CohereApiUnauthorizedError;
 import com.cohere.api.resources.finetuning.finetuning.types.CreateFinetunedModelResponse;
 import com.cohere.api.resources.finetuning.finetuning.types.FinetunedModel;
 import com.cohere.api.resources.finetuning.finetuning.types.GetFinetunedModelResponse;
@@ -87,31 +87,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -129,7 +131,7 @@ public class FinetuningClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new CohereException("Failed to serialize request", e);
+            throw new CohereApiError("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -150,31 +152,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -207,31 +211,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -265,31 +271,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -309,7 +317,7 @@ public class FinetuningClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new CohereException("Failed to serialize request", e);
+            throw new CohereApiError("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -330,31 +338,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -402,31 +412,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 
@@ -474,31 +486,33 @@ public class FinetuningClient {
             try {
                 switch (response.code()) {
                     case 400:
-                        throw new BadRequestError(
+                        throw new CohereApiBadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 401:
-                        throw new UnauthorizedError(
+                        throw new CohereApiUnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 403:
-                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 404:
-                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                        throw new CohereApiNotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 500:
-                        throw new InternalServerError(
+                        throw new CohereApiInternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                     case 503:
-                        throw new ServiceUnavailableError(
+                        throw new CohereApiServiceUnavailableError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
                 }
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
-            throw new CohereApiException(
+            throw new CohereApiApiError(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new CohereException("Network error executing HTTP request", e);
+            throw new CohereApiError("Network error executing HTTP request", e);
         }
     }
 }

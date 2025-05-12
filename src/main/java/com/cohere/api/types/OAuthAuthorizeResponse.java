@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = OAuthAuthorizeResponse.Builder.class)
 public final class OAuthAuthorizeResponse {
     private final Optional<String> redirectUrl;
@@ -87,7 +87,7 @@ public final class OAuthAuthorizeResponse {
         }
 
         public Builder redirectUrl(String redirectUrl) {
-            this.redirectUrl = Optional.ofNullable(redirectUrl);
+            this.redirectUrl = Optional.of(redirectUrl);
             return this;
         }
 

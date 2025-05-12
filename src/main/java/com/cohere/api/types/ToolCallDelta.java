@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ToolCallDelta.Builder.class)
 public final class ToolCallDelta {
     private final Optional<String> name;
@@ -137,7 +137,7 @@ public final class ToolCallDelta {
         }
 
         public Builder name(String name) {
-            this.name = Optional.ofNullable(name);
+            this.name = Optional.of(name);
             return this;
         }
 
@@ -148,7 +148,7 @@ public final class ToolCallDelta {
         }
 
         public Builder index(Double index) {
-            this.index = Optional.ofNullable(index);
+            this.index = Optional.of(index);
             return this;
         }
 
@@ -159,7 +159,7 @@ public final class ToolCallDelta {
         }
 
         public Builder parameters(String parameters) {
-            this.parameters = Optional.ofNullable(parameters);
+            this.parameters = Optional.of(parameters);
             return this;
         }
 
@@ -170,7 +170,7 @@ public final class ToolCallDelta {
         }
 
         public Builder text(String text) {
-            this.text = Optional.ofNullable(text);
+            this.text = Optional.of(text);
             return this;
         }
 

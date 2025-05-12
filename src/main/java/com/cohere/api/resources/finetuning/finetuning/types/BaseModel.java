@@ -16,9 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = BaseModel.Builder.class)
 public final class BaseModel {
     private final Optional<String> name;
@@ -109,7 +108,7 @@ public final class BaseModel {
     }
 
     public interface BaseTypeStage {
-        _FinalStage baseType(@NotNull BaseType baseType);
+        _FinalStage baseType(BaseType baseType);
 
         Builder from(BaseModel other);
     }
@@ -160,8 +159,8 @@ public final class BaseModel {
          */
         @java.lang.Override
         @JsonSetter("base_type")
-        public _FinalStage baseType(@NotNull BaseType baseType) {
-            this.baseType = Objects.requireNonNull(baseType, "baseType must not be null");
+        public _FinalStage baseType(BaseType baseType) {
+            this.baseType = baseType;
             return this;
         }
 
@@ -171,7 +170,7 @@ public final class BaseModel {
          */
         @java.lang.Override
         public _FinalStage strategy(Strategy strategy) {
-            this.strategy = Optional.ofNullable(strategy);
+            this.strategy = Optional.of(strategy);
             return this;
         }
 
@@ -188,7 +187,7 @@ public final class BaseModel {
          */
         @java.lang.Override
         public _FinalStage version(String version) {
-            this.version = Optional.ofNullable(version);
+            this.version = Optional.of(version);
             return this;
         }
 
@@ -205,7 +204,7 @@ public final class BaseModel {
          */
         @java.lang.Override
         public _FinalStage name(String name) {
-            this.name = Optional.ofNullable(name);
+            this.name = Optional.of(name);
             return this;
         }
 

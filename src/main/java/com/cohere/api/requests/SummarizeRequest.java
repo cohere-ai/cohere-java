@@ -19,9 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = SummarizeRequest.Builder.class)
 public final class SummarizeRequest {
     private final String text;
@@ -158,7 +157,7 @@ public final class SummarizeRequest {
     }
 
     public interface TextStage {
-        _FinalStage text(@NotNull String text);
+        _FinalStage text(String text);
 
         Builder from(SummarizeRequest other);
     }
@@ -230,8 +229,8 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         @JsonSetter("text")
-        public _FinalStage text(@NotNull String text) {
-            this.text = Objects.requireNonNull(text, "text must not be null");
+        public _FinalStage text(String text) {
+            this.text = text;
             return this;
         }
 
@@ -241,7 +240,7 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         public _FinalStage additionalCommand(String additionalCommand) {
-            this.additionalCommand = Optional.ofNullable(additionalCommand);
+            this.additionalCommand = Optional.of(additionalCommand);
             return this;
         }
 
@@ -258,7 +257,7 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         public _FinalStage temperature(Double temperature) {
-            this.temperature = Optional.ofNullable(temperature);
+            this.temperature = Optional.of(temperature);
             return this;
         }
 
@@ -275,7 +274,7 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         public _FinalStage extractiveness(SummarizeRequestExtractiveness extractiveness) {
-            this.extractiveness = Optional.ofNullable(extractiveness);
+            this.extractiveness = Optional.of(extractiveness);
             return this;
         }
 
@@ -292,7 +291,7 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         public _FinalStage model(String model) {
-            this.model = Optional.ofNullable(model);
+            this.model = Optional.of(model);
             return this;
         }
 
@@ -309,7 +308,7 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         public _FinalStage format(SummarizeRequestFormat format) {
-            this.format = Optional.ofNullable(format);
+            this.format = Optional.of(format);
             return this;
         }
 
@@ -326,7 +325,7 @@ public final class SummarizeRequest {
          */
         @java.lang.Override
         public _FinalStage length(SummarizeRequestLength length) {
-            this.length = Optional.ofNullable(length);
+            this.length = Optional.of(length);
             return this;
         }
 

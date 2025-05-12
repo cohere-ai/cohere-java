@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ListConnectorsResponse.Builder.class)
 public final class ListConnectorsResponse {
     private final List<Connector> connectors;
@@ -118,7 +118,7 @@ public final class ListConnectorsResponse {
         }
 
         public Builder totalCount(Double totalCount) {
-            this.totalCount = Optional.ofNullable(totalCount);
+            this.totalCount = Optional.of(totalCount);
             return this;
         }
 
