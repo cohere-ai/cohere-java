@@ -5,6 +5,7 @@ package com.cohere.api;
 
 import com.cohere.api.core.ClientOptions;
 import com.cohere.api.core.Environment;
+import okhttp3.OkHttpClient;
 
 public final class CohereBuilder {
     private ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
@@ -39,6 +40,11 @@ public final class CohereBuilder {
 
     public CohereBuilder url(String url) {
         this.environment = Environment.custom(url);
+        return this;
+    }
+
+    public CohereBuilder httpClient(OkHttpClient httpClient) {
+        this.clientOptionsBuilder.httpClient(httpClient);
         return this;
     }
 

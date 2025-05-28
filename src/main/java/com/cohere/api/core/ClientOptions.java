@@ -80,6 +80,8 @@ public final class ClientOptions {
 
         private final Map<String, Supplier<String>> headerSuppliers = new HashMap<>();
 
+        private OkHttpClient httpClient;
+
         public Builder environment(Environment environment) {
             this.environment = environment;
             return this;
@@ -95,10 +97,18 @@ public final class ClientOptions {
             return this;
         }
 
+        public Builder httpClient(OkHttpClient httpClient) {
+            this.httpClient = httpClient;
+            return this;
+        }
+
         public ClientOptions build() {
-            OkHttpClient okhttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new RetryInterceptor(3))
-                    .build();
+            OkHttpClient okhttpClient = this.httpClient;
+            if (okhttpClient == null) {
+                okhttpClient = new OkHttpClient.Builder()
+                        .addInterceptor(new RetryInterceptor(3))
+                        .build();
+            }
             return new ClientOptions(environment, headers, headerSuppliers, okhttpClient);
         }
     }

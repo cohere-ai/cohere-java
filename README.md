@@ -64,6 +64,23 @@ public class ChatPost {
 }
 ```
 
+If you need custom HTTP settings, provide your own `OkHttpClient`:
+
+```java
+import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
+
+OkHttpClient customClient = new OkHttpClient.Builder()
+        .callTimeout(30, TimeUnit.SECONDS)
+        .build();
+
+Cohere cohere = Cohere.builder()
+        .token("<<apiKey>>")
+        .clientName("snippet")
+        .httpClient(customClient)
+        .build();
+```
+
 ### Handling Errors
 When the API returns a non-success status code (4xx or 5xx response),
 a subclass of [ApiError](src/main/java/com/Cohere/api/core/ApiError.java)
