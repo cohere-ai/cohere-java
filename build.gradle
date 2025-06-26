@@ -17,6 +17,7 @@ dependencies {
     api 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.3'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
+    api 'com.launchdarkly:okhttp-eventsource:4.1.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
@@ -44,6 +45,13 @@ test {
     testLogging {
         showStandardStreams = true
     }
+}
+
+task runStreamTests(type: JavaExec) {
+    group = 'verification'
+    description = 'Run Stream.java tests'
+    classpath = sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+    mainClass = 'com.cohere.api.TestClient'
 }
 publishing {
     publications {

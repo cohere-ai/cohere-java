@@ -3,95 +3,310 @@
  */
 package com.cohere.api.core;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
+import okhttp3.OkHttpClient;
 
 /**
- * The {@code Stream} class implmenets {@link Iterable} to provide a simple mechanism for reading and parsing
+ * The {@code Stream} class implements {@link Iterable} to provide a simple mechanism for reading and parsing
  * objects of a given type from data streamed via a {@link Reader} using a specified delimiter.
  * <p>
- * {@code Stream} assumes that data is being pushed to the provided {@link Reader} asynchronously and utilizes a
- * {@code Scanner} to block during iteration if the next object is not available.
+ * Enhanced with Server-Sent Events (SSE) support using manual parsing for Cohere's streaming endpoints.
+ * This provides standardized SSE handling with proper event parsing.
+ * HTTP-level retries are handled by the RetryInterceptor.
  *
  * @param <T> The type of objects in the stream.
  */
 public final class Stream<T> implements Iterable<T> {
-    /**
-     * The {@link Class} of the objects in the stream.
-     */
+
+    public enum StreamType {
+        /** Traditional newline-delimited JSON format */
+        JSON,
+        /** Server-Sent Events with manual parsing */
+        SSE
+    }
+
     private final Class<T> valueType;
-    /**
-     * The {@link Scanner} used for reading from the input stream and blocking when neede during iteration.
-     */
     private final Scanner scanner;
+    private final StreamType streamType;
+    private final String delimiter;
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
+    private volatile String lastEventId;
+
+    // For SSE streaming with manual parsing
+    private final URI uri;
+    private final OkHttpClient client;
 
     /**
      * Constructs a new {@code Stream} with the specified value type, reader, and delimiter.
+     * This constructor maintains backward compatibility for JSON streaming.
      *
      * @param valueType The class of the objects in the stream.
      * @param reader    The reader that provides the streamed data.
      * @param delimiter The delimiter used to separate elements in the stream.
      */
     public Stream(Class<T> valueType, Reader reader, String delimiter) {
-        this.scanner = new Scanner(reader).useDelimiter(delimiter);
         this.valueType = valueType;
+        this.scanner = new Scanner(reader).useDelimiter(delimiter);
+        this.streamType = StreamType.JSON;
+        this.delimiter = delimiter;
+        this.uri = null;
+        this.client = null;
     }
 
     /**
-     * Returns an iterator over the elements in this stream that blocks during iteration when the next object is
-     * not yet available.
+     * Private constructor for SSE streaming with manual parsing.
+     *
+     * @param valueType The class of the objects in the stream.
+     * @param uri The URI of the SSE endpoint.
+     * @param client The OkHttpClient to use.
+     */
+    private Stream(Class<T> valueType, URI uri, OkHttpClient client) {
+        this.valueType = valueType;
+        this.scanner = null;
+        this.streamType = StreamType.SSE;
+        this.delimiter = null;
+        this.uri = uri;
+        this.client = client;
+    }
+
+    /**
+     * Creates a new Stream for newline-delimited JSON format.
+     *
+     * @param <T> The type of objects in the stream.
+     * @param valueType The class of the objects in the stream.
+     * @param reader The reader that provides the JSON data.
+     * @param delimiter The delimiter used to separate JSON objects.
+     * @return A new Stream configured for JSON parsing.
+     */
+    public static <T> Stream<T> fromJson(Class<T> valueType, Reader reader, String delimiter) {
+        return new Stream<>(valueType, reader, delimiter);
+    }
+
+    /**
+     * Creates a new Stream for newline-delimited JSON format with default newline delimiter.
+     *
+     * @param <T> The type of objects in the stream.
+     * @param valueType The class of the objects in the stream.
+     * @param reader The reader that provides the JSON data.
+     * @return A new Stream configured for JSON parsing with newline delimiter.
+     */
+    public static <T> Stream<T> fromJson(Class<T> valueType, Reader reader) {
+        return new Stream<>(valueType, reader, "\\n");
+    }
+
+    /**
+     * Creates a new Stream for Server-Sent Events using manual parsing.
+     * This is designed to work with Cohere's SSE streaming endpoints.
+     *
+     * @param <T> The type of objects in the stream.
+     * @param valueType The class of the objects in the stream.
+     * @param uri The URI of the SSE endpoint.
+     * @param client The OkHttpClient to use (should include RetryInterceptor).
+     * @return A new Stream configured for SSE streaming.
+     */
+    public static <T> Stream<T> fromSSE(Class<T> valueType, URI uri, OkHttpClient client) {
+        return new Stream<>(valueType, uri, client);
+    }
+
+    /**
+     * Returns an iterator over the elements in this stream.
      *
      * @return An iterator that can be used to traverse the elements in the stream.
      */
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            /**
-             * Returns {@code true} if there are more elements in the stream.
-             * <p>
-             * Will block and wait for input if the stream has not ended and the next object is not yet available.
-             *
-             * @return {@code true} if there are more elements, {@code false} otherwise.
-             */
-            @Override
-            public boolean hasNext() {
-                return scanner.hasNext();
+        if (streamType == StreamType.SSE) {
+            return new SSEIterator();
+        } else {
+            return new JsonIterator();
+        }
+    }
+
+    /**
+     * Close the stream and release resources.
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    public void close() throws IOException {
+        if (isClosed.compareAndSet(false, true)) {
+            if (scanner != null) {
+                scanner.close();
+            }
+        }
+    }
+
+    /**
+     * Check if the stream is closed.
+     *
+     * @return true if the stream is closed
+     */
+    public boolean isClosed() {
+        return isClosed.get();
+    }
+
+    /**
+     * Get the last received SSE event ID.
+     *
+     * @return The last event ID, or null if none received
+     */
+    public String getLastEventId() {
+        return lastEventId;
+    }
+
+    /**
+     * JSON iterator that parses newline-delimited JSON objects.
+     * All methods are private to prevent external access to internal helpers.
+     */
+    private final class JsonIterator implements Iterator<T> {
+
+        @Override
+        public boolean hasNext() {
+            if (isClosed.get()) {
+                return false;
+            }
+            return scanner.hasNext();
+        }
+
+        @Override
+        public T next() {
+            if (isClosed.get()) {
+                throw new NoSuchElementException("Stream is closed");
             }
 
-            /**
-             * Returns the next element in the stream.
-             * <p>
-             * Will block and wait for input if the stream has not ended and the next object is not yet available.
-             *
-             * @return The next element in the stream.
-             * @throws NoSuchElementException If there are no more elements in the stream.
-             */
-            @Override
-            public T next() {
-                if (!scanner.hasNext()) {
-                    throw new NoSuchElementException();
-                } else {
-                    try {
-                        T parsedResponse = ObjectMappers.JSON_MAPPER.readValue(
-                                scanner.next().trim(), valueType);
-                        return parsedResponse;
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+            if (!scanner.hasNext()) {
+                throw new NoSuchElementException();
+            } else {
+                try {
+                    T parsedResponse =
+                            ObjectMappers.JSON_MAPPER.readValue(scanner.next().trim(), valueType);
+                    return parsedResponse;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
+        }
 
-            /**
-             * Removing elements from {@code Stream} is not supported.
-             *
-             * @throws UnsupportedOperationException Always, as removal is not supported.
-             */
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    /**
+     * SSE iterator using manual parsing for proper SSE handling with Cohere endpoints.
+     * All methods are private to prevent external access to internal helpers.
+     */
+    private final class SSEIterator implements Iterator<T> {
+        private Scanner sseScanner;
+        private T nextItem;
+        private boolean hasNextItem = false;
+        private boolean endOfStream = false;
+
+        public SSEIterator() {
+            // Initialize SSE connection
+            try {
+                okhttp3.Request request = new okhttp3.Request.Builder()
+                        .url(uri.toString())
+                        .addHeader("Accept", "text/event-stream")
+                        .addHeader("Cache-Control", "no-cache")
+                        .build();
+
+                okhttp3.Response response = client.newCall(request).execute();
+                if (response.isSuccessful() && response.body() != null) {
+                    this.sseScanner = new Scanner(response.body().charStream());
+                } else {
+                    this.endOfStream = true;
+                }
+            } catch (IOException e) {
+                this.endOfStream = true;
+                System.err.println("Failed to connect to SSE endpoint: " + e.getMessage());
             }
-        };
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (isClosed.get() || endOfStream) {
+                return false;
+            }
+
+            if (hasNextItem) {
+                return true;
+            }
+
+            return readNextSSEEvent();
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more elements in stream");
+            }
+
+            T result = nextItem;
+            nextItem = null;
+            hasNextItem = false;
+            return result;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Read and parse the next SSE event from the stream.
+         */
+        private boolean readNextSSEEvent() {
+            if (sseScanner == null || !sseScanner.hasNextLine()) {
+                endOfStream = true;
+                return false;
+            }
+
+            try {
+                String eventType = null;
+                String eventId = null;
+                StringBuilder data = new StringBuilder();
+
+                while (sseScanner.hasNextLine()) {
+                    String line = sseScanner.nextLine();
+
+                    if (line.isEmpty()) {
+                        break;
+                    }
+
+                    if (line.startsWith("event:")) {
+                        eventType = line.substring(6).trim();
+                    } else if (line.startsWith("id:")) {
+                        eventId = line.substring(3).trim();
+                        lastEventId = eventId;
+                    } else if (line.startsWith("data:")) {
+                        if (data.length() > 0) {
+                            data.append("\\n");
+                        }
+                        data.append(line.substring(5).trim());
+                    }
+                    // Ignore retry: and comment lines
+                }
+
+                if (data.length() > 0) {
+                    String jsonData = data.toString();
+                    nextItem = ObjectMappers.JSON_MAPPER.readValue(jsonData, valueType);
+                    hasNextItem = true;
+                    return true;
+                } else {
+                    return readNextSSEEvent();
+                }
+
+            } catch (Exception e) {
+                System.err.println("Failed to parse SSE event data: " + e.getMessage());
+                return readNextSSEEvent(); // Try next event
+            }
+        }
     }
 }
