@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
-import okhttp3.OkHttpClient;
 
 /**
  * The {@code Stream} class implements {@link Iterable} to provide a simple mechanism for reading and parsing
@@ -25,9 +24,7 @@ import okhttp3.OkHttpClient;
 public final class Stream<T> implements Iterable<T> {
 
     public enum StreamType {
-        /** Traditional newline-delimited JSON format */
         JSON,
-        /** Server-Sent Events with manual parsing */
         SSE
     }
 
@@ -40,7 +37,7 @@ public final class Stream<T> implements Iterable<T> {
 
     // For SSE streaming with manual parsing
     private final URI uri;
-    private final OkHttpClient client;
+    private final Reader sseReader;
 
     /**
      * Constructs a new {@code Stream} with the specified value type, reader, and delimiter.
@@ -56,7 +53,7 @@ public final class Stream<T> implements Iterable<T> {
         this.streamType = StreamType.JSON;
         this.delimiter = delimiter;
         this.uri = null;
-        this.client = null;
+        this.sseReader = null;
     }
 
     /**
@@ -64,15 +61,15 @@ public final class Stream<T> implements Iterable<T> {
      *
      * @param valueType The class of the objects in the stream.
      * @param uri The URI of the SSE endpoint.
-     * @param client The OkHttpClient to use.
+     * @param sseReader The reader that provides the SSE data.
      */
-    private Stream(Class<T> valueType, URI uri, OkHttpClient client) {
+    private Stream(Class<T> valueType, URI uri, Reader sseReader) {
         this.valueType = valueType;
         this.scanner = null;
         this.streamType = StreamType.SSE;
         this.delimiter = null;
         this.uri = uri;
-        this.client = client;
+        this.sseReader = sseReader;
     }
 
     /**
@@ -107,11 +104,11 @@ public final class Stream<T> implements Iterable<T> {
      * @param <T> The type of objects in the stream.
      * @param valueType The class of the objects in the stream.
      * @param uri The URI of the SSE endpoint.
-     * @param client The OkHttpClient to use (should include RetryInterceptor).
+     * @param sseReader The reader that provides the SSE data.
      * @return A new Stream configured for SSE streaming.
      */
-    public static <T> Stream<T> fromSSE(Class<T> valueType, URI uri, OkHttpClient client) {
-        return new Stream<>(valueType, uri, client);
+    public static <T> Stream<T> fromSSE(Class<T> valueType, URI uri, Reader sseReader) {
+        return new Stream<>(valueType, uri, sseReader);
     }
 
     /**
@@ -199,8 +196,7 @@ public final class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * SSE iterator using manual parsing for proper SSE handling with Cohere endpoints.
-     * All methods are private to prevent external access to internal helpers.
+     * SSE iterator using manual parsing for proper SSE handling
      */
     private final class SSEIterator implements Iterator<T> {
         private Scanner sseScanner;
@@ -208,24 +204,12 @@ public final class Stream<T> implements Iterable<T> {
         private boolean hasNextItem = false;
         private boolean endOfStream = false;
 
-        public SSEIterator() {
-            // Initialize SSE connection
-            try {
-                okhttp3.Request request = new okhttp3.Request.Builder()
-                        .url(uri.toString())
-                        .addHeader("Accept", "text/event-stream")
-                        .addHeader("Cache-Control", "no-cache")
-                        .build();
-
-                okhttp3.Response response = client.newCall(request).execute();
-                if (response.isSuccessful() && response.body() != null) {
-                    this.sseScanner = new Scanner(response.body().charStream());
-                } else {
-                    this.endOfStream = true;
-                }
-            } catch (IOException e) {
+        private SSEIterator() {
+            // Initialize SSE scanner from the provided reader
+            if (sseReader != null) {
+                this.sseScanner = new Scanner(sseReader);
+            } else {
                 this.endOfStream = true;
-                System.err.println("Failed to connect to SSE endpoint: " + e.getMessage());
             }
         }
 

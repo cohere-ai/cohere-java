@@ -6,6 +6,7 @@ package com.cohere.api;
 import com.cohere.api.core.Stream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,26 @@ public final class TestClient {
     private static final String SIMPLE_JSON_DATA =
             "{\"message\":\"first\"}\n" + "{\"message\":\"second\"}\n" + "{\"message\":\"third\"}\n";
 
+    /**
+     * Standard SSE format test data
+     */
+    private static final String SSE_TEST_DATA = "event: stream-start\n"
+            + "id: event-1\n"
+            + "data: {\"is_finished\":false,\"event_type\":\"stream-start\",\"generation_id\":\"test-123\"}\n"
+            + "\n"
+            + "event: text-generation\n"
+            + "id: event-2\n"
+            + "data: {\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"Hello\"}\n"
+            + "\n"
+            + "event: text-generation\n"
+            + "id: event-3\n"
+            + "data: {\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\" World\"}\n"
+            + "\n"
+            + "event: stream-end\n"
+            + "id: event-4\n"
+            + "data: {\"is_finished\":true,\"event_type\":\"stream-end\",\"finish_reason\":\"COMPLETE\"}\n"
+            + "\n";
+
     public static void main(String[] args) {
         TestClient client = new TestClient();
         client.test();
@@ -41,6 +62,7 @@ public final class TestClient {
         testBackwardCompatibility();
         testJsonFactoryMethod();
         testActualCohereAPIFormat();
+        testSSEFormat();
         testResourceManagement();
         testSSEInfo();
         System.out.println("All tests completed successfully! ✅");
@@ -139,6 +161,42 @@ public final class TestClient {
     }
 
     /**
+     * Test SSE format parsing with standard Server-Sent Events format.
+     * This tests the new SSE implementation with event:, id:, and data: fields.
+     */
+    private void testSSEFormat() {
+        System.out.println("🌊 Testing SSE format parsing...");
+
+        StringReader reader = new StringReader(SSE_TEST_DATA);
+        URI dummyUri = URI.create("https://api.cohere.ai/v1/chat-stream");
+        Stream<CohereEvent> sseStream = Stream.fromSSE(CohereEvent.class, dummyUri, reader);
+
+        List<CohereEvent> events = new ArrayList<>();
+        StringBuilder fullText = new StringBuilder();
+
+        for (CohereEvent event : sseStream) {
+            events.add(event);
+
+            // Simulate real usage - accumulate text from text-generation events
+            if ("text-generation".equals(event.event_type) && event.text != null) {
+                fullText.append(event.text);
+            }
+        }
+
+        // Verify SSE parsing
+        assert events.size() == 4 : "Expected 4 events from SSE stream, got " + events.size();
+        assert "stream-start".equals(events.get(0).event_type) : "First event should be stream-start";
+        assert "stream-end".equals(events.get(3).event_type) : "Last event should be stream-end";
+        assert "Hello World".equals(fullText.toString()) : "Accumulated text incorrect: " + fullText.toString();
+
+        // Verify event ID tracking
+        assert sseStream.getLastEventId() != null : "Last event ID should be tracked";
+        assert sseStream.getLastEventId().equals("event-4") : "Last event ID should be event-4";
+
+        System.out.println("✅ SSE format test passed - reconstructed text: '" + fullText.toString() + "'\n");
+    }
+
+    /**
      * Test resource management and cleanup.
      * This ensures streams can be properly closed and resources released.
      */
@@ -169,7 +227,7 @@ public final class TestClient {
     }
 
     /**
-     * Information about the new SSE factory method using okhttp-eventsource.
+     * Information about the new SSE factory method using manual parsing.
      * This explains how to use SSE streaming with Cohere endpoints.
      */
     private void testSSEInfo() {
@@ -178,7 +236,7 @@ public final class TestClient {
         System.out.println("📋 Currently implemented:");
         System.out.println("   ✅ Stream.fromJson(Class<T>, Reader) - Newline-delimited JSON (NDJSON)");
         System.out.println("   ✅ Stream.fromJson(Class<T>, Reader, String) - Custom delimiter JSON");
-        System.out.println("   ✅ Stream.fromSSE(Class<T>, URI, OkHttpClient) - Manual SSE parsing");
+        System.out.println("   ✅ Stream.fromSSE(Class<T>, URI, Reader) - Manual SSE parsing");
         System.out.println("   ✅ Backward compatibility with legacy constructor");
         System.out.println("   ✅ Resource management with close() and isClosed()");
         System.out.println("   ✅ getLastEventId() for SSE event ID tracking");
@@ -187,11 +245,11 @@ public final class TestClient {
         System.out.println("   ✅ Manual SSE parsing (event:, id:, data: fields)");
         System.out.println("   ✅ Proper SSE event format handling");
         System.out.println("   ✅ Event ID tracking for reconnection support");
-        System.out.println("   ✅ Works with existing RetryInterceptor for HTTP-level retries");
+        System.out.println("   ✅ W3C-compliant SSE format support");
         System.out.println("   ✅ Example usage:");
         System.out.println("     URI uri = URI.create(\"https://api.cohere.ai/v1/chat-stream\");");
-        System.out.println("     OkHttpClient client = clientWithRetryInterceptor;");
-        System.out.println("     Stream<ChatEvent> stream = Stream.fromSSE(ChatEvent.class, uri, client);");
+        System.out.println("     Reader sseReader = getSSEReader(); // From HTTP response or test data");
+        System.out.println("     Stream<ChatEvent> stream = Stream.fromSSE(ChatEvent.class, uri, sseReader);");
         System.out.println("     for (ChatEvent event : stream) { processEvent(event); }");
         System.out.println("     String lastId = stream.getLastEventId(); // For reconnection");
         System.out.println("     stream.close(); // Clean up resources");
