@@ -115,6 +115,9 @@ public final class TrainingStepMetrics {
             return this;
         }
 
+        /**
+         * <p>Creation timestamp.</p>
+         */
         @JsonSetter(value = "created_at", nulls = Nulls.SKIP)
         public Builder createdAt(Optional<OffsetDateTime> createdAt) {
             this.createdAt = createdAt;
@@ -126,6 +129,9 @@ public final class TrainingStepMetrics {
             return this;
         }
 
+        /**
+         * <p>Step number.</p>
+         */
         @JsonSetter(value = "step_number", nulls = Nulls.SKIP)
         public Builder stepNumber(Optional<Integer> stepNumber) {
             this.stepNumber = stepNumber;
@@ -137,6 +143,9 @@ public final class TrainingStepMetrics {
             return this;
         }
 
+        /**
+         * <p>Map of names and values for each evaluation metrics.</p>
+         */
         @JsonSetter(value = "metrics", nulls = Nulls.SKIP)
         public Builder metrics(Optional<Map<String, Double>> metrics) {
             this.metrics = metrics;

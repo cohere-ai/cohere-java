@@ -81,6 +81,9 @@ public final class ChatCitationGenerationEvent implements IChatStreamEvent {
             return this;
         }
 
+        /**
+         * <p>Citations for the generated reply.</p>
+         */
         @JsonSetter(value = "citations", nulls = Nulls.SKIP)
         public Builder citations(List<ChatCitation> citations) {
             this.citations.clear();

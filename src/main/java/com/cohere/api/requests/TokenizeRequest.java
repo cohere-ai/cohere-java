@@ -40,7 +40,7 @@ public final class TokenizeRequest {
     }
 
     /**
-     * @return An optional parameter to provide the model name. This will ensure that the tokenization uses the tokenizer used by that model.
+     * @return The input will be tokenized by the tokenizer that is used by this model.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -77,12 +77,18 @@ public final class TokenizeRequest {
     }
 
     public interface TextStage {
+        /**
+         * <p>The string to be tokenized, the minimum text length is 1 character, and the maximum text length is 65536 characters.</p>
+         */
         ModelStage text(@NotNull String text);
 
         Builder from(TokenizeRequest other);
     }
 
     public interface ModelStage {
+        /**
+         * <p>The input will be tokenized by the tokenizer that is used by this model.</p>
+         */
         _FinalStage model(@NotNull String model);
     }
 
@@ -110,6 +116,7 @@ public final class TokenizeRequest {
 
         /**
          * <p>The string to be tokenized, the minimum text length is 1 character, and the maximum text length is 65536 characters.</p>
+         * <p>The string to be tokenized, the minimum text length is 1 character, and the maximum text length is 65536 characters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -120,7 +127,8 @@ public final class TokenizeRequest {
         }
 
         /**
-         * <p>An optional parameter to provide the model name. This will ensure that the tokenization uses the tokenizer used by that model.</p>
+         * <p>The input will be tokenized by the tokenizer that is used by this model.</p>
+         * <p>The input will be tokenized by the tokenizer that is used by this model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

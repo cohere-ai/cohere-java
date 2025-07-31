@@ -10,10 +10,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -21,16 +23,30 @@ import org.jetbrains.annotations.NotNull;
 public final class ImageUrl {
     private final String url;
 
+    private final Optional<ImageUrlDetail> detail;
+
     private final Map<String, Object> additionalProperties;
 
-    private ImageUrl(String url, Map<String, Object> additionalProperties) {
+    private ImageUrl(String url, Optional<ImageUrlDetail> detail, Map<String, Object> additionalProperties) {
         this.url = url;
+        this.detail = detail;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return URL of an image. Can be either a base64 data URI or a web URL.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
+    }
+
+    /**
+     * @return Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.
+     */
+    @JsonProperty("detail")
+    public Optional<ImageUrlDetail> getDetail() {
+        return detail;
     }
 
     @java.lang.Override
@@ -45,12 +61,12 @@ public final class ImageUrl {
     }
 
     private boolean equalTo(ImageUrl other) {
-        return url.equals(other.url);
+        return url.equals(other.url) && detail.equals(other.detail);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.url);
+        return Objects.hash(this.url, this.detail);
     }
 
     @java.lang.Override
@@ -63,6 +79,9 @@ public final class ImageUrl {
     }
 
     public interface UrlStage {
+        /**
+         * <p>URL of an image. Can be either a base64 data URI or a web URL.</p>
+         */
         _FinalStage url(@NotNull String url);
 
         Builder from(ImageUrl other);
@@ -70,11 +89,20 @@ public final class ImageUrl {
 
     public interface _FinalStage {
         ImageUrl build();
+
+        /**
+         * <p>Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.</p>
+         */
+        _FinalStage detail(Optional<ImageUrlDetail> detail);
+
+        _FinalStage detail(ImageUrlDetail detail);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements UrlStage, _FinalStage {
         private String url;
+
+        private Optional<ImageUrlDetail> detail = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -84,9 +112,15 @@ public final class ImageUrl {
         @java.lang.Override
         public Builder from(ImageUrl other) {
             url(other.getUrl());
+            detail(other.getDetail());
             return this;
         }
 
+        /**
+         * <p>URL of an image. Can be either a base64 data URI or a web URL.</p>
+         * <p>URL of an image. Can be either a base64 data URI or a web URL.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("url")
         public _FinalStage url(@NotNull String url) {
@@ -94,9 +128,29 @@ public final class ImageUrl {
             return this;
         }
 
+        /**
+         * <p>Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage detail(ImageUrlDetail detail) {
+            this.detail = Optional.ofNullable(detail);
+            return this;
+        }
+
+        /**
+         * <p>Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "detail", nulls = Nulls.SKIP)
+        public _FinalStage detail(Optional<ImageUrlDetail> detail) {
+            this.detail = detail;
+            return this;
+        }
+
         @java.lang.Override
         public ImageUrl build() {
-            return new ImageUrl(url, additionalProperties);
+            return new ImageUrl(url, detail, additionalProperties);
         }
     }
 }

@@ -97,6 +97,10 @@ public final class FinetuningListTrainingStepMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Maximum number of results to be returned by the server. If 0, defaults to
+         * 50.</p>
+         */
         @JsonSetter(value = "page_size", nulls = Nulls.SKIP)
         public Builder pageSize(Optional<Integer> pageSize) {
             this.pageSize = pageSize;
@@ -108,6 +112,9 @@ public final class FinetuningListTrainingStepMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Request a specific page of the list results.</p>
+         */
         @JsonSetter(value = "page_token", nulls = Nulls.SKIP)
         public Builder pageToken(Optional<String> pageToken) {
             this.pageToken = pageToken;

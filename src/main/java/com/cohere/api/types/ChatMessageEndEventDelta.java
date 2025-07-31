@@ -20,27 +20,21 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatMessageEndEventDelta.Builder.class)
 public final class ChatMessageEndEventDelta {
-    private final Optional<ChatFinishReason> finishReason;
-
-    private final Optional<Usage> usage;
+    private final Optional<String> error;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatMessageEndEventDelta(
-            Optional<ChatFinishReason> finishReason, Optional<Usage> usage, Map<String, Object> additionalProperties) {
-        this.finishReason = finishReason;
-        this.usage = usage;
+    private ChatMessageEndEventDelta(Optional<String> error, Map<String, Object> additionalProperties) {
+        this.error = error;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("finish_reason")
-    public Optional<ChatFinishReason> getFinishReason() {
-        return finishReason;
-    }
-
-    @JsonProperty("usage")
-    public Optional<Usage> getUsage() {
-        return usage;
+    /**
+     * @return An error message if an error occurred during the generation.
+     */
+    @JsonProperty("error")
+    public Optional<String> getError() {
+        return error;
     }
 
     @java.lang.Override
@@ -55,12 +49,12 @@ public final class ChatMessageEndEventDelta {
     }
 
     private boolean equalTo(ChatMessageEndEventDelta other) {
-        return finishReason.equals(other.finishReason) && usage.equals(other.usage);
+        return error.equals(other.error);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.finishReason, this.usage);
+        return Objects.hash(this.error);
     }
 
     @java.lang.Override
@@ -74,9 +68,7 @@ public final class ChatMessageEndEventDelta {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<ChatFinishReason> finishReason = Optional.empty();
-
-        private Optional<Usage> usage = Optional.empty();
+        private Optional<String> error = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -84,35 +76,26 @@ public final class ChatMessageEndEventDelta {
         private Builder() {}
 
         public Builder from(ChatMessageEndEventDelta other) {
-            finishReason(other.getFinishReason());
-            usage(other.getUsage());
+            error(other.getError());
             return this;
         }
 
-        @JsonSetter(value = "finish_reason", nulls = Nulls.SKIP)
-        public Builder finishReason(Optional<ChatFinishReason> finishReason) {
-            this.finishReason = finishReason;
+        /**
+         * <p>An error message if an error occurred during the generation.</p>
+         */
+        @JsonSetter(value = "error", nulls = Nulls.SKIP)
+        public Builder error(Optional<String> error) {
+            this.error = error;
             return this;
         }
 
-        public Builder finishReason(ChatFinishReason finishReason) {
-            this.finishReason = Optional.ofNullable(finishReason);
-            return this;
-        }
-
-        @JsonSetter(value = "usage", nulls = Nulls.SKIP)
-        public Builder usage(Optional<Usage> usage) {
-            this.usage = usage;
-            return this;
-        }
-
-        public Builder usage(Usage usage) {
-            this.usage = Optional.ofNullable(usage);
+        public Builder error(String error) {
+            this.error = Optional.ofNullable(error);
             return this;
         }
 
         public ChatMessageEndEventDelta build() {
-            return new ChatMessageEndEventDelta(finishReason, usage, additionalProperties);
+            return new ChatMessageEndEventDelta(error, additionalProperties);
         }
     }
 }

@@ -163,38 +163,62 @@ public final class DatasetPart {
     }
 
     public interface IdStage {
+        /**
+         * <p>The dataset part ID</p>
+         */
         NameStage id(@NotNull String id);
 
         Builder from(DatasetPart other);
     }
 
     public interface NameStage {
+        /**
+         * <p>The name of the dataset part</p>
+         */
         _FinalStage name(@NotNull String name);
     }
 
     public interface _FinalStage {
         DatasetPart build();
 
+        /**
+         * <p>The download url of the file</p>
+         */
         _FinalStage url(Optional<String> url);
 
         _FinalStage url(String url);
 
+        /**
+         * <p>The index of the file</p>
+         */
         _FinalStage index(Optional<Integer> index);
 
         _FinalStage index(Integer index);
 
+        /**
+         * <p>The size of the file in bytes</p>
+         */
         _FinalStage sizeBytes(Optional<Integer> sizeBytes);
 
         _FinalStage sizeBytes(Integer sizeBytes);
 
+        /**
+         * <p>The number of rows in the file</p>
+         */
         _FinalStage numRows(Optional<Integer> numRows);
 
         _FinalStage numRows(Integer numRows);
 
+        /**
+         * <p>The download url of the original file</p>
+         */
         _FinalStage originalUrl(Optional<String> originalUrl);
 
         _FinalStage originalUrl(String originalUrl);
 
+        /**
+         * <p>The first few rows of the parsed file</p>
+         */
         _FinalStage samples(Optional<List<String>> samples);
 
         _FinalStage samples(List<String> samples);
@@ -238,6 +262,7 @@ public final class DatasetPart {
 
         /**
          * <p>The dataset part ID</p>
+         * <p>The dataset part ID</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -248,6 +273,7 @@ public final class DatasetPart {
         }
 
         /**
+         * <p>The name of the dataset part</p>
          * <p>The name of the dataset part</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -268,6 +294,9 @@ public final class DatasetPart {
             return this;
         }
 
+        /**
+         * <p>The first few rows of the parsed file</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "samples", nulls = Nulls.SKIP)
         public _FinalStage samples(Optional<List<String>> samples) {
@@ -285,6 +314,9 @@ public final class DatasetPart {
             return this;
         }
 
+        /**
+         * <p>The download url of the original file</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "original_url", nulls = Nulls.SKIP)
         public _FinalStage originalUrl(Optional<String> originalUrl) {
@@ -302,6 +334,9 @@ public final class DatasetPart {
             return this;
         }
 
+        /**
+         * <p>The number of rows in the file</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "num_rows", nulls = Nulls.SKIP)
         public _FinalStage numRows(Optional<Integer> numRows) {
@@ -319,6 +354,9 @@ public final class DatasetPart {
             return this;
         }
 
+        /**
+         * <p>The size of the file in bytes</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "size_bytes", nulls = Nulls.SKIP)
         public _FinalStage sizeBytes(Optional<Integer> sizeBytes) {
@@ -336,6 +374,9 @@ public final class DatasetPart {
             return this;
         }
 
+        /**
+         * <p>The index of the file</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "index", nulls = Nulls.SKIP)
         public _FinalStage index(Optional<Integer> index) {
@@ -353,6 +394,9 @@ public final class DatasetPart {
             return this;
         }
 
+        /**
+         * <p>The download url of the file</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "url", nulls = Nulls.SKIP)
         public _FinalStage url(Optional<String> url) {

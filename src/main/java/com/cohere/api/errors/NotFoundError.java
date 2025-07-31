@@ -4,6 +4,7 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
+import okhttp3.Response;
 
 public final class NotFoundError extends CohereApiException {
     /**
@@ -13,6 +14,11 @@ public final class NotFoundError extends CohereApiException {
 
     public NotFoundError(Object body) {
         super("NotFoundError", 404, body);
+        this.body = body;
+    }
+
+    public NotFoundError(Object body, Response rawResponse) {
+        super("NotFoundError", 404, body, rawResponse);
         this.body = body;
     }
 

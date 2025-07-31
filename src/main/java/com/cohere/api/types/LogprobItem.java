@@ -114,6 +114,9 @@ public final class LogprobItem {
             return this;
         }
 
+        /**
+         * <p>The text chunk for which the log probabilities was calculated.</p>
+         */
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public Builder text(Optional<String> text) {
             this.text = text;
@@ -125,6 +128,9 @@ public final class LogprobItem {
             return this;
         }
 
+        /**
+         * <p>The token ids of each token used to construct the text chunk.</p>
+         */
         @JsonSetter(value = "token_ids", nulls = Nulls.SKIP)
         public Builder tokenIds(List<Integer> tokenIds) {
             this.tokenIds.clear();
@@ -142,6 +148,9 @@ public final class LogprobItem {
             return this;
         }
 
+        /**
+         * <p>The log probability of each token used to construct the text chunk.</p>
+         */
         @JsonSetter(value = "logprobs", nulls = Nulls.SKIP)
         public Builder logprobs(Optional<List<Float>> logprobs) {
             this.logprobs = logprobs;

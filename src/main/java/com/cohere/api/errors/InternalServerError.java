@@ -4,6 +4,7 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
+import okhttp3.Response;
 
 public final class InternalServerError extends CohereApiException {
     /**
@@ -13,6 +14,11 @@ public final class InternalServerError extends CohereApiException {
 
     public InternalServerError(Object body) {
         super("InternalServerError", 500, body);
+        this.body = body;
+    }
+
+    public InternalServerError(Object body, Response rawResponse) {
+        super("InternalServerError", 500, body, rawResponse);
         this.body = body;
     }
 
