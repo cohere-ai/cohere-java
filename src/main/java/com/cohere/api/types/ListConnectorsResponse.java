@@ -111,6 +111,9 @@ public final class ListConnectorsResponse {
             return this;
         }
 
+        /**
+         * <p>Total number of connectors.</p>
+         */
         @JsonSetter(value = "total_count", nulls = Nulls.SKIP)
         public Builder totalCount(Optional<Double> totalCount) {
             this.totalCount = totalCount;

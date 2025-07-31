@@ -77,12 +77,18 @@ public final class ToolMessageV2 {
     }
 
     public interface ToolCallIdStage {
+        /**
+         * <p>The id of the associated tool call that has provided the given content</p>
+         */
         ContentStage toolCallId(@NotNull String toolCallId);
 
         Builder from(ToolMessageV2 other);
     }
 
     public interface ContentStage {
+        /**
+         * <p>Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks</p>
+         */
         _FinalStage content(@NotNull ToolMessageV2Content content);
     }
 
@@ -110,6 +116,7 @@ public final class ToolMessageV2 {
 
         /**
          * <p>The id of the associated tool call that has provided the given content</p>
+         * <p>The id of the associated tool call that has provided the given content</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -120,6 +127,7 @@ public final class ToolMessageV2 {
         }
 
         /**
+         * <p>Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks</p>
          * <p>Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

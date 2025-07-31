@@ -26,7 +26,7 @@ public final class ToolContent {
         return value.visit(visitor);
     }
 
-    public static ToolContent text(TextContent value) {
+    public static ToolContent text(ChatTextContent value) {
         return new ToolContent(new TextValue(value));
     }
 
@@ -46,7 +46,7 @@ public final class ToolContent {
         return value instanceof _UnknownValue;
     }
 
-    public Optional<TextContent> getText() {
+    public Optional<ChatTextContent> getText() {
         if (isText()) {
             return Optional.of(((TextValue) value).value);
         }
@@ -73,7 +73,7 @@ public final class ToolContent {
     }
 
     public interface Visitor<T> {
-        T visitText(TextContent text);
+        T visitText(ChatTextContent text);
 
         T visitDocument(DocumentContent document);
 
@@ -88,14 +88,15 @@ public final class ToolContent {
     }
 
     @JsonTypeName("text")
+    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
-        private TextContent value;
+        private ChatTextContent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private TextValue() {}
 
-        private TextValue(TextContent value) {
+        private TextValue(ChatTextContent value) {
             this.value = value;
         }
 
@@ -126,6 +127,7 @@ public final class ToolContent {
     }
 
     @JsonTypeName("document")
+    @JsonIgnoreProperties("type")
     private static final class DocumentValue implements Value {
         @JsonUnwrapped
         private DocumentContent value;
@@ -163,6 +165,7 @@ public final class ToolContent {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

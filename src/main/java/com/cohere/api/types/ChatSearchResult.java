@@ -122,6 +122,9 @@ public final class ChatSearchResult {
     }
 
     public interface ConnectorStage {
+        /**
+         * <p>The connector from which this result comes from.</p>
+         */
         _FinalStage connector(@NotNull ChatSearchResultConnector connector);
 
         Builder from(ChatSearchResult other);
@@ -134,16 +137,25 @@ public final class ChatSearchResult {
 
         _FinalStage searchQuery(ChatSearchQuery searchQuery);
 
+        /**
+         * <p>Identifiers of documents found by this search query.</p>
+         */
         _FinalStage documentIds(List<String> documentIds);
 
         _FinalStage addDocumentIds(String documentIds);
 
         _FinalStage addAllDocumentIds(List<String> documentIds);
 
+        /**
+         * <p>An error message if the search failed.</p>
+         */
         _FinalStage errorMessage(Optional<String> errorMessage);
 
         _FinalStage errorMessage(String errorMessage);
 
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         */
         _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure);
 
         _FinalStage continueOnFailure(Boolean continueOnFailure);
@@ -178,6 +190,7 @@ public final class ChatSearchResult {
 
         /**
          * <p>The connector from which this result comes from.</p>
+         * <p>The connector from which this result comes from.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -197,6 +210,9 @@ public final class ChatSearchResult {
             return this;
         }
 
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
@@ -214,6 +230,9 @@ public final class ChatSearchResult {
             return this;
         }
 
+        /**
+         * <p>An error message if the search failed.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "error_message", nulls = Nulls.SKIP)
         public _FinalStage errorMessage(Optional<String> errorMessage) {
@@ -241,6 +260,9 @@ public final class ChatSearchResult {
             return this;
         }
 
+        /**
+         * <p>Identifiers of documents found by this search query.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
         public _FinalStage documentIds(List<String> documentIds) {

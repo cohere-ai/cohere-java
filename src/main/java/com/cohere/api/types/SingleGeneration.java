@@ -126,6 +126,9 @@ public final class SingleGeneration {
     public interface _FinalStage {
         SingleGeneration build();
 
+        /**
+         * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero.</p>
+         */
         _FinalStage index(Optional<Integer> index);
 
         _FinalStage index(Integer index);
@@ -134,6 +137,9 @@ public final class SingleGeneration {
 
         _FinalStage likelihood(Double likelihood);
 
+        /**
+         * <p>Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="https://docs.cohere.com/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.</p>
+         */
         _FinalStage tokenLikelihoods(Optional<List<SingleGenerationTokenLikelihoodsItem>> tokenLikelihoods);
 
         _FinalStage tokenLikelihoods(List<SingleGenerationTokenLikelihoodsItem> tokenLikelihoods);
@@ -190,6 +196,9 @@ public final class SingleGeneration {
             return this;
         }
 
+        /**
+         * <p>Only returned if <code>return_likelihoods</code> is set to <code>GENERATION</code> or <code>ALL</code>. The likelihood refers to the average log-likelihood of the entire specified string, which is useful for <a href="likelihood-eval">evaluating the performance of your model</a>, especially if you've created a <a href="https://docs.cohere.com/docs/training-custom-models">custom model</a>. Individual token likelihoods provide the log-likelihood of each token. The first token will not have a likelihood.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "token_likelihoods", nulls = Nulls.SKIP)
         public _FinalStage tokenLikelihoods(Optional<List<SingleGenerationTokenLikelihoodsItem>> tokenLikelihoods) {
@@ -220,6 +229,9 @@ public final class SingleGeneration {
             return this;
         }
 
+        /**
+         * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "index", nulls = Nulls.SKIP)
         public _FinalStage index(Optional<Integer> index) {

@@ -4,6 +4,7 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
+import okhttp3.Response;
 
 public final class GatewayTimeoutError extends CohereApiException {
     /**
@@ -13,6 +14,11 @@ public final class GatewayTimeoutError extends CohereApiException {
 
     public GatewayTimeoutError(Object body) {
         super("GatewayTimeoutError", 504, body);
+        this.body = body;
+    }
+
+    public GatewayTimeoutError(Object body, Response rawResponse) {
+        super("GatewayTimeoutError", 504, body, rawResponse);
         this.body = body;
     }
 

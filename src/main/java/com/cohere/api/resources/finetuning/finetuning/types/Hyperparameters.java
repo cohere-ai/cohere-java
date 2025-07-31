@@ -206,6 +206,10 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>Stops training if the loss metric does not improve beyond the value of
+         * <code>early_stopping_threshold</code> after this many times of evaluation.</p>
+         */
         @JsonSetter(value = "early_stopping_patience", nulls = Nulls.SKIP)
         public Builder earlyStoppingPatience(Optional<Integer> earlyStoppingPatience) {
             this.earlyStoppingPatience = earlyStoppingPatience;
@@ -217,6 +221,9 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>How much the loss must improve to prevent early stopping.</p>
+         */
         @JsonSetter(value = "early_stopping_threshold", nulls = Nulls.SKIP)
         public Builder earlyStoppingThreshold(Optional<Double> earlyStoppingThreshold) {
             this.earlyStoppingThreshold = earlyStoppingThreshold;
@@ -228,6 +235,10 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>The batch size is the number of training examples included in a single
+         * training pass.</p>
+         */
         @JsonSetter(value = "train_batch_size", nulls = Nulls.SKIP)
         public Builder trainBatchSize(Optional<Integer> trainBatchSize) {
             this.trainBatchSize = trainBatchSize;
@@ -239,6 +250,9 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>The number of epochs to train for.</p>
+         */
         @JsonSetter(value = "train_epochs", nulls = Nulls.SKIP)
         public Builder trainEpochs(Optional<Integer> trainEpochs) {
             this.trainEpochs = trainEpochs;
@@ -250,6 +264,9 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>The learning rate to be used during training.</p>
+         */
         @JsonSetter(value = "learning_rate", nulls = Nulls.SKIP)
         public Builder learningRate(Optional<Double> learningRate) {
             this.learningRate = learningRate;
@@ -261,6 +278,10 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>Controls the scaling factor for LoRA updates. Higher values make the
+         * updates more impactful.</p>
+         */
         @JsonSetter(value = "lora_alpha", nulls = Nulls.SKIP)
         public Builder loraAlpha(Optional<Integer> loraAlpha) {
             this.loraAlpha = loraAlpha;
@@ -272,6 +293,10 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>Specifies the rank for low-rank matrices. Lower ranks reduce parameters
+         * but may limit model flexibility.</p>
+         */
         @JsonSetter(value = "lora_rank", nulls = Nulls.SKIP)
         public Builder loraRank(Optional<Integer> loraRank) {
             this.loraRank = loraRank;
@@ -283,6 +308,9 @@ public final class Hyperparameters {
             return this;
         }
 
+        /**
+         * <p>The combination of LoRA modules to target.</p>
+         */
         @JsonSetter(value = "lora_target_modules", nulls = Nulls.SKIP)
         public Builder loraTargetModules(Optional<LoraTargetModules> loraTargetModules) {
             this.loraTargetModules = loraTargetModules;

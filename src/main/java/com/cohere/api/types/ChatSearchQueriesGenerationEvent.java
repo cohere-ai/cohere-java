@@ -82,6 +82,9 @@ public final class ChatSearchQueriesGenerationEvent implements IChatStreamEvent 
             return this;
         }
 
+        /**
+         * <p>Generated search queries, meant to be used as part of the RAG flow.</p>
+         */
         @JsonSetter(value = "search_queries", nulls = Nulls.SKIP)
         public Builder searchQueries(List<ChatSearchQuery> searchQueries) {
             this.searchQueries.clear();

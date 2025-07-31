@@ -26,21 +26,36 @@ public final class AssistantMessageResponseContentItem {
         return value.visit(visitor);
     }
 
-    public static AssistantMessageResponseContentItem text(TextContent value) {
+    public static AssistantMessageResponseContentItem text(ChatTextContent value) {
         return new AssistantMessageResponseContentItem(new TextValue(value));
+    }
+
+    public static AssistantMessageResponseContentItem thinking(Object value) {
+        return new AssistantMessageResponseContentItem(new ThinkingValue(value));
     }
 
     public boolean isText() {
         return value instanceof TextValue;
     }
 
+    public boolean isThinking() {
+        return value instanceof ThinkingValue;
+    }
+
     public boolean _isUnknown() {
         return value instanceof _UnknownValue;
     }
 
-    public Optional<TextContent> getText() {
+    public Optional<ChatTextContent> getText() {
         if (isText()) {
             return Optional.of(((TextValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Object> getThinking() {
+        if (isThinking()) {
+            return Optional.of(((ThinkingValue) value).value);
         }
         return Optional.empty();
     }
@@ -58,27 +73,30 @@ public final class AssistantMessageResponseContentItem {
     }
 
     public interface Visitor<T> {
-        T visitText(TextContent text);
+        T visitText(ChatTextContent text);
+
+        T visitThinking(Object thinking);
 
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes(@JsonSubTypes.Type(TextValue.class))
+    @JsonSubTypes({@JsonSubTypes.Type(TextValue.class), @JsonSubTypes.Type(ThinkingValue.class)})
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
     }
 
     @JsonTypeName("text")
+    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
-        private TextContent value;
+        private ChatTextContent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private TextValue() {}
 
-        private TextValue(TextContent value) {
+        private TextValue(ChatTextContent value) {
             this.value = value;
         }
 
@@ -108,6 +126,44 @@ public final class AssistantMessageResponseContentItem {
         }
     }
 
+    @JsonTypeName("thinking")
+    @JsonIgnoreProperties("type")
+    private static final class ThinkingValue implements Value {
+        @JsonProperty("value")
+        private Object value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private ThinkingValue(@JsonProperty("value") Object value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitThinking(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof ThinkingValue && equalTo((ThinkingValue) other);
+        }
+
+        private boolean equalTo(ThinkingValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "AssistantMessageResponseContentItem{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

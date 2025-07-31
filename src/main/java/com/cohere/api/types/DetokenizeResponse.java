@@ -76,6 +76,9 @@ public final class DetokenizeResponse {
     }
 
     public interface TextStage {
+        /**
+         * <p>A string representing the list of tokens.</p>
+         */
         _FinalStage text(@NotNull String text);
 
         Builder from(DetokenizeResponse other);
@@ -108,6 +111,7 @@ public final class DetokenizeResponse {
         }
 
         /**
+         * <p>A string representing the list of tokens.</p>
          * <p>A string representing the list of tokens.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

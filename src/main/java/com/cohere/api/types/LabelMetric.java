@@ -113,6 +113,9 @@ public final class LabelMetric {
             return this;
         }
 
+        /**
+         * <p>Total number of examples for this label</p>
+         */
         @JsonSetter(value = "total_examples", nulls = Nulls.SKIP)
         public Builder totalExamples(Optional<Long> totalExamples) {
             this.totalExamples = totalExamples;
@@ -124,6 +127,9 @@ public final class LabelMetric {
             return this;
         }
 
+        /**
+         * <p>value of the label</p>
+         */
         @JsonSetter(value = "label", nulls = Nulls.SKIP)
         public Builder label(Optional<String> label) {
             this.label = label;
@@ -135,6 +141,9 @@ public final class LabelMetric {
             return this;
         }
 
+        /**
+         * <p>samples for this label</p>
+         */
         @JsonSetter(value = "samples", nulls = Nulls.SKIP)
         public Builder samples(Optional<List<String>> samples) {
             this.samples = samples;

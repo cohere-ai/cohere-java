@@ -4,6 +4,7 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
+import okhttp3.Response;
 
 public final class TooManyRequestsError extends CohereApiException {
     /**
@@ -13,6 +14,11 @@ public final class TooManyRequestsError extends CohereApiException {
 
     public TooManyRequestsError(Object body) {
         super("TooManyRequestsError", 429, body);
+        this.body = body;
+    }
+
+    public TooManyRequestsError(Object body, Response rawResponse) {
+        super("TooManyRequestsError", 429, body, rawResponse);
         this.body = body;
     }
 

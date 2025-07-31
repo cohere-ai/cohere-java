@@ -164,6 +164,9 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        /**
+         * <p>optional filter by dataset type</p>
+         */
         @JsonSetter(value = "datasetType", nulls = Nulls.SKIP)
         public Builder datasetType(Optional<String> datasetType) {
             this.datasetType = datasetType;
@@ -175,6 +178,9 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        /**
+         * <p>optional filter before a date</p>
+         */
         @JsonSetter(value = "before", nulls = Nulls.SKIP)
         public Builder before(Optional<OffsetDateTime> before) {
             this.before = before;
@@ -186,6 +192,9 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        /**
+         * <p>optional filter after a date</p>
+         */
         @JsonSetter(value = "after", nulls = Nulls.SKIP)
         public Builder after(Optional<OffsetDateTime> after) {
             this.after = after;
@@ -197,6 +206,9 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        /**
+         * <p>optional limit to number of results</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Double> limit) {
             this.limit = limit;
@@ -208,6 +220,9 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        /**
+         * <p>optional offset to start of results</p>
+         */
         @JsonSetter(value = "offset", nulls = Nulls.SKIP)
         public Builder offset(Optional<Double> offset) {
             this.offset = offset;
@@ -219,6 +234,9 @@ public final class DatasetsListRequest {
             return this;
         }
 
+        /**
+         * <p>optional filter by validation status</p>
+         */
         @JsonSetter(value = "validationStatus", nulls = Nulls.SKIP)
         public Builder validationStatus(Optional<DatasetValidationStatus> validationStatus) {
             this.validationStatus = validationStatus;

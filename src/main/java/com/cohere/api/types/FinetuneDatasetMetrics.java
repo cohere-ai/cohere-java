@@ -168,6 +168,9 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        /**
+         * <p>The number of tokens of valid examples that can be used for training.</p>
+         */
         @JsonSetter(value = "trainable_token_count", nulls = Nulls.SKIP)
         public Builder trainableTokenCount(Optional<Long> trainableTokenCount) {
             this.trainableTokenCount = trainableTokenCount;
@@ -179,6 +182,9 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        /**
+         * <p>The overall number of examples.</p>
+         */
         @JsonSetter(value = "total_examples", nulls = Nulls.SKIP)
         public Builder totalExamples(Optional<Long> totalExamples) {
             this.totalExamples = totalExamples;
@@ -190,6 +196,9 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        /**
+         * <p>The number of training examples.</p>
+         */
         @JsonSetter(value = "train_examples", nulls = Nulls.SKIP)
         public Builder trainExamples(Optional<Long> trainExamples) {
             this.trainExamples = trainExamples;
@@ -201,6 +210,9 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        /**
+         * <p>The size in bytes of all training examples.</p>
+         */
         @JsonSetter(value = "train_size_bytes", nulls = Nulls.SKIP)
         public Builder trainSizeBytes(Optional<Long> trainSizeBytes) {
             this.trainSizeBytes = trainSizeBytes;
@@ -212,6 +224,9 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        /**
+         * <p>Number of evaluation examples.</p>
+         */
         @JsonSetter(value = "eval_examples", nulls = Nulls.SKIP)
         public Builder evalExamples(Optional<Long> evalExamples) {
             this.evalExamples = evalExamples;
@@ -223,6 +238,9 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        /**
+         * <p>The size in bytes of all eval examples.</p>
+         */
         @JsonSetter(value = "eval_size_bytes", nulls = Nulls.SKIP)
         public Builder evalSizeBytes(Optional<Long> evalSizeBytes) {
             this.evalSizeBytes = evalSizeBytes;

@@ -93,18 +93,27 @@ public final class RerankResponseResultsItem {
     }
 
     public interface IndexStage {
+        /**
+         * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
+         */
         RelevanceScoreStage index(int index);
 
         Builder from(RerankResponseResultsItem other);
     }
 
     public interface RelevanceScoreStage {
+        /**
+         * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
+         */
         _FinalStage relevanceScore(float relevanceScore);
     }
 
     public interface _FinalStage {
         RerankResponseResultsItem build();
 
+        /**
+         * <p>If <code>return_documents</code> is set as <code>false</code> this will return none, if <code>true</code> it will return the documents passed in</p>
+         */
         _FinalStage document(Optional<RerankResponseResultsItemDocument> document);
 
         _FinalStage document(RerankResponseResultsItemDocument document);
@@ -133,6 +142,7 @@ public final class RerankResponseResultsItem {
 
         /**
          * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
+         * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -143,6 +153,7 @@ public final class RerankResponseResultsItem {
         }
 
         /**
+         * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
          * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -163,6 +174,9 @@ public final class RerankResponseResultsItem {
             return this;
         }
 
+        /**
+         * <p>If <code>return_documents</code> is set as <code>false</code> this will return none, if <code>true</code> it will return the documents passed in</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "document", nulls = Nulls.SKIP)
         public _FinalStage document(Optional<RerankResponseResultsItemDocument> document) {

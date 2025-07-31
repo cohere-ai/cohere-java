@@ -26,11 +26,11 @@ public final class Source {
         return value.visit(visitor);
     }
 
-    public static Source tool(ToolSource value) {
+    public static Source tool(ChatToolSource value) {
         return new Source(new ToolValue(value));
     }
 
-    public static Source document(DocumentSource value) {
+    public static Source document(ChatDocumentSource value) {
         return new Source(new DocumentValue(value));
     }
 
@@ -46,14 +46,14 @@ public final class Source {
         return value instanceof _UnknownValue;
     }
 
-    public Optional<ToolSource> getTool() {
+    public Optional<ChatToolSource> getTool() {
         if (isTool()) {
             return Optional.of(((ToolValue) value).value);
         }
         return Optional.empty();
     }
 
-    public Optional<DocumentSource> getDocument() {
+    public Optional<ChatDocumentSource> getDocument() {
         if (isDocument()) {
             return Optional.of(((DocumentValue) value).value);
         }
@@ -73,9 +73,9 @@ public final class Source {
     }
 
     public interface Visitor<T> {
-        T visitTool(ToolSource tool);
+        T visitTool(ChatToolSource tool);
 
-        T visitDocument(DocumentSource document);
+        T visitDocument(ChatDocumentSource document);
 
         T _visitUnknown(Object unknownType);
     }
@@ -88,14 +88,15 @@ public final class Source {
     }
 
     @JsonTypeName("tool")
+    @JsonIgnoreProperties("type")
     private static final class ToolValue implements Value {
         @JsonUnwrapped
-        private ToolSource value;
+        private ChatToolSource value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private ToolValue() {}
 
-        private ToolValue(ToolSource value) {
+        private ToolValue(ChatToolSource value) {
             this.value = value;
         }
 
@@ -126,14 +127,15 @@ public final class Source {
     }
 
     @JsonTypeName("document")
+    @JsonIgnoreProperties("type")
     private static final class DocumentValue implements Value {
         @JsonUnwrapped
-        private DocumentSource value;
+        private ChatDocumentSource value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private DocumentValue() {}
 
-        private DocumentValue(DocumentSource value) {
+        private DocumentValue(ChatDocumentSource value) {
             this.value = value;
         }
 
@@ -163,6 +165,7 @@ public final class Source {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

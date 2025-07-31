@@ -141,6 +141,9 @@ public final class Citation {
             return this;
         }
 
+        /**
+         * <p>Start index of the cited snippet in the original source text.</p>
+         */
         @JsonSetter(value = "start", nulls = Nulls.SKIP)
         public Builder start(Optional<Integer> start) {
             this.start = start;
@@ -152,6 +155,9 @@ public final class Citation {
             return this;
         }
 
+        /**
+         * <p>End index of the cited snippet in the original source text.</p>
+         */
         @JsonSetter(value = "end", nulls = Nulls.SKIP)
         public Builder end(Optional<Integer> end) {
             this.end = end;
@@ -163,6 +169,9 @@ public final class Citation {
             return this;
         }
 
+        /**
+         * <p>Text snippet that is being cited.</p>
+         */
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public Builder text(Optional<String> text) {
             this.text = text;

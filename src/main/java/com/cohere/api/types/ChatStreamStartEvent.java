@@ -66,6 +66,9 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
     }
 
     public interface GenerationIdStage {
+        /**
+         * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
+         */
         _FinalStage generationId(@NotNull String generationId);
 
         Builder from(ChatStreamStartEvent other);
@@ -91,6 +94,7 @@ public final class ChatStreamStartEvent implements IChatStreamEvent {
         }
 
         /**
+         * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
          * <p>Unique identifier for the generated reply. Useful for submitting feedback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

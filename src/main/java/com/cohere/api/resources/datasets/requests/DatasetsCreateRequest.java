@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +24,10 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DatasetsCreateRequest.Builder.class)
 public final class DatasetsCreateRequest {
+    private final Optional<List<String>> keepFields;
+
+    private final Optional<List<String>> optionalFields;
+
     private final String name;
 
     private final DatasetType type;
@@ -30,39 +36,47 @@ public final class DatasetsCreateRequest {
 
     private final Optional<Boolean> skipMalformedInput;
 
-    private final Optional<String> keepFields;
-
-    private final Optional<String> optionalFields;
-
     private final Optional<String> textSeparator;
 
     private final Optional<String> csvDelimiter;
 
-    private final Optional<Boolean> dryRun;
-
     private final Map<String, Object> additionalProperties;
 
     private DatasetsCreateRequest(
+            Optional<List<String>> keepFields,
+            Optional<List<String>> optionalFields,
             String name,
             DatasetType type,
             Optional<Boolean> keepOriginalFile,
             Optional<Boolean> skipMalformedInput,
-            Optional<String> keepFields,
-            Optional<String> optionalFields,
             Optional<String> textSeparator,
             Optional<String> csvDelimiter,
-            Optional<Boolean> dryRun,
             Map<String, Object> additionalProperties) {
+        this.keepFields = keepFields;
+        this.optionalFields = optionalFields;
         this.name = name;
         this.type = type;
         this.keepOriginalFile = keepOriginalFile;
         this.skipMalformedInput = skipMalformedInput;
-        this.keepFields = keepFields;
-        this.optionalFields = optionalFields;
         this.textSeparator = textSeparator;
         this.csvDelimiter = csvDelimiter;
-        this.dryRun = dryRun;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.
+     */
+    @JsonProperty("keep_fields")
+    public Optional<List<String>> getKeepFields() {
+        return keepFields;
+    }
+
+    /**
+     * @return List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.
+     */
+    @JsonProperty("optional_fields")
+    public Optional<List<String>> getOptionalFields() {
+        return optionalFields;
     }
 
     /**
@@ -98,22 +112,6 @@ public final class DatasetsCreateRequest {
     }
 
     /**
-     * @return List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.
-     */
-    @JsonProperty("keep_fields")
-    public Optional<String> getKeepFields() {
-        return keepFields;
-    }
-
-    /**
-     * @return List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.
-     */
-    @JsonProperty("optional_fields")
-    public Optional<String> getOptionalFields() {
-        return optionalFields;
-    }
-
-    /**
      * @return Raw .txt uploads will be split into entries using the text_separator value.
      */
     @JsonProperty("text_separator")
@@ -129,14 +127,6 @@ public final class DatasetsCreateRequest {
         return csvDelimiter;
     }
 
-    /**
-     * @return flag to enable dry_run mode
-     */
-    @JsonProperty("dry_run")
-    public Optional<Boolean> getDryRun() {
-        return dryRun;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -149,29 +139,27 @@ public final class DatasetsCreateRequest {
     }
 
     private boolean equalTo(DatasetsCreateRequest other) {
-        return name.equals(other.name)
+        return keepFields.equals(other.keepFields)
+                && optionalFields.equals(other.optionalFields)
+                && name.equals(other.name)
                 && type.equals(other.type)
                 && keepOriginalFile.equals(other.keepOriginalFile)
                 && skipMalformedInput.equals(other.skipMalformedInput)
-                && keepFields.equals(other.keepFields)
-                && optionalFields.equals(other.optionalFields)
                 && textSeparator.equals(other.textSeparator)
-                && csvDelimiter.equals(other.csvDelimiter)
-                && dryRun.equals(other.dryRun);
+                && csvDelimiter.equals(other.csvDelimiter);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.keepFields,
+                this.optionalFields,
                 this.name,
                 this.type,
                 this.keepOriginalFile,
                 this.skipMalformedInput,
-                this.keepFields,
-                this.optionalFields,
                 this.textSeparator,
-                this.csvDelimiter,
-                this.dryRun);
+                this.csvDelimiter);
     }
 
     @java.lang.Override
@@ -184,45 +172,69 @@ public final class DatasetsCreateRequest {
     }
 
     public interface NameStage {
+        /**
+         * <p>The name of the uploaded dataset.</p>
+         */
         TypeStage name(@NotNull String name);
 
         Builder from(DatasetsCreateRequest other);
     }
 
     public interface TypeStage {
+        /**
+         * <p>The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.</p>
+         */
         _FinalStage type(@NotNull DatasetType type);
     }
 
     public interface _FinalStage {
         DatasetsCreateRequest build();
 
+        /**
+         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.</p>
+         */
+        _FinalStage keepFields(Optional<List<String>> keepFields);
+
+        _FinalStage keepFields(List<String> keepFields);
+
+        _FinalStage keepFields(String keepFields);
+
+        /**
+         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.</p>
+         */
+        _FinalStage optionalFields(Optional<List<String>> optionalFields);
+
+        _FinalStage optionalFields(List<String> optionalFields);
+
+        _FinalStage optionalFields(String optionalFields);
+
+        /**
+         * <p>Indicates if the original file should be stored.</p>
+         */
         _FinalStage keepOriginalFile(Optional<Boolean> keepOriginalFile);
 
         _FinalStage keepOriginalFile(Boolean keepOriginalFile);
 
+        /**
+         * <p>Indicates whether rows with malformed input should be dropped (instead of failing the validation check). Dropped rows will be returned in the warnings field.</p>
+         */
         _FinalStage skipMalformedInput(Optional<Boolean> skipMalformedInput);
 
         _FinalStage skipMalformedInput(Boolean skipMalformedInput);
 
-        _FinalStage keepFields(Optional<String> keepFields);
-
-        _FinalStage keepFields(String keepFields);
-
-        _FinalStage optionalFields(Optional<String> optionalFields);
-
-        _FinalStage optionalFields(String optionalFields);
-
+        /**
+         * <p>Raw .txt uploads will be split into entries using the text_separator value.</p>
+         */
         _FinalStage textSeparator(Optional<String> textSeparator);
 
         _FinalStage textSeparator(String textSeparator);
 
+        /**
+         * <p>The delimiter used for .csv uploads.</p>
+         */
         _FinalStage csvDelimiter(Optional<String> csvDelimiter);
 
         _FinalStage csvDelimiter(String csvDelimiter);
-
-        _FinalStage dryRun(Optional<Boolean> dryRun);
-
-        _FinalStage dryRun(Boolean dryRun);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -231,19 +243,17 @@ public final class DatasetsCreateRequest {
 
         private DatasetType type;
 
-        private Optional<Boolean> dryRun = Optional.empty();
-
         private Optional<String> csvDelimiter = Optional.empty();
 
         private Optional<String> textSeparator = Optional.empty();
 
-        private Optional<String> optionalFields = Optional.empty();
-
-        private Optional<String> keepFields = Optional.empty();
-
         private Optional<Boolean> skipMalformedInput = Optional.empty();
 
         private Optional<Boolean> keepOriginalFile = Optional.empty();
+
+        private Optional<List<String>> optionalFields = Optional.empty();
+
+        private Optional<List<String>> keepFields = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -252,19 +262,19 @@ public final class DatasetsCreateRequest {
 
         @java.lang.Override
         public Builder from(DatasetsCreateRequest other) {
+            keepFields(other.getKeepFields());
+            optionalFields(other.getOptionalFields());
             name(other.getName());
             type(other.getType());
             keepOriginalFile(other.getKeepOriginalFile());
             skipMalformedInput(other.getSkipMalformedInput());
-            keepFields(other.getKeepFields());
-            optionalFields(other.getOptionalFields());
             textSeparator(other.getTextSeparator());
             csvDelimiter(other.getCsvDelimiter());
-            dryRun(other.getDryRun());
             return this;
         }
 
         /**
+         * <p>The name of the uploaded dataset.</p>
          * <p>The name of the uploaded dataset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -277,29 +287,13 @@ public final class DatasetsCreateRequest {
 
         /**
          * <p>The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.</p>
+         * <p>The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("type")
         public _FinalStage type(@NotNull DatasetType type) {
             this.type = Objects.requireNonNull(type, "type must not be null");
-            return this;
-        }
-
-        /**
-         * <p>flag to enable dry_run mode</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage dryRun(Boolean dryRun) {
-            this.dryRun = Optional.ofNullable(dryRun);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "dry_run", nulls = Nulls.SKIP)
-        public _FinalStage dryRun(Optional<Boolean> dryRun) {
-            this.dryRun = dryRun;
             return this;
         }
 
@@ -313,6 +307,9 @@ public final class DatasetsCreateRequest {
             return this;
         }
 
+        /**
+         * <p>The delimiter used for .csv uploads.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "csv_delimiter", nulls = Nulls.SKIP)
         public _FinalStage csvDelimiter(Optional<String> csvDelimiter) {
@@ -330,44 +327,13 @@ public final class DatasetsCreateRequest {
             return this;
         }
 
+        /**
+         * <p>Raw .txt uploads will be split into entries using the text_separator value.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "text_separator", nulls = Nulls.SKIP)
         public _FinalStage textSeparator(Optional<String> textSeparator) {
             this.textSeparator = textSeparator;
-            return this;
-        }
-
-        /**
-         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage optionalFields(String optionalFields) {
-            this.optionalFields = Optional.ofNullable(optionalFields);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "optional_fields", nulls = Nulls.SKIP)
-        public _FinalStage optionalFields(Optional<String> optionalFields) {
-            this.optionalFields = optionalFields;
-            return this;
-        }
-
-        /**
-         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage keepFields(String keepFields) {
-            this.keepFields = Optional.ofNullable(keepFields);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "keep_fields", nulls = Nulls.SKIP)
-        public _FinalStage keepFields(Optional<String> keepFields) {
-            this.keepFields = keepFields;
             return this;
         }
 
@@ -381,6 +347,9 @@ public final class DatasetsCreateRequest {
             return this;
         }
 
+        /**
+         * <p>Indicates whether rows with malformed input should be dropped (instead of failing the validation check). Dropped rows will be returned in the warnings field.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "skip_malformed_input", nulls = Nulls.SKIP)
         public _FinalStage skipMalformedInput(Optional<Boolean> skipMalformedInput) {
@@ -398,6 +367,9 @@ public final class DatasetsCreateRequest {
             return this;
         }
 
+        /**
+         * <p>Indicates if the original file should be stored.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "keep_original_file", nulls = Nulls.SKIP)
         public _FinalStage keepOriginalFile(Optional<Boolean> keepOriginalFile) {
@@ -406,17 +378,68 @@ public final class DatasetsCreateRequest {
         }
 
         @java.lang.Override
+        public _FinalStage optionalFields(String optionalFields) {
+            this.optionalFields = Optional.of(Collections.singletonList(optionalFields));
+            return this;
+        }
+
+        /**
+         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage optionalFields(List<String> optionalFields) {
+            this.optionalFields = Optional.ofNullable(optionalFields);
+            return this;
+        }
+
+        /**
+         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "optional_fields", nulls = Nulls.SKIP)
+        public _FinalStage optionalFields(Optional<List<String>> optionalFields) {
+            this.optionalFields = optionalFields;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage keepFields(String keepFields) {
+            this.keepFields = Optional.of(Collections.singletonList(keepFields));
+            return this;
+        }
+
+        /**
+         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage keepFields(List<String> keepFields) {
+            this.keepFields = Optional.ofNullable(keepFields);
+            return this;
+        }
+
+        /**
+         * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "keep_fields", nulls = Nulls.SKIP)
+        public _FinalStage keepFields(Optional<List<String>> keepFields) {
+            this.keepFields = keepFields;
+            return this;
+        }
+
+        @java.lang.Override
         public DatasetsCreateRequest build() {
             return new DatasetsCreateRequest(
+                    keepFields,
+                    optionalFields,
                     name,
                     type,
                     keepOriginalFile,
                     skipMalformedInput,
-                    keepFields,
-                    optionalFields,
                     textSeparator,
                     csvDelimiter,
-                    dryRun,
                     additionalProperties);
         }
     }

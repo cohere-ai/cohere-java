@@ -22,12 +22,14 @@ import java.util.Optional;
 public final class ChatContentStartEventDeltaMessageContent {
     private final Optional<String> text;
 
-    private final Optional<String> type;
+    private final Optional<ChatContentStartEventDeltaMessageContentType> type;
 
     private final Map<String, Object> additionalProperties;
 
     private ChatContentStartEventDeltaMessageContent(
-            Optional<String> text, Optional<String> type, Map<String, Object> additionalProperties) {
+            Optional<String> text,
+            Optional<ChatContentStartEventDeltaMessageContentType> type,
+            Map<String, Object> additionalProperties) {
         this.text = text;
         this.type = type;
         this.additionalProperties = additionalProperties;
@@ -39,7 +41,7 @@ public final class ChatContentStartEventDeltaMessageContent {
     }
 
     @JsonProperty("type")
-    public Optional<String> getType() {
+    public Optional<ChatContentStartEventDeltaMessageContentType> getType() {
         return type;
     }
 
@@ -77,7 +79,7 @@ public final class ChatContentStartEventDeltaMessageContent {
     public static final class Builder {
         private Optional<String> text = Optional.empty();
 
-        private Optional<String> type = Optional.empty();
+        private Optional<ChatContentStartEventDeltaMessageContentType> type = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -102,12 +104,12 @@ public final class ChatContentStartEventDeltaMessageContent {
         }
 
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<String> type) {
+        public Builder type(Optional<ChatContentStartEventDeltaMessageContentType> type) {
             this.type = type;
             return this;
         }
 
-        public Builder type(String type) {
+        public Builder type(ChatContentStartEventDeltaMessageContentType type) {
             this.type = Optional.ofNullable(type);
             return this;
         }

@@ -26,7 +26,7 @@ public final class ResponseFormat {
         return value.visit(visitor);
     }
 
-    public static ResponseFormat text(TextResponseFormat value) {
+    public static ResponseFormat text(ChatTextResponseFormat value) {
         return new ResponseFormat(new TextValue(value));
     }
 
@@ -46,7 +46,7 @@ public final class ResponseFormat {
         return value instanceof _UnknownValue;
     }
 
-    public Optional<TextResponseFormat> getText() {
+    public Optional<ChatTextResponseFormat> getText() {
         if (isText()) {
             return Optional.of(((TextValue) value).value);
         }
@@ -73,7 +73,7 @@ public final class ResponseFormat {
     }
 
     public interface Visitor<T> {
-        T visitText(TextResponseFormat text);
+        T visitText(ChatTextResponseFormat text);
 
         T visitJsonObject(JsonResponseFormat jsonObject);
 
@@ -88,14 +88,15 @@ public final class ResponseFormat {
     }
 
     @JsonTypeName("text")
+    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
-        private TextResponseFormat value;
+        private ChatTextResponseFormat value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private TextValue() {}
 
-        private TextValue(TextResponseFormat value) {
+        private TextValue(ChatTextResponseFormat value) {
             this.value = value;
         }
 
@@ -126,6 +127,7 @@ public final class ResponseFormat {
     }
 
     @JsonTypeName("json_object")
+    @JsonIgnoreProperties("type")
     private static final class JsonObjectValue implements Value {
         @JsonUnwrapped
         private JsonResponseFormat value;
@@ -163,6 +165,7 @@ public final class ResponseFormat {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

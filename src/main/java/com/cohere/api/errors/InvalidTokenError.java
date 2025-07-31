@@ -4,6 +4,7 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
+import okhttp3.Response;
 
 public final class InvalidTokenError extends CohereApiException {
     /**
@@ -13,6 +14,11 @@ public final class InvalidTokenError extends CohereApiException {
 
     public InvalidTokenError(Object body) {
         super("InvalidTokenError", 498, body);
+        this.body = body;
+    }
+
+    public InvalidTokenError(Object body, Response rawResponse) {
+        super("InvalidTokenError", 498, body, rawResponse);
         this.body = body;
     }
 

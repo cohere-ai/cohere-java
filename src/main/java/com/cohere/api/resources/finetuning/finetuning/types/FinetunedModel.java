@@ -198,46 +198,76 @@ public final class FinetunedModel {
     }
 
     public interface NameStage {
+        /**
+         * <p>FinetunedModel name (e.g. <code>foobar</code>).</p>
+         */
         SettingsStage name(@NotNull String name);
 
         Builder from(FinetunedModel other);
     }
 
     public interface SettingsStage {
+        /**
+         * <p>FinetunedModel settings such as dataset, hyperparameters...</p>
+         */
         _FinalStage settings(@NotNull Settings settings);
     }
 
     public interface _FinalStage {
         FinetunedModel build();
 
+        /**
+         * <p>read-only. FinetunedModel ID.</p>
+         */
         _FinalStage id(Optional<String> id);
 
         _FinalStage id(String id);
 
+        /**
+         * <p>read-only. User ID of the creator.</p>
+         */
         _FinalStage creatorId(Optional<String> creatorId);
 
         _FinalStage creatorId(String creatorId);
 
+        /**
+         * <p>read-only. Organization ID.</p>
+         */
         _FinalStage organizationId(Optional<String> organizationId);
 
         _FinalStage organizationId(String organizationId);
 
+        /**
+         * <p>read-only. Current stage in the life-cycle of the fine-tuned model.</p>
+         */
         _FinalStage status(Optional<Status> status);
 
         _FinalStage status(Status status);
 
+        /**
+         * <p>read-only. Creation timestamp.</p>
+         */
         _FinalStage createdAt(Optional<OffsetDateTime> createdAt);
 
         _FinalStage createdAt(OffsetDateTime createdAt);
 
+        /**
+         * <p>read-only. Latest update timestamp.</p>
+         */
         _FinalStage updatedAt(Optional<OffsetDateTime> updatedAt);
 
         _FinalStage updatedAt(OffsetDateTime updatedAt);
 
+        /**
+         * <p>read-only. Timestamp for the completed fine-tuning.</p>
+         */
         _FinalStage completedAt(Optional<OffsetDateTime> completedAt);
 
         _FinalStage completedAt(OffsetDateTime completedAt);
 
+        /**
+         * <p>read-only. Deprecated: Timestamp for the latest request to this fine-tuned model.</p>
+         */
         _FinalStage lastUsed(Optional<OffsetDateTime> lastUsed);
 
         _FinalStage lastUsed(OffsetDateTime lastUsed);
@@ -287,6 +317,7 @@ public final class FinetunedModel {
 
         /**
          * <p>FinetunedModel name (e.g. <code>foobar</code>).</p>
+         * <p>FinetunedModel name (e.g. <code>foobar</code>).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -297,6 +328,7 @@ public final class FinetunedModel {
         }
 
         /**
+         * <p>FinetunedModel settings such as dataset, hyperparameters...</p>
          * <p>FinetunedModel settings such as dataset, hyperparameters...</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -317,6 +349,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. Deprecated: Timestamp for the latest request to this fine-tuned model.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "last_used", nulls = Nulls.SKIP)
         public _FinalStage lastUsed(Optional<OffsetDateTime> lastUsed) {
@@ -334,6 +369,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. Timestamp for the completed fine-tuning.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "completed_at", nulls = Nulls.SKIP)
         public _FinalStage completedAt(Optional<OffsetDateTime> completedAt) {
@@ -351,6 +389,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. Latest update timestamp.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "updated_at", nulls = Nulls.SKIP)
         public _FinalStage updatedAt(Optional<OffsetDateTime> updatedAt) {
@@ -368,6 +409,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. Creation timestamp.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "created_at", nulls = Nulls.SKIP)
         public _FinalStage createdAt(Optional<OffsetDateTime> createdAt) {
@@ -385,6 +429,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. Current stage in the life-cycle of the fine-tuned model.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
         public _FinalStage status(Optional<Status> status) {
@@ -402,6 +449,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. Organization ID.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "organization_id", nulls = Nulls.SKIP)
         public _FinalStage organizationId(Optional<String> organizationId) {
@@ -419,6 +469,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. User ID of the creator.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creator_id", nulls = Nulls.SKIP)
         public _FinalStage creatorId(Optional<String> creatorId) {
@@ -436,6 +489,9 @@ public final class FinetunedModel {
             return this;
         }
 
+        /**
+         * <p>read-only. FinetunedModel ID.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public _FinalStage id(Optional<String> id) {

@@ -31,8 +31,6 @@ public final class V2RerankRequest {
 
     private final Optional<Integer> topN;
 
-    private final Optional<Boolean> returnDocuments;
-
     private final Optional<Integer> maxTokensPerDoc;
 
     private final Map<String, Object> additionalProperties;
@@ -42,14 +40,12 @@ public final class V2RerankRequest {
             String query,
             List<String> documents,
             Optional<Integer> topN,
-            Optional<Boolean> returnDocuments,
             Optional<Integer> maxTokensPerDoc,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.query = query;
         this.documents = documents;
         this.topN = topN;
-        this.returnDocuments = returnDocuments;
         this.maxTokensPerDoc = maxTokensPerDoc;
         this.additionalProperties = additionalProperties;
     }
@@ -90,17 +86,6 @@ public final class V2RerankRequest {
     }
 
     /**
-     * @return <ul>
-     * <li>If false, returns results without the doc text - the api will return a list of {index, relevance score} where index is inferred from the list passed into the request.</li>
-     * <li>If true, returns results with the doc text passed in - the api will return an ordered list of {index, text, relevance score} where index + text refers to the list passed into the request.</li>
-     * </ul>
-     */
-    @JsonProperty("return_documents")
-    public Optional<Boolean> getReturnDocuments() {
-        return returnDocuments;
-    }
-
-    /**
      * @return Defaults to <code>4096</code>. Long documents will be automatically truncated to the specified number of tokens.
      */
     @JsonProperty("max_tokens_per_doc")
@@ -124,14 +109,12 @@ public final class V2RerankRequest {
                 && query.equals(other.query)
                 && documents.equals(other.documents)
                 && topN.equals(other.topN)
-                && returnDocuments.equals(other.returnDocuments)
                 && maxTokensPerDoc.equals(other.maxTokensPerDoc);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(
-                this.model, this.query, this.documents, this.topN, this.returnDocuments, this.maxTokensPerDoc);
+        return Objects.hash(this.model, this.query, this.documents, this.topN, this.maxTokensPerDoc);
     }
 
     @java.lang.Override
@@ -144,32 +127,46 @@ public final class V2RerankRequest {
     }
 
     public interface ModelStage {
+        /**
+         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
+         */
         QueryStage model(@NotNull String model);
 
         Builder from(V2RerankRequest other);
     }
 
     public interface QueryStage {
+        /**
+         * <p>The search query</p>
+         */
         _FinalStage query(@NotNull String query);
     }
 
     public interface _FinalStage {
         V2RerankRequest build();
 
+        /**
+         * <p>A list of texts that will be compared to the <code>query</code>.
+         * For optimal performance we recommend against sending more than 1,000 documents in a single request.</p>
+         * <p><strong>Note</strong>: long documents will automatically be truncated to the value of <code>max_tokens_per_doc</code>.</p>
+         * <p><strong>Note</strong>: structured data should be formatted as YAML strings for best performance.</p>
+         */
         _FinalStage documents(List<String> documents);
 
         _FinalStage addDocuments(String documents);
 
         _FinalStage addAllDocuments(List<String> documents);
 
+        /**
+         * <p>Limits the number of returned rerank results to the specified value. If not passed, all the rerank results will be returned.</p>
+         */
         _FinalStage topN(Optional<Integer> topN);
 
         _FinalStage topN(Integer topN);
 
-        _FinalStage returnDocuments(Optional<Boolean> returnDocuments);
-
-        _FinalStage returnDocuments(Boolean returnDocuments);
-
+        /**
+         * <p>Defaults to <code>4096</code>. Long documents will be automatically truncated to the specified number of tokens.</p>
+         */
         _FinalStage maxTokensPerDoc(Optional<Integer> maxTokensPerDoc);
 
         _FinalStage maxTokensPerDoc(Integer maxTokensPerDoc);
@@ -182,8 +179,6 @@ public final class V2RerankRequest {
         private String query;
 
         private Optional<Integer> maxTokensPerDoc = Optional.empty();
-
-        private Optional<Boolean> returnDocuments = Optional.empty();
 
         private Optional<Integer> topN = Optional.empty();
 
@@ -200,12 +195,12 @@ public final class V2RerankRequest {
             query(other.getQuery());
             documents(other.getDocuments());
             topN(other.getTopN());
-            returnDocuments(other.getReturnDocuments());
             maxTokensPerDoc(other.getMaxTokensPerDoc());
             return this;
         }
 
         /**
+         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
          * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -217,6 +212,7 @@ public final class V2RerankRequest {
         }
 
         /**
+         * <p>The search query</p>
          * <p>The search query</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -237,30 +233,13 @@ public final class V2RerankRequest {
             return this;
         }
 
+        /**
+         * <p>Defaults to <code>4096</code>. Long documents will be automatically truncated to the specified number of tokens.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "max_tokens_per_doc", nulls = Nulls.SKIP)
         public _FinalStage maxTokensPerDoc(Optional<Integer> maxTokensPerDoc) {
             this.maxTokensPerDoc = maxTokensPerDoc;
-            return this;
-        }
-
-        /**
-         * <ul>
-         * <li>If false, returns results without the doc text - the api will return a list of {index, relevance score} where index is inferred from the list passed into the request.</li>
-         * <li>If true, returns results with the doc text passed in - the api will return an ordered list of {index, text, relevance score} where index + text refers to the list passed into the request.</li>
-         * </ul>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage returnDocuments(Boolean returnDocuments) {
-            this.returnDocuments = Optional.ofNullable(returnDocuments);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "return_documents", nulls = Nulls.SKIP)
-        public _FinalStage returnDocuments(Optional<Boolean> returnDocuments) {
-            this.returnDocuments = returnDocuments;
             return this;
         }
 
@@ -274,6 +253,9 @@ public final class V2RerankRequest {
             return this;
         }
 
+        /**
+         * <p>Limits the number of returned rerank results to the specified value. If not passed, all the rerank results will be returned.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "top_n", nulls = Nulls.SKIP)
         public _FinalStage topN(Optional<Integer> topN) {
@@ -307,6 +289,12 @@ public final class V2RerankRequest {
             return this;
         }
 
+        /**
+         * <p>A list of texts that will be compared to the <code>query</code>.
+         * For optimal performance we recommend against sending more than 1,000 documents in a single request.</p>
+         * <p><strong>Note</strong>: long documents will automatically be truncated to the value of <code>max_tokens_per_doc</code>.</p>
+         * <p><strong>Note</strong>: structured data should be formatted as YAML strings for best performance.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(List<String> documents) {
@@ -317,8 +305,7 @@ public final class V2RerankRequest {
 
         @java.lang.Override
         public V2RerankRequest build() {
-            return new V2RerankRequest(
-                    model, query, documents, topN, returnDocuments, maxTokensPerDoc, additionalProperties);
+            return new V2RerankRequest(model, query, documents, topN, maxTokensPerDoc, additionalProperties);
         }
     }
 }

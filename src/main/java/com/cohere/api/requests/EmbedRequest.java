@@ -56,7 +56,7 @@ public final class EmbedRequest {
     }
 
     /**
-     * @return An array of strings for the model to embed. Maximum number of texts per call is <code>96</code>. We recommend reducing the length of each text to be under <code>512</code> tokens for optimal quality.
+     * @return An array of strings for the model to embed. Maximum number of texts per call is <code>96</code>.
      */
     @JsonProperty("texts")
     public Optional<List<String>> getTexts() {
@@ -66,6 +66,7 @@ public final class EmbedRequest {
     /**
      * @return An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.
      * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+     * <p>Images are only supported with Embed v3.0 and newer models.</p>
      */
     @JsonProperty("images")
     public Optional<List<String>> getImages() {
@@ -73,32 +74,7 @@ public final class EmbedRequest {
     }
 
     /**
-     * @return Defaults to embed-english-v2.0
-     * <p>The identifier of the model. Smaller &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
-     * <p>Available models and corresponding embedding dimensions:</p>
-     * <ul>
-     * <li>
-     * <p><code>embed-english-v3.0</code>  1024</p>
-     * </li>
-     * <li>
-     * <p><code>embed-multilingual-v3.0</code>  1024</p>
-     * </li>
-     * <li>
-     * <p><code>embed-english-light-v3.0</code>  384</p>
-     * </li>
-     * <li>
-     * <p><code>embed-multilingual-light-v3.0</code>  384</p>
-     * </li>
-     * <li>
-     * <p><code>embed-english-v2.0</code>  4096</p>
-     * </li>
-     * <li>
-     * <p><code>embed-english-light-v2.0</code>  1024</p>
-     * </li>
-     * <li>
-     * <p><code>embed-multilingual-v2.0</code>  768</p>
-     * </li>
-     * </ul>
+     * @return ID of one of the available <a href="https://docs.cohere.com/docs/cohere-embed">Embedding models</a>.
      */
     @JsonProperty("model")
     public Optional<String> getModel() {
@@ -113,11 +89,11 @@ public final class EmbedRequest {
     /**
      * @return Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.
      * <ul>
-     * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
-     * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for only v3 models.</li>
-     * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Valid for only v3 models.</li>
-     * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Valid for only v3 models.</li>
-     * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Valid for only v3 models.</li>
+     * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Supported with all Embed models.</li>
+     * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+     * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+     * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+     * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Supported with Embed v3.0 and newer Embed models.</li>
      * </ul>
      */
     @JsonProperty("embedding_types")
@@ -198,6 +174,9 @@ public final class EmbedRequest {
             return this;
         }
 
+        /**
+         * <p>An array of strings for the model to embed. Maximum number of texts per call is <code>96</code>.</p>
+         */
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
         public Builder texts(Optional<List<String>> texts) {
             this.texts = texts;
@@ -209,6 +188,11 @@ public final class EmbedRequest {
             return this;
         }
 
+        /**
+         * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>Images are only supported with Embed v3.0 and newer models.</p>
+         */
         @JsonSetter(value = "images", nulls = Nulls.SKIP)
         public Builder images(Optional<List<String>> images) {
             this.images = images;
@@ -220,6 +204,9 @@ public final class EmbedRequest {
             return this;
         }
 
+        /**
+         * <p>ID of one of the available <a href="https://docs.cohere.com/docs/cohere-embed">Embedding models</a>.</p>
+         */
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public Builder model(Optional<String> model) {
             this.model = model;
@@ -242,6 +229,16 @@ public final class EmbedRequest {
             return this;
         }
 
+        /**
+         * <p>Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.</p>
+         * <ul>
+         * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Supported with all Embed models.</li>
+         * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+         * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+         * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+         * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Supported with Embed v3.0 and newer Embed models.</li>
+         * </ul>
+         */
         @JsonSetter(value = "embedding_types", nulls = Nulls.SKIP)
         public Builder embeddingTypes(Optional<List<EmbeddingType>> embeddingTypes) {
             this.embeddingTypes = embeddingTypes;
@@ -253,6 +250,11 @@ public final class EmbedRequest {
             return this;
         }
 
+        /**
+         * <p>One of <code>NONE|START|END</code> to specify how the API will handle inputs longer than the maximum token length.</p>
+         * <p>Passing <code>START</code> will discard the start of the input. <code>END</code> will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.</p>
+         * <p>If <code>NONE</code> is selected, when the input exceeds the maximum input token length an error will be returned.</p>
+         */
         @JsonSetter(value = "truncate", nulls = Nulls.SKIP)
         public Builder truncate(Optional<EmbedRequestTruncate> truncate) {
             this.truncate = truncate;

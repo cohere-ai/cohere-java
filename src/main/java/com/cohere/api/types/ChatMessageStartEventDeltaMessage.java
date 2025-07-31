@@ -80,6 +80,9 @@ public final class ChatMessageStartEventDeltaMessage {
             return this;
         }
 
+        /**
+         * <p>The role of the message.</p>
+         */
         @JsonSetter(value = "role", nulls = Nulls.SKIP)
         public Builder role(Optional<String> role) {
             this.role = role;

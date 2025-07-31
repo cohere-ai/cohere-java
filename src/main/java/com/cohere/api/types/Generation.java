@@ -113,10 +113,16 @@ public final class Generation {
     public interface _FinalStage {
         Generation build();
 
+        /**
+         * <p>Prompt used for generations.</p>
+         */
         _FinalStage prompt(Optional<String> prompt);
 
         _FinalStage prompt(String prompt);
 
+        /**
+         * <p>List of generated results</p>
+         */
         _FinalStage generations(List<SingleGeneration> generations);
 
         _FinalStage addGenerations(SingleGeneration generations);
@@ -192,6 +198,9 @@ public final class Generation {
             return this;
         }
 
+        /**
+         * <p>List of generated results</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "generations", nulls = Nulls.SKIP)
         public _FinalStage generations(List<SingleGeneration> generations) {
@@ -210,6 +219,9 @@ public final class Generation {
             return this;
         }
 
+        /**
+         * <p>Prompt used for generations.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "prompt", nulls = Nulls.SKIP)
         public _FinalStage prompt(Optional<String> prompt) {
