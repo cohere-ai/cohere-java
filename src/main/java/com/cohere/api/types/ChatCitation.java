@@ -124,28 +124,43 @@ public final class ChatCitation {
     }
 
     public interface StartStage {
+        /**
+         * <p>The index of text that the citation starts at, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have a start value of <code>7</code>. This is because the citation starts at <code>w</code>, which is the seventh character.</p>
+         */
         EndStage start(int start);
 
         Builder from(ChatCitation other);
     }
 
     public interface EndStage {
+        /**
+         * <p>The index of text that the citation ends after, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have an end value of <code>11</code>. This is because the citation ends after <code>d</code>, which is the eleventh character.</p>
+         */
         TextStage end(int end);
     }
 
     public interface TextStage {
+        /**
+         * <p>The text of the citation. For example, a generation of <code>Hello, world!</code> with a citation of <code>world</code> would have a text value of <code>world</code>.</p>
+         */
         _FinalStage text(@NotNull String text);
     }
 
     public interface _FinalStage {
         ChatCitation build();
 
+        /**
+         * <p>Identifiers of documents cited by this section of the generated reply.</p>
+         */
         _FinalStage documentIds(List<String> documentIds);
 
         _FinalStage addDocumentIds(String documentIds);
 
         _FinalStage addAllDocumentIds(List<String> documentIds);
 
+        /**
+         * <p>The type of citation which indicates what part of the response the citation is for.</p>
+         */
         _FinalStage type(Optional<ChatCitationType> type);
 
         _FinalStage type(ChatCitationType type);
@@ -180,6 +195,7 @@ public final class ChatCitation {
 
         /**
          * <p>The index of text that the citation starts at, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have a start value of <code>7</code>. This is because the citation starts at <code>w</code>, which is the seventh character.</p>
+         * <p>The index of text that the citation starts at, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have a start value of <code>7</code>. This is because the citation starts at <code>w</code>, which is the seventh character.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -191,6 +207,7 @@ public final class ChatCitation {
 
         /**
          * <p>The index of text that the citation ends after, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have an end value of <code>11</code>. This is because the citation ends after <code>d</code>, which is the eleventh character.</p>
+         * <p>The index of text that the citation ends after, counting from zero. For example, a generation of <code>Hello, world!</code> with a citation on <code>world</code> would have an end value of <code>11</code>. This is because the citation ends after <code>d</code>, which is the eleventh character.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -201,6 +218,7 @@ public final class ChatCitation {
         }
 
         /**
+         * <p>The text of the citation. For example, a generation of <code>Hello, world!</code> with a citation of <code>world</code> would have a text value of <code>world</code>.</p>
          * <p>The text of the citation. For example, a generation of <code>Hello, world!</code> with a citation of <code>world</code> would have a text value of <code>world</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -221,6 +239,9 @@ public final class ChatCitation {
             return this;
         }
 
+        /**
+         * <p>The type of citation which indicates what part of the response the citation is for.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
         public _FinalStage type(Optional<ChatCitationType> type) {
@@ -248,6 +269,9 @@ public final class ChatCitation {
             return this;
         }
 
+        /**
+         * <p>Identifiers of documents cited by this section of the generated reply.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
         public _FinalStage documentIds(List<String> documentIds) {

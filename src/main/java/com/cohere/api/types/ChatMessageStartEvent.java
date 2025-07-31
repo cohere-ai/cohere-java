@@ -92,6 +92,9 @@ public final class ChatMessageStartEvent implements IChatStreamEventType {
             return this;
         }
 
+        /**
+         * <p>Unique identifier for the generated reply.</p>
+         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;

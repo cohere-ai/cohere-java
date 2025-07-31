@@ -38,7 +38,7 @@ public final class Message {
         return new Message(new UserValue(value));
     }
 
-    public static Message tool(ToolMessage value) {
+    public static Message tool(ChatToolMessage value) {
         return new Message(new ToolValue(value));
     }
 
@@ -83,7 +83,7 @@ public final class Message {
         return Optional.empty();
     }
 
-    public Optional<ToolMessage> getTool() {
+    public Optional<ChatToolMessage> getTool() {
         if (isTool()) {
             return Optional.of(((ToolValue) value).value);
         }
@@ -109,7 +109,7 @@ public final class Message {
 
         T visitUser(ChatMessage user);
 
-        T visitTool(ToolMessage tool);
+        T visitTool(ChatToolMessage tool);
 
         T _visitUnknown(Object unknownType);
     }
@@ -127,6 +127,7 @@ public final class Message {
     }
 
     @JsonTypeName("CHATBOT")
+    @JsonIgnoreProperties("role")
     private static final class ChatbotValue implements Value {
         @JsonUnwrapped
         private ChatMessage value;
@@ -165,6 +166,7 @@ public final class Message {
     }
 
     @JsonTypeName("SYSTEM")
+    @JsonIgnoreProperties("role")
     private static final class SystemValue implements Value {
         @JsonUnwrapped
         private ChatMessage value;
@@ -203,6 +205,7 @@ public final class Message {
     }
 
     @JsonTypeName("USER")
+    @JsonIgnoreProperties("role")
     private static final class UserValue implements Value {
         @JsonUnwrapped
         private ChatMessage value;
@@ -241,14 +244,15 @@ public final class Message {
     }
 
     @JsonTypeName("TOOL")
+    @JsonIgnoreProperties("role")
     private static final class ToolValue implements Value {
         @JsonUnwrapped
-        private ToolMessage value;
+        private ChatToolMessage value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private ToolValue() {}
 
-        private ToolValue(ToolMessage value) {
+        private ToolValue(ChatToolMessage value) {
             this.value = value;
         }
 
@@ -278,6 +282,7 @@ public final class Message {
         }
     }
 
+    @JsonIgnoreProperties("role")
     private static final class _UnknownValue implements Value {
         private String type;
 

@@ -80,6 +80,9 @@ public final class OAuthAuthorizeResponse {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 redirect url. Redirect the user to this url to authorize the connector.</p>
+         */
         @JsonSetter(value = "redirect_url", nulls = Nulls.SKIP)
         public Builder redirectUrl(Optional<String> redirectUrl) {
             this.redirectUrl = redirectUrl;

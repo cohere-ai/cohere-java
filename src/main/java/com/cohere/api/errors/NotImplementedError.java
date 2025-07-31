@@ -4,6 +4,7 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
+import okhttp3.Response;
 
 public final class NotImplementedError extends CohereApiException {
     /**
@@ -13,6 +14,11 @@ public final class NotImplementedError extends CohereApiException {
 
     public NotImplementedError(Object body) {
         super("NotImplementedError", 501, body);
+        this.body = body;
+    }
+
+    public NotImplementedError(Object body, Response rawResponse) {
+        super("NotImplementedError", 501, body, rawResponse);
         this.body = body;
     }
 

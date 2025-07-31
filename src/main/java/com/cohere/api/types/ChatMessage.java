@@ -77,6 +77,9 @@ public final class ChatMessage {
     }
 
     public interface MessageStage {
+        /**
+         * <p>Contents of the chat message.</p>
+         */
         _FinalStage message(@NotNull String message);
 
         Builder from(ChatMessage other);
@@ -109,6 +112,7 @@ public final class ChatMessage {
         }
 
         /**
+         * <p>Contents of the chat message.</p>
          * <p>Contents of the chat message.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

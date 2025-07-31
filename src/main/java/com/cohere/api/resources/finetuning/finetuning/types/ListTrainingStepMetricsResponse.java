@@ -99,6 +99,9 @@ public final class ListTrainingStepMetricsResponse {
             return this;
         }
 
+        /**
+         * <p>The metrics for each step the evaluation was run on.</p>
+         */
         @JsonSetter(value = "step_metrics", nulls = Nulls.SKIP)
         public Builder stepMetrics(Optional<List<TrainingStepMetrics>> stepMetrics) {
             this.stepMetrics = stepMetrics;
@@ -110,6 +113,10 @@ public final class ListTrainingStepMetricsResponse {
             return this;
         }
 
+        /**
+         * <p>Pagination token to retrieve the next page of results. If the value is &quot;&quot;,
+         * it means no further results for the request.</p>
+         */
         @JsonSetter(value = "next_page_token", nulls = Nulls.SKIP)
         public Builder nextPageToken(Optional<String> nextPageToken) {
             this.nextPageToken = nextPageToken;

@@ -119,6 +119,9 @@ public final class RerankResponse {
             return this;
         }
 
+        /**
+         * <p>An ordered list of ranked documents</p>
+         */
         @JsonSetter(value = "results", nulls = Nulls.SKIP)
         public Builder results(List<RerankResponseResultsItem> results) {
             this.results.clear();

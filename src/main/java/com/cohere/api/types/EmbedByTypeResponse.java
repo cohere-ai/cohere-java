@@ -123,16 +123,25 @@ public final class EmbedByTypeResponse {
     }
 
     public interface EmbeddingsStage {
+        /**
+         * <p>An object with different embedding types. The length of each embedding type array will be the same as the length of the original <code>texts</code> array.</p>
+         */
         _FinalStage embeddings(@NotNull EmbedByTypeResponseEmbeddings embeddings);
     }
 
     public interface _FinalStage {
         EmbedByTypeResponse build();
 
+        /**
+         * <p>The text entries for which embeddings were returned.</p>
+         */
         _FinalStage texts(Optional<List<String>> texts);
 
         _FinalStage texts(List<String> texts);
 
+        /**
+         * <p>The image entries for which embeddings were returned.</p>
+         */
         _FinalStage images(Optional<List<Image>> images);
 
         _FinalStage images(List<Image> images);
@@ -178,6 +187,7 @@ public final class EmbedByTypeResponse {
 
         /**
          * <p>An object with different embedding types. The length of each embedding type array will be the same as the length of the original <code>texts</code> array.</p>
+         * <p>An object with different embedding types. The length of each embedding type array will be the same as the length of the original <code>texts</code> array.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -210,6 +220,9 @@ public final class EmbedByTypeResponse {
             return this;
         }
 
+        /**
+         * <p>The image entries for which embeddings were returned.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "images", nulls = Nulls.SKIP)
         public _FinalStage images(Optional<List<Image>> images) {
@@ -227,6 +240,9 @@ public final class EmbedByTypeResponse {
             return this;
         }
 
+        /**
+         * <p>The text entries for which embeddings were returned.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
         public _FinalStage texts(Optional<List<String>> texts) {

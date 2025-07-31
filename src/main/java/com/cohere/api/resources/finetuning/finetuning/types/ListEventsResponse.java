@@ -116,6 +116,9 @@ public final class ListEventsResponse {
             return this;
         }
 
+        /**
+         * <p>List of events for the fine-tuned model.</p>
+         */
         @JsonSetter(value = "events", nulls = Nulls.SKIP)
         public Builder events(Optional<List<Event>> events) {
             this.events = events;
@@ -127,6 +130,10 @@ public final class ListEventsResponse {
             return this;
         }
 
+        /**
+         * <p>Pagination token to retrieve the next page of results. If the value is &quot;&quot;,
+         * it means no further results for the request.</p>
+         */
         @JsonSetter(value = "next_page_token", nulls = Nulls.SKIP)
         public Builder nextPageToken(Optional<String> nextPageToken) {
             this.nextPageToken = nextPageToken;
@@ -138,6 +145,9 @@ public final class ListEventsResponse {
             return this;
         }
 
+        /**
+         * <p>Total count of results.</p>
+         */
         @JsonSetter(value = "total_size", nulls = Nulls.SKIP)
         public Builder totalSize(Optional<Integer> totalSize) {
             this.totalSize = totalSize;

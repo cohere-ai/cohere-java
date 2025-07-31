@@ -26,7 +26,7 @@ public final class ChatMessageV2 {
         return value.visit(visitor);
     }
 
-    public static ChatMessageV2 user(UserMessage value) {
+    public static ChatMessageV2 user(UserMessageV2 value) {
         return new ChatMessageV2(new UserValue(value));
     }
 
@@ -34,7 +34,7 @@ public final class ChatMessageV2 {
         return new ChatMessageV2(new AssistantValue(value));
     }
 
-    public static ChatMessageV2 system(SystemMessage value) {
+    public static ChatMessageV2 system(SystemMessageV2 value) {
         return new ChatMessageV2(new SystemValue(value));
     }
 
@@ -62,7 +62,7 @@ public final class ChatMessageV2 {
         return value instanceof _UnknownValue;
     }
 
-    public Optional<UserMessage> getUser() {
+    public Optional<UserMessageV2> getUser() {
         if (isUser()) {
             return Optional.of(((UserValue) value).value);
         }
@@ -76,7 +76,7 @@ public final class ChatMessageV2 {
         return Optional.empty();
     }
 
-    public Optional<SystemMessage> getSystem() {
+    public Optional<SystemMessageV2> getSystem() {
         if (isSystem()) {
             return Optional.of(((SystemValue) value).value);
         }
@@ -103,11 +103,11 @@ public final class ChatMessageV2 {
     }
 
     public interface Visitor<T> {
-        T visitUser(UserMessage user);
+        T visitUser(UserMessageV2 user);
 
         T visitAssistant(AssistantMessage assistant);
 
-        T visitSystem(SystemMessage system);
+        T visitSystem(SystemMessageV2 system);
 
         T visitTool(ToolMessageV2 tool);
 
@@ -127,14 +127,15 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("user")
+    @JsonIgnoreProperties("role")
     private static final class UserValue implements Value {
         @JsonUnwrapped
-        private UserMessage value;
+        private UserMessageV2 value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private UserValue() {}
 
-        private UserValue(UserMessage value) {
+        private UserValue(UserMessageV2 value) {
             this.value = value;
         }
 
@@ -165,6 +166,7 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("assistant")
+    @JsonIgnoreProperties("role")
     private static final class AssistantValue implements Value {
         @JsonUnwrapped
         private AssistantMessage value;
@@ -203,14 +205,15 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("system")
+    @JsonIgnoreProperties("role")
     private static final class SystemValue implements Value {
         @JsonUnwrapped
-        private SystemMessage value;
+        private SystemMessageV2 value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private SystemValue() {}
 
-        private SystemValue(SystemMessage value) {
+        private SystemValue(SystemMessageV2 value) {
             this.value = value;
         }
 
@@ -241,6 +244,7 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("tool")
+    @JsonIgnoreProperties("role")
     private static final class ToolValue implements Value {
         @JsonUnwrapped
         private ToolMessageV2 value;
@@ -278,6 +282,7 @@ public final class ChatMessageV2 {
         }
     }
 
+    @JsonIgnoreProperties("role")
     private static final class _UnknownValue implements Value {
         private String type;
 
