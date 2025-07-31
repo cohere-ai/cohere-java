@@ -25,7 +25,7 @@ public final class AssistantMessage {
 
     private final Optional<String> toolPlan;
 
-    private final Optional<AssistantMessageContent> content;
+    private final Optional<AssistantMessageV2Content> content;
 
     private final Optional<List<Citation>> citations;
 
@@ -34,7 +34,7 @@ public final class AssistantMessage {
     private AssistantMessage(
             Optional<List<ToolCallV2>> toolCalls,
             Optional<String> toolPlan,
-            Optional<AssistantMessageContent> content,
+            Optional<AssistantMessageV2Content> content,
             Optional<List<Citation>> citations,
             Map<String, Object> additionalProperties) {
         this.toolCalls = toolCalls;
@@ -58,7 +58,7 @@ public final class AssistantMessage {
     }
 
     @JsonProperty("content")
-    public Optional<AssistantMessageContent> getContent() {
+    public Optional<AssistantMessageV2Content> getContent() {
         return content;
     }
 
@@ -105,7 +105,7 @@ public final class AssistantMessage {
 
         private Optional<String> toolPlan = Optional.empty();
 
-        private Optional<AssistantMessageContent> content = Optional.empty();
+        private Optional<AssistantMessageV2Content> content = Optional.empty();
 
         private Optional<List<Citation>> citations = Optional.empty();
 
@@ -133,6 +133,9 @@ public final class AssistantMessage {
             return this;
         }
 
+        /**
+         * <p>A chain-of-thought style reflection and plan that the model generates when working with Tools.</p>
+         */
         @JsonSetter(value = "tool_plan", nulls = Nulls.SKIP)
         public Builder toolPlan(Optional<String> toolPlan) {
             this.toolPlan = toolPlan;
@@ -145,12 +148,12 @@ public final class AssistantMessage {
         }
 
         @JsonSetter(value = "content", nulls = Nulls.SKIP)
-        public Builder content(Optional<AssistantMessageContent> content) {
+        public Builder content(Optional<AssistantMessageV2Content> content) {
             this.content = content;
             return this;
         }
 
-        public Builder content(AssistantMessageContent content) {
+        public Builder content(AssistantMessageV2Content content) {
             this.content = Optional.ofNullable(content);
             return this;
         }

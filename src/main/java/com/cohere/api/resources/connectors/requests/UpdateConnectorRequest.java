@@ -176,6 +176,9 @@ public final class UpdateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>A human-readable name for the connector.</p>
+         */
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public Builder name(Optional<String> name) {
             this.name = name;
@@ -187,6 +190,9 @@ public final class UpdateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>The URL of the connector that will be used to search for documents.</p>
+         */
         @JsonSetter(value = "url", nulls = Nulls.SKIP)
         public Builder url(Optional<String> url) {
             this.url = url;
@@ -198,6 +204,9 @@ public final class UpdateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
+         */
         @JsonSetter(value = "excludes", nulls = Nulls.SKIP)
         public Builder excludes(Optional<List<String>> excludes) {
             this.excludes = excludes;
@@ -209,6 +218,9 @@ public final class UpdateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.</p>
+         */
         @JsonSetter(value = "oauth", nulls = Nulls.SKIP)
         public Builder oauth(Optional<CreateConnectorOAuth> oauth) {
             this.oauth = oauth;
@@ -242,6 +254,9 @@ public final class UpdateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.</p>
+         */
         @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
         public Builder serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
             this.serviceAuth = serviceAuth;

@@ -181,38 +181,62 @@ public final class EmbedJob {
     }
 
     public interface JobIdStage {
+        /**
+         * <p>ID of the embed job</p>
+         */
         StatusStage jobId(@NotNull String jobId);
 
         Builder from(EmbedJob other);
     }
 
     public interface StatusStage {
+        /**
+         * <p>The status of the embed job</p>
+         */
         CreatedAtStage status(@NotNull EmbedJobStatus status);
     }
 
     public interface CreatedAtStage {
+        /**
+         * <p>The creation date of the embed job</p>
+         */
         InputDatasetIdStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface InputDatasetIdStage {
+        /**
+         * <p>ID of the input dataset</p>
+         */
         ModelStage inputDatasetId(@NotNull String inputDatasetId);
     }
 
     public interface ModelStage {
+        /**
+         * <p>ID of the model used to embed</p>
+         */
         TruncateStage model(@NotNull String model);
     }
 
     public interface TruncateStage {
+        /**
+         * <p>The truncation option used</p>
+         */
         _FinalStage truncate(@NotNull EmbedJobTruncate truncate);
     }
 
     public interface _FinalStage {
         EmbedJob build();
 
+        /**
+         * <p>The name of the embed job</p>
+         */
         _FinalStage name(Optional<String> name);
 
         _FinalStage name(String name);
 
+        /**
+         * <p>ID of the resulting output dataset</p>
+         */
         _FinalStage outputDatasetId(Optional<String> outputDatasetId);
 
         _FinalStage outputDatasetId(String outputDatasetId);
@@ -270,6 +294,7 @@ public final class EmbedJob {
 
         /**
          * <p>ID of the embed job</p>
+         * <p>ID of the embed job</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -280,6 +305,7 @@ public final class EmbedJob {
         }
 
         /**
+         * <p>The status of the embed job</p>
          * <p>The status of the embed job</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -292,6 +318,7 @@ public final class EmbedJob {
 
         /**
          * <p>The creation date of the embed job</p>
+         * <p>The creation date of the embed job</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -302,6 +329,7 @@ public final class EmbedJob {
         }
 
         /**
+         * <p>ID of the input dataset</p>
          * <p>ID of the input dataset</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -314,6 +342,7 @@ public final class EmbedJob {
 
         /**
          * <p>ID of the model used to embed</p>
+         * <p>ID of the model used to embed</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -324,6 +353,7 @@ public final class EmbedJob {
         }
 
         /**
+         * <p>The truncation option used</p>
          * <p>The truncation option used</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -357,6 +387,9 @@ public final class EmbedJob {
             return this;
         }
 
+        /**
+         * <p>ID of the resulting output dataset</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "output_dataset_id", nulls = Nulls.SKIP)
         public _FinalStage outputDatasetId(Optional<String> outputDatasetId) {
@@ -374,6 +407,9 @@ public final class EmbedJob {
             return this;
         }
 
+        /**
+         * <p>The name of the embed job</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public _FinalStage name(Optional<String> name) {

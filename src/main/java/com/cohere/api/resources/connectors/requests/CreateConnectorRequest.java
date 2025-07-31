@@ -172,38 +172,62 @@ public final class CreateConnectorRequest {
     }
 
     public interface NameStage {
+        /**
+         * <p>A human-readable name for the connector.</p>
+         */
         UrlStage name(@NotNull String name);
 
         Builder from(CreateConnectorRequest other);
     }
 
     public interface UrlStage {
+        /**
+         * <p>The URL of the connector that will be used to search for documents.</p>
+         */
         _FinalStage url(@NotNull String url);
     }
 
     public interface _FinalStage {
         CreateConnectorRequest build();
 
+        /**
+         * <p>A description of the connector.</p>
+         */
         _FinalStage description(Optional<String> description);
 
         _FinalStage description(String description);
 
+        /**
+         * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
+         */
         _FinalStage excludes(Optional<List<String>> excludes);
 
         _FinalStage excludes(List<String> excludes);
 
+        /**
+         * <p>The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.</p>
+         */
         _FinalStage oauth(Optional<CreateConnectorOAuth> oauth);
 
         _FinalStage oauth(CreateConnectorOAuth oauth);
 
+        /**
+         * <p>Whether the connector is active or not.</p>
+         */
         _FinalStage active(Optional<Boolean> active);
 
         _FinalStage active(Boolean active);
 
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         */
         _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure);
 
         _FinalStage continueOnFailure(Boolean continueOnFailure);
 
+        /**
+         * <p>The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.</p>
+         */
         _FinalStage serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth);
 
         _FinalStage serviceAuth(CreateConnectorServiceAuth serviceAuth);
@@ -247,6 +271,7 @@ public final class CreateConnectorRequest {
 
         /**
          * <p>A human-readable name for the connector.</p>
+         * <p>A human-readable name for the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -257,6 +282,7 @@ public final class CreateConnectorRequest {
         }
 
         /**
+         * <p>The URL of the connector that will be used to search for documents.</p>
          * <p>The URL of the connector that will be used to search for documents.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -277,6 +303,9 @@ public final class CreateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "service_auth", nulls = Nulls.SKIP)
         public _FinalStage serviceAuth(Optional<CreateConnectorServiceAuth> serviceAuth) {
@@ -294,6 +323,9 @@ public final class CreateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
@@ -311,6 +343,9 @@ public final class CreateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>Whether the connector is active or not.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "active", nulls = Nulls.SKIP)
         public _FinalStage active(Optional<Boolean> active) {
@@ -328,6 +363,9 @@ public final class CreateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "oauth", nulls = Nulls.SKIP)
         public _FinalStage oauth(Optional<CreateConnectorOAuth> oauth) {
@@ -345,6 +383,9 @@ public final class CreateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "excludes", nulls = Nulls.SKIP)
         public _FinalStage excludes(Optional<List<String>> excludes) {
@@ -362,6 +403,9 @@ public final class CreateConnectorRequest {
             return this;
         }
 
+        /**
+         * <p>A description of the connector.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {

@@ -176,6 +176,9 @@ public final class ClassifyResponseClassificationsItem {
     }
 
     public interface ClassificationTypeStage {
+        /**
+         * <p>The type of classification performed</p>
+         */
         _FinalStage classificationType(
                 @NotNull ClassifyResponseClassificationsItemClassificationType classificationType);
     }
@@ -183,30 +186,48 @@ public final class ClassifyResponseClassificationsItem {
     public interface _FinalStage {
         ClassifyResponseClassificationsItem build();
 
+        /**
+         * <p>The input text that was classified</p>
+         */
         _FinalStage input(Optional<String> input);
 
         _FinalStage input(String input);
 
+        /**
+         * <p>The predicted label for the associated query (only filled for single-label models)</p>
+         */
         _FinalStage prediction(Optional<String> prediction);
 
         _FinalStage prediction(String prediction);
 
+        /**
+         * <p>An array containing the predicted labels for the associated query (only filled for single-label classification)</p>
+         */
         _FinalStage predictions(List<String> predictions);
 
         _FinalStage addPredictions(String predictions);
 
         _FinalStage addAllPredictions(List<String> predictions);
 
+        /**
+         * <p>The confidence score for the top predicted class (only filled for single-label classification)</p>
+         */
         _FinalStage confidence(Optional<Float> confidence);
 
         _FinalStage confidence(Float confidence);
 
+        /**
+         * <p>An array containing the confidence scores of all the predictions in the same order</p>
+         */
         _FinalStage confidences(List<Float> confidences);
 
         _FinalStage addConfidences(Float confidences);
 
         _FinalStage addAllConfidences(List<Float> confidences);
 
+        /**
+         * <p>A map containing each label and its confidence score according to the classifier. All the confidence scores add up to 1 for single-label classification. For multi-label classification the label confidences are independent of each other, so they don't have to sum up to 1.</p>
+         */
         _FinalStage labels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels);
 
         _FinalStage putAllLabels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels);
@@ -259,6 +280,7 @@ public final class ClassifyResponseClassificationsItem {
 
         /**
          * <p>The type of classification performed</p>
+         * <p>The type of classification performed</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -289,6 +311,9 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
+        /**
+         * <p>A map containing each label and its confidence score according to the classifier. All the confidence scores add up to 1 for single-label classification. For multi-label classification the label confidences are independent of each other, so they don't have to sum up to 1.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "labels", nulls = Nulls.SKIP)
         public _FinalStage labels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels) {
@@ -317,6 +342,9 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
+        /**
+         * <p>An array containing the confidence scores of all the predictions in the same order</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "confidences", nulls = Nulls.SKIP)
         public _FinalStage confidences(List<Float> confidences) {
@@ -335,6 +363,9 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
+        /**
+         * <p>The confidence score for the top predicted class (only filled for single-label classification)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "confidence", nulls = Nulls.SKIP)
         public _FinalStage confidence(Optional<Float> confidence) {
@@ -362,6 +393,9 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
+        /**
+         * <p>An array containing the predicted labels for the associated query (only filled for single-label classification)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "predictions", nulls = Nulls.SKIP)
         public _FinalStage predictions(List<String> predictions) {
@@ -380,6 +414,9 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
+        /**
+         * <p>The predicted label for the associated query (only filled for single-label models)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "prediction", nulls = Nulls.SKIP)
         public _FinalStage prediction(Optional<String> prediction) {
@@ -397,6 +434,9 @@ public final class ClassifyResponseClassificationsItem {
             return this;
         }
 
+        /**
+         * <p>The input text that was classified</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "input", nulls = Nulls.SKIP)
         public _FinalStage input(Optional<String> input) {

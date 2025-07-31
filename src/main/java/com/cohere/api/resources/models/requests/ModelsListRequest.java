@@ -132,6 +132,10 @@ public final class ModelsListRequest {
             return this;
         }
 
+        /**
+         * <p>Maximum number of models to include in a page
+         * Defaults to <code>20</code>, min value of <code>1</code>, max value of <code>1000</code>.</p>
+         */
         @JsonSetter(value = "page_size", nulls = Nulls.SKIP)
         public Builder pageSize(Optional<Double> pageSize) {
             this.pageSize = pageSize;
@@ -143,6 +147,9 @@ public final class ModelsListRequest {
             return this;
         }
 
+        /**
+         * <p>Page token provided in the <code>next_page_token</code> field of a previous response.</p>
+         */
         @JsonSetter(value = "page_token", nulls = Nulls.SKIP)
         public Builder pageToken(Optional<String> pageToken) {
             this.pageToken = pageToken;
@@ -154,6 +161,9 @@ public final class ModelsListRequest {
             return this;
         }
 
+        /**
+         * <p>When provided, filters the list of models to only those that are compatible with the specified endpoint.</p>
+         */
         @JsonSetter(value = "endpoint", nulls = Nulls.SKIP)
         public Builder endpoint(Optional<CompatibleEndpoint> endpoint) {
             this.endpoint = endpoint;
@@ -165,6 +175,9 @@ public final class ModelsListRequest {
             return this;
         }
 
+        /**
+         * <p>When provided, filters the list of models to only the default model to the endpoint. This parameter is only valid when <code>endpoint</code> is provided.</p>
+         */
         @JsonSetter(value = "default_only", nulls = Nulls.SKIP)
         public Builder defaultOnly(Optional<Boolean> defaultOnly) {
             this.defaultOnly = defaultOnly;

@@ -130,6 +130,9 @@ public final class UsageBilledUnits {
             return this;
         }
 
+        /**
+         * <p>The number of billed input tokens.</p>
+         */
         @JsonSetter(value = "input_tokens", nulls = Nulls.SKIP)
         public Builder inputTokens(Optional<Double> inputTokens) {
             this.inputTokens = inputTokens;
@@ -141,6 +144,9 @@ public final class UsageBilledUnits {
             return this;
         }
 
+        /**
+         * <p>The number of billed output tokens.</p>
+         */
         @JsonSetter(value = "output_tokens", nulls = Nulls.SKIP)
         public Builder outputTokens(Optional<Double> outputTokens) {
             this.outputTokens = outputTokens;
@@ -152,6 +158,9 @@ public final class UsageBilledUnits {
             return this;
         }
 
+        /**
+         * <p>The number of billed search units.</p>
+         */
         @JsonSetter(value = "search_units", nulls = Nulls.SKIP)
         public Builder searchUnits(Optional<Double> searchUnits) {
             this.searchUnits = searchUnits;
@@ -163,6 +172,9 @@ public final class UsageBilledUnits {
             return this;
         }
 
+        /**
+         * <p>The number of billed classifications units.</p>
+         */
         @JsonSetter(value = "classifications", nulls = Nulls.SKIP)
         public Builder classifications(Optional<Double> classifications) {
             this.classifications = classifications;

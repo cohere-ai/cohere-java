@@ -146,6 +146,9 @@ public final class CreateConnectorOAuth {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 client ID. This fields is encrypted at rest.</p>
+         */
         @JsonSetter(value = "client_id", nulls = Nulls.SKIP)
         public Builder clientId(Optional<String> clientId) {
             this.clientId = clientId;
@@ -157,6 +160,9 @@ public final class CreateConnectorOAuth {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.</p>
+         */
         @JsonSetter(value = "client_secret", nulls = Nulls.SKIP)
         public Builder clientSecret(Optional<String> clientSecret) {
             this.clientSecret = clientSecret;
@@ -168,6 +174,9 @@ public final class CreateConnectorOAuth {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 /authorize endpoint to use when users authorize the connector.</p>
+         */
         @JsonSetter(value = "authorize_url", nulls = Nulls.SKIP)
         public Builder authorizeUrl(Optional<String> authorizeUrl) {
             this.authorizeUrl = authorizeUrl;
@@ -179,6 +188,9 @@ public final class CreateConnectorOAuth {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 /token endpoint to use when users authorize the connector.</p>
+         */
         @JsonSetter(value = "token_url", nulls = Nulls.SKIP)
         public Builder tokenUrl(Optional<String> tokenUrl) {
             this.tokenUrl = tokenUrl;
@@ -190,6 +202,9 @@ public final class CreateConnectorOAuth {
             return this;
         }
 
+        /**
+         * <p>The OAuth scopes to request when users authorize the connector.</p>
+         */
         @JsonSetter(value = "scope", nulls = Nulls.SKIP)
         public Builder scope(Optional<String> scope) {
             this.scope = scope;

@@ -94,6 +94,9 @@ public final class ToolParameterDefinitionsValue {
     }
 
     public interface TypeStage {
+        /**
+         * <p>The type of the parameter. Must be a valid Python type.</p>
+         */
         _FinalStage type(@NotNull String type);
 
         Builder from(ToolParameterDefinitionsValue other);
@@ -102,10 +105,16 @@ public final class ToolParameterDefinitionsValue {
     public interface _FinalStage {
         ToolParameterDefinitionsValue build();
 
+        /**
+         * <p>The description of the parameter.</p>
+         */
         _FinalStage description(Optional<String> description);
 
         _FinalStage description(String description);
 
+        /**
+         * <p>Denotes whether the parameter is always present (required) or not. Defaults to not required.</p>
+         */
         _FinalStage required(Optional<Boolean> required);
 
         _FinalStage required(Boolean required);
@@ -134,6 +143,7 @@ public final class ToolParameterDefinitionsValue {
 
         /**
          * <p>The type of the parameter. Must be a valid Python type.</p>
+         * <p>The type of the parameter. Must be a valid Python type.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -153,6 +163,9 @@ public final class ToolParameterDefinitionsValue {
             return this;
         }
 
+        /**
+         * <p>Denotes whether the parameter is always present (required) or not. Defaults to not required.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "required", nulls = Nulls.SKIP)
         public _FinalStage required(Optional<Boolean> required) {
@@ -170,6 +183,9 @@ public final class ToolParameterDefinitionsValue {
             return this;
         }
 
+        /**
+         * <p>The description of the parameter.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {

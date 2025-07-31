@@ -113,6 +113,9 @@ public final class Event {
             return this;
         }
 
+        /**
+         * <p>ID of the user who initiated the event. Empty if initiated by the system.</p>
+         */
         @JsonSetter(value = "user_id", nulls = Nulls.SKIP)
         public Builder userId(Optional<String> userId) {
             this.userId = userId;
@@ -124,6 +127,9 @@ public final class Event {
             return this;
         }
 
+        /**
+         * <p>Status of the fine-tuned model.</p>
+         */
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
         public Builder status(Optional<Status> status) {
             this.status = status;
@@ -135,6 +141,9 @@ public final class Event {
             return this;
         }
 
+        /**
+         * <p>Timestamp when the event happened.</p>
+         */
         @JsonSetter(value = "created_at", nulls = Nulls.SKIP)
         public Builder createdAt(Optional<OffsetDateTime> createdAt) {
             this.createdAt = createdAt;

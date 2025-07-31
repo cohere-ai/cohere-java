@@ -243,58 +243,99 @@ public final class Connector {
     }
 
     public interface IdStage {
+        /**
+         * <p>The unique identifier of the connector (used in both <code>/connectors</code> &amp; <code>/chat</code> endpoints).
+         * This is automatically created from the name of the connector upon registration.</p>
+         */
         NameStage id(@NotNull String id);
 
         Builder from(Connector other);
     }
 
     public interface NameStage {
+        /**
+         * <p>A human-readable name for the connector.</p>
+         */
         CreatedAtStage name(@NotNull String name);
     }
 
     public interface CreatedAtStage {
+        /**
+         * <p>The UTC time at which the connector was created.</p>
+         */
         UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
+        /**
+         * <p>The UTC time at which the connector was last updated.</p>
+         */
         _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
         Connector build();
 
+        /**
+         * <p>The organization to which this connector belongs. This is automatically set to
+         * the organization of the user who created the connector.</p>
+         */
         _FinalStage organizationId(Optional<String> organizationId);
 
         _FinalStage organizationId(String organizationId);
 
+        /**
+         * <p>A description of the connector.</p>
+         */
         _FinalStage description(Optional<String> description);
 
         _FinalStage description(String description);
 
+        /**
+         * <p>The URL of the connector that will be used to search for documents.</p>
+         */
         _FinalStage url(Optional<String> url);
 
         _FinalStage url(String url);
 
+        /**
+         * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
+         */
         _FinalStage excludes(Optional<List<String>> excludes);
 
         _FinalStage excludes(List<String> excludes);
 
+        /**
+         * <p>The type of authentication/authorization used by the connector. Possible values: [oauth, service_auth]</p>
+         */
         _FinalStage authType(Optional<String> authType);
 
         _FinalStage authType(String authType);
 
+        /**
+         * <p>The OAuth 2.0 configuration for the connector.</p>
+         */
         _FinalStage oauth(Optional<ConnectorOAuth> oauth);
 
         _FinalStage oauth(ConnectorOAuth oauth);
 
+        /**
+         * <p>The OAuth status for the user making the request. One of [&quot;valid&quot;, &quot;expired&quot;, &quot;&quot;]. Empty string (field is omitted) means the user has not authorized the connector yet.</p>
+         */
         _FinalStage authStatus(Optional<ConnectorAuthStatus> authStatus);
 
         _FinalStage authStatus(ConnectorAuthStatus authStatus);
 
+        /**
+         * <p>Whether the connector is active or not.</p>
+         */
         _FinalStage active(Optional<Boolean> active);
 
         _FinalStage active(Boolean active);
 
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         */
         _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure);
 
         _FinalStage continueOnFailure(Boolean continueOnFailure);
@@ -354,6 +395,8 @@ public final class Connector {
         /**
          * <p>The unique identifier of the connector (used in both <code>/connectors</code> &amp; <code>/chat</code> endpoints).
          * This is automatically created from the name of the connector upon registration.</p>
+         * <p>The unique identifier of the connector (used in both <code>/connectors</code> &amp; <code>/chat</code> endpoints).
+         * This is automatically created from the name of the connector upon registration.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -364,6 +407,7 @@ public final class Connector {
         }
 
         /**
+         * <p>A human-readable name for the connector.</p>
          * <p>A human-readable name for the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -376,6 +420,7 @@ public final class Connector {
 
         /**
          * <p>The UTC time at which the connector was created.</p>
+         * <p>The UTC time at which the connector was created.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -386,6 +431,7 @@ public final class Connector {
         }
 
         /**
+         * <p>The UTC time at which the connector was last updated.</p>
          * <p>The UTC time at which the connector was last updated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -406,6 +452,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>Whether a chat request should continue or not if the request to this connector fails.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
@@ -423,6 +472,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>Whether the connector is active or not.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "active", nulls = Nulls.SKIP)
         public _FinalStage active(Optional<Boolean> active) {
@@ -440,6 +492,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>The OAuth status for the user making the request. One of [&quot;valid&quot;, &quot;expired&quot;, &quot;&quot;]. Empty string (field is omitted) means the user has not authorized the connector yet.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "auth_status", nulls = Nulls.SKIP)
         public _FinalStage authStatus(Optional<ConnectorAuthStatus> authStatus) {
@@ -457,6 +512,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>The OAuth 2.0 configuration for the connector.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "oauth", nulls = Nulls.SKIP)
         public _FinalStage oauth(Optional<ConnectorOAuth> oauth) {
@@ -474,6 +532,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>The type of authentication/authorization used by the connector. Possible values: [oauth, service_auth]</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "auth_type", nulls = Nulls.SKIP)
         public _FinalStage authType(Optional<String> authType) {
@@ -491,6 +552,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>A list of fields to exclude from the prompt (fields remain in the document).</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "excludes", nulls = Nulls.SKIP)
         public _FinalStage excludes(Optional<List<String>> excludes) {
@@ -508,6 +572,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>The URL of the connector that will be used to search for documents.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "url", nulls = Nulls.SKIP)
         public _FinalStage url(Optional<String> url) {
@@ -525,6 +592,9 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>A description of the connector.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
@@ -543,6 +613,10 @@ public final class Connector {
             return this;
         }
 
+        /**
+         * <p>The organization to which this connector belongs. This is automatically set to
+         * the organization of the user who created the connector.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "organization_id", nulls = Nulls.SKIP)
         public _FinalStage organizationId(Optional<String> organizationId) {
