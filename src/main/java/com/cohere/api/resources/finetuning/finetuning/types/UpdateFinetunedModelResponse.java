@@ -81,9 +81,6 @@ public final class UpdateFinetunedModelResponse {
             return this;
         }
 
-        /**
-         * <p>Information about the fine-tuned model.</p>
-         */
         @JsonSetter(value = "finetuned_model", nulls = Nulls.SKIP)
         public Builder finetunedModel(Optional<FinetunedModel> finetunedModel) {
             this.finetunedModel = finetunedModel;

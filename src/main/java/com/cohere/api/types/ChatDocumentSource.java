@@ -92,9 +92,6 @@ public final class ChatDocumentSource {
             return this;
         }
 
-        /**
-         * <p>The unique identifier of the document</p>
-         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;

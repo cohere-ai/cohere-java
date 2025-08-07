@@ -95,9 +95,6 @@ public final class ConnectorsListRequest {
             return this;
         }
 
-        /**
-         * <p>Maximum number of connectors to return [0, 100].</p>
-         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Double> limit) {
             this.limit = limit;
@@ -109,9 +106,6 @@ public final class ConnectorsListRequest {
             return this;
         }
 
-        /**
-         * <p>Number of connectors to skip before returning results [0, inf].</p>
-         */
         @JsonSetter(value = "offset", nulls = Nulls.SKIP)
         public Builder offset(Optional<Double> offset) {
             this.offset = offset;

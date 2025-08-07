@@ -126,27 +126,18 @@ public final class EmbedFloatsResponse {
     public interface _FinalStage {
         EmbedFloatsResponse build();
 
-        /**
-         * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
-         */
         _FinalStage embeddings(List<List<Double>> embeddings);
 
         _FinalStage addEmbeddings(List<Double> embeddings);
 
         _FinalStage addAllEmbeddings(List<List<Double>> embeddings);
 
-        /**
-         * <p>The text entries for which embeddings were returned.</p>
-         */
         _FinalStage texts(List<String> texts);
 
         _FinalStage addTexts(String texts);
 
         _FinalStage addAllTexts(List<String> texts);
 
-        /**
-         * <p>The image entries for which embeddings were returned.</p>
-         */
         _FinalStage images(Optional<List<Image>> images);
 
         _FinalStage images(List<Image> images);
@@ -213,9 +204,6 @@ public final class EmbedFloatsResponse {
             return this;
         }
 
-        /**
-         * <p>The image entries for which embeddings were returned.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "images", nulls = Nulls.SKIP)
         public _FinalStage images(Optional<List<Image>> images) {
@@ -243,9 +231,6 @@ public final class EmbedFloatsResponse {
             return this;
         }
 
-        /**
-         * <p>The text entries for which embeddings were returned.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
         public _FinalStage texts(List<String> texts) {
@@ -274,9 +259,6 @@ public final class EmbedFloatsResponse {
             return this;
         }
 
-        /**
-         * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "embeddings", nulls = Nulls.SKIP)
         public _FinalStage embeddings(List<List<Double>> embeddings) {

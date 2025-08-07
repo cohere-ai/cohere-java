@@ -79,9 +79,6 @@ public final class ImageUrl {
     }
 
     public interface UrlStage {
-        /**
-         * <p>URL of an image. Can be either a base64 data URI or a web URL.</p>
-         */
         _FinalStage url(@NotNull String url);
 
         Builder from(ImageUrl other);
@@ -90,9 +87,6 @@ public final class ImageUrl {
     public interface _FinalStage {
         ImageUrl build();
 
-        /**
-         * <p>Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.</p>
-         */
         _FinalStage detail(Optional<ImageUrlDetail> detail);
 
         _FinalStage detail(ImageUrlDetail detail);
@@ -118,7 +112,6 @@ public final class ImageUrl {
 
         /**
          * <p>URL of an image. Can be either a base64 data URI or a web URL.</p>
-         * <p>URL of an image. Can be either a base64 data URI or a web URL.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -138,9 +131,6 @@ public final class ImageUrl {
             return this;
         }
 
-        /**
-         * <p>Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "detail", nulls = Nulls.SKIP)
         public _FinalStage detail(Optional<ImageUrlDetail> detail) {

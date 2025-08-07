@@ -66,9 +66,6 @@ public final class ChatSearchResultConnector {
     }
 
     public interface IdStage {
-        /**
-         * <p>The identifier of the connector.</p>
-         */
         _FinalStage id(@NotNull String id);
 
         Builder from(ChatSearchResultConnector other);
@@ -94,7 +91,6 @@ public final class ChatSearchResultConnector {
         }
 
         /**
-         * <p>The identifier of the connector.</p>
          * <p>The identifier of the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

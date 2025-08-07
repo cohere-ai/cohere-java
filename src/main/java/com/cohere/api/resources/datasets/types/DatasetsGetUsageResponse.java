@@ -80,9 +80,6 @@ public final class DatasetsGetUsageResponse {
             return this;
         }
 
-        /**
-         * <p>The total number of bytes used by the organization.</p>
-         */
         @JsonSetter(value = "organization_usage", nulls = Nulls.SKIP)
         public Builder organizationUsage(Optional<Long> organizationUsage) {
             this.organizationUsage = organizationUsage;

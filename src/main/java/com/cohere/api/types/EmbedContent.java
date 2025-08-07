@@ -88,7 +88,6 @@ public final class EmbedContent {
     }
 
     @JsonTypeName("image_url")
-    @JsonIgnoreProperties("type")
     private static final class ImageUrlValue implements Value {
         @JsonUnwrapped
         private EmbedImage value;
@@ -127,7 +126,6 @@ public final class EmbedContent {
     }
 
     @JsonTypeName("text")
-    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
         private EmbedText value;
@@ -165,7 +163,6 @@ public final class EmbedContent {
         }
     }
 
-    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

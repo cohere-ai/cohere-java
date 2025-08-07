@@ -81,9 +81,6 @@ public final class EmbedInput {
             return this;
         }
 
-        /**
-         * <p>An array of objects containing the input data for the model to embed.</p>
-         */
         @JsonSetter(value = "content", nulls = Nulls.SKIP)
         public Builder content(List<EmbedContent> content) {
             this.content.clear();

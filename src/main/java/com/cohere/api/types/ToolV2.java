@@ -102,9 +102,6 @@ public final class ToolV2 {
             return this;
         }
 
-        /**
-         * <p>The function to be executed.</p>
-         */
         @JsonSetter(value = "function", nulls = Nulls.SKIP)
         public Builder function(Optional<ToolV2Function> function) {
             this.function = function;

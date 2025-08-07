@@ -109,9 +109,6 @@ public final class SummarizeResponse {
             return this;
         }
 
-        /**
-         * <p>Generated ID for the summary</p>
-         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;
@@ -123,9 +120,6 @@ public final class SummarizeResponse {
             return this;
         }
 
-        /**
-         * <p>Generated summary for the text</p>
-         */
         @JsonSetter(value = "summary", nulls = Nulls.SKIP)
         public Builder summary(Optional<String> summary) {
             this.summary = summary;

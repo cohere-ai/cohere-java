@@ -151,25 +151,12 @@ public final class CreateEmbedJobRequest {
     }
 
     public interface ModelStage {
-        /**
-         * <p>ID of the embedding model.</p>
-         * <p>Available models and corresponding embedding dimensions:</p>
-         * <ul>
-         * <li><code>embed-english-v3.0</code> : 1024</li>
-         * <li><code>embed-multilingual-v3.0</code> : 1024</li>
-         * <li><code>embed-english-light-v3.0</code> : 384</li>
-         * <li><code>embed-multilingual-light-v3.0</code> : 384</li>
-         * </ul>
-         */
         DatasetIdStage model(@NotNull String model);
 
         Builder from(CreateEmbedJobRequest other);
     }
 
     public interface DatasetIdStage {
-        /**
-         * <p>ID of a <a href="https://docs.cohere.com/docs/datasets">Dataset</a>. The Dataset must be of type <code>embed-input</code> and must have a validation status <code>Validated</code></p>
-         */
         InputTypeStage datasetId(@NotNull String datasetId);
     }
 
@@ -180,31 +167,14 @@ public final class CreateEmbedJobRequest {
     public interface _FinalStage {
         CreateEmbedJobRequest build();
 
-        /**
-         * <p>The name of the embed job.</p>
-         */
         _FinalStage name(Optional<String> name);
 
         _FinalStage name(String name);
 
-        /**
-         * <p>Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.</p>
-         * <ul>
-         * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
-         * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for v3 and newer model versions.</li>
-         * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Valid for v3 and newer model versions.</li>
-         * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Valid for v3 and newer model versions.</li>
-         * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Valid for v3 and newer model versions.</li>
-         * </ul>
-         */
         _FinalStage embeddingTypes(Optional<List<EmbeddingType>> embeddingTypes);
 
         _FinalStage embeddingTypes(List<EmbeddingType> embeddingTypes);
 
-        /**
-         * <p>One of <code>START|END</code> to specify how the API will handle inputs longer than the maximum token length.</p>
-         * <p>Passing <code>START</code> will discard the start of the input. <code>END</code> will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.</p>
-         */
         _FinalStage truncate(Optional<CreateEmbedJobRequestTruncate> truncate);
 
         _FinalStage truncate(CreateEmbedJobRequestTruncate truncate);
@@ -249,14 +219,6 @@ public final class CreateEmbedJobRequest {
          * <li><code>embed-english-light-v3.0</code> : 384</li>
          * <li><code>embed-multilingual-light-v3.0</code> : 384</li>
          * </ul>
-         * <p>ID of the embedding model.</p>
-         * <p>Available models and corresponding embedding dimensions:</p>
-         * <ul>
-         * <li><code>embed-english-v3.0</code> : 1024</li>
-         * <li><code>embed-multilingual-v3.0</code> : 1024</li>
-         * <li><code>embed-english-light-v3.0</code> : 384</li>
-         * <li><code>embed-multilingual-light-v3.0</code> : 384</li>
-         * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -267,7 +229,6 @@ public final class CreateEmbedJobRequest {
         }
 
         /**
-         * <p>ID of a <a href="https://docs.cohere.com/docs/datasets">Dataset</a>. The Dataset must be of type <code>embed-input</code> and must have a validation status <code>Validated</code></p>
          * <p>ID of a <a href="https://docs.cohere.com/docs/datasets">Dataset</a>. The Dataset must be of type <code>embed-input</code> and must have a validation status <code>Validated</code></p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -296,10 +257,6 @@ public final class CreateEmbedJobRequest {
             return this;
         }
 
-        /**
-         * <p>One of <code>START|END</code> to specify how the API will handle inputs longer than the maximum token length.</p>
-         * <p>Passing <code>START</code> will discard the start of the input. <code>END</code> will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "truncate", nulls = Nulls.SKIP)
         public _FinalStage truncate(Optional<CreateEmbedJobRequestTruncate> truncate) {
@@ -324,16 +281,6 @@ public final class CreateEmbedJobRequest {
             return this;
         }
 
-        /**
-         * <p>Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.</p>
-         * <ul>
-         * <li><code>&quot;float&quot;</code>: Use this when you want to get back the default float embeddings. Valid for all models.</li>
-         * <li><code>&quot;int8&quot;</code>: Use this when you want to get back signed int8 embeddings. Valid for v3 and newer model versions.</li>
-         * <li><code>&quot;uint8&quot;</code>: Use this when you want to get back unsigned int8 embeddings. Valid for v3 and newer model versions.</li>
-         * <li><code>&quot;binary&quot;</code>: Use this when you want to get back signed binary embeddings. Valid for v3 and newer model versions.</li>
-         * <li><code>&quot;ubinary&quot;</code>: Use this when you want to get back unsigned binary embeddings. Valid for v3 and newer model versions.</li>
-         * </ul>
-         */
         @java.lang.Override
         @JsonSetter(value = "embedding_types", nulls = Nulls.SKIP)
         public _FinalStage embeddingTypes(Optional<List<EmbeddingType>> embeddingTypes) {
@@ -351,9 +298,6 @@ public final class CreateEmbedJobRequest {
             return this;
         }
 
-        /**
-         * <p>The name of the embed job.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public _FinalStage name(Optional<String> name) {

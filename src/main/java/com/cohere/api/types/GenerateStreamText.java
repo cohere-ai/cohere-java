@@ -88,9 +88,6 @@ public final class GenerateStreamText implements IGenerateStreamEvent {
     }
 
     public interface TextStage {
-        /**
-         * <p>A segment of text of the generation.</p>
-         */
         IsFinishedStage text(@NotNull String text);
 
         Builder from(GenerateStreamText other);
@@ -103,9 +100,6 @@ public final class GenerateStreamText implements IGenerateStreamEvent {
     public interface _FinalStage {
         GenerateStreamText build();
 
-        /**
-         * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero, and only when text responses are being streamed.</p>
-         */
         _FinalStage index(Optional<Integer> index);
 
         _FinalStage index(Integer index);
@@ -134,7 +128,6 @@ public final class GenerateStreamText implements IGenerateStreamEvent {
 
         /**
          * <p>A segment of text of the generation.</p>
-         * <p>A segment of text of the generation.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -161,9 +154,6 @@ public final class GenerateStreamText implements IGenerateStreamEvent {
             return this;
         }
 
-        /**
-         * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero, and only when text responses are being streamed.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "index", nulls = Nulls.SKIP)
         public _FinalStage index(Optional<Integer> index) {

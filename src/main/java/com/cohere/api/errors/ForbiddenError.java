@@ -4,7 +4,6 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
-import okhttp3.Response;
 
 public final class ForbiddenError extends CohereApiException {
     /**
@@ -14,11 +13,6 @@ public final class ForbiddenError extends CohereApiException {
 
     public ForbiddenError(Object body) {
         super("ForbiddenError", 403, body);
-        this.body = body;
-    }
-
-    public ForbiddenError(Object body, Response rawResponse) {
-        super("ForbiddenError", 403, body, rawResponse);
         this.body = body;
     }
 

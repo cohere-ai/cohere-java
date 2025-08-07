@@ -4,7 +4,6 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
-import okhttp3.Response;
 
 public final class UnprocessableEntityError extends CohereApiException {
     /**
@@ -14,11 +13,6 @@ public final class UnprocessableEntityError extends CohereApiException {
 
     public UnprocessableEntityError(Object body) {
         super("UnprocessableEntityError", 422, body);
-        this.body = body;
-    }
-
-    public UnprocessableEntityError(Object body, Response rawResponse) {
-        super("UnprocessableEntityError", 422, body, rawResponse);
         this.body = body;
     }
 

@@ -10,24 +10,41 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = V2RerankResponseResultsItem.Builder.class)
 public final class V2RerankResponseResultsItem {
+    private final Optional<V2RerankResponseResultsItemDocument> document;
+
     private final int index;
 
     private final float relevanceScore;
 
     private final Map<String, Object> additionalProperties;
 
-    private V2RerankResponseResultsItem(int index, float relevanceScore, Map<String, Object> additionalProperties) {
+    private V2RerankResponseResultsItem(
+            Optional<V2RerankResponseResultsItemDocument> document,
+            int index,
+            float relevanceScore,
+            Map<String, Object> additionalProperties) {
+        this.document = document;
         this.index = index;
         this.relevanceScore = relevanceScore;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return If <code>return_documents</code> is set as <code>false</code> this will return none, if <code>true</code> it will return the documents passed in
+     */
+    @JsonProperty("document")
+    public Optional<V2RerankResponseResultsItemDocument> getDocument() {
+        return document;
     }
 
     /**
@@ -58,12 +75,12 @@ public final class V2RerankResponseResultsItem {
     }
 
     private boolean equalTo(V2RerankResponseResultsItem other) {
-        return index == other.index && relevanceScore == other.relevanceScore;
+        return document.equals(other.document) && index == other.index && relevanceScore == other.relevanceScore;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.index, this.relevanceScore);
+        return Objects.hash(this.document, this.index, this.relevanceScore);
     }
 
     @java.lang.Override
@@ -76,23 +93,21 @@ public final class V2RerankResponseResultsItem {
     }
 
     public interface IndexStage {
-        /**
-         * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
-         */
         RelevanceScoreStage index(int index);
 
         Builder from(V2RerankResponseResultsItem other);
     }
 
     public interface RelevanceScoreStage {
-        /**
-         * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
-         */
         _FinalStage relevanceScore(float relevanceScore);
     }
 
     public interface _FinalStage {
         V2RerankResponseResultsItem build();
+
+        _FinalStage document(Optional<V2RerankResponseResultsItemDocument> document);
+
+        _FinalStage document(V2RerankResponseResultsItemDocument document);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -101,6 +116,8 @@ public final class V2RerankResponseResultsItem {
 
         private float relevanceScore;
 
+        private Optional<V2RerankResponseResultsItemDocument> document = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -108,13 +125,13 @@ public final class V2RerankResponseResultsItem {
 
         @java.lang.Override
         public Builder from(V2RerankResponseResultsItem other) {
+            document(other.getDocument());
             index(other.getIndex());
             relevanceScore(other.getRelevanceScore());
             return this;
         }
 
         /**
-         * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
          * <p>Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the <code>results</code> object has an <code>index</code> value of 3, it means in the list of documents passed in, the document at <code>index=3</code> had the highest relevance)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -127,7 +144,6 @@ public final class V2RerankResponseResultsItem {
 
         /**
          * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
-         * <p>Relevance scores are normalized to be in the range <code>[0, 1]</code>. Scores close to <code>1</code> indicate a high relevance to the query, and scores closer to <code>0</code> indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -137,9 +153,26 @@ public final class V2RerankResponseResultsItem {
             return this;
         }
 
+        /**
+         * <p>If <code>return_documents</code> is set as <code>false</code> this will return none, if <code>true</code> it will return the documents passed in</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage document(V2RerankResponseResultsItemDocument document) {
+            this.document = Optional.ofNullable(document);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "document", nulls = Nulls.SKIP)
+        public _FinalStage document(Optional<V2RerankResponseResultsItemDocument> document) {
+            this.document = document;
+            return this;
+        }
+
         @java.lang.Override
         public V2RerankResponseResultsItem build() {
-            return new V2RerankResponseResultsItem(index, relevanceScore, additionalProperties);
+            return new V2RerankResponseResultsItem(document, index, relevanceScore, additionalProperties);
         }
     }
 }

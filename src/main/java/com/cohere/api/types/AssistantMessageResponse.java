@@ -138,9 +138,6 @@ public final class AssistantMessageResponse {
             return this;
         }
 
-        /**
-         * <p>A chain-of-thought style reflection and plan that the model generates when working with Tools.</p>
-         */
         @JsonSetter(value = "tool_plan", nulls = Nulls.SKIP)
         public Builder toolPlan(Optional<String> toolPlan) {
             this.toolPlan = toolPlan;

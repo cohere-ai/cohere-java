@@ -77,18 +77,12 @@ public final class ChatSearchQuery {
     }
 
     public interface TextStage {
-        /**
-         * <p>The text of the search query.</p>
-         */
         GenerationIdStage text(@NotNull String text);
 
         Builder from(ChatSearchQuery other);
     }
 
     public interface GenerationIdStage {
-        /**
-         * <p>Unique identifier for the generated search query. Useful for submitting feedback.</p>
-         */
         _FinalStage generationId(@NotNull String generationId);
     }
 
@@ -116,7 +110,6 @@ public final class ChatSearchQuery {
 
         /**
          * <p>The text of the search query.</p>
-         * <p>The text of the search query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -127,7 +120,6 @@ public final class ChatSearchQuery {
         }
 
         /**
-         * <p>Unique identifier for the generated search query. Useful for submitting feedback.</p>
          * <p>Unique identifier for the generated search query. Useful for submitting feedback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

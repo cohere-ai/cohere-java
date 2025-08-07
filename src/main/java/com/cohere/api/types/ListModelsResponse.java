@@ -111,9 +111,6 @@ public final class ListModelsResponse {
             return this;
         }
 
-        /**
-         * <p>A token to retrieve the next page of results. Provide in the page_token parameter of the next request.</p>
-         */
         @JsonSetter(value = "next_page_token", nulls = Nulls.SKIP)
         public Builder nextPageToken(Optional<String> nextPageToken) {
             this.nextPageToken = nextPageToken;

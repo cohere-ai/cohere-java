@@ -86,24 +86,12 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
     }
 
     public interface FinishReasonStage {
-        /**
-         * <ul>
-         * <li><code>COMPLETE</code> - the model sent back a finished reply</li>
-         * <li><code>ERROR_LIMIT</code> - the reply was cut off because the model reached the maximum number of tokens for its context length</li>
-         * <li><code>MAX_TOKENS</code> - the reply was cut off because the model reached the maximum number of tokens specified by the max_tokens parameter</li>
-         * <li><code>ERROR</code> - something went wrong when generating the reply</li>
-         * <li><code>ERROR_TOXIC</code> - the model generated a reply that was deemed toxic</li>
-         * </ul>
-         */
         ResponseStage finishReason(@NotNull ChatStreamEndEventFinishReason finishReason);
 
         Builder from(ChatStreamEndEvent other);
     }
 
     public interface ResponseStage {
-        /**
-         * <p>The consolidated response from the model. Contains the generated reply and all the other information streamed back in the previous events.</p>
-         */
         _FinalStage response(@NotNull NonStreamedChatResponse response);
     }
 
@@ -137,13 +125,6 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
          * <li><code>ERROR</code> - something went wrong when generating the reply</li>
          * <li><code>ERROR_TOXIC</code> - the model generated a reply that was deemed toxic</li>
          * </ul>
-         * <ul>
-         * <li><code>COMPLETE</code> - the model sent back a finished reply</li>
-         * <li><code>ERROR_LIMIT</code> - the reply was cut off because the model reached the maximum number of tokens for its context length</li>
-         * <li><code>MAX_TOKENS</code> - the reply was cut off because the model reached the maximum number of tokens specified by the max_tokens parameter</li>
-         * <li><code>ERROR</code> - something went wrong when generating the reply</li>
-         * <li><code>ERROR_TOXIC</code> - the model generated a reply that was deemed toxic</li>
-         * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -154,7 +135,6 @@ public final class ChatStreamEndEvent implements IChatStreamEvent {
         }
 
         /**
-         * <p>The consolidated response from the model. Contains the generated reply and all the other information streamed back in the previous events.</p>
          * <p>The consolidated response from the model. Contains the generated reply and all the other information streamed back in the previous events.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

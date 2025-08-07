@@ -102,32 +102,20 @@ public final class Image {
     }
 
     public interface WidthStage {
-        /**
-         * <p>Width of the image in pixels</p>
-         */
         HeightStage width(long width);
 
         Builder from(Image other);
     }
 
     public interface HeightStage {
-        /**
-         * <p>Height of the image in pixels</p>
-         */
         FormatStage height(long height);
     }
 
     public interface FormatStage {
-        /**
-         * <p>Format of the image</p>
-         */
         BitDepthStage format(@NotNull String format);
     }
 
     public interface BitDepthStage {
-        /**
-         * <p>Bit depth of the image</p>
-         */
         _FinalStage bitDepth(long bitDepth);
     }
 
@@ -161,7 +149,6 @@ public final class Image {
 
         /**
          * <p>Width of the image in pixels</p>
-         * <p>Width of the image in pixels</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -172,7 +159,6 @@ public final class Image {
         }
 
         /**
-         * <p>Height of the image in pixels</p>
          * <p>Height of the image in pixels</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -185,7 +171,6 @@ public final class Image {
 
         /**
          * <p>Format of the image</p>
-         * <p>Format of the image</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -196,7 +181,6 @@ public final class Image {
         }
 
         /**
-         * <p>Bit depth of the image</p>
          * <p>Bit depth of the image</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

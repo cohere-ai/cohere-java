@@ -113,7 +113,6 @@ public final class GenerateStreamedResponse {
     }
 
     @JsonTypeName("text-generation")
-    @JsonIgnoreProperties("event_type")
     private static final class TextGenerationValue implements Value {
         @JsonUnwrapped
         private GenerateStreamText value;
@@ -152,7 +151,6 @@ public final class GenerateStreamedResponse {
     }
 
     @JsonTypeName("stream-end")
-    @JsonIgnoreProperties("event_type")
     private static final class StreamEndValue implements Value {
         @JsonUnwrapped
         private GenerateStreamEnd value;
@@ -191,7 +189,6 @@ public final class GenerateStreamedResponse {
     }
 
     @JsonTypeName("stream-error")
-    @JsonIgnoreProperties("event_type")
     private static final class StreamErrorValue implements Value {
         @JsonUnwrapped
         private GenerateStreamError value;
@@ -229,7 +226,6 @@ public final class GenerateStreamedResponse {
         }
     }
 
-    @JsonIgnoreProperties("event_type")
     private static final class _UnknownValue implements Value {
         private String type;
 

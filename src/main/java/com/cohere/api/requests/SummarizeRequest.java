@@ -158,9 +158,6 @@ public final class SummarizeRequest {
     }
 
     public interface TextStage {
-        /**
-         * <p>The text to generate a summary for. Can be up to 100,000 characters long. Currently the only supported language is English.</p>
-         */
         _FinalStage text(@NotNull String text);
 
         Builder from(SummarizeRequest other);
@@ -169,44 +166,26 @@ public final class SummarizeRequest {
     public interface _FinalStage {
         SummarizeRequest build();
 
-        /**
-         * <p>One of <code>short</code>, <code>medium</code>, <code>long</code>, or <code>auto</code> defaults to <code>auto</code>. Indicates the approximate length of the summary. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
-         */
         _FinalStage length(Optional<SummarizeRequestLength> length);
 
         _FinalStage length(SummarizeRequestLength length);
 
-        /**
-         * <p>One of <code>paragraph</code>, <code>bullets</code>, or <code>auto</code>, defaults to <code>auto</code>. Indicates the style in which the summary will be delivered - in a free form paragraph or in bullet points. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
-         */
         _FinalStage format(Optional<SummarizeRequestFormat> format);
 
         _FinalStage format(SummarizeRequestFormat format);
 
-        /**
-         * <p>The identifier of the model to generate the summary with. Currently available models are <code>command</code> (default), <code>command-nightly</code> (experimental), <code>command-light</code>, and <code>command-light-nightly</code> (experimental). Smaller, &quot;light&quot; models are faster, while larger models will perform better.</p>
-         */
         _FinalStage model(Optional<String> model);
 
         _FinalStage model(String model);
 
-        /**
-         * <p>One of <code>low</code>, <code>medium</code>, <code>high</code>, or <code>auto</code>, defaults to <code>auto</code>. Controls how close to the original text the summary is. <code>high</code> extractiveness summaries will lean towards reusing sentences verbatim, while <code>low</code> extractiveness summaries will tend to paraphrase more. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
-         */
         _FinalStage extractiveness(Optional<SummarizeRequestExtractiveness> extractiveness);
 
         _FinalStage extractiveness(SummarizeRequestExtractiveness extractiveness);
 
-        /**
-         * <p>Ranges from 0 to 5. Controls the randomness of the output. Lower values tend to generate more “predictable” output, while higher values tend to generate more “creative” output. The sweet spot is typically between 0 and 1.</p>
-         */
         _FinalStage temperature(Optional<Double> temperature);
 
         _FinalStage temperature(Double temperature);
 
-        /**
-         * <p>A free-form instruction for modifying how the summaries get generated. Should complete the sentence &quot;Generate a summary _&quot;. Eg. &quot;focusing on the next steps&quot; or &quot;written by Yoda&quot;</p>
-         */
         _FinalStage additionalCommand(Optional<String> additionalCommand);
 
         _FinalStage additionalCommand(String additionalCommand);
@@ -247,7 +226,6 @@ public final class SummarizeRequest {
 
         /**
          * <p>The text to generate a summary for. Can be up to 100,000 characters long. Currently the only supported language is English.</p>
-         * <p>The text to generate a summary for. Can be up to 100,000 characters long. Currently the only supported language is English.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -267,9 +245,6 @@ public final class SummarizeRequest {
             return this;
         }
 
-        /**
-         * <p>A free-form instruction for modifying how the summaries get generated. Should complete the sentence &quot;Generate a summary _&quot;. Eg. &quot;focusing on the next steps&quot; or &quot;written by Yoda&quot;</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "additional_command", nulls = Nulls.SKIP)
         public _FinalStage additionalCommand(Optional<String> additionalCommand) {
@@ -287,9 +262,6 @@ public final class SummarizeRequest {
             return this;
         }
 
-        /**
-         * <p>Ranges from 0 to 5. Controls the randomness of the output. Lower values tend to generate more “predictable” output, while higher values tend to generate more “creative” output. The sweet spot is typically between 0 and 1.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
         public _FinalStage temperature(Optional<Double> temperature) {
@@ -307,9 +279,6 @@ public final class SummarizeRequest {
             return this;
         }
 
-        /**
-         * <p>One of <code>low</code>, <code>medium</code>, <code>high</code>, or <code>auto</code>, defaults to <code>auto</code>. Controls how close to the original text the summary is. <code>high</code> extractiveness summaries will lean towards reusing sentences verbatim, while <code>low</code> extractiveness summaries will tend to paraphrase more. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "extractiveness", nulls = Nulls.SKIP)
         public _FinalStage extractiveness(Optional<SummarizeRequestExtractiveness> extractiveness) {
@@ -327,9 +296,6 @@ public final class SummarizeRequest {
             return this;
         }
 
-        /**
-         * <p>The identifier of the model to generate the summary with. Currently available models are <code>command</code> (default), <code>command-nightly</code> (experimental), <code>command-light</code>, and <code>command-light-nightly</code> (experimental). Smaller, &quot;light&quot; models are faster, while larger models will perform better.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public _FinalStage model(Optional<String> model) {
@@ -347,9 +313,6 @@ public final class SummarizeRequest {
             return this;
         }
 
-        /**
-         * <p>One of <code>paragraph</code>, <code>bullets</code>, or <code>auto</code>, defaults to <code>auto</code>. Indicates the style in which the summary will be delivered - in a free form paragraph or in bullet points. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "format", nulls = Nulls.SKIP)
         public _FinalStage format(Optional<SummarizeRequestFormat> format) {
@@ -367,9 +330,6 @@ public final class SummarizeRequest {
             return this;
         }
 
-        /**
-         * <p>One of <code>short</code>, <code>medium</code>, <code>long</code>, or <code>auto</code> defaults to <code>auto</code>. Indicates the approximate length of the summary. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "length", nulls = Nulls.SKIP)
         public _FinalStage length(Optional<SummarizeRequestLength> length) {

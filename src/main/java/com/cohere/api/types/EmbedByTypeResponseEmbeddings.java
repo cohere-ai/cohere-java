@@ -147,9 +147,6 @@ public final class EmbedByTypeResponseEmbeddings {
             return this;
         }
 
-        /**
-         * <p>An array of float embeddings.</p>
-         */
         @JsonSetter(value = "float", nulls = Nulls.SKIP)
         public Builder float_(Optional<List<List<Double>>> float_) {
             this.float_ = float_;
@@ -161,9 +158,6 @@ public final class EmbedByTypeResponseEmbeddings {
             return this;
         }
 
-        /**
-         * <p>An array of signed int8 embeddings. Each value is between -128 and 127.</p>
-         */
         @JsonSetter(value = "int8", nulls = Nulls.SKIP)
         public Builder int8(Optional<List<List<Integer>>> int8) {
             this.int8 = int8;
@@ -175,9 +169,6 @@ public final class EmbedByTypeResponseEmbeddings {
             return this;
         }
 
-        /**
-         * <p>An array of unsigned int8 embeddings. Each value is between 0 and 255.</p>
-         */
         @JsonSetter(value = "uint8", nulls = Nulls.SKIP)
         public Builder uint8(Optional<List<List<Integer>>> uint8) {
             this.uint8 = uint8;
@@ -189,9 +180,6 @@ public final class EmbedByTypeResponseEmbeddings {
             return this;
         }
 
-        /**
-         * <p>An array of packed signed binary embeddings. The length of each binary embedding is 1/8 the length of the float embeddings of the provided model. Each value is between -128 and 127.</p>
-         */
         @JsonSetter(value = "binary", nulls = Nulls.SKIP)
         public Builder binary(Optional<List<List<Integer>>> binary) {
             this.binary = binary;
@@ -203,9 +191,6 @@ public final class EmbedByTypeResponseEmbeddings {
             return this;
         }
 
-        /**
-         * <p>An array of packed unsigned binary embeddings. The length of each binary embedding is 1/8 the length of the float embeddings of the provided model. Each value is between 0 and 255.</p>
-         */
         @JsonSetter(value = "ubinary", nulls = Nulls.SKIP)
         public Builder ubinary(Optional<List<List<Integer>>> ubinary) {
             this.ubinary = ubinary;

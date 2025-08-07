@@ -80,9 +80,6 @@ public final class CreateConnectorServiceAuth {
     }
 
     public interface TokenStage {
-        /**
-         * <p>The token that will be used in the HTTP Authorization header when making requests to the connector. This field is encrypted at rest and never returned in a response.</p>
-         */
         _FinalStage token(@NotNull String token);
     }
 
@@ -116,7 +113,6 @@ public final class CreateConnectorServiceAuth {
         }
 
         /**
-         * <p>The token that will be used in the HTTP Authorization header when making requests to the connector. This field is encrypted at rest and never returned in a response.</p>
          * <p>The token that will be used in the HTTP Authorization header when making requests to the connector. This field is encrypted at rest and never returned in a response.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

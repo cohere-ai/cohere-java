@@ -95,9 +95,6 @@ public final class ToolV2Function {
     }
 
     public interface NameStage {
-        /**
-         * <p>The name of the function.</p>
-         */
         _FinalStage name(@NotNull String name);
 
         Builder from(ToolV2Function other);
@@ -106,16 +103,10 @@ public final class ToolV2Function {
     public interface _FinalStage {
         ToolV2Function build();
 
-        /**
-         * <p>The description of the function.</p>
-         */
         _FinalStage description(Optional<String> description);
 
         _FinalStage description(String description);
 
-        /**
-         * <p>The parameters of the function as a JSON schema.</p>
-         */
         _FinalStage parameters(Map<String, Object> parameters);
 
         _FinalStage putAllParameters(Map<String, Object> parameters);
@@ -146,7 +137,6 @@ public final class ToolV2Function {
 
         /**
          * <p>The name of the function.</p>
-         * <p>The name of the function.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -176,9 +166,6 @@ public final class ToolV2Function {
             return this;
         }
 
-        /**
-         * <p>The parameters of the function as a JSON schema.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
         public _FinalStage parameters(Map<String, Object> parameters) {
@@ -197,9 +184,6 @@ public final class ToolV2Function {
             return this;
         }
 
-        /**
-         * <p>The description of the function.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {

@@ -80,9 +80,6 @@ public final class DatasetsCreateResponse {
             return this;
         }
 
-        /**
-         * <p>The dataset ID</p>
-         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;

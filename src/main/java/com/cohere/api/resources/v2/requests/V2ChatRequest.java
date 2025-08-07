@@ -10,6 +10,7 @@ import com.cohere.api.resources.v2.types.V2ChatRequestToolChoice;
 import com.cohere.api.types.ChatMessageV2;
 import com.cohere.api.types.CitationOptions;
 import com.cohere.api.types.ResponseFormatV2;
+import com.cohere.api.types.Thinking;
 import com.cohere.api.types.ToolV2;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -62,9 +63,13 @@ public final class V2ChatRequest {
 
     private final Optional<Float> p;
 
+    private final Optional<Boolean> returnPrompt;
+
     private final Optional<Boolean> logprobs;
 
     private final Optional<V2ChatRequestToolChoice> toolChoice;
+
+    private final Optional<Thinking> thinking;
 
     private final Map<String, Object> additionalProperties;
 
@@ -85,8 +90,10 @@ public final class V2ChatRequest {
             Optional<Float> presencePenalty,
             Optional<Integer> k,
             Optional<Float> p,
+            Optional<Boolean> returnPrompt,
             Optional<Boolean> logprobs,
             Optional<V2ChatRequestToolChoice> toolChoice,
+            Optional<Thinking> thinking,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.messages = messages;
@@ -104,8 +111,10 @@ public final class V2ChatRequest {
         this.presencePenalty = presencePenalty;
         this.k = k;
         this.p = p;
+        this.returnPrompt = returnPrompt;
         this.logprobs = logprobs;
         this.toolChoice = toolChoice;
+        this.thinking = thinking;
         this.additionalProperties = additionalProperties;
     }
 
@@ -255,6 +264,14 @@ public final class V2ChatRequest {
     }
 
     /**
+     * @return Whether to return the prompt in the response.
+     */
+    @JsonProperty("return_prompt")
+    public Optional<Boolean> getReturnPrompt() {
+        return returnPrompt;
+    }
+
+    /**
      * @return Defaults to <code>false</code>. When set to <code>true</code>, the log probabilities of the generated tokens will be included in the response.
      */
     @JsonProperty("logprobs")
@@ -272,6 +289,11 @@ public final class V2ChatRequest {
     @JsonProperty("tool_choice")
     public Optional<V2ChatRequestToolChoice> getToolChoice() {
         return toolChoice;
+    }
+
+    @JsonProperty("thinking")
+    public Optional<Thinking> getThinking() {
+        return thinking;
     }
 
     @java.lang.Override
@@ -302,8 +324,10 @@ public final class V2ChatRequest {
                 && presencePenalty.equals(other.presencePenalty)
                 && k.equals(other.k)
                 && p.equals(other.p)
+                && returnPrompt.equals(other.returnPrompt)
                 && logprobs.equals(other.logprobs)
-                && toolChoice.equals(other.toolChoice);
+                && toolChoice.equals(other.toolChoice)
+                && thinking.equals(other.thinking);
     }
 
     @java.lang.Override
@@ -325,8 +349,10 @@ public final class V2ChatRequest {
                 this.presencePenalty,
                 this.k,
                 this.p,
+                this.returnPrompt,
                 this.logprobs,
-                this.toolChoice);
+                this.toolChoice,
+                this.thinking);
     }
 
     @java.lang.Override
@@ -339,9 +365,6 @@ public final class V2ChatRequest {
     }
 
     public interface ModelStage {
-        /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
-         */
         _FinalStage model(@NotNull String model);
 
         Builder from(V2ChatRequest other);
@@ -356,25 +379,14 @@ public final class V2ChatRequest {
 
         _FinalStage addAllMessages(List<ChatMessageV2> messages);
 
-        /**
-         * <p>A list of tools (functions) available to the model. The model response may contain 'tool_calls' to the specified tools.</p>
-         * <p>Learn more in the <a href="https://docs.cohere.com/docs/tools">Tool Use guide</a>.</p>
-         */
         _FinalStage tools(Optional<List<ToolV2>> tools);
 
         _FinalStage tools(List<ToolV2> tools);
 
-        /**
-         * <p>When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Structured Outputs (Tools) guide</a>.</p>
-         * <p><strong>Note</strong>: The first few requests with a new set of tools will take longer to process.</p>
-         */
         _FinalStage strictTools(Optional<Boolean> strictTools);
 
         _FinalStage strictTools(Boolean strictTools);
 
-        /**
-         * <p>A list of relevant documents that the model can cite to generate a more accurate reply. Each document is either a string or document object with content and metadata.</p>
-         */
         _FinalStage documents(Optional<List<V2ChatRequestDocumentsItem>> documents);
 
         _FinalStage documents(List<V2ChatRequestDocumentsItem> documents);
@@ -387,109 +399,70 @@ public final class V2ChatRequest {
 
         _FinalStage responseFormat(ResponseFormatV2 responseFormat);
 
-        /**
-         * <p>Used to select the <a href="https://docs.cohere.com/v2/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
-         * When <code>OFF</code> is specified, the safety instruction will be omitted.</p>
-         * <p>Safety modes are not yet configurable in combination with <code>tools</code> and <code>documents</code> parameters.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible newer Cohere models, starting with <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a> and <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a>.</p>
-         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and newer models only support <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
-         */
         _FinalStage safetyMode(Optional<V2ChatRequestSafetyMode> safetyMode);
 
         _FinalStage safetyMode(V2ChatRequestSafetyMode safetyMode);
 
-        /**
-         * <p>The maximum number of tokens the model will generate as part of the response.</p>
-         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
-         */
         _FinalStage maxTokens(Optional<Integer> maxTokens);
 
         _FinalStage maxTokens(Integer maxTokens);
 
-        /**
-         * <p>A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.</p>
-         */
         _FinalStage stopSequences(Optional<List<String>> stopSequences);
 
         _FinalStage stopSequences(List<String> stopSequences);
 
-        /**
-         * <p>Defaults to <code>0.3</code>.</p>
-         * <p>A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
-         * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
-         */
         _FinalStage temperature(Optional<Float> temperature);
 
         _FinalStage temperature(Float temperature);
 
-        /**
-         * <p>If specified, the backend will make a best effort to sample tokens
-         * deterministically, such that repeated requests with the same
-         * seed and parameters should return the same result. However,
-         * determinism cannot be totally guaranteed.</p>
-         */
         _FinalStage seed(Optional<Integer> seed);
 
         _FinalStage seed(Integer seed);
 
-        /**
-         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
-         * Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
-         */
         _FinalStage frequencyPenalty(Optional<Float> frequencyPenalty);
 
         _FinalStage frequencyPenalty(Float frequencyPenalty);
 
-        /**
-         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
-         * Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
-         */
         _FinalStage presencePenalty(Optional<Float> presencePenalty);
 
         _FinalStage presencePenalty(Float presencePenalty);
 
-        /**
-         * <p>Ensures that only the top <code>k</code> most likely tokens are considered for generation at each step. When <code>k</code> is set to <code>0</code>, k-sampling is disabled.
-         * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.</p>
-         */
         _FinalStage k(Optional<Integer> k);
 
         _FinalStage k(Integer k);
 
-        /**
-         * <p>Ensures that only the most likely tokens, with total probability mass of <code>p</code>, are considered for generation at each step. If both <code>k</code> and <code>p</code> are enabled, <code>p</code> acts after <code>k</code>.
-         * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.</p>
-         */
         _FinalStage p(Optional<Float> p);
 
         _FinalStage p(Float p);
 
-        /**
-         * <p>Defaults to <code>false</code>. When set to <code>true</code>, the log probabilities of the generated tokens will be included in the response.</p>
-         */
+        _FinalStage returnPrompt(Optional<Boolean> returnPrompt);
+
+        _FinalStage returnPrompt(Boolean returnPrompt);
+
         _FinalStage logprobs(Optional<Boolean> logprobs);
 
         _FinalStage logprobs(Boolean logprobs);
 
-        /**
-         * <p>Used to control whether or not the model will be forced to use a tool when answering. When <code>REQUIRED</code> is specified, the model will be forced to use at least one of the user-defined tools, and the <code>tools</code> parameter must be passed in the request.
-         * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
-         * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
-         * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
-         */
         _FinalStage toolChoice(Optional<V2ChatRequestToolChoice> toolChoice);
 
         _FinalStage toolChoice(V2ChatRequestToolChoice toolChoice);
+
+        _FinalStage thinking(Optional<Thinking> thinking);
+
+        _FinalStage thinking(Thinking thinking);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ModelStage, _FinalStage {
         private String model;
 
+        private Optional<Thinking> thinking = Optional.empty();
+
         private Optional<V2ChatRequestToolChoice> toolChoice = Optional.empty();
 
         private Optional<Boolean> logprobs = Optional.empty();
+
+        private Optional<Boolean> returnPrompt = Optional.empty();
 
         private Optional<Float> p = Optional.empty();
 
@@ -544,13 +517,14 @@ public final class V2ChatRequest {
             presencePenalty(other.getPresencePenalty());
             k(other.getK());
             p(other.getP());
+            returnPrompt(other.getReturnPrompt());
             logprobs(other.getLogprobs());
             toolChoice(other.getToolChoice());
+            thinking(other.getThinking());
             return this;
         }
 
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -558,6 +532,19 @@ public final class V2ChatRequest {
         @JsonSetter("model")
         public _FinalStage model(@NotNull String model) {
             this.model = Objects.requireNonNull(model, "model must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage thinking(Thinking thinking) {
+            this.thinking = Optional.ofNullable(thinking);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "thinking", nulls = Nulls.SKIP)
+        public _FinalStage thinking(Optional<Thinking> thinking) {
+            this.thinking = thinking;
             return this;
         }
 
@@ -575,13 +562,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Used to control whether or not the model will be forced to use a tool when answering. When <code>REQUIRED</code> is specified, the model will be forced to use at least one of the user-defined tools, and the <code>tools</code> parameter must be passed in the request.
-         * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
-         * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
-         * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "tool_choice", nulls = Nulls.SKIP)
         public _FinalStage toolChoice(Optional<V2ChatRequestToolChoice> toolChoice) {
@@ -599,13 +579,27 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Defaults to <code>false</code>. When set to <code>true</code>, the log probabilities of the generated tokens will be included in the response.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "logprobs", nulls = Nulls.SKIP)
         public _FinalStage logprobs(Optional<Boolean> logprobs) {
             this.logprobs = logprobs;
+            return this;
+        }
+
+        /**
+         * <p>Whether to return the prompt in the response.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage returnPrompt(Boolean returnPrompt) {
+            this.returnPrompt = Optional.ofNullable(returnPrompt);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "return_prompt", nulls = Nulls.SKIP)
+        public _FinalStage returnPrompt(Optional<Boolean> returnPrompt) {
+            this.returnPrompt = returnPrompt;
             return this;
         }
 
@@ -620,10 +614,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Ensures that only the most likely tokens, with total probability mass of <code>p</code>, are considered for generation at each step. If both <code>k</code> and <code>p</code> are enabled, <code>p</code> acts after <code>k</code>.
-         * Defaults to <code>0.75</code>. min value of <code>0.01</code>, max value of <code>0.99</code>.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "p", nulls = Nulls.SKIP)
         public _FinalStage p(Optional<Float> p) {
@@ -642,10 +632,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Ensures that only the top <code>k</code> most likely tokens are considered for generation at each step. When <code>k</code> is set to <code>0</code>, k-sampling is disabled.
-         * Defaults to <code>0</code>, min value of <code>0</code>, max value of <code>500</code>.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "k", nulls = Nulls.SKIP)
         public _FinalStage k(Optional<Integer> k) {
@@ -664,10 +650,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
-         * Used to reduce repetitiveness of generated tokens. Similar to <code>frequency_penalty</code>, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "presence_penalty", nulls = Nulls.SKIP)
         public _FinalStage presencePenalty(Optional<Float> presencePenalty) {
@@ -686,10 +668,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Defaults to <code>0.0</code>, min value of <code>0.0</code>, max value of <code>1.0</code>.
-         * Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "frequency_penalty", nulls = Nulls.SKIP)
         public _FinalStage frequencyPenalty(Optional<Float> frequencyPenalty) {
@@ -710,12 +688,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>If specified, the backend will make a best effort to sample tokens
-         * deterministically, such that repeated requests with the same
-         * seed and parameters should return the same result. However,
-         * determinism cannot be totally guaranteed.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "seed", nulls = Nulls.SKIP)
         public _FinalStage seed(Optional<Integer> seed) {
@@ -735,11 +707,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Defaults to <code>0.3</code>.</p>
-         * <p>A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.</p>
-         * <p>Randomness can be further maximized by increasing the  value of the <code>p</code> parameter.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "temperature", nulls = Nulls.SKIP)
         public _FinalStage temperature(Optional<Float> temperature) {
@@ -757,9 +724,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "stop_sequences", nulls = Nulls.SKIP)
         public _FinalStage stopSequences(Optional<List<String>> stopSequences) {
@@ -778,10 +742,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>The maximum number of tokens the model will generate as part of the response.</p>
-         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "max_tokens", nulls = Nulls.SKIP)
         public _FinalStage maxTokens(Optional<Integer> maxTokens) {
@@ -803,13 +763,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>Used to select the <a href="https://docs.cohere.com/v2/docs/safety-modes">safety instruction</a> inserted into the prompt. Defaults to <code>CONTEXTUAL</code>.
-         * When <code>OFF</code> is specified, the safety instruction will be omitted.</p>
-         * <p>Safety modes are not yet configurable in combination with <code>tools</code> and <code>documents</code> parameters.</p>
-         * <p><strong>Note</strong>: This parameter is only compatible newer Cohere models, starting with <a href="https://docs.cohere.com/docs/command-r#august-2024-release">Command R 08-2024</a> and <a href="https://docs.cohere.com/docs/command-r-plus#august-2024-release">Command R+ 08-2024</a>.</p>
-         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and newer models only support <code>&quot;CONTEXTUAL&quot;</code> and <code>&quot;STRICT&quot;</code> modes.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "safety_mode", nulls = Nulls.SKIP)
         public _FinalStage safetyMode(Optional<V2ChatRequestSafetyMode> safetyMode) {
@@ -853,9 +806,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>A list of relevant documents that the model can cite to generate a more accurate reply. Each document is either a string or document object with content and metadata.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(Optional<List<V2ChatRequestDocumentsItem>> documents) {
@@ -874,10 +824,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>When set to <code>true</code>, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the <a href="https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools">Structured Outputs (Tools) guide</a>.</p>
-         * <p><strong>Note</strong>: The first few requests with a new set of tools will take longer to process.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "strict_tools", nulls = Nulls.SKIP)
         public _FinalStage strictTools(Optional<Boolean> strictTools) {
@@ -896,10 +842,6 @@ public final class V2ChatRequest {
             return this;
         }
 
-        /**
-         * <p>A list of tools (functions) available to the model. The model response may contain 'tool_calls' to the specified tools.</p>
-         * <p>Learn more in the <a href="https://docs.cohere.com/docs/tools">Tool Use guide</a>.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "tools", nulls = Nulls.SKIP)
         public _FinalStage tools(Optional<List<ToolV2>> tools) {
@@ -946,8 +888,10 @@ public final class V2ChatRequest {
                     presencePenalty,
                     k,
                     p,
+                    returnPrompt,
                     logprobs,
                     toolChoice,
+                    thinking,
                     additionalProperties);
         }
     }

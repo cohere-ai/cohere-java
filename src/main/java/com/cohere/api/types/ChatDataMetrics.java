@@ -114,9 +114,6 @@ public final class ChatDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The sum of all turns of valid train examples.</p>
-         */
         @JsonSetter(value = "num_train_turns", nulls = Nulls.SKIP)
         public Builder numTrainTurns(Optional<Long> numTrainTurns) {
             this.numTrainTurns = numTrainTurns;
@@ -128,9 +125,6 @@ public final class ChatDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The sum of all turns of valid eval examples.</p>
-         */
         @JsonSetter(value = "num_eval_turns", nulls = Nulls.SKIP)
         public Builder numEvalTurns(Optional<Long> numEvalTurns) {
             this.numEvalTurns = numEvalTurns;
@@ -142,9 +136,6 @@ public final class ChatDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The preamble of this dataset.</p>
-         */
         @JsonSetter(value = "preamble", nulls = Nulls.SKIP)
         public Builder preamble(Optional<String> preamble) {
             this.preamble = preamble;

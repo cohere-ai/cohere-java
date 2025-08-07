@@ -82,11 +82,6 @@ public final class CitationOptions {
             return this;
         }
 
-        /**
-         * <p>Defaults to <code>&quot;accurate&quot;</code>.
-         * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.</p>
-         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and <code>command-a-03-2025</code> only support <code>&quot;fast&quot;</code> and <code>&quot;off&quot;</code> modes. The default is <code>&quot;fast&quot;</code>.</p>
-         */
         @JsonSetter(value = "mode", nulls = Nulls.SKIP)
         public Builder mode(Optional<CitationOptionsMode> mode) {
             this.mode = mode;

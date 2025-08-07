@@ -215,32 +215,20 @@ public final class Dataset {
     }
 
     public interface IdStage {
-        /**
-         * <p>The dataset ID</p>
-         */
         NameStage id(@NotNull String id);
 
         Builder from(Dataset other);
     }
 
     public interface NameStage {
-        /**
-         * <p>The name of the dataset</p>
-         */
         CreatedAtStage name(@NotNull String name);
     }
 
     public interface CreatedAtStage {
-        /**
-         * <p>The creation date</p>
-         */
         UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        /**
-         * <p>The last update date</p>
-         */
         DatasetTypeStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
@@ -255,16 +243,10 @@ public final class Dataset {
     public interface _FinalStage {
         Dataset build();
 
-        /**
-         * <p>Errors found during validation</p>
-         */
         _FinalStage validationError(Optional<String> validationError);
 
         _FinalStage validationError(String validationError);
 
-        /**
-         * <p>the avro schema of the dataset</p>
-         */
         _FinalStage schema(Optional<String> schema);
 
         _FinalStage schema(String schema);
@@ -277,16 +259,10 @@ public final class Dataset {
 
         _FinalStage preserveFields(List<String> preserveFields);
 
-        /**
-         * <p>the underlying files that make up the dataset</p>
-         */
         _FinalStage datasetParts(Optional<List<DatasetPart>> datasetParts);
 
         _FinalStage datasetParts(List<DatasetPart> datasetParts);
 
-        /**
-         * <p>warnings found during validation</p>
-         */
         _FinalStage validationWarnings(Optional<List<String>> validationWarnings);
 
         _FinalStage validationWarnings(List<String> validationWarnings);
@@ -349,7 +325,6 @@ public final class Dataset {
 
         /**
          * <p>The dataset ID</p>
-         * <p>The dataset ID</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -360,7 +335,6 @@ public final class Dataset {
         }
 
         /**
-         * <p>The name of the dataset</p>
          * <p>The name of the dataset</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -373,7 +347,6 @@ public final class Dataset {
 
         /**
          * <p>The creation date</p>
-         * <p>The creation date</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -384,7 +357,6 @@ public final class Dataset {
         }
 
         /**
-         * <p>The last update date</p>
          * <p>The last update date</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -419,9 +391,6 @@ public final class Dataset {
             return this;
         }
 
-        /**
-         * <p>warnings found during validation</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "validation_warnings", nulls = Nulls.SKIP)
         public _FinalStage validationWarnings(Optional<List<String>> validationWarnings) {
@@ -439,9 +408,6 @@ public final class Dataset {
             return this;
         }
 
-        /**
-         * <p>the underlying files that make up the dataset</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "dataset_parts", nulls = Nulls.SKIP)
         public _FinalStage datasetParts(Optional<List<DatasetPart>> datasetParts) {
@@ -485,9 +451,6 @@ public final class Dataset {
             return this;
         }
 
-        /**
-         * <p>the avro schema of the dataset</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "schema", nulls = Nulls.SKIP)
         public _FinalStage schema(Optional<String> schema) {
@@ -505,9 +468,6 @@ public final class Dataset {
             return this;
         }
 
-        /**
-         * <p>Errors found during validation</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "validation_error", nulls = Nulls.SKIP)
         public _FinalStage validationError(Optional<String> validationError) {
