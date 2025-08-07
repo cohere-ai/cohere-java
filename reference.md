@@ -57,6 +57,19 @@ client.chatStream(
 <dl>
 <dd>
 
+**rawPrompting:** `Optional<Boolean>` 
+
+When enabled, the user's prompt will be sent to the model without
+any pre-processing.
+
+Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **message:** `String` 
 
 Text input for the model to respond to.
@@ -521,6 +534,19 @@ client.chatStream(
 <dd>
 
 **accepts:** `Optional<String>` — Pass text/event-stream to receive the streamed response as server-sent events. The default is `\n` delimited events.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rawPrompting:** `Optional<Boolean>` 
+
+When enabled, the user's prompt will be sent to the model without
+any pre-processing.
+
+Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
 </dd>
 </dl>
@@ -2265,6 +2291,19 @@ When set to `true`, tool calls in the Assistant message will be forced to follow
 <dl>
 <dd>
 
+**rawPrompting:** `Optional<Boolean>` 
+
+When enabled, the user's prompt will be sent to the model without
+any pre-processing.
+
+Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **responseFormat:** `Optional<ResponseFormatV2>` 
     
 </dd>
@@ -2536,6 +2575,19 @@ When set to `true`, tool calls in the Assistant message will be forced to follow
 <dd>
 
 **citationOptions:** `Optional<CitationOptions>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rawPrompting:** `Optional<Boolean>` 
+
+When enabled, the user's prompt will be sent to the model without
+any pre-processing.
+
+Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
 </dd>
 </dl>

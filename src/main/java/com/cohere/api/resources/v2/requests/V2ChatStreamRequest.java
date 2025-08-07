@@ -42,6 +42,8 @@ public final class V2ChatStreamRequest {
 
     private final Optional<CitationOptions> citationOptions;
 
+    private final Optional<Boolean> rawPrompting;
+
     private final Optional<ResponseFormatV2> responseFormat;
 
     private final Optional<V2ChatStreamRequestSafetyMode> safetyMode;
@@ -75,6 +77,7 @@ public final class V2ChatStreamRequest {
             Optional<Boolean> strictTools,
             Optional<List<V2ChatStreamRequestDocumentsItem>> documents,
             Optional<CitationOptions> citationOptions,
+            Optional<Boolean> rawPrompting,
             Optional<ResponseFormatV2> responseFormat,
             Optional<V2ChatStreamRequestSafetyMode> safetyMode,
             Optional<Integer> maxTokens,
@@ -94,6 +97,7 @@ public final class V2ChatStreamRequest {
         this.strictTools = strictTools;
         this.documents = documents;
         this.citationOptions = citationOptions;
+        this.rawPrompting = rawPrompting;
         this.responseFormat = responseFormat;
         this.safetyMode = safetyMode;
         this.maxTokens = maxTokens;
@@ -161,6 +165,16 @@ public final class V2ChatStreamRequest {
     @JsonProperty("citation_options")
     public Optional<CitationOptions> getCitationOptions() {
         return citationOptions;
+    }
+
+    /**
+     * @return When enabled, the user's prompt will be sent to the model without
+     * any pre-processing.
+     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+     */
+    @JsonProperty("raw_prompting")
+    public Optional<Boolean> getRawPrompting() {
+        return rawPrompting;
     }
 
     @JsonProperty("response_format")
@@ -292,6 +306,7 @@ public final class V2ChatStreamRequest {
                 && strictTools.equals(other.strictTools)
                 && documents.equals(other.documents)
                 && citationOptions.equals(other.citationOptions)
+                && rawPrompting.equals(other.rawPrompting)
                 && responseFormat.equals(other.responseFormat)
                 && safetyMode.equals(other.safetyMode)
                 && maxTokens.equals(other.maxTokens)
@@ -315,6 +330,7 @@ public final class V2ChatStreamRequest {
                 this.strictTools,
                 this.documents,
                 this.citationOptions,
+                this.rawPrompting,
                 this.responseFormat,
                 this.safetyMode,
                 this.maxTokens,
@@ -382,6 +398,15 @@ public final class V2ChatStreamRequest {
         _FinalStage citationOptions(Optional<CitationOptions> citationOptions);
 
         _FinalStage citationOptions(CitationOptions citationOptions);
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         */
+        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
+
+        _FinalStage rawPrompting(Boolean rawPrompting);
 
         _FinalStage responseFormat(Optional<ResponseFormatV2> responseFormat);
 
@@ -511,6 +536,8 @@ public final class V2ChatStreamRequest {
 
         private Optional<ResponseFormatV2> responseFormat = Optional.empty();
 
+        private Optional<Boolean> rawPrompting = Optional.empty();
+
         private Optional<CitationOptions> citationOptions = Optional.empty();
 
         private Optional<List<V2ChatStreamRequestDocumentsItem>> documents = Optional.empty();
@@ -534,6 +561,7 @@ public final class V2ChatStreamRequest {
             strictTools(other.getStrictTools());
             documents(other.getDocuments());
             citationOptions(other.getCitationOptions());
+            rawPrompting(other.getRawPrompting());
             responseFormat(other.getResponseFormat());
             safetyMode(other.getSafetyMode());
             maxTokens(other.getMaxTokens());
@@ -830,6 +858,30 @@ public final class V2ChatStreamRequest {
             return this;
         }
 
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage rawPrompting(Boolean rawPrompting) {
+            this.rawPrompting = Optional.ofNullable(rawPrompting);
+            return this;
+        }
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
+        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
+            this.rawPrompting = rawPrompting;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage citationOptions(CitationOptions citationOptions) {
             this.citationOptions = Optional.ofNullable(citationOptions);
@@ -936,6 +988,7 @@ public final class V2ChatStreamRequest {
                     strictTools,
                     documents,
                     citationOptions,
+                    rawPrompting,
                     responseFormat,
                     safetyMode,
                     maxTokens,

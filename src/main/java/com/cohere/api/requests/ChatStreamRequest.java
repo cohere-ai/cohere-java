@@ -32,6 +32,8 @@ import org.jetbrains.annotations.NotNull;
 public final class ChatStreamRequest {
     private final Optional<String> accepts;
 
+    private final Optional<Boolean> rawPrompting;
+
     private final String message;
 
     private final Optional<String> model;
@@ -84,6 +86,7 @@ public final class ChatStreamRequest {
 
     private ChatStreamRequest(
             Optional<String> accepts,
+            Optional<Boolean> rawPrompting,
             String message,
             Optional<String> model,
             Optional<String> preamble,
@@ -110,6 +113,7 @@ public final class ChatStreamRequest {
             Optional<ChatStreamRequestSafetyMode> safetyMode,
             Map<String, Object> additionalProperties) {
         this.accepts = accepts;
+        this.rawPrompting = rawPrompting;
         this.message = message;
         this.model = model;
         this.preamble = preamble;
@@ -143,6 +147,16 @@ public final class ChatStreamRequest {
     @JsonProperty("Accepts")
     public Optional<String> getAccepts() {
         return accepts;
+    }
+
+    /**
+     * @return When enabled, the user's prompt will be sent to the model without
+     * any pre-processing.
+     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+     */
+    @JsonProperty("raw_prompting")
+    public Optional<Boolean> getRawPrompting() {
+        return rawPrompting;
     }
 
     /**
@@ -439,6 +453,7 @@ public final class ChatStreamRequest {
 
     private boolean equalTo(ChatStreamRequest other) {
         return accepts.equals(other.accepts)
+                && rawPrompting.equals(other.rawPrompting)
                 && message.equals(other.message)
                 && model.equals(other.model)
                 && preamble.equals(other.preamble)
@@ -469,6 +484,7 @@ public final class ChatStreamRequest {
     public int hashCode() {
         return Objects.hash(
                 this.accepts,
+                this.rawPrompting,
                 this.message,
                 this.model,
                 this.preamble,
@@ -523,6 +539,15 @@ public final class ChatStreamRequest {
         _FinalStage accepts(Optional<String> accepts);
 
         _FinalStage accepts(String accepts);
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         */
+        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
+
+        _FinalStage rawPrompting(Boolean rawPrompting);
 
         /**
          * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
@@ -813,6 +838,8 @@ public final class ChatStreamRequest {
 
         private Optional<String> model = Optional.empty();
 
+        private Optional<Boolean> rawPrompting = Optional.empty();
+
         private Optional<String> accepts = Optional.empty();
 
         @JsonAnySetter
@@ -823,6 +850,7 @@ public final class ChatStreamRequest {
         @java.lang.Override
         public Builder from(ChatStreamRequest other) {
             accepts(other.getAccepts());
+            rawPrompting(other.getRawPrompting());
             message(other.getMessage());
             model(other.getModel());
             preamble(other.getPreamble());
@@ -1478,6 +1506,30 @@ public final class ChatStreamRequest {
         }
 
         /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage rawPrompting(Boolean rawPrompting) {
+            this.rawPrompting = Optional.ofNullable(rawPrompting);
+            return this;
+        }
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
+        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
+            this.rawPrompting = rawPrompting;
+            return this;
+        }
+
+        /**
          * <p>Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1501,6 +1553,7 @@ public final class ChatStreamRequest {
         public ChatStreamRequest build() {
             return new ChatStreamRequest(
                     accepts,
+                    rawPrompting,
                     message,
                     model,
                     preamble,

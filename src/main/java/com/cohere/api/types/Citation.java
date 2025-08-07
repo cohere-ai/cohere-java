@@ -29,6 +29,8 @@ public final class Citation {
 
     private final Optional<List<Source>> sources;
 
+    private final Optional<Integer> contentIndex;
+
     private final Optional<CitationType> type;
 
     private final Map<String, Object> additionalProperties;
@@ -38,12 +40,14 @@ public final class Citation {
             Optional<Integer> end,
             Optional<String> text,
             Optional<List<Source>> sources,
+            Optional<Integer> contentIndex,
             Optional<CitationType> type,
             Map<String, Object> additionalProperties) {
         this.start = start;
         this.end = end;
         this.text = text;
         this.sources = sources;
+        this.contentIndex = contentIndex;
         this.type = type;
         this.additionalProperties = additionalProperties;
     }
@@ -77,6 +81,14 @@ public final class Citation {
         return sources;
     }
 
+    /**
+     * @return Index of the content block in which this citation appears.
+     */
+    @JsonProperty("content_index")
+    public Optional<Integer> getContentIndex() {
+        return contentIndex;
+    }
+
     @JsonProperty("type")
     public Optional<CitationType> getType() {
         return type;
@@ -98,12 +110,13 @@ public final class Citation {
                 && end.equals(other.end)
                 && text.equals(other.text)
                 && sources.equals(other.sources)
+                && contentIndex.equals(other.contentIndex)
                 && type.equals(other.type);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.start, this.end, this.text, this.sources, this.type);
+        return Objects.hash(this.start, this.end, this.text, this.sources, this.contentIndex, this.type);
     }
 
     @java.lang.Override
@@ -125,6 +138,8 @@ public final class Citation {
 
         private Optional<List<Source>> sources = Optional.empty();
 
+        private Optional<Integer> contentIndex = Optional.empty();
+
         private Optional<CitationType> type = Optional.empty();
 
         @JsonAnySetter
@@ -137,6 +152,7 @@ public final class Citation {
             end(other.getEnd());
             text(other.getText());
             sources(other.getSources());
+            contentIndex(other.getContentIndex());
             type(other.getType());
             return this;
         }
@@ -194,6 +210,20 @@ public final class Citation {
             return this;
         }
 
+        /**
+         * <p>Index of the content block in which this citation appears.</p>
+         */
+        @JsonSetter(value = "content_index", nulls = Nulls.SKIP)
+        public Builder contentIndex(Optional<Integer> contentIndex) {
+            this.contentIndex = contentIndex;
+            return this;
+        }
+
+        public Builder contentIndex(Integer contentIndex) {
+            this.contentIndex = Optional.ofNullable(contentIndex);
+            return this;
+        }
+
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
         public Builder type(Optional<CitationType> type) {
             this.type = type;
@@ -206,7 +236,7 @@ public final class Citation {
         }
 
         public Citation build() {
-            return new Citation(start, end, text, sources, type, additionalProperties);
+            return new Citation(start, end, text, sources, contentIndex, type, additionalProperties);
         }
     }
 }
