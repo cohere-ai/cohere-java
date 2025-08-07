@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum CitationType {
     TEXT_CONTENT("TEXT_CONTENT"),
 
+    THINKING_CONTENT("THINKING_CONTENT"),
+
     PLAN("PLAN");
 
     private final String value;

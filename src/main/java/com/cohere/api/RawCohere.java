@@ -83,6 +83,9 @@ public class RawCohere {
                 .addPathSegments("v1/chat")
                 .build();
         Map<String, Object> properties = new HashMap<>();
+        if (request.getRawPrompting().isPresent()) {
+            properties.put("raw_prompting", request.getRawPrompting());
+        }
         properties.put("message", request.getMessage());
         if (request.getModel().isPresent()) {
             properties.put("model", request.getModel());
@@ -253,6 +256,9 @@ public class RawCohere {
                 .addPathSegments("v1/chat")
                 .build();
         Map<String, Object> properties = new HashMap<>();
+        if (request.getRawPrompting().isPresent()) {
+            properties.put("raw_prompting", request.getRawPrompting());
+        }
         properties.put("message", request.getMessage());
         if (request.getModel().isPresent()) {
             properties.put("model", request.getModel());
