@@ -66,9 +66,6 @@ public final class RerankResponseResultsItemDocument {
     }
 
     public interface TextStage {
-        /**
-         * <p>The text of the document to rerank</p>
-         */
         _FinalStage text(@NotNull String text);
 
         Builder from(RerankResponseResultsItemDocument other);
@@ -94,7 +91,6 @@ public final class RerankResponseResultsItemDocument {
         }
 
         /**
-         * <p>The text of the document to rerank</p>
          * <p>The text of the document to rerank</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -95,9 +95,6 @@ public final class UsageTokens {
             return this;
         }
 
-        /**
-         * <p>The number of tokens used as input to the model.</p>
-         */
         @JsonSetter(value = "input_tokens", nulls = Nulls.SKIP)
         public Builder inputTokens(Optional<Double> inputTokens) {
             this.inputTokens = inputTokens;
@@ -109,9 +106,6 @@ public final class UsageTokens {
             return this;
         }
 
-        /**
-         * <p>The number of tokens produced by the model.</p>
-         */
         @JsonSetter(value = "output_tokens", nulls = Nulls.SKIP)
         public Builder outputTokens(Optional<Double> outputTokens) {
             this.outputTokens = outputTokens;

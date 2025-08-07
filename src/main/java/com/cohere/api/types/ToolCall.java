@@ -79,9 +79,6 @@ public final class ToolCall {
     }
 
     public interface NameStage {
-        /**
-         * <p>Name of the tool to call.</p>
-         */
         _FinalStage name(@NotNull String name);
 
         Builder from(ToolCall other);
@@ -90,9 +87,6 @@ public final class ToolCall {
     public interface _FinalStage {
         ToolCall build();
 
-        /**
-         * <p>The name and value of the parameters to use when invoking a tool.</p>
-         */
         _FinalStage parameters(Map<String, Object> parameters);
 
         _FinalStage putAllParameters(Map<String, Object> parameters);
@@ -119,7 +113,6 @@ public final class ToolCall {
         }
 
         /**
-         * <p>Name of the tool to call.</p>
          * <p>Name of the tool to call.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -150,9 +143,6 @@ public final class ToolCall {
             return this;
         }
 
-        /**
-         * <p>The name and value of the parameters to use when invoking a tool.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
         public _FinalStage parameters(Map<String, Object> parameters) {

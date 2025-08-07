@@ -91,20 +91,6 @@ public final class JsonResponseFormatV2 {
             return this;
         }
 
-        /**
-         * <p>A <a href="https://json-schema.org/overview/what-is-jsonschema">JSON schema</a> object that the output will adhere to. There are some restrictions we have on the schema, refer to <a href="https://docs.cohere.com/docs/structured-outputs-json#schema-constraints">our guide</a> for more information.
-         * Example (required name and age object):</p>
-         * <pre><code class="language-json">{
-         *   &quot;type&quot;: &quot;object&quot;,
-         *   &quot;properties&quot;: {
-         *     &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
-         *     &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
-         *   },
-         *   &quot;required&quot;: [&quot;name&quot;, &quot;age&quot;]
-         * }
-         * </code></pre>
-         * <p><strong>Note</strong>: This field must not be specified when the <code>type</code> is set to <code>&quot;text&quot;</code>.</p>
-         */
         @JsonSetter(value = "json_schema", nulls = Nulls.SKIP)
         public Builder jsonSchema(Optional<Map<String, Object>> jsonSchema) {
             this.jsonSchema = jsonSchema;

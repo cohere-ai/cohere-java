@@ -4,7 +4,6 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
-import okhttp3.Response;
 
 public final class ClientClosedRequestError extends CohereApiException {
     /**
@@ -14,11 +13,6 @@ public final class ClientClosedRequestError extends CohereApiException {
 
     public ClientClosedRequestError(Object body) {
         super("ClientClosedRequestError", 499, body);
-        this.body = body;
-    }
-
-    public ClientClosedRequestError(Object body, Response rawResponse) {
-        super("ClientClosedRequestError", 499, body, rawResponse);
         this.body = body;
     }
 

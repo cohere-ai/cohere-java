@@ -31,7 +31,6 @@ public final class SystemMessageV2Content {
         return this.value;
     }
 
-    @SuppressWarnings("unchecked")
     public <T> T visit(Visitor<T> visitor) {
         if (this.type == 0) {
             return visitor.visit((String) this.value);
@@ -81,7 +80,7 @@ public final class SystemMessageV2Content {
         }
 
         @java.lang.Override
-        public SystemMessageV2Content deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        public SystemMessageV2Content deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, String.class));

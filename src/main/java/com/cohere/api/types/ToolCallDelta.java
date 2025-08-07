@@ -130,9 +130,6 @@ public final class ToolCallDelta {
             return this;
         }
 
-        /**
-         * <p>Name of the tool call</p>
-         */
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public Builder name(Optional<String> name) {
             this.name = name;
@@ -144,9 +141,6 @@ public final class ToolCallDelta {
             return this;
         }
 
-        /**
-         * <p>Index of the tool call generated</p>
-         */
         @JsonSetter(value = "index", nulls = Nulls.SKIP)
         public Builder index(Optional<Double> index) {
             this.index = index;
@@ -158,9 +152,6 @@ public final class ToolCallDelta {
             return this;
         }
 
-        /**
-         * <p>Chunk of the tool parameters</p>
-         */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
         public Builder parameters(Optional<String> parameters) {
             this.parameters = parameters;
@@ -172,9 +163,6 @@ public final class ToolCallDelta {
             return this;
         }
 
-        /**
-         * <p>Chunk of the tool plan text</p>
-         */
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public Builder text(Optional<String> text) {
             this.text = text;

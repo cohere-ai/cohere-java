@@ -221,7 +221,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("stream-start")
-    @JsonIgnoreProperties("event_type")
     private static final class StreamStartValue implements Value {
         @JsonUnwrapped
         private ChatStreamStartEvent value;
@@ -260,7 +259,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("search-queries-generation")
-    @JsonIgnoreProperties("event_type")
     private static final class SearchQueriesGenerationValue implements Value {
         @JsonUnwrapped
         private ChatSearchQueriesGenerationEvent value;
@@ -299,7 +297,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("search-results")
-    @JsonIgnoreProperties("event_type")
     private static final class SearchResultsValue implements Value {
         @JsonUnwrapped
         private ChatSearchResultsEvent value;
@@ -338,7 +335,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("text-generation")
-    @JsonIgnoreProperties("event_type")
     private static final class TextGenerationValue implements Value {
         @JsonUnwrapped
         private ChatTextGenerationEvent value;
@@ -377,7 +373,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("citation-generation")
-    @JsonIgnoreProperties("event_type")
     private static final class CitationGenerationValue implements Value {
         @JsonUnwrapped
         private ChatCitationGenerationEvent value;
@@ -416,7 +411,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("tool-calls-generation")
-    @JsonIgnoreProperties("event_type")
     private static final class ToolCallsGenerationValue implements Value {
         @JsonUnwrapped
         private ChatToolCallsGenerationEvent value;
@@ -455,7 +449,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("stream-end")
-    @JsonIgnoreProperties("event_type")
     private static final class StreamEndValue implements Value {
         @JsonUnwrapped
         private ChatStreamEndEvent value;
@@ -494,7 +487,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("tool-calls-chunk")
-    @JsonIgnoreProperties("event_type")
     private static final class ToolCallsChunkValue implements Value {
         @JsonUnwrapped
         private ChatToolCallsChunkEvent value;
@@ -533,7 +525,6 @@ public final class StreamedChatResponse {
     }
 
     @JsonTypeName("debug")
-    @JsonIgnoreProperties("event_type")
     private static final class DebugValue implements Value {
         @JsonUnwrapped
         private ChatDebugEvent value;
@@ -571,7 +562,6 @@ public final class StreamedChatResponse {
         }
     }
 
-    @JsonIgnoreProperties("event_type")
     private static final class _UnknownValue implements Value {
         private String type;
 

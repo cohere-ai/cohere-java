@@ -109,9 +109,6 @@ public final class BaseModel {
     }
 
     public interface BaseTypeStage {
-        /**
-         * <p>The type of the base model.</p>
-         */
         _FinalStage baseType(@NotNull BaseType baseType);
 
         Builder from(BaseModel other);
@@ -120,23 +117,14 @@ public final class BaseModel {
     public interface _FinalStage {
         BaseModel build();
 
-        /**
-         * <p>The name of the base model.</p>
-         */
         _FinalStage name(Optional<String> name);
 
         _FinalStage name(String name);
 
-        /**
-         * <p>read-only. The version of the base model.</p>
-         */
         _FinalStage version(Optional<String> version);
 
         _FinalStage version(String version);
 
-        /**
-         * <p>Deprecated: The fine-tuning strategy.</p>
-         */
         _FinalStage strategy(Optional<Strategy> strategy);
 
         _FinalStage strategy(Strategy strategy);
@@ -168,7 +156,6 @@ public final class BaseModel {
 
         /**
          * <p>The type of the base model.</p>
-         * <p>The type of the base model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -188,9 +175,6 @@ public final class BaseModel {
             return this;
         }
 
-        /**
-         * <p>Deprecated: The fine-tuning strategy.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "strategy", nulls = Nulls.SKIP)
         public _FinalStage strategy(Optional<Strategy> strategy) {
@@ -208,9 +192,6 @@ public final class BaseModel {
             return this;
         }
 
-        /**
-         * <p>read-only. The version of the base model.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "version", nulls = Nulls.SKIP)
         public _FinalStage version(Optional<String> version) {
@@ -228,9 +209,6 @@ public final class BaseModel {
             return this;
         }
 
-        /**
-         * <p>The name of the base model.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public _FinalStage name(Optional<String> name) {

@@ -5,16 +5,14 @@ package com.cohere.api.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ReasoningEffort {
-    LOW("low"),
+public enum ThinkingType {
+    ENABLED("enabled"),
 
-    MEDIUM("medium"),
-
-    HIGH("high");
+    DISABLED("disabled");
 
     private final String value;
 
-    ReasoningEffort(String value) {
+    ThinkingType(String value) {
         this.value = value;
     }
 

@@ -88,7 +88,6 @@ public final class ResponseFormatV2 {
     }
 
     @JsonTypeName("text")
-    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
         private ChatTextResponseFormatV2 value;
@@ -127,7 +126,6 @@ public final class ResponseFormatV2 {
     }
 
     @JsonTypeName("json_object")
-    @JsonIgnoreProperties("type")
     private static final class JsonObjectValue implements Value {
         @JsonUnwrapped
         private JsonResponseFormatV2 value;
@@ -165,7 +163,6 @@ public final class ResponseFormatV2 {
         }
     }
 
-    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

@@ -88,7 +88,6 @@ public final class ToolContent {
     }
 
     @JsonTypeName("text")
-    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
         private ChatTextContent value;
@@ -127,7 +126,6 @@ public final class ToolContent {
     }
 
     @JsonTypeName("document")
-    @JsonIgnoreProperties("type")
     private static final class DocumentValue implements Value {
         @JsonUnwrapped
         private DocumentContent value;
@@ -165,7 +163,6 @@ public final class ToolContent {
         }
     }
 
-    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

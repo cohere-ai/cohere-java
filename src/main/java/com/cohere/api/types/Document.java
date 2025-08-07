@@ -95,9 +95,6 @@ public final class Document {
             return this;
         }
 
-        /**
-         * <p>A relevant document that the model can cite to generate a more accurate reply. Each document is a string-any dictionary.</p>
-         */
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public Builder data(Map<String, Object> data) {
             this.data.clear();
@@ -115,9 +112,6 @@ public final class Document {
             return this;
         }
 
-        /**
-         * <p>Unique identifier for this document which will be referenced in citations. If not provided an ID will be automatically generated.</p>
-         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;

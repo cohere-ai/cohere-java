@@ -80,9 +80,6 @@ public final class ChatMessageEndEventDelta {
             return this;
         }
 
-        /**
-         * <p>An error message if an error occurred during the generation.</p>
-         */
         @JsonSetter(value = "error", nulls = Nulls.SKIP)
         public Builder error(Optional<String> error) {
             this.error = error;

@@ -4,7 +4,6 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
-import okhttp3.Response;
 
 public final class BadRequestError extends CohereApiException {
     /**
@@ -14,11 +13,6 @@ public final class BadRequestError extends CohereApiException {
 
     public BadRequestError(Object body) {
         super("BadRequestError", 400, body);
-        this.body = body;
-    }
-
-    public BadRequestError(Object body, Response rawResponse) {
-        super("BadRequestError", 400, body, rawResponse);
         this.body = body;
     }
 

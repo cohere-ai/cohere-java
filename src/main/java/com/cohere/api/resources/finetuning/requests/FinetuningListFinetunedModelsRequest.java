@@ -120,10 +120,6 @@ public final class FinetuningListFinetunedModelsRequest {
             return this;
         }
 
-        /**
-         * <p>Maximum number of results to be returned by the server. If 0, defaults to
-         * 50.</p>
-         */
         @JsonSetter(value = "page_size", nulls = Nulls.SKIP)
         public Builder pageSize(Optional<Integer> pageSize) {
             this.pageSize = pageSize;
@@ -135,9 +131,6 @@ public final class FinetuningListFinetunedModelsRequest {
             return this;
         }
 
-        /**
-         * <p>Request a specific page of the list results.</p>
-         */
         @JsonSetter(value = "page_token", nulls = Nulls.SKIP)
         public Builder pageToken(Optional<String> pageToken) {
             this.pageToken = pageToken;
@@ -149,15 +142,6 @@ public final class FinetuningListFinetunedModelsRequest {
             return this;
         }
 
-        /**
-         * <p>Comma separated list of fields. For example: &quot;created_at,name&quot;. The default
-         * sorting order is ascending. To specify descending order for a field, append
-         * &quot; desc&quot; to the field name. For example: &quot;created_at desc,name&quot;.</p>
-         * <p>Supported sorting fields:</p>
-         * <ul>
-         * <li>created_at (default)</li>
-         * </ul>
-         */
         @JsonSetter(value = "order_by", nulls = Nulls.SKIP)
         public Builder orderBy(Optional<String> orderBy) {
             this.orderBy = orderBy;

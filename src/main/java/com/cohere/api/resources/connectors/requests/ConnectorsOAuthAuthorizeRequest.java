@@ -81,9 +81,6 @@ public final class ConnectorsOAuthAuthorizeRequest {
             return this;
         }
 
-        /**
-         * <p>The URL to redirect to after the connector has been authorized.</p>
-         */
         @JsonSetter(value = "after_token_redirect", nulls = Nulls.SKIP)
         public Builder afterTokenRedirect(Optional<String> afterTokenRedirect) {
             this.afterTokenRedirect = afterTokenRedirect;

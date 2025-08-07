@@ -122,41 +122,26 @@ public final class ConnectorOAuth {
     }
 
     public interface AuthorizeUrlStage {
-        /**
-         * <p>The OAuth 2.0 /authorize endpoint to use when users authorize the connector.</p>
-         */
         TokenUrlStage authorizeUrl(@NotNull String authorizeUrl);
 
         Builder from(ConnectorOAuth other);
     }
 
     public interface TokenUrlStage {
-        /**
-         * <p>The OAuth 2.0 /token endpoint to use when users authorize the connector.</p>
-         */
         _FinalStage tokenUrl(@NotNull String tokenUrl);
     }
 
     public interface _FinalStage {
         ConnectorOAuth build();
 
-        /**
-         * <p>The OAuth 2.0 client ID. This field is encrypted at rest.</p>
-         */
         _FinalStage clientId(Optional<String> clientId);
 
         _FinalStage clientId(String clientId);
 
-        /**
-         * <p>The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.</p>
-         */
         _FinalStage clientSecret(Optional<String> clientSecret);
 
         _FinalStage clientSecret(String clientSecret);
 
-        /**
-         * <p>The OAuth scopes to request when users authorize the connector.</p>
-         */
         _FinalStage scope(Optional<String> scope);
 
         _FinalStage scope(String scope);
@@ -191,7 +176,6 @@ public final class ConnectorOAuth {
 
         /**
          * <p>The OAuth 2.0 /authorize endpoint to use when users authorize the connector.</p>
-         * <p>The OAuth 2.0 /authorize endpoint to use when users authorize the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -202,7 +186,6 @@ public final class ConnectorOAuth {
         }
 
         /**
-         * <p>The OAuth 2.0 /token endpoint to use when users authorize the connector.</p>
          * <p>The OAuth 2.0 /token endpoint to use when users authorize the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -223,9 +206,6 @@ public final class ConnectorOAuth {
             return this;
         }
 
-        /**
-         * <p>The OAuth scopes to request when users authorize the connector.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "scope", nulls = Nulls.SKIP)
         public _FinalStage scope(Optional<String> scope) {
@@ -243,9 +223,6 @@ public final class ConnectorOAuth {
             return this;
         }
 
-        /**
-         * <p>The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "client_secret", nulls = Nulls.SKIP)
         public _FinalStage clientSecret(Optional<String> clientSecret) {
@@ -263,9 +240,6 @@ public final class ConnectorOAuth {
             return this;
         }
 
-        /**
-         * <p>The OAuth 2.0 client ID. This field is encrypted at rest.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "client_id", nulls = Nulls.SKIP)
         public _FinalStage clientId(Optional<String> clientId) {

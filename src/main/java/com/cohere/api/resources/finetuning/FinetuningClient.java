@@ -4,7 +4,17 @@
 package com.cohere.api.resources.finetuning;
 
 import com.cohere.api.core.ClientOptions;
+import com.cohere.api.core.CohereApiException;
+import com.cohere.api.core.CohereException;
+import com.cohere.api.core.MediaTypes;
+import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.core.RequestOptions;
+import com.cohere.api.errors.BadRequestError;
+import com.cohere.api.errors.ForbiddenError;
+import com.cohere.api.errors.InternalServerError;
+import com.cohere.api.errors.NotFoundError;
+import com.cohere.api.errors.ServiceUnavailableError;
+import com.cohere.api.errors.UnauthorizedError;
 import com.cohere.api.resources.finetuning.finetuning.types.CreateFinetunedModelResponse;
 import com.cohere.api.resources.finetuning.finetuning.types.FinetunedModel;
 import com.cohere.api.resources.finetuning.finetuning.types.GetFinetunedModelResponse;
@@ -16,37 +26,38 @@ import com.cohere.api.resources.finetuning.requests.FinetuningListEventsRequest;
 import com.cohere.api.resources.finetuning.requests.FinetuningListFinetunedModelsRequest;
 import com.cohere.api.resources.finetuning.requests.FinetuningListTrainingStepMetricsRequest;
 import com.cohere.api.resources.finetuning.requests.FinetuningUpdateFinetunedModelRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.IOException;
 import java.util.Map;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class FinetuningClient {
     protected final ClientOptions clientOptions;
 
-    private final RawFinetuningClient rawClient;
-
     public FinetuningClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-        this.rawClient = new RawFinetuningClient(clientOptions);
-    }
-
-    /**
-     * Get responses with HTTP metadata like headers
-     */
-    public RawFinetuningClient withRawResponse() {
-        return this.rawClient;
     }
 
     /**
      * Returns a list of fine-tuned models that the user has access to.
      */
     public ListFinetunedModelsResponse listFinetunedModels() {
-        return this.rawClient.listFinetunedModels().body();
+        return listFinetunedModels(
+                FinetuningListFinetunedModelsRequest.builder().build());
     }
 
     /**
      * Returns a list of fine-tuned models that the user has access to.
      */
     public ListFinetunedModelsResponse listFinetunedModels(FinetuningListFinetunedModelsRequest request) {
-        return this.rawClient.listFinetunedModels(request).body();
+        return listFinetunedModels(request, null);
     }
 
     /**
@@ -54,35 +65,195 @@ public class FinetuningClient {
      */
     public ListFinetunedModelsResponse listFinetunedModels(
             FinetuningListFinetunedModelsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listFinetunedModels(request, requestOptions).body();
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models");
+        if (request.getPageSize().isPresent()) {
+            httpUrl.addQueryParameter("page_size", request.getPageSize().get().toString());
+        }
+        if (request.getPageToken().isPresent()) {
+            httpUrl.addQueryParameter("page_token", request.getPageToken().get());
+        }
+        if (request.getOrderBy().isPresent()) {
+            httpUrl.addQueryParameter("order_by", request.getOrderBy().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ListFinetunedModelsResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 
     /**
      * Creates a new fine-tuned model. The model will be trained on the dataset specified in the request body. The training process may take some time, and the model will be available once the training is complete.
      */
     public CreateFinetunedModelResponse createFinetunedModel(FinetunedModel request) {
-        return this.rawClient.createFinetunedModel(request).body();
+        return createFinetunedModel(request, null);
     }
 
     /**
      * Creates a new fine-tuned model. The model will be trained on the dataset specified in the request body. The training process may take some time, and the model will be available once the training is complete.
      */
     public CreateFinetunedModelResponse createFinetunedModel(FinetunedModel request, RequestOptions requestOptions) {
-        return this.rawClient.createFinetunedModel(request, requestOptions).body();
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new CohereException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CreateFinetunedModelResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 
     /**
      * Retrieve a fine-tuned model by its ID.
      */
     public GetFinetunedModelResponse getFinetunedModel(String id) {
-        return this.rawClient.getFinetunedModel(id).body();
+        return getFinetunedModel(id, null);
     }
 
     /**
      * Retrieve a fine-tuned model by its ID.
      */
     public GetFinetunedModelResponse getFinetunedModel(String id, RequestOptions requestOptions) {
-        return this.rawClient.getFinetunedModel(id, requestOptions).body();
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models")
+                .addPathSegment(id)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetFinetunedModelResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 
     /**
@@ -90,7 +261,7 @@ public class FinetuningClient {
      * This operation is irreversible.
      */
     public Map<String, Object> deleteFinetunedModel(String id) {
-        return this.rawClient.deleteFinetunedModel(id).body();
+        return deleteFinetunedModel(id, null);
     }
 
     /**
@@ -98,14 +269,64 @@ public class FinetuningClient {
      * This operation is irreversible.
      */
     public Map<String, Object> deleteFinetunedModel(String id, RequestOptions requestOptions) {
-        return this.rawClient.deleteFinetunedModel(id, requestOptions).body();
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models")
+                .addPathSegment(id)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("DELETE", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(
+                        responseBody.string(), new TypeReference<Map<String, Object>>() {});
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 
     /**
      * Updates the fine-tuned model with the given ID. The model will be updated with the new settings and name provided in the request body.
      */
     public UpdateFinetunedModelResponse updateFinetunedModel(String id, FinetuningUpdateFinetunedModelRequest request) {
-        return this.rawClient.updateFinetunedModel(id, request).body();
+        return updateFinetunedModel(id, request, null);
     }
 
     /**
@@ -113,7 +334,63 @@ public class FinetuningClient {
      */
     public UpdateFinetunedModelResponse updateFinetunedModel(
             String id, FinetuningUpdateFinetunedModelRequest request, RequestOptions requestOptions) {
-        return this.rawClient.updateFinetunedModel(id, request, requestOptions).body();
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models")
+                .addPathSegment(id)
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new CohereException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("PATCH", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), UpdateFinetunedModelResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 
     /**
@@ -122,7 +399,8 @@ public class FinetuningClient {
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
     public ListEventsResponse listEvents(String finetunedModelId) {
-        return this.rawClient.listEvents(finetunedModelId).body();
+        return listEvents(
+                finetunedModelId, FinetuningListEventsRequest.builder().build());
     }
 
     /**
@@ -131,7 +409,7 @@ public class FinetuningClient {
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
     public ListEventsResponse listEvents(String finetunedModelId, FinetuningListEventsRequest request) {
-        return this.rawClient.listEvents(finetunedModelId, request).body();
+        return listEvents(finetunedModelId, request, null);
     }
 
     /**
@@ -141,9 +419,65 @@ public class FinetuningClient {
      */
     public ListEventsResponse listEvents(
             String finetunedModelId, FinetuningListEventsRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .listEvents(finetunedModelId, request, requestOptions)
-                .body();
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models")
+                .addPathSegment(finetunedModelId)
+                .addPathSegments("events");
+        if (request.getPageSize().isPresent()) {
+            httpUrl.addQueryParameter("page_size", request.getPageSize().get().toString());
+        }
+        if (request.getPageToken().isPresent()) {
+            httpUrl.addQueryParameter("page_token", request.getPageToken().get());
+        }
+        if (request.getOrderBy().isPresent()) {
+            httpUrl.addQueryParameter("order_by", request.getOrderBy().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ListEventsResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 
     /**
@@ -152,7 +486,9 @@ public class FinetuningClient {
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
     public ListTrainingStepMetricsResponse listTrainingStepMetrics(String finetunedModelId) {
-        return this.rawClient.listTrainingStepMetrics(finetunedModelId).body();
+        return listTrainingStepMetrics(
+                finetunedModelId,
+                FinetuningListTrainingStepMetricsRequest.builder().build());
     }
 
     /**
@@ -162,7 +498,7 @@ public class FinetuningClient {
      */
     public ListTrainingStepMetricsResponse listTrainingStepMetrics(
             String finetunedModelId, FinetuningListTrainingStepMetricsRequest request) {
-        return this.rawClient.listTrainingStepMetrics(finetunedModelId, request).body();
+        return listTrainingStepMetrics(finetunedModelId, request, null);
     }
 
     /**
@@ -172,8 +508,62 @@ public class FinetuningClient {
      */
     public ListTrainingStepMetricsResponse listTrainingStepMetrics(
             String finetunedModelId, FinetuningListTrainingStepMetricsRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .listTrainingStepMetrics(finetunedModelId, request, requestOptions)
-                .body();
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v1/finetuning/finetuned-models")
+                .addPathSegment(finetunedModelId)
+                .addPathSegments("training-step-metrics");
+        if (request.getPageSize().isPresent()) {
+            httpUrl.addQueryParameter("page_size", request.getPageSize().get().toString());
+        }
+        if (request.getPageToken().isPresent()) {
+            httpUrl.addQueryParameter("page_token", request.getPageToken().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(
+                        responseBody.string(), ListTrainingStepMetricsResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 403:
+                        throw new ForbiddenError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 404:
+                        throw new NotFoundError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new CohereApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new CohereException("Network error executing HTTP request", e);
+        }
     }
 }

@@ -155,11 +155,6 @@ public final class ClassifyRequest {
             return this;
         }
 
-        /**
-         * <p>A list of up to 96 texts to be classified. Each one must be a non-empty string.
-         * There is, however, no consistent, universal limit to the length a particular input can be. We perform classification on the first <code>x</code> tokens of each input, and <code>x</code> varies depending on which underlying model is powering classification. The maximum token length for each model is listed in the &quot;max tokens&quot; column <a href="https://docs.cohere.com/docs/models">here</a>.
-         * Note: by default the <code>truncate</code> parameter is set to <code>END</code>, so tokens exceeding the limit will be automatically dropped. This behavior can be disabled by setting <code>truncate</code> to <code>NONE</code>, which will result in validation errors for longer texts.</p>
-         */
         @JsonSetter(value = "inputs", nulls = Nulls.SKIP)
         public Builder inputs(List<String> inputs) {
             this.inputs.clear();
@@ -177,10 +172,6 @@ public final class ClassifyRequest {
             return this;
         }
 
-        /**
-         * <p>An array of examples to provide context to the model. Each example is a text string and its associated label/class. Each unique label requires at least 2 examples associated with it; the maximum number of examples is 2500, and each example has a maximum length of 512 tokens. The values should be structured as <code>{text: &quot;...&quot;,label: &quot;...&quot;}</code>.
-         * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned Models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.</p>
-         */
         @JsonSetter(value = "examples", nulls = Nulls.SKIP)
         public Builder examples(Optional<List<ClassifyExample>> examples) {
             this.examples = examples;
@@ -192,9 +183,6 @@ public final class ClassifyRequest {
             return this;
         }
 
-        /**
-         * <p>ID of a <a href="https://docs.cohere.com/v2/docs/classify-starting-the-training">Fine-tuned</a> Classify model</p>
-         */
         @JsonSetter(value = "model", nulls = Nulls.SKIP)
         public Builder model(Optional<String> model) {
             this.model = model;
@@ -206,9 +194,6 @@ public final class ClassifyRequest {
             return this;
         }
 
-        /**
-         * <p>The ID of a custom playground preset. You can create presets in the <a href="https://dashboard.cohere.com/playground">playground</a>. If you use a preset, all other parameters become optional, and any included parameters will override the preset's parameters.</p>
-         */
         @JsonSetter(value = "preset", nulls = Nulls.SKIP)
         public Builder preset(Optional<String> preset) {
             this.preset = preset;
@@ -220,11 +205,6 @@ public final class ClassifyRequest {
             return this;
         }
 
-        /**
-         * <p>One of <code>NONE|START|END</code> to specify how the API will handle inputs longer than the maximum token length.
-         * Passing <code>START</code> will discard the start of the input. <code>END</code> will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
-         * If <code>NONE</code> is selected, when the input exceeds the maximum input token length an error will be returned.</p>
-         */
         @JsonSetter(value = "truncate", nulls = Nulls.SKIP)
         public Builder truncate(Optional<ClassifyRequestTruncate> truncate) {
             this.truncate = truncate;

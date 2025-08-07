@@ -91,27 +91,18 @@ public final class WandbConfig {
     }
 
     public interface ProjectStage {
-        /**
-         * <p>The WandB project name to be used during training.</p>
-         */
         ApiKeyStage project(@NotNull String project);
 
         Builder from(WandbConfig other);
     }
 
     public interface ApiKeyStage {
-        /**
-         * <p>The WandB API key to be used during training.</p>
-         */
         _FinalStage apiKey(@NotNull String apiKey);
     }
 
     public interface _FinalStage {
         WandbConfig build();
 
-        /**
-         * <p>The WandB entity name to be used during training.</p>
-         */
         _FinalStage entity(Optional<String> entity);
 
         _FinalStage entity(String entity);
@@ -140,7 +131,6 @@ public final class WandbConfig {
 
         /**
          * <p>The WandB project name to be used during training.</p>
-         * <p>The WandB project name to be used during training.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -151,7 +141,6 @@ public final class WandbConfig {
         }
 
         /**
-         * <p>The WandB API key to be used during training.</p>
          * <p>The WandB API key to be used during training.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -172,9 +161,6 @@ public final class WandbConfig {
             return this;
         }
 
-        /**
-         * <p>The WandB entity name to be used during training.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "entity", nulls = Nulls.SKIP)
         public _FinalStage entity(Optional<String> entity) {

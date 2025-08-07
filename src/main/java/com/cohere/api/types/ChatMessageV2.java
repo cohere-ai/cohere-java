@@ -127,7 +127,6 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("user")
-    @JsonIgnoreProperties("role")
     private static final class UserValue implements Value {
         @JsonUnwrapped
         private UserMessageV2 value;
@@ -166,7 +165,6 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("assistant")
-    @JsonIgnoreProperties("role")
     private static final class AssistantValue implements Value {
         @JsonUnwrapped
         private AssistantMessage value;
@@ -205,7 +203,6 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("system")
-    @JsonIgnoreProperties("role")
     private static final class SystemValue implements Value {
         @JsonUnwrapped
         private SystemMessageV2 value;
@@ -244,7 +241,6 @@ public final class ChatMessageV2 {
     }
 
     @JsonTypeName("tool")
-    @JsonIgnoreProperties("role")
     private static final class ToolValue implements Value {
         @JsonUnwrapped
         private ToolMessageV2 value;
@@ -282,7 +278,6 @@ public final class ChatMessageV2 {
         }
     }
 
-    @JsonIgnoreProperties("role")
     private static final class _UnknownValue implements Value {
         private String type;
 

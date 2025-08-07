@@ -220,9 +220,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>Specify this name in the <code>model</code> parameter of API requests to use your chosen model.</p>
-         */
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public Builder name(Optional<String> name) {
             this.name = name;
@@ -234,9 +231,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>Whether the model is deprecated or not.</p>
-         */
         @JsonSetter(value = "is_deprecated", nulls = Nulls.SKIP)
         public Builder isDeprecated(Optional<Boolean> isDeprecated) {
             this.isDeprecated = isDeprecated;
@@ -248,9 +242,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>The API endpoints that the model is compatible with.</p>
-         */
         @JsonSetter(value = "endpoints", nulls = Nulls.SKIP)
         public Builder endpoints(Optional<List<CompatibleEndpoint>> endpoints) {
             this.endpoints = endpoints;
@@ -262,9 +253,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>Whether the model has been fine-tuned or not.</p>
-         */
         @JsonSetter(value = "finetuned", nulls = Nulls.SKIP)
         public Builder finetuned(Optional<Boolean> finetuned) {
             this.finetuned = finetuned;
@@ -276,9 +264,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>The maximum number of tokens that the model can process in a single request. Note that not all of these tokens are always available due to special tokens and preambles that Cohere has added by default.</p>
-         */
         @JsonSetter(value = "context_length", nulls = Nulls.SKIP)
         public Builder contextLength(Optional<Double> contextLength) {
             this.contextLength = contextLength;
@@ -290,9 +275,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>Public URL to the tokenizer's configuration file.</p>
-         */
         @JsonSetter(value = "tokenizer_url", nulls = Nulls.SKIP)
         public Builder tokenizerUrl(Optional<String> tokenizerUrl) {
             this.tokenizerUrl = tokenizerUrl;
@@ -304,9 +286,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>Whether the model supports image inputs or not.</p>
-         */
         @JsonSetter(value = "supports_vision", nulls = Nulls.SKIP)
         public Builder supportsVision(Optional<Boolean> supportsVision) {
             this.supportsVision = supportsVision;
@@ -318,9 +297,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>The API endpoints that the model is default to.</p>
-         */
         @JsonSetter(value = "default_endpoints", nulls = Nulls.SKIP)
         public Builder defaultEndpoints(Optional<List<CompatibleEndpoint>> defaultEndpoints) {
             this.defaultEndpoints = defaultEndpoints;
@@ -332,9 +308,6 @@ public final class GetModelResponse {
             return this;
         }
 
-        /**
-         * <p>The features that the model supports.</p>
-         */
         @JsonSetter(value = "features", nulls = Nulls.SKIP)
         public Builder features(Optional<List<String>> features) {
             this.features = features;

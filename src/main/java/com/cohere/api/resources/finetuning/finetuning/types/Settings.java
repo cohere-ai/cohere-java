@@ -122,41 +122,26 @@ public final class Settings {
     }
 
     public interface BaseModelStage {
-        /**
-         * <p>The base model to fine-tune.</p>
-         */
         DatasetIdStage baseModel(@NotNull BaseModel baseModel);
 
         Builder from(Settings other);
     }
 
     public interface DatasetIdStage {
-        /**
-         * <p>The data used for training and evaluating the fine-tuned model.</p>
-         */
         _FinalStage datasetId(@NotNull String datasetId);
     }
 
     public interface _FinalStage {
         Settings build();
 
-        /**
-         * <p>Fine-tuning hyper-parameters.</p>
-         */
         _FinalStage hyperparameters(Optional<Hyperparameters> hyperparameters);
 
         _FinalStage hyperparameters(Hyperparameters hyperparameters);
 
-        /**
-         * <p>read-only. Whether the model is single-label or multi-label (only for classification).</p>
-         */
         _FinalStage multiLabel(Optional<Boolean> multiLabel);
 
         _FinalStage multiLabel(Boolean multiLabel);
 
-        /**
-         * <p>The Weights &amp; Biases configuration (Chat fine-tuning only).</p>
-         */
         _FinalStage wandb(Optional<WandbConfig> wandb);
 
         _FinalStage wandb(WandbConfig wandb);
@@ -191,7 +176,6 @@ public final class Settings {
 
         /**
          * <p>The base model to fine-tune.</p>
-         * <p>The base model to fine-tune.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -202,7 +186,6 @@ public final class Settings {
         }
 
         /**
-         * <p>The data used for training and evaluating the fine-tuned model.</p>
          * <p>The data used for training and evaluating the fine-tuned model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -223,9 +206,6 @@ public final class Settings {
             return this;
         }
 
-        /**
-         * <p>The Weights &amp; Biases configuration (Chat fine-tuning only).</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "wandb", nulls = Nulls.SKIP)
         public _FinalStage wandb(Optional<WandbConfig> wandb) {
@@ -243,9 +223,6 @@ public final class Settings {
             return this;
         }
 
-        /**
-         * <p>read-only. Whether the model is single-label or multi-label (only for classification).</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "multi_label", nulls = Nulls.SKIP)
         public _FinalStage multiLabel(Optional<Boolean> multiLabel) {
@@ -263,9 +240,6 @@ public final class Settings {
             return this;
         }
 
-        /**
-         * <p>Fine-tuning hyper-parameters.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "hyperparameters", nulls = Nulls.SKIP)
         public _FinalStage hyperparameters(Optional<Hyperparameters> hyperparameters) {

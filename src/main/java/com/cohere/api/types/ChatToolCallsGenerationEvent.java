@@ -94,9 +94,6 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
             return this;
         }
 
-        /**
-         * <p>The text generated related to the tool calls generated</p>
-         */
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public Builder text(Optional<String> text) {
             this.text = text;

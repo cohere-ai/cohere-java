@@ -80,9 +80,6 @@ public final class DetokenizeRequest {
     }
 
     public interface ModelStage {
-        /**
-         * <p>An optional parameter to provide the model name. This will ensure that the detokenization is done by the tokenizer used by that model.</p>
-         */
         _FinalStage model(@NotNull String model);
 
         Builder from(DetokenizeRequest other);
@@ -91,9 +88,6 @@ public final class DetokenizeRequest {
     public interface _FinalStage {
         DetokenizeRequest build();
 
-        /**
-         * <p>The list of tokens to be detokenized.</p>
-         */
         _FinalStage tokens(List<Integer> tokens);
 
         _FinalStage addTokens(Integer tokens);
@@ -120,7 +114,6 @@ public final class DetokenizeRequest {
         }
 
         /**
-         * <p>An optional parameter to provide the model name. This will ensure that the detokenization is done by the tokenizer used by that model.</p>
          * <p>An optional parameter to provide the model name. This will ensure that the detokenization is done by the tokenizer used by that model.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -151,9 +144,6 @@ public final class DetokenizeRequest {
             return this;
         }
 
-        /**
-         * <p>The list of tokens to be detokenized.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
         public _FinalStage tokens(List<Integer> tokens) {

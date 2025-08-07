@@ -98,9 +98,6 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
             return this;
         }
 
-        /**
-         * <p>Conducted searches and the ids of documents retrieved from each of them.</p>
-         */
         @JsonSetter(value = "search_results", nulls = Nulls.SKIP)
         public Builder searchResults(Optional<List<ChatSearchResult>> searchResults) {
             this.searchResults = searchResults;
@@ -112,9 +109,6 @@ public final class ChatSearchResultsEvent implements IChatStreamEvent {
             return this;
         }
 
-        /**
-         * <p>Documents fetched from searches or provided by the user.</p>
-         */
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public Builder documents(Optional<List<Map<String, String>>> documents) {
             this.documents = documents;

@@ -22,16 +22,27 @@ import java.util.Optional;
 public final class Metrics {
     private final Optional<FinetuneDatasetMetrics> finetuneDatasetMetrics;
 
+    private final Optional<MetricsEmbedData> embedData;
+
     private final Map<String, Object> additionalProperties;
 
-    private Metrics(Optional<FinetuneDatasetMetrics> finetuneDatasetMetrics, Map<String, Object> additionalProperties) {
+    private Metrics(
+            Optional<FinetuneDatasetMetrics> finetuneDatasetMetrics,
+            Optional<MetricsEmbedData> embedData,
+            Map<String, Object> additionalProperties) {
         this.finetuneDatasetMetrics = finetuneDatasetMetrics;
+        this.embedData = embedData;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("finetune_dataset_metrics")
     public Optional<FinetuneDatasetMetrics> getFinetuneDatasetMetrics() {
         return finetuneDatasetMetrics;
+    }
+
+    @JsonProperty("embed_data")
+    public Optional<MetricsEmbedData> getEmbedData() {
+        return embedData;
     }
 
     @java.lang.Override
@@ -46,12 +57,12 @@ public final class Metrics {
     }
 
     private boolean equalTo(Metrics other) {
-        return finetuneDatasetMetrics.equals(other.finetuneDatasetMetrics);
+        return finetuneDatasetMetrics.equals(other.finetuneDatasetMetrics) && embedData.equals(other.embedData);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.finetuneDatasetMetrics);
+        return Objects.hash(this.finetuneDatasetMetrics, this.embedData);
     }
 
     @java.lang.Override
@@ -67,6 +78,8 @@ public final class Metrics {
     public static final class Builder {
         private Optional<FinetuneDatasetMetrics> finetuneDatasetMetrics = Optional.empty();
 
+        private Optional<MetricsEmbedData> embedData = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -74,6 +87,7 @@ public final class Metrics {
 
         public Builder from(Metrics other) {
             finetuneDatasetMetrics(other.getFinetuneDatasetMetrics());
+            embedData(other.getEmbedData());
             return this;
         }
 
@@ -88,8 +102,19 @@ public final class Metrics {
             return this;
         }
 
+        @JsonSetter(value = "embed_data", nulls = Nulls.SKIP)
+        public Builder embedData(Optional<MetricsEmbedData> embedData) {
+            this.embedData = embedData;
+            return this;
+        }
+
+        public Builder embedData(MetricsEmbedData embedData) {
+            this.embedData = Optional.ofNullable(embedData);
+            return this;
+        }
+
         public Metrics build() {
-            return new Metrics(finetuneDatasetMetrics, additionalProperties);
+            return new Metrics(finetuneDatasetMetrics, embedData, additionalProperties);
         }
     }
 }

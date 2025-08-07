@@ -4,7 +4,6 @@
 package com.cohere.api.errors;
 
 import com.cohere.api.core.CohereApiException;
-import okhttp3.Response;
 
 public final class ServiceUnavailableError extends CohereApiException {
     /**
@@ -14,11 +13,6 @@ public final class ServiceUnavailableError extends CohereApiException {
 
     public ServiceUnavailableError(Object body) {
         super("ServiceUnavailableError", 503, body);
-        this.body = body;
-    }
-
-    public ServiceUnavailableError(Object body, Response rawResponse) {
-        super("ServiceUnavailableError", 503, body, rawResponse);
         this.body = body;
     }
 

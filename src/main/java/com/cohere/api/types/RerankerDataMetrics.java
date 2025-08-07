@@ -168,9 +168,6 @@ public final class RerankerDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The number of training queries.</p>
-         */
         @JsonSetter(value = "num_train_queries", nulls = Nulls.SKIP)
         public Builder numTrainQueries(Optional<Long> numTrainQueries) {
             this.numTrainQueries = numTrainQueries;
@@ -182,9 +179,6 @@ public final class RerankerDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The sum of all relevant passages of valid training examples.</p>
-         */
         @JsonSetter(value = "num_train_relevant_passages", nulls = Nulls.SKIP)
         public Builder numTrainRelevantPassages(Optional<Long> numTrainRelevantPassages) {
             this.numTrainRelevantPassages = numTrainRelevantPassages;
@@ -196,9 +190,6 @@ public final class RerankerDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The sum of all hard negatives of valid training examples.</p>
-         */
         @JsonSetter(value = "num_train_hard_negatives", nulls = Nulls.SKIP)
         public Builder numTrainHardNegatives(Optional<Long> numTrainHardNegatives) {
             this.numTrainHardNegatives = numTrainHardNegatives;
@@ -210,9 +201,6 @@ public final class RerankerDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The number of evaluation queries.</p>
-         */
         @JsonSetter(value = "num_eval_queries", nulls = Nulls.SKIP)
         public Builder numEvalQueries(Optional<Long> numEvalQueries) {
             this.numEvalQueries = numEvalQueries;
@@ -224,9 +212,6 @@ public final class RerankerDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The sum of all relevant passages of valid eval examples.</p>
-         */
         @JsonSetter(value = "num_eval_relevant_passages", nulls = Nulls.SKIP)
         public Builder numEvalRelevantPassages(Optional<Long> numEvalRelevantPassages) {
             this.numEvalRelevantPassages = numEvalRelevantPassages;
@@ -238,9 +223,6 @@ public final class RerankerDataMetrics {
             return this;
         }
 
-        /**
-         * <p>The sum of all hard negatives of valid eval examples.</p>
-         */
         @JsonSetter(value = "num_eval_hard_negatives", nulls = Nulls.SKIP)
         public Builder numEvalHardNegatives(Optional<Long> numEvalHardNegatives) {
             this.numEvalHardNegatives = numEvalHardNegatives;

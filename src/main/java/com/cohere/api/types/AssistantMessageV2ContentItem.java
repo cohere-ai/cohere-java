@@ -71,7 +71,6 @@ public final class AssistantMessageV2ContentItem {
     }
 
     @JsonTypeName("text")
-    @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
         private ChatTextContent value;
@@ -109,7 +108,6 @@ public final class AssistantMessageV2ContentItem {
         }
     }
 
-    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

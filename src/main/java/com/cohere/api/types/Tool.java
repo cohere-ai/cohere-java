@@ -104,35 +104,18 @@ public final class Tool {
     }
 
     public interface NameStage {
-        /**
-         * <p>The name of the tool to be called. Valid names contain only the characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code> and must not begin with a digit.</p>
-         */
         DescriptionStage name(@NotNull String name);
 
         Builder from(Tool other);
     }
 
     public interface DescriptionStage {
-        /**
-         * <p>The description of what the tool does, the model uses the description to choose when and how to call the function.</p>
-         */
         _FinalStage description(@NotNull String description);
     }
 
     public interface _FinalStage {
         Tool build();
 
-        /**
-         * <p>The input parameters of the tool. Accepts a dictionary where the key is the name of the parameter and the value is the parameter spec. Valid parameter names contain only the characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code> and must not begin with a digit.</p>
-         * <pre><code>{
-         *   &quot;my_param&quot;: {
-         *     &quot;description&quot;: &lt;string&gt;,
-         *     &quot;type&quot;: &lt;string&gt;, // any python data type, such as 'str', 'bool'
-         *     &quot;required&quot;: &lt;boolean&gt;
-         *   }
-         * }
-         * </code></pre>
-         */
         _FinalStage parameterDefinitions(Optional<Map<String, ToolParameterDefinitionsValue>> parameterDefinitions);
 
         _FinalStage parameterDefinitions(Map<String, ToolParameterDefinitionsValue> parameterDefinitions);
@@ -161,7 +144,6 @@ public final class Tool {
 
         /**
          * <p>The name of the tool to be called. Valid names contain only the characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code> and must not begin with a digit.</p>
-         * <p>The name of the tool to be called. Valid names contain only the characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code> and must not begin with a digit.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -172,7 +154,6 @@ public final class Tool {
         }
 
         /**
-         * <p>The description of what the tool does, the model uses the description to choose when and how to call the function.</p>
          * <p>The description of what the tool does, the model uses the description to choose when and how to call the function.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -201,17 +182,6 @@ public final class Tool {
             return this;
         }
 
-        /**
-         * <p>The input parameters of the tool. Accepts a dictionary where the key is the name of the parameter and the value is the parameter spec. Valid parameter names contain only the characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code> and must not begin with a digit.</p>
-         * <pre><code>{
-         *   &quot;my_param&quot;: {
-         *     &quot;description&quot;: &lt;string&gt;,
-         *     &quot;type&quot;: &lt;string&gt;, // any python data type, such as 'str', 'bool'
-         *     &quot;required&quot;: &lt;boolean&gt;
-         *   }
-         * }
-         * </code></pre>
-         */
         @java.lang.Override
         @JsonSetter(value = "parameter_definitions", nulls = Nulls.SKIP)
         public _FinalStage parameterDefinitions(

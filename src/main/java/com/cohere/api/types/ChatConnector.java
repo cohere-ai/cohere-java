@@ -111,9 +111,6 @@ public final class ChatConnector {
     }
 
     public interface IdStage {
-        /**
-         * <p>The identifier of the connector.</p>
-         */
         _FinalStage id(@NotNull String id);
 
         Builder from(ChatConnector other);
@@ -122,25 +119,14 @@ public final class ChatConnector {
     public interface _FinalStage {
         ChatConnector build();
 
-        /**
-         * <p>When specified, this user access token will be passed to the connector in the Authorization header instead of the Cohere generated one.</p>
-         */
         _FinalStage userAccessToken(Optional<String> userAccessToken);
 
         _FinalStage userAccessToken(String userAccessToken);
 
-        /**
-         * <p>Defaults to <code>false</code>.</p>
-         * <p>When <code>true</code>, the request will continue if this connector returned an error.</p>
-         */
         _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure);
 
         _FinalStage continueOnFailure(Boolean continueOnFailure);
 
-        /**
-         * <p>Provides the connector with different settings at request time. The key/value pairs of this object are specific to each connector.</p>
-         * <p>For example, the connector <code>web-search</code> supports the <code>site</code> option, which limits search results to the specified domain.</p>
-         */
         _FinalStage options(Optional<Map<String, Object>> options);
 
         _FinalStage options(Map<String, Object> options);
@@ -172,7 +158,6 @@ public final class ChatConnector {
 
         /**
          * <p>The identifier of the connector.</p>
-         * <p>The identifier of the connector.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -193,10 +178,6 @@ public final class ChatConnector {
             return this;
         }
 
-        /**
-         * <p>Provides the connector with different settings at request time. The key/value pairs of this object are specific to each connector.</p>
-         * <p>For example, the connector <code>web-search</code> supports the <code>site</code> option, which limits search results to the specified domain.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "options", nulls = Nulls.SKIP)
         public _FinalStage options(Optional<Map<String, Object>> options) {
@@ -215,10 +196,6 @@ public final class ChatConnector {
             return this;
         }
 
-        /**
-         * <p>Defaults to <code>false</code>.</p>
-         * <p>When <code>true</code>, the request will continue if this connector returned an error.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "continue_on_failure", nulls = Nulls.SKIP)
         public _FinalStage continueOnFailure(Optional<Boolean> continueOnFailure) {
@@ -236,9 +213,6 @@ public final class ChatConnector {
             return this;
         }
 
-        /**
-         * <p>When specified, this user access token will be passed to the connector in the Authorization header instead of the Cohere generated one.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "user_access_token", nulls = Nulls.SKIP)
         public _FinalStage userAccessToken(Optional<String> userAccessToken) {

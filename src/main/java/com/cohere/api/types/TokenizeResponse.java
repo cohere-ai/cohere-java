@@ -108,9 +108,6 @@ public final class TokenizeResponse {
             return this;
         }
 
-        /**
-         * <p>An array of tokens, where each token is an integer.</p>
-         */
         @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
         public Builder tokens(List<Integer> tokens) {
             this.tokens.clear();

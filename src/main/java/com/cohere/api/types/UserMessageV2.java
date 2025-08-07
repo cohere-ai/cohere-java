@@ -67,10 +67,6 @@ public final class UserMessageV2 {
     }
 
     public interface ContentStage {
-        /**
-         * <p>The content of the message. This can be a string or a list of content blocks.
-         * If a string is provided, it will be treated as a text content block.</p>
-         */
         _FinalStage content(@NotNull UserMessageV2Content content);
 
         Builder from(UserMessageV2 other);
@@ -96,8 +92,6 @@ public final class UserMessageV2 {
         }
 
         /**
-         * <p>The content of the message. This can be a string or a list of content blocks.
-         * If a string is provided, it will be treated as a text content block.</p>
          * <p>The content of the message. This can be a string or a list of content blocks.
          * If a string is provided, it will be treated as a text content block.</p>
          * @return Reference to {@code this} so that method calls can be chained together.

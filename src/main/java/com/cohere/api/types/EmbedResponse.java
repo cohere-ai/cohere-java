@@ -92,7 +92,6 @@ public final class EmbedResponse {
     }
 
     @JsonTypeName("embeddings_floats")
-    @JsonIgnoreProperties("response_type")
     private static final class EmbeddingsFloatsValue implements Value {
         @JsonUnwrapped
         private EmbedFloatsResponse value;
@@ -131,7 +130,6 @@ public final class EmbedResponse {
     }
 
     @JsonTypeName("embeddings_by_type")
-    @JsonIgnoreProperties("response_type")
     private static final class EmbeddingsByTypeValue implements Value {
         @JsonUnwrapped
         private EmbedByTypeResponse value;
@@ -169,7 +167,6 @@ public final class EmbedResponse {
         }
     }
 
-    @JsonIgnoreProperties("response_type")
     private static final class _UnknownValue implements Value {
         private String type;
 

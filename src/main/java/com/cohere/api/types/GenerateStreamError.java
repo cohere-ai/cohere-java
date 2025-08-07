@@ -113,18 +113,12 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
     }
 
     public interface ErrStage {
-        /**
-         * <p>Error message</p>
-         */
         _FinalStage err(@NotNull String err);
     }
 
     public interface _FinalStage {
         GenerateStreamError build();
 
-        /**
-         * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero.</p>
-         */
         _FinalStage index(Optional<Integer> index);
 
         _FinalStage index(Integer index);
@@ -170,7 +164,6 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
 
         /**
          * <p>Error message</p>
-         * <p>Error message</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -190,9 +183,6 @@ public final class GenerateStreamError implements IGenerateStreamEvent {
             return this;
         }
 
-        /**
-         * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "index", nulls = Nulls.SKIP)
         public _FinalStage index(Optional<Integer> index) {
