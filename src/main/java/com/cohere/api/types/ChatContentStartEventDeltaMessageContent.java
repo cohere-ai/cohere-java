@@ -20,6 +20,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatContentStartEventDeltaMessageContent.Builder.class)
 public final class ChatContentStartEventDeltaMessageContent {
+    private final Optional<String> thinking;
+
     private final Optional<String> text;
 
     private final Optional<ChatContentStartEventDeltaMessageContentType> type;
@@ -27,12 +29,19 @@ public final class ChatContentStartEventDeltaMessageContent {
     private final Map<String, Object> additionalProperties;
 
     private ChatContentStartEventDeltaMessageContent(
+            Optional<String> thinking,
             Optional<String> text,
             Optional<ChatContentStartEventDeltaMessageContentType> type,
             Map<String, Object> additionalProperties) {
+        this.thinking = thinking;
         this.text = text;
         this.type = type;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("thinking")
+    public Optional<String> getThinking() {
+        return thinking;
     }
 
     @JsonProperty("text")
@@ -58,12 +67,12 @@ public final class ChatContentStartEventDeltaMessageContent {
     }
 
     private boolean equalTo(ChatContentStartEventDeltaMessageContent other) {
-        return text.equals(other.text) && type.equals(other.type);
+        return thinking.equals(other.thinking) && text.equals(other.text) && type.equals(other.type);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.text, this.type);
+        return Objects.hash(this.thinking, this.text, this.type);
     }
 
     @java.lang.Override
@@ -77,6 +86,8 @@ public final class ChatContentStartEventDeltaMessageContent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<String> thinking = Optional.empty();
+
         private Optional<String> text = Optional.empty();
 
         private Optional<ChatContentStartEventDeltaMessageContentType> type = Optional.empty();
@@ -87,8 +98,20 @@ public final class ChatContentStartEventDeltaMessageContent {
         private Builder() {}
 
         public Builder from(ChatContentStartEventDeltaMessageContent other) {
+            thinking(other.getThinking());
             text(other.getText());
             type(other.getType());
+            return this;
+        }
+
+        @JsonSetter(value = "thinking", nulls = Nulls.SKIP)
+        public Builder thinking(Optional<String> thinking) {
+            this.thinking = thinking;
+            return this;
+        }
+
+        public Builder thinking(String thinking) {
+            this.thinking = Optional.ofNullable(thinking);
             return this;
         }
 
@@ -115,7 +138,7 @@ public final class ChatContentStartEventDeltaMessageContent {
         }
 
         public ChatContentStartEventDeltaMessageContent build() {
-            return new ChatContentStartEventDeltaMessageContent(text, type, additionalProperties);
+            return new ChatContentStartEventDeltaMessageContent(thinking, text, type, additionalProperties);
         }
     }
 }
