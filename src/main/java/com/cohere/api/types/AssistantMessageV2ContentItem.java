@@ -30,8 +30,16 @@ public final class AssistantMessageV2ContentItem {
         return new AssistantMessageV2ContentItem(new TextValue(value));
     }
 
+    public static AssistantMessageV2ContentItem thinking(ChatThinkingContent value) {
+        return new AssistantMessageV2ContentItem(new ThinkingValue(value));
+    }
+
     public boolean isText() {
         return value instanceof TextValue;
+    }
+
+    public boolean isThinking() {
+        return value instanceof ThinkingValue;
     }
 
     public boolean _isUnknown() {
@@ -41,6 +49,13 @@ public final class AssistantMessageV2ContentItem {
     public Optional<ChatTextContent> getText() {
         if (isText()) {
             return Optional.of(((TextValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<ChatThinkingContent> getThinking() {
+        if (isThinking()) {
+            return Optional.of(((ThinkingValue) value).value);
         }
         return Optional.empty();
     }
@@ -60,11 +75,13 @@ public final class AssistantMessageV2ContentItem {
     public interface Visitor<T> {
         T visitText(ChatTextContent text);
 
+        T visitThinking(ChatThinkingContent thinking);
+
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes(@JsonSubTypes.Type(TextValue.class))
+    @JsonSubTypes({@JsonSubTypes.Type(TextValue.class), @JsonSubTypes.Type(ThinkingValue.class)})
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -95,6 +112,45 @@ public final class AssistantMessageV2ContentItem {
         }
 
         private boolean equalTo(TextValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "AssistantMessageV2ContentItem{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("thinking")
+    @JsonIgnoreProperties("type")
+    private static final class ThinkingValue implements Value {
+        @JsonUnwrapped
+        private ChatThinkingContent value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private ThinkingValue() {}
+
+        private ThinkingValue(ChatThinkingContent value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitThinking(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof ThinkingValue && equalTo((ThinkingValue) other);
+        }
+
+        private boolean equalTo(ThinkingValue other) {
             return value.equals(other.value);
         }
 
