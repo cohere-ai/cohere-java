@@ -14,7 +14,9 @@ public enum EmbeddingType {
 
     BINARY("binary"),
 
-    UBINARY("ubinary");
+    UBINARY("ubinary"),
+
+    BASE_64("base64");
 
     private final String value;
 

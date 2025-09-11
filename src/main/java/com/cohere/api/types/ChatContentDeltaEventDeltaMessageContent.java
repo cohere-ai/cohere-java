@@ -20,13 +20,22 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChatContentDeltaEventDeltaMessageContent.Builder.class)
 public final class ChatContentDeltaEventDeltaMessageContent {
+    private final Optional<String> thinking;
+
     private final Optional<String> text;
 
     private final Map<String, Object> additionalProperties;
 
-    private ChatContentDeltaEventDeltaMessageContent(Optional<String> text, Map<String, Object> additionalProperties) {
+    private ChatContentDeltaEventDeltaMessageContent(
+            Optional<String> thinking, Optional<String> text, Map<String, Object> additionalProperties) {
+        this.thinking = thinking;
         this.text = text;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("thinking")
+    public Optional<String> getThinking() {
+        return thinking;
     }
 
     @JsonProperty("text")
@@ -47,12 +56,12 @@ public final class ChatContentDeltaEventDeltaMessageContent {
     }
 
     private boolean equalTo(ChatContentDeltaEventDeltaMessageContent other) {
-        return text.equals(other.text);
+        return thinking.equals(other.thinking) && text.equals(other.text);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.text);
+        return Objects.hash(this.thinking, this.text);
     }
 
     @java.lang.Override
@@ -66,6 +75,8 @@ public final class ChatContentDeltaEventDeltaMessageContent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<String> thinking = Optional.empty();
+
         private Optional<String> text = Optional.empty();
 
         @JsonAnySetter
@@ -74,7 +85,19 @@ public final class ChatContentDeltaEventDeltaMessageContent {
         private Builder() {}
 
         public Builder from(ChatContentDeltaEventDeltaMessageContent other) {
+            thinking(other.getThinking());
             text(other.getText());
+            return this;
+        }
+
+        @JsonSetter(value = "thinking", nulls = Nulls.SKIP)
+        public Builder thinking(Optional<String> thinking) {
+            this.thinking = thinking;
+            return this;
+        }
+
+        public Builder thinking(String thinking) {
+            this.thinking = Optional.ofNullable(thinking);
             return this;
         }
 
@@ -90,7 +113,7 @@ public final class ChatContentDeltaEventDeltaMessageContent {
         }
 
         public ChatContentDeltaEventDeltaMessageContent build() {
-            return new ChatContentDeltaEventDeltaMessageContent(text, additionalProperties);
+            return new ChatContentDeltaEventDeltaMessageContent(thinking, text, additionalProperties);
         }
     }
 }

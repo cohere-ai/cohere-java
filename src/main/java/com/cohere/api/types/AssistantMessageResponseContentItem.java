@@ -30,7 +30,7 @@ public final class AssistantMessageResponseContentItem {
         return new AssistantMessageResponseContentItem(new TextValue(value));
     }
 
-    public static AssistantMessageResponseContentItem thinking(Object value) {
+    public static AssistantMessageResponseContentItem thinking(ChatThinkingContent value) {
         return new AssistantMessageResponseContentItem(new ThinkingValue(value));
     }
 
@@ -53,7 +53,7 @@ public final class AssistantMessageResponseContentItem {
         return Optional.empty();
     }
 
-    public Optional<Object> getThinking() {
+    public Optional<ChatThinkingContent> getThinking() {
         if (isThinking()) {
             return Optional.of(((ThinkingValue) value).value);
         }
@@ -75,7 +75,7 @@ public final class AssistantMessageResponseContentItem {
     public interface Visitor<T> {
         T visitText(ChatTextContent text);
 
-        T visitThinking(Object thinking);
+        T visitThinking(ChatThinkingContent thinking);
 
         T _visitUnknown(Object unknownType);
     }
@@ -129,11 +129,13 @@ public final class AssistantMessageResponseContentItem {
     @JsonTypeName("thinking")
     @JsonIgnoreProperties("type")
     private static final class ThinkingValue implements Value {
-        @JsonProperty("value")
-        private Object value;
+        @JsonUnwrapped
+        private ChatThinkingContent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private ThinkingValue(@JsonProperty("value") Object value) {
+        private ThinkingValue() {}
+
+        private ThinkingValue(ChatThinkingContent value) {
             this.value = value;
         }
 

@@ -32,8 +32,6 @@ import org.jetbrains.annotations.NotNull;
 public final class ChatRequest {
     private final Optional<String> accepts;
 
-    private final Optional<Boolean> rawPrompting;
-
     private final String message;
 
     private final Optional<String> model;
@@ -72,6 +70,8 @@ public final class ChatRequest {
 
     private final Optional<Double> presencePenalty;
 
+    private final Optional<Boolean> rawPrompting;
+
     private final Optional<List<Tool>> tools;
 
     private final Optional<List<ToolResult>> toolResults;
@@ -86,7 +86,6 @@ public final class ChatRequest {
 
     private ChatRequest(
             Optional<String> accepts,
-            Optional<Boolean> rawPrompting,
             String message,
             Optional<String> model,
             Optional<String> preamble,
@@ -106,6 +105,7 @@ public final class ChatRequest {
             Optional<List<String>> stopSequences,
             Optional<Double> frequencyPenalty,
             Optional<Double> presencePenalty,
+            Optional<Boolean> rawPrompting,
             Optional<List<Tool>> tools,
             Optional<List<ToolResult>> toolResults,
             Optional<Boolean> forceSingleStep,
@@ -113,7 +113,6 @@ public final class ChatRequest {
             Optional<ChatRequestSafetyMode> safetyMode,
             Map<String, Object> additionalProperties) {
         this.accepts = accepts;
-        this.rawPrompting = rawPrompting;
         this.message = message;
         this.model = model;
         this.preamble = preamble;
@@ -133,6 +132,7 @@ public final class ChatRequest {
         this.stopSequences = stopSequences;
         this.frequencyPenalty = frequencyPenalty;
         this.presencePenalty = presencePenalty;
+        this.rawPrompting = rawPrompting;
         this.tools = tools;
         this.toolResults = toolResults;
         this.forceSingleStep = forceSingleStep;
@@ -147,16 +147,6 @@ public final class ChatRequest {
     @JsonProperty("Accepts")
     public Optional<String> getAccepts() {
         return accepts;
-    }
-
-    /**
-     * @return When enabled, the user's prompt will be sent to the model without
-     * any pre-processing.
-     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-     */
-    @JsonProperty("raw_prompting")
-    public Optional<Boolean> getRawPrompting() {
-        return rawPrompting;
     }
 
     /**
@@ -378,6 +368,16 @@ public final class ChatRequest {
     }
 
     /**
+     * @return When enabled, the user's prompt will be sent to the model without
+     * any pre-processing.
+     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+     */
+    @JsonProperty("raw_prompting")
+    public Optional<Boolean> getRawPrompting() {
+        return rawPrompting;
+    }
+
+    /**
      * @return A list of available tools (functions) that the model may suggest invoking before producing a text response.
      * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
@@ -453,7 +453,6 @@ public final class ChatRequest {
 
     private boolean equalTo(ChatRequest other) {
         return accepts.equals(other.accepts)
-                && rawPrompting.equals(other.rawPrompting)
                 && message.equals(other.message)
                 && model.equals(other.model)
                 && preamble.equals(other.preamble)
@@ -473,6 +472,7 @@ public final class ChatRequest {
                 && stopSequences.equals(other.stopSequences)
                 && frequencyPenalty.equals(other.frequencyPenalty)
                 && presencePenalty.equals(other.presencePenalty)
+                && rawPrompting.equals(other.rawPrompting)
                 && tools.equals(other.tools)
                 && toolResults.equals(other.toolResults)
                 && forceSingleStep.equals(other.forceSingleStep)
@@ -484,7 +484,6 @@ public final class ChatRequest {
     public int hashCode() {
         return Objects.hash(
                 this.accepts,
-                this.rawPrompting,
                 this.message,
                 this.model,
                 this.preamble,
@@ -504,6 +503,7 @@ public final class ChatRequest {
                 this.stopSequences,
                 this.frequencyPenalty,
                 this.presencePenalty,
+                this.rawPrompting,
                 this.tools,
                 this.toolResults,
                 this.forceSingleStep,
@@ -539,15 +539,6 @@ public final class ChatRequest {
         _FinalStage accepts(Optional<String> accepts);
 
         _FinalStage accepts(String accepts);
-
-        /**
-         * <p>When enabled, the user's prompt will be sent to the model without
-         * any pre-processing.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-         */
-        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
-
-        _FinalStage rawPrompting(Boolean rawPrompting);
 
         /**
          * <p>The name of a compatible <a href="https://docs.cohere.com/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/docs/chat-fine-tuning">fine-tuned</a> model.</p>
@@ -730,6 +721,15 @@ public final class ChatRequest {
         _FinalStage presencePenalty(Double presencePenalty);
 
         /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         */
+        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
+
+        _FinalStage rawPrompting(Boolean rawPrompting);
+
+        /**
          * <p>A list of available tools (functions) that the model may suggest invoking before producing a text response.</p>
          * <p>When <code>tools</code> is passed (without <code>tool_results</code>), the <code>text</code> field in the response will be <code>&quot;&quot;</code> and the <code>tool_calls</code> field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the <code>tool_calls</code> array will be empty.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
@@ -802,6 +802,8 @@ public final class ChatRequest {
 
         private Optional<List<Tool>> tools = Optional.empty();
 
+        private Optional<Boolean> rawPrompting = Optional.empty();
+
         private Optional<Double> presencePenalty = Optional.empty();
 
         private Optional<Double> frequencyPenalty = Optional.empty();
@@ -838,8 +840,6 @@ public final class ChatRequest {
 
         private Optional<String> model = Optional.empty();
 
-        private Optional<Boolean> rawPrompting = Optional.empty();
-
         private Optional<String> accepts = Optional.empty();
 
         @JsonAnySetter
@@ -850,7 +850,6 @@ public final class ChatRequest {
         @java.lang.Override
         public Builder from(ChatRequest other) {
             accepts(other.getAccepts());
-            rawPrompting(other.getRawPrompting());
             message(other.getMessage());
             model(other.getModel());
             preamble(other.getPreamble());
@@ -870,6 +869,7 @@ public final class ChatRequest {
             stopSequences(other.getStopSequences());
             frequencyPenalty(other.getFrequencyPenalty());
             presencePenalty(other.getPresencePenalty());
+            rawPrompting(other.getRawPrompting());
             tools(other.getTools());
             toolResults(other.getToolResults());
             forceSingleStep(other.getForceSingleStep());
@@ -1034,6 +1034,30 @@ public final class ChatRequest {
         @JsonSetter(value = "tools", nulls = Nulls.SKIP)
         public _FinalStage tools(Optional<List<Tool>> tools) {
             this.tools = tools;
+            return this;
+        }
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage rawPrompting(Boolean rawPrompting) {
+            this.rawPrompting = Optional.ofNullable(rawPrompting);
+            return this;
+        }
+
+        /**
+         * <p>When enabled, the user's prompt will be sent to the model without
+         * any pre-processing.</p>
+         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
+        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
+            this.rawPrompting = rawPrompting;
             return this;
         }
 
@@ -1506,30 +1530,6 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>When enabled, the user's prompt will be sent to the model without
-         * any pre-processing.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage rawPrompting(Boolean rawPrompting) {
-            this.rawPrompting = Optional.ofNullable(rawPrompting);
-            return this;
-        }
-
-        /**
-         * <p>When enabled, the user's prompt will be sent to the model without
-         * any pre-processing.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
-        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
-            this.rawPrompting = rawPrompting;
-            return this;
-        }
-
-        /**
          * <p>Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1553,7 +1553,6 @@ public final class ChatRequest {
         public ChatRequest build() {
             return new ChatRequest(
                     accepts,
-                    rawPrompting,
                     message,
                     model,
                     preamble,
@@ -1573,6 +1572,7 @@ public final class ChatRequest {
                     stopSequences,
                     frequencyPenalty,
                     presencePenalty,
+                    rawPrompting,
                     tools,
                     toolResults,
                     forceSingleStep,

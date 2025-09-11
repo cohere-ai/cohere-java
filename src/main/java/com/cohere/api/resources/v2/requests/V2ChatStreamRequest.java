@@ -10,6 +10,7 @@ import com.cohere.api.resources.v2.types.V2ChatStreamRequestToolChoice;
 import com.cohere.api.types.ChatMessageV2;
 import com.cohere.api.types.CitationOptions;
 import com.cohere.api.types.ResponseFormatV2;
+import com.cohere.api.types.Thinking;
 import com.cohere.api.types.ToolV2;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -42,8 +43,6 @@ public final class V2ChatStreamRequest {
 
     private final Optional<CitationOptions> citationOptions;
 
-    private final Optional<Boolean> rawPrompting;
-
     private final Optional<ResponseFormatV2> responseFormat;
 
     private final Optional<V2ChatStreamRequestSafetyMode> safetyMode;
@@ -68,6 +67,8 @@ public final class V2ChatStreamRequest {
 
     private final Optional<V2ChatStreamRequestToolChoice> toolChoice;
 
+    private final Optional<Thinking> thinking;
+
     private final Map<String, Object> additionalProperties;
 
     private V2ChatStreamRequest(
@@ -77,7 +78,6 @@ public final class V2ChatStreamRequest {
             Optional<Boolean> strictTools,
             Optional<List<V2ChatStreamRequestDocumentsItem>> documents,
             Optional<CitationOptions> citationOptions,
-            Optional<Boolean> rawPrompting,
             Optional<ResponseFormatV2> responseFormat,
             Optional<V2ChatStreamRequestSafetyMode> safetyMode,
             Optional<Integer> maxTokens,
@@ -90,6 +90,7 @@ public final class V2ChatStreamRequest {
             Optional<Float> p,
             Optional<Boolean> logprobs,
             Optional<V2ChatStreamRequestToolChoice> toolChoice,
+            Optional<Thinking> thinking,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.messages = messages;
@@ -97,7 +98,6 @@ public final class V2ChatStreamRequest {
         this.strictTools = strictTools;
         this.documents = documents;
         this.citationOptions = citationOptions;
-        this.rawPrompting = rawPrompting;
         this.responseFormat = responseFormat;
         this.safetyMode = safetyMode;
         this.maxTokens = maxTokens;
@@ -110,6 +110,7 @@ public final class V2ChatStreamRequest {
         this.p = p;
         this.logprobs = logprobs;
         this.toolChoice = toolChoice;
+        this.thinking = thinking;
         this.additionalProperties = additionalProperties;
     }
 
@@ -167,16 +168,6 @@ public final class V2ChatStreamRequest {
         return citationOptions;
     }
 
-    /**
-     * @return When enabled, the user's prompt will be sent to the model without
-     * any pre-processing.
-     * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-     */
-    @JsonProperty("raw_prompting")
-    public Optional<Boolean> getRawPrompting() {
-        return rawPrompting;
-    }
-
     @JsonProperty("response_format")
     public Optional<ResponseFormatV2> getResponseFormat() {
         return responseFormat;
@@ -195,8 +186,9 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return The maximum number of tokens the model will generate as part of the response.
-     * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
+     * @return The maximum number of output tokens the model will generate in the response. If not set, <code>max_tokens</code> defaults to the model's maximum output token limit. You can find the maximum output token limits for each model in the <a href="https://docs.cohere.com/docs/models">model documentation</a>.
+     * <p><strong>Note</strong>: Setting a low value may result in incomplete generations. In such cases, the <code>finish_reason</code> field in the response will be set to <code>&quot;MAX_TOKENS&quot;</code>.</p>
+     * <p><strong>Note</strong>: If <code>max_tokens</code> is set higher than the model's maximum output token limit, the generation will be capped at that model-specific maximum limit.</p>
      */
     @JsonProperty("max_tokens")
     public Optional<Integer> getMaxTokens() {
@@ -281,11 +273,15 @@ public final class V2ChatStreamRequest {
      * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
      * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.
      * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
-     * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
      */
     @JsonProperty("tool_choice")
     public Optional<V2ChatStreamRequestToolChoice> getToolChoice() {
         return toolChoice;
+    }
+
+    @JsonProperty("thinking")
+    public Optional<Thinking> getThinking() {
+        return thinking;
     }
 
     @java.lang.Override
@@ -306,7 +302,6 @@ public final class V2ChatStreamRequest {
                 && strictTools.equals(other.strictTools)
                 && documents.equals(other.documents)
                 && citationOptions.equals(other.citationOptions)
-                && rawPrompting.equals(other.rawPrompting)
                 && responseFormat.equals(other.responseFormat)
                 && safetyMode.equals(other.safetyMode)
                 && maxTokens.equals(other.maxTokens)
@@ -318,7 +313,8 @@ public final class V2ChatStreamRequest {
                 && k.equals(other.k)
                 && p.equals(other.p)
                 && logprobs.equals(other.logprobs)
-                && toolChoice.equals(other.toolChoice);
+                && toolChoice.equals(other.toolChoice)
+                && thinking.equals(other.thinking);
     }
 
     @java.lang.Override
@@ -330,7 +326,6 @@ public final class V2ChatStreamRequest {
                 this.strictTools,
                 this.documents,
                 this.citationOptions,
-                this.rawPrompting,
                 this.responseFormat,
                 this.safetyMode,
                 this.maxTokens,
@@ -342,7 +337,8 @@ public final class V2ChatStreamRequest {
                 this.k,
                 this.p,
                 this.logprobs,
-                this.toolChoice);
+                this.toolChoice,
+                this.thinking);
     }
 
     @java.lang.Override
@@ -399,15 +395,6 @@ public final class V2ChatStreamRequest {
 
         _FinalStage citationOptions(CitationOptions citationOptions);
 
-        /**
-         * <p>When enabled, the user's prompt will be sent to the model without
-         * any pre-processing.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-         */
-        _FinalStage rawPrompting(Optional<Boolean> rawPrompting);
-
-        _FinalStage rawPrompting(Boolean rawPrompting);
-
         _FinalStage responseFormat(Optional<ResponseFormatV2> responseFormat);
 
         _FinalStage responseFormat(ResponseFormatV2 responseFormat);
@@ -424,8 +411,9 @@ public final class V2ChatStreamRequest {
         _FinalStage safetyMode(V2ChatStreamRequestSafetyMode safetyMode);
 
         /**
-         * <p>The maximum number of tokens the model will generate as part of the response.</p>
-         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
+         * <p>The maximum number of output tokens the model will generate in the response. If not set, <code>max_tokens</code> defaults to the model's maximum output token limit. You can find the maximum output token limits for each model in the <a href="https://docs.cohere.com/docs/models">model documentation</a>.</p>
+         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations. In such cases, the <code>finish_reason</code> field in the response will be set to <code>&quot;MAX_TOKENS&quot;</code>.</p>
+         * <p><strong>Note</strong>: If <code>max_tokens</code> is set higher than the model's maximum output token limit, the generation will be capped at that model-specific maximum limit.</p>
          */
         _FinalStage maxTokens(Optional<Integer> maxTokens);
 
@@ -501,16 +489,21 @@ public final class V2ChatStreamRequest {
          * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
          * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.</p>
          * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
-         * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
          */
         _FinalStage toolChoice(Optional<V2ChatStreamRequestToolChoice> toolChoice);
 
         _FinalStage toolChoice(V2ChatStreamRequestToolChoice toolChoice);
+
+        _FinalStage thinking(Optional<Thinking> thinking);
+
+        _FinalStage thinking(Thinking thinking);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ModelStage, _FinalStage {
         private String model;
+
+        private Optional<Thinking> thinking = Optional.empty();
 
         private Optional<V2ChatStreamRequestToolChoice> toolChoice = Optional.empty();
 
@@ -536,8 +529,6 @@ public final class V2ChatStreamRequest {
 
         private Optional<ResponseFormatV2> responseFormat = Optional.empty();
 
-        private Optional<Boolean> rawPrompting = Optional.empty();
-
         private Optional<CitationOptions> citationOptions = Optional.empty();
 
         private Optional<List<V2ChatStreamRequestDocumentsItem>> documents = Optional.empty();
@@ -561,7 +552,6 @@ public final class V2ChatStreamRequest {
             strictTools(other.getStrictTools());
             documents(other.getDocuments());
             citationOptions(other.getCitationOptions());
-            rawPrompting(other.getRawPrompting());
             responseFormat(other.getResponseFormat());
             safetyMode(other.getSafetyMode());
             maxTokens(other.getMaxTokens());
@@ -574,6 +564,7 @@ public final class V2ChatStreamRequest {
             p(other.getP());
             logprobs(other.getLogprobs());
             toolChoice(other.getToolChoice());
+            thinking(other.getThinking());
             return this;
         }
 
@@ -589,12 +580,24 @@ public final class V2ChatStreamRequest {
             return this;
         }
 
+        @java.lang.Override
+        public _FinalStage thinking(Thinking thinking) {
+            this.thinking = Optional.ofNullable(thinking);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "thinking", nulls = Nulls.SKIP)
+        public _FinalStage thinking(Optional<Thinking> thinking) {
+            this.thinking = thinking;
+            return this;
+        }
+
         /**
          * <p>Used to control whether or not the model will be forced to use a tool when answering. When <code>REQUIRED</code> is specified, the model will be forced to use at least one of the user-defined tools, and the <code>tools</code> parameter must be passed in the request.
          * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
          * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.</p>
          * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
-         * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -608,7 +611,6 @@ public final class V2ChatStreamRequest {
          * When <code>NONE</code> is specified, the model will be forced <strong>not</strong> to use one of the specified tools, and give a direct response.
          * If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.</p>
          * <p><strong>Note</strong>: This parameter is only compatible with models <a href="https://docs.cohere.com/v2/docs/command-r7b">Command-r7b</a> and newer.</p>
-         * <p><strong>Note</strong>: The same functionality can be achieved in <code>/v1/chat</code> using the <code>force_single_step</code> parameter. If <code>force_single_step=true</code>, this is equivalent to specifying <code>REQUIRED</code>. While if <code>force_single_step=true</code> and <code>tool_results</code> are passed, this is equivalent to specifying <code>NONE</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "tool_choice", nulls = Nulls.SKIP)
@@ -796,8 +798,9 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>The maximum number of tokens the model will generate as part of the response.</p>
-         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
+         * <p>The maximum number of output tokens the model will generate in the response. If not set, <code>max_tokens</code> defaults to the model's maximum output token limit. You can find the maximum output token limits for each model in the <a href="https://docs.cohere.com/docs/models">model documentation</a>.</p>
+         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations. In such cases, the <code>finish_reason</code> field in the response will be set to <code>&quot;MAX_TOKENS&quot;</code>.</p>
+         * <p><strong>Note</strong>: If <code>max_tokens</code> is set higher than the model's maximum output token limit, the generation will be capped at that model-specific maximum limit.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -807,8 +810,9 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>The maximum number of tokens the model will generate as part of the response.</p>
-         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations.</p>
+         * <p>The maximum number of output tokens the model will generate in the response. If not set, <code>max_tokens</code> defaults to the model's maximum output token limit. You can find the maximum output token limits for each model in the <a href="https://docs.cohere.com/docs/models">model documentation</a>.</p>
+         * <p><strong>Note</strong>: Setting a low value may result in incomplete generations. In such cases, the <code>finish_reason</code> field in the response will be set to <code>&quot;MAX_TOKENS&quot;</code>.</p>
+         * <p><strong>Note</strong>: If <code>max_tokens</code> is set higher than the model's maximum output token limit, the generation will be capped at that model-specific maximum limit.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "max_tokens", nulls = Nulls.SKIP)
@@ -855,30 +859,6 @@ public final class V2ChatStreamRequest {
         @JsonSetter(value = "response_format", nulls = Nulls.SKIP)
         public _FinalStage responseFormat(Optional<ResponseFormatV2> responseFormat) {
             this.responseFormat = responseFormat;
-            return this;
-        }
-
-        /**
-         * <p>When enabled, the user's prompt will be sent to the model without
-         * any pre-processing.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage rawPrompting(Boolean rawPrompting) {
-            this.rawPrompting = Optional.ofNullable(rawPrompting);
-            return this;
-        }
-
-        /**
-         * <p>When enabled, the user's prompt will be sent to the model without
-         * any pre-processing.</p>
-         * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "raw_prompting", nulls = Nulls.SKIP)
-        public _FinalStage rawPrompting(Optional<Boolean> rawPrompting) {
-            this.rawPrompting = rawPrompting;
             return this;
         }
 
@@ -988,7 +968,6 @@ public final class V2ChatStreamRequest {
                     strictTools,
                     documents,
                     citationOptions,
-                    rawPrompting,
                     responseFormat,
                     safetyMode,
                     maxTokens,
@@ -1001,6 +980,7 @@ public final class V2ChatStreamRequest {
                     p,
                     logprobs,
                     toolChoice,
+                    thinking,
                     additionalProperties);
         }
     }
