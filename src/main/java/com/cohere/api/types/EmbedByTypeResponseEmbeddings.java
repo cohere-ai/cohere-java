@@ -31,6 +31,8 @@ public final class EmbedByTypeResponseEmbeddings {
 
     private final Optional<List<List<Integer>>> ubinary;
 
+    private final Optional<List<String>> base64;
+
     private final Map<String, Object> additionalProperties;
 
     private EmbedByTypeResponseEmbeddings(
@@ -39,12 +41,14 @@ public final class EmbedByTypeResponseEmbeddings {
             Optional<List<List<Integer>>> uint8,
             Optional<List<List<Integer>>> binary,
             Optional<List<List<Integer>>> ubinary,
+            Optional<List<String>> base64,
             Map<String, Object> additionalProperties) {
         this.float_ = float_;
         this.int8 = int8;
         this.uint8 = uint8;
         this.binary = binary;
         this.ubinary = ubinary;
+        this.base64 = base64;
         this.additionalProperties = additionalProperties;
     }
 
@@ -88,6 +92,14 @@ public final class EmbedByTypeResponseEmbeddings {
         return ubinary;
     }
 
+    /**
+     * @return An array of base64 embeddings. Each string is the result of appending the float embedding bytes together and base64 encoding that.
+     */
+    @JsonProperty("base64")
+    public Optional<List<String>> getBase64() {
+        return base64;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -104,12 +116,13 @@ public final class EmbedByTypeResponseEmbeddings {
                 && int8.equals(other.int8)
                 && uint8.equals(other.uint8)
                 && binary.equals(other.binary)
-                && ubinary.equals(other.ubinary);
+                && ubinary.equals(other.ubinary)
+                && base64.equals(other.base64);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.float_, this.int8, this.uint8, this.binary, this.ubinary);
+        return Objects.hash(this.float_, this.int8, this.uint8, this.binary, this.ubinary, this.base64);
     }
 
     @java.lang.Override
@@ -133,6 +146,8 @@ public final class EmbedByTypeResponseEmbeddings {
 
         private Optional<List<List<Integer>>> ubinary = Optional.empty();
 
+        private Optional<List<String>> base64 = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -144,6 +159,7 @@ public final class EmbedByTypeResponseEmbeddings {
             uint8(other.getUint8());
             binary(other.getBinary());
             ubinary(other.getUbinary());
+            base64(other.getBase64());
             return this;
         }
 
@@ -217,8 +233,23 @@ public final class EmbedByTypeResponseEmbeddings {
             return this;
         }
 
+        /**
+         * <p>An array of base64 embeddings. Each string is the result of appending the float embedding bytes together and base64 encoding that.</p>
+         */
+        @JsonSetter(value = "base64", nulls = Nulls.SKIP)
+        public Builder base64(Optional<List<String>> base64) {
+            this.base64 = base64;
+            return this;
+        }
+
+        public Builder base64(List<String> base64) {
+            this.base64 = Optional.ofNullable(base64);
+            return this;
+        }
+
         public EmbedByTypeResponseEmbeddings build() {
-            return new EmbedByTypeResponseEmbeddings(float_, int8, uint8, binary, ubinary, additionalProperties);
+            return new EmbedByTypeResponseEmbeddings(
+                    float_, int8, uint8, binary, ubinary, base64, additionalProperties);
         }
     }
 }

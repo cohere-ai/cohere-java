@@ -57,19 +57,6 @@ client.chatStream(
 <dl>
 <dd>
 
-**rawPrompting:** `Optional<Boolean>` 
-
-When enabled, the user's prompt will be sent to the model without
-any pre-processing.
-
-Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **message:** `String` 
 
 Text input for the model to respond to.
@@ -371,6 +358,19 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
+**rawPrompting:** `Optional<Boolean>` 
+
+When enabled, the user's prompt will be sent to the model without
+any pre-processing.
+
+Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tools:** `Optional<List<Tool>>` 
 
 A list of available tools (functions) that the model may suggest invoking before producing a text response.
@@ -534,19 +534,6 @@ client.chatStream(
 <dd>
 
 **accepts:** `Optional<String>` — Pass text/event-stream to receive the streamed response as server-sent events. The default is `\n` delimited events.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**rawPrompting:** `Optional<Boolean>` 
-
-When enabled, the user's prompt will be sent to the model without
-any pre-processing.
-
-Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
 </dd>
 </dl>
@@ -846,6 +833,19 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
 Used to reduce repetitiveness of generated tokens. Similar to `frequency_penalty`, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
+
+Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rawPrompting:** `Optional<Boolean>` 
+
+When enabled, the user's prompt will be sent to the model without
+any pre-processing.
 
 Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
@@ -2291,19 +2291,6 @@ When set to `true`, tool calls in the Assistant message will be forced to follow
 <dl>
 <dd>
 
-**rawPrompting:** `Optional<Boolean>` 
-
-When enabled, the user's prompt will be sent to the model without
-any pre-processing.
-
-Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **responseFormat:** `Optional<ResponseFormatV2>` 
     
 </dd>
@@ -2331,9 +2318,11 @@ Safety modes are not yet configurable in combination with `tools` and `documents
 
 **maxTokens:** `Optional<Integer>` 
 
-The maximum number of tokens the model will generate as part of the response.
+The maximum number of output tokens the model will generate in the response. If not set, `max_tokens` defaults to the model's maximum output token limit. You can find the maximum output token limits for each model in the [model documentation](https://docs.cohere.com/docs/models).
 
-**Note**: Setting a low value may result in incomplete generations.
+**Note**: Setting a low value may result in incomplete generations. In such cases, the `finish_reason` field in the response will be set to `"MAX_TOKENS"`.
+
+**Note**: If `max_tokens` is set higher than the model's maximum output token limit, the generation will be capped at that model-specific maximum limit.
     
 </dd>
 </dl>
@@ -2435,8 +2424,14 @@ When `NONE` is specified, the model will be forced **not** to use one of the spe
 If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.
 
 **Note**: This parameter is only compatible with models [Command-r7b](https://docs.cohere.com/v2/docs/command-r7b) and newer.
+    
+</dd>
+</dl>
 
-**Note**: The same functionality can be achieved in `/v1/chat` using the `force_single_step` parameter. If `force_single_step=true`, this is equivalent to specifying `REQUIRED`. While if `force_single_step=true` and `tool_results` are passed, this is equivalent to specifying `NONE`.
+<dl>
+<dd>
+
+**thinking:** `Optional<Thinking>` 
     
 </dd>
 </dl>
@@ -2582,19 +2577,6 @@ When set to `true`, tool calls in the Assistant message will be forced to follow
 <dl>
 <dd>
 
-**rawPrompting:** `Optional<Boolean>` 
-
-When enabled, the user's prompt will be sent to the model without
-any pre-processing.
-
-Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **responseFormat:** `Optional<ResponseFormatV2>` 
     
 </dd>
@@ -2622,9 +2604,11 @@ Safety modes are not yet configurable in combination with `tools` and `documents
 
 **maxTokens:** `Optional<Integer>` 
 
-The maximum number of tokens the model will generate as part of the response.
+The maximum number of output tokens the model will generate in the response. If not set, `max_tokens` defaults to the model's maximum output token limit. You can find the maximum output token limits for each model in the [model documentation](https://docs.cohere.com/docs/models).
 
-**Note**: Setting a low value may result in incomplete generations.
+**Note**: Setting a low value may result in incomplete generations. In such cases, the `finish_reason` field in the response will be set to `"MAX_TOKENS"`.
+
+**Note**: If `max_tokens` is set higher than the model's maximum output token limit, the generation will be capped at that model-specific maximum limit.
     
 </dd>
 </dl>
@@ -2726,8 +2710,14 @@ When `NONE` is specified, the model will be forced **not** to use one of the spe
 If tool_choice isn't specified, then the model is free to choose whether to use the specified tools or not.
 
 **Note**: This parameter is only compatible with models [Command-r7b](https://docs.cohere.com/v2/docs/command-r7b) and newer.
+    
+</dd>
+</dl>
 
-**Note**: The same functionality can be achieved in `/v1/chat` using the `force_single_step` parameter. If `force_single_step=true`, this is equivalent to specifying `REQUIRED`. While if `force_single_step=true` and `tool_results` are passed, this is equivalent to specifying `NONE`.
+<dl>
+<dd>
+
+**thinking:** `Optional<Thinking>` 
     
 </dd>
 </dl>
@@ -2875,6 +2865,7 @@ Specifies the types of embeddings you want to get back. Can be one or more of th
 * `"uint8"`: Use this when you want to get back unsigned int8 embeddings. Supported with Embed v3.0 and newer Embed models.
 * `"binary"`: Use this when you want to get back signed binary embeddings. Supported with Embed v3.0 and newer Embed models.
 * `"ubinary"`: Use this when you want to get back unsigned binary embeddings. Supported with Embed v3.0 and newer Embed models.
+* `"base64"`: Use this when you want to get back base64 embeddings. Supported with Embed v3.0 and newer Embed models.
     
 </dd>
 </dl>
@@ -4365,17 +4356,17 @@ Creates a new fine-tuned model. The model will be trained on the dataset specifi
 client.finetuning().createFinetunedModel(
     FinetunedModel
         .builder()
-        .name("api-test")
+        .name("name")
         .settings(
             Settings
                 .builder()
                 .baseModel(
                     BaseModel
                         .builder()
-                        .baseType(BaseType.BASE_TYPE_CHAT)
+                        .baseType(BaseType.BASE_TYPE_UNSPECIFIED)
                         .build()
                 )
-                .datasetId("my-dataset-id")
+                .datasetId("dataset_id")
                 .build()
         )
         .build()

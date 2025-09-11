@@ -87,9 +87,6 @@ public class AsyncRawCohere {
                 .addPathSegments("v1/chat")
                 .build();
         Map<String, Object> properties = new HashMap<>();
-        if (request.getRawPrompting().isPresent()) {
-            properties.put("raw_prompting", request.getRawPrompting());
-        }
         properties.put("message", request.getMessage());
         if (request.getModel().isPresent()) {
             properties.put("model", request.getModel());
@@ -145,6 +142,9 @@ public class AsyncRawCohere {
         }
         if (request.getPresencePenalty().isPresent()) {
             properties.put("presence_penalty", request.getPresencePenalty());
+        }
+        if (request.getRawPrompting().isPresent()) {
+            properties.put("raw_prompting", request.getRawPrompting());
         }
         if (request.getTools().isPresent()) {
             properties.put("tools", request.getTools());
@@ -299,9 +299,6 @@ public class AsyncRawCohere {
                 .addPathSegments("v1/chat")
                 .build();
         Map<String, Object> properties = new HashMap<>();
-        if (request.getRawPrompting().isPresent()) {
-            properties.put("raw_prompting", request.getRawPrompting());
-        }
         properties.put("message", request.getMessage());
         if (request.getModel().isPresent()) {
             properties.put("model", request.getModel());
@@ -357,6 +354,9 @@ public class AsyncRawCohere {
         }
         if (request.getPresencePenalty().isPresent()) {
             properties.put("presence_penalty", request.getPresencePenalty());
+        }
+        if (request.getRawPrompting().isPresent()) {
+            properties.put("raw_prompting", request.getRawPrompting());
         }
         if (request.getTools().isPresent()) {
             properties.put("tools", request.getTools());
