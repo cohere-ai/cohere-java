@@ -31,8 +31,9 @@ To learn how to use the Chat API and RAG follow our [Text Generation guides](htt
 client.chatStream(
     ChatStreamRequest
         .builder()
-        .message("hello world!")
+        .message("hello!")
         .stream(true)
+        .model("command-a-03-2025")
         .build()
 );
 ```
@@ -223,9 +224,8 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 
 **citationQuality:** `Optional<ChatStreamRequestCitationQuality>` 
 
-Defaults to `"accurate"`.
-
-Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want `"accurate"` results, `"fast"` results or no results.
+Defaults to `"enabled"`.
+Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
 
 Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
@@ -487,36 +487,9 @@ To learn how to use the Chat API and RAG follow our [Text Generation guides](htt
 client.chatStream(
     ChatStreamRequest
         .builder()
-        .message("What year was he born?")
+        .message("Tell me about LLMs")
         .stream(false)
-        .chatHistory(
-            new ArrayList<Message>(
-                Arrays.asList(
-                    Message.user(
-                        ChatMessage
-                            .builder()
-                            .message("Who discovered gravity?")
-                            .build()
-                    ),
-                    Message.chatbot(
-                        ChatMessage
-                            .builder()
-                            .message("The man who is widely credited with discovering gravity is Sir Isaac Newton")
-                            .build()
-                    )
-                )
-            )
-        )
-        .connectors(
-            new ArrayList<ChatConnector>(
-                Arrays.asList(
-                    ChatConnector
-                        .builder()
-                        .id("web-search")
-                        .build()
-                )
-            )
-        )
+        .model("command-a-03-2025")
         .build()
 );
 ```
@@ -707,9 +680,8 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 
 **citationQuality:** `Optional<ChatRequestCitationQuality>` 
 
-Defaults to `"accurate"`.
-
-Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want `"accurate"` results, `"fast"` results or no results.
+Defaults to `"enabled"`.
+Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
 
 Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
@@ -1511,7 +1483,7 @@ client.embed(
 
 An array of image data URIs for the model to embed. Maximum number of images per call is `1`.
 
-The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg` or `image/png` format and has a maximum size of 5MB.
+The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format and has a maximum size of 5MB.
 
 Images are only supported with Embed v3.0 and newer models.
     
@@ -2189,7 +2161,7 @@ Follow the [Migration Guide](https://docs.cohere.com/v2/docs/migrating-v1-to-v2)
 client.v2().chatStream(
     V2ChatStreamRequest
         .builder()
-        .model("command-r")
+        .model("command-a-03-2025")
         .messages(
             new ArrayList<ChatMessageV2>(
                 Arrays.asList(
@@ -2197,7 +2169,7 @@ client.v2().chatStream(
                         UserMessageV2
                             .builder()
                             .content(
-                                UserMessageV2Content.of("Hello!")
+                                UserMessageV2Content.of("Tell me about LLMs")
                             )
                             .build()
                     )
@@ -2235,7 +2207,7 @@ Streaming is beneficial for user interfaces that render the contents of the resp
 <dl>
 <dd>
 
-**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models) or the ID of a [fine-tuned](https://docs.cohere.com/v2/docs/chat-fine-tuning) model.
+**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models).
     
 </dd>
 </dl>
@@ -2521,7 +2493,7 @@ Streaming is beneficial for user interfaces that render the contents of the resp
 <dl>
 <dd>
 
-**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models) or the ID of a [fine-tuned](https://docs.cohere.com/v2/docs/chat-fine-tuning) model.
+**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models).
     
 </dd>
 </dl>
@@ -2803,7 +2775,7 @@ client.v2().embed(
 
 An array of image data URIs for the model to embed. Maximum number of images per call is `1`.
 
-The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg` or `image/png` format and has a maximum size of 5MB.
+The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format and has a maximum size of 5MB.
 
 Image embeddings are supported with Embed v3.0 and newer models.
     
@@ -3421,7 +3393,7 @@ client.datasets().create(
 <dl>
 <dd>
 
-**type:** `DatasetType` — The dataset type, which is used to validate the data. Valid types are `embed-input`, `reranker-finetune-input`, `single-label-classification-finetune-input`, `chat-finetune-input`, and `multi-label-classification-finetune-input`.
+**type:** `DatasetType` — The dataset type, which is used to validate the data. The only valid type is `embed-input` used in conjunction with the Embed Jobs API.
     
 </dd>
 </dl>
@@ -4168,7 +4140,7 @@ client.models().get("command-a-03-2025");
 <dl>
 <dd>
 
-Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+Returns a list of models available for use.
 </dd>
 </dl>
 </dd>

@@ -6,11 +6,15 @@ package com.cohere.api.types;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ChatStreamRequestCitationQuality {
-    FAST("fast"),
+    ENABLED("ENABLED"),
 
-    ACCURATE("accurate"),
+    DISABLED("DISABLED"),
 
-    OFF("off");
+    FAST("FAST"),
+
+    ACCURATE("ACCURATE"),
+
+    OFF("OFF");
 
     private final String value;
 
