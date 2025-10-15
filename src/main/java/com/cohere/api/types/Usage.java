@@ -20,29 +20,21 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Usage.Builder.class)
 public final class Usage {
-    private final Optional<UsageBilledUnits> billedUnits;
-
-    private final Optional<UsageTokens> tokens;
+    private final Optional<Double> cachedTokens;
 
     private final Map<String, Object> additionalProperties;
 
-    private Usage(
-            Optional<UsageBilledUnits> billedUnits,
-            Optional<UsageTokens> tokens,
-            Map<String, Object> additionalProperties) {
-        this.billedUnits = billedUnits;
-        this.tokens = tokens;
+    private Usage(Optional<Double> cachedTokens, Map<String, Object> additionalProperties) {
+        this.cachedTokens = cachedTokens;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("billed_units")
-    public Optional<UsageBilledUnits> getBilledUnits() {
-        return billedUnits;
-    }
-
-    @JsonProperty("tokens")
-    public Optional<UsageTokens> getTokens() {
-        return tokens;
+    /**
+     * @return The number of prompt tokens that hit the inference cache.
+     */
+    @JsonProperty("cached_tokens")
+    public Optional<Double> getCachedTokens() {
+        return cachedTokens;
     }
 
     @java.lang.Override
@@ -57,12 +49,12 @@ public final class Usage {
     }
 
     private boolean equalTo(Usage other) {
-        return billedUnits.equals(other.billedUnits) && tokens.equals(other.tokens);
+        return cachedTokens.equals(other.cachedTokens);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.billedUnits, this.tokens);
+        return Objects.hash(this.cachedTokens);
     }
 
     @java.lang.Override
@@ -76,9 +68,7 @@ public final class Usage {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<UsageBilledUnits> billedUnits = Optional.empty();
-
-        private Optional<UsageTokens> tokens = Optional.empty();
+        private Optional<Double> cachedTokens = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -86,35 +76,26 @@ public final class Usage {
         private Builder() {}
 
         public Builder from(Usage other) {
-            billedUnits(other.getBilledUnits());
-            tokens(other.getTokens());
+            cachedTokens(other.getCachedTokens());
             return this;
         }
 
-        @JsonSetter(value = "billed_units", nulls = Nulls.SKIP)
-        public Builder billedUnits(Optional<UsageBilledUnits> billedUnits) {
-            this.billedUnits = billedUnits;
+        /**
+         * <p>The number of prompt tokens that hit the inference cache.</p>
+         */
+        @JsonSetter(value = "cached_tokens", nulls = Nulls.SKIP)
+        public Builder cachedTokens(Optional<Double> cachedTokens) {
+            this.cachedTokens = cachedTokens;
             return this;
         }
 
-        public Builder billedUnits(UsageBilledUnits billedUnits) {
-            this.billedUnits = Optional.ofNullable(billedUnits);
-            return this;
-        }
-
-        @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
-        public Builder tokens(Optional<UsageTokens> tokens) {
-            this.tokens = tokens;
-            return this;
-        }
-
-        public Builder tokens(UsageTokens tokens) {
-            this.tokens = Optional.ofNullable(tokens);
+        public Builder cachedTokens(Double cachedTokens) {
+            this.cachedTokens = Optional.ofNullable(cachedTokens);
             return this;
         }
 
         public Usage build() {
-            return new Usage(billedUnits, tokens, additionalProperties);
+            return new Usage(cachedTokens, additionalProperties);
         }
     }
 }

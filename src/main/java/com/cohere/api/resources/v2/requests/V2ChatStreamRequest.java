@@ -125,7 +125,7 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.
+     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -352,7 +352,7 @@ public final class V2ChatStreamRequest {
 
     public interface ModelStage {
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.</p>
          */
         _FinalStage model(@NotNull String model);
 
@@ -569,8 +569,8 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
