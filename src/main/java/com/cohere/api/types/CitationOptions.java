@@ -30,9 +30,8 @@ public final class CitationOptions {
     }
 
     /**
-     * @return Defaults to <code>&quot;accurate&quot;</code>.
-     * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.
-     * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and <code>command-a-03-2025</code> only support <code>&quot;fast&quot;</code> and <code>&quot;off&quot;</code> modes. The default is <code>&quot;fast&quot;</code>.</p>
+     * @return Defaults to <code>&quot;enabled&quot;</code>.
+     * Citations are enabled by default for models that support it, but can be turned off by setting <code>&quot;type&quot;: &quot;disabled&quot;</code>.
      */
     @JsonProperty("mode")
     public Optional<CitationOptionsMode> getMode() {
@@ -83,9 +82,8 @@ public final class CitationOptions {
         }
 
         /**
-         * <p>Defaults to <code>&quot;accurate&quot;</code>.
-         * Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.</p>
-         * <p><strong>Note</strong>: <code>command-r7b-12-2024</code> and <code>command-a-03-2025</code> only support <code>&quot;fast&quot;</code> and <code>&quot;off&quot;</code> modes. The default is <code>&quot;fast&quot;</code>.</p>
+         * <p>Defaults to <code>&quot;enabled&quot;</code>.
+         * Citations are enabled by default for models that support it, but can be turned off by setting <code>&quot;type&quot;: &quot;disabled&quot;</code>.</p>
          */
         @JsonSetter(value = "mode", nulls = Nulls.SKIP)
         public Builder mode(Optional<CitationOptionsMode> mode) {

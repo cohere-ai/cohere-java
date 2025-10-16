@@ -79,7 +79,7 @@ public final class V2EmbedRequest {
 
     /**
      * @return An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.
-     * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+     * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
      * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
      */
     @JsonProperty("images")
@@ -222,7 +222,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
-         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
          * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
          */
         _FinalStage images(Optional<List<String>> images);
@@ -458,7 +458,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
-         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
          * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -470,7 +470,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
-         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
          * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
          */
         @java.lang.Override

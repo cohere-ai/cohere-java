@@ -127,21 +127,21 @@ public class RawModelsClient {
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CohereHttpResponse<ListModelsResponse> list() {
         return list(ModelsListRequest.builder().build());
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CohereHttpResponse<ListModelsResponse> list(ModelsListRequest request) {
         return list(request, null);
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CohereHttpResponse<ListModelsResponse> list(ModelsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
