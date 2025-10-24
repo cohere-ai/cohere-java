@@ -24,14 +24,18 @@ public final class Usage {
 
     private final Optional<UsageTokens> tokens;
 
+    private final Optional<Double> cachedTokens;
+
     private final Map<String, Object> additionalProperties;
 
     private Usage(
             Optional<UsageBilledUnits> billedUnits,
             Optional<UsageTokens> tokens,
+            Optional<Double> cachedTokens,
             Map<String, Object> additionalProperties) {
         this.billedUnits = billedUnits;
         this.tokens = tokens;
+        this.cachedTokens = cachedTokens;
         this.additionalProperties = additionalProperties;
     }
 
@@ -43,6 +47,14 @@ public final class Usage {
     @JsonProperty("tokens")
     public Optional<UsageTokens> getTokens() {
         return tokens;
+    }
+
+    /**
+     * @return The number of prompt tokens that hit the inference cache.
+     */
+    @JsonProperty("cached_tokens")
+    public Optional<Double> getCachedTokens() {
+        return cachedTokens;
     }
 
     @java.lang.Override
@@ -57,12 +69,14 @@ public final class Usage {
     }
 
     private boolean equalTo(Usage other) {
-        return billedUnits.equals(other.billedUnits) && tokens.equals(other.tokens);
+        return billedUnits.equals(other.billedUnits)
+                && tokens.equals(other.tokens)
+                && cachedTokens.equals(other.cachedTokens);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.billedUnits, this.tokens);
+        return Objects.hash(this.billedUnits, this.tokens, this.cachedTokens);
     }
 
     @java.lang.Override
@@ -80,6 +94,8 @@ public final class Usage {
 
         private Optional<UsageTokens> tokens = Optional.empty();
 
+        private Optional<Double> cachedTokens = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -88,6 +104,7 @@ public final class Usage {
         public Builder from(Usage other) {
             billedUnits(other.getBilledUnits());
             tokens(other.getTokens());
+            cachedTokens(other.getCachedTokens());
             return this;
         }
 
@@ -113,8 +130,22 @@ public final class Usage {
             return this;
         }
 
+        /**
+         * <p>The number of prompt tokens that hit the inference cache.</p>
+         */
+        @JsonSetter(value = "cached_tokens", nulls = Nulls.SKIP)
+        public Builder cachedTokens(Optional<Double> cachedTokens) {
+            this.cachedTokens = cachedTokens;
+            return this;
+        }
+
+        public Builder cachedTokens(Double cachedTokens) {
+            this.cachedTokens = Optional.ofNullable(cachedTokens);
+            return this;
+        }
+
         public Usage build() {
-            return new Usage(billedUnits, tokens, additionalProperties);
+            return new Usage(billedUnits, tokens, cachedTokens, additionalProperties);
         }
     }
 }

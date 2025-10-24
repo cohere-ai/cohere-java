@@ -42,21 +42,21 @@ public class AsyncModelsClient {
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CompletableFuture<ListModelsResponse> list() {
         return this.rawClient.list().thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CompletableFuture<ListModelsResponse> list(ModelsListRequest request) {
         return this.rawClient.list(request).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CompletableFuture<ListModelsResponse> list(ModelsListRequest request, RequestOptions requestOptions) {
         return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());

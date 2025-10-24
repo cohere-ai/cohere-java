@@ -16,6 +16,7 @@ import com.cohere.api.requests.GenerateStreamRequest;
 import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
+import com.cohere.api.resources.batches.AsyncBatchesClient;
 import com.cohere.api.resources.connectors.AsyncConnectorsClient;
 import com.cohere.api.resources.datasets.AsyncDatasetsClient;
 import com.cohere.api.resources.embedjobs.AsyncEmbedJobsClient;
@@ -43,6 +44,8 @@ public class AsyncCohere {
 
     protected final Supplier<AsyncV2Client> v2Client;
 
+    protected final Supplier<AsyncBatchesClient> batchesClient;
+
     protected final Supplier<AsyncEmbedJobsClient> embedJobsClient;
 
     protected final Supplier<AsyncDatasetsClient> datasetsClient;
@@ -57,6 +60,7 @@ public class AsyncCohere {
         this.clientOptions = clientOptions;
         this.rawClient = new AsyncRawCohere(clientOptions);
         this.v2Client = Suppliers.memoize(() -> new AsyncV2Client(clientOptions));
+        this.batchesClient = Suppliers.memoize(() -> new AsyncBatchesClient(clientOptions));
         this.embedJobsClient = Suppliers.memoize(() -> new AsyncEmbedJobsClient(clientOptions));
         this.datasetsClient = Suppliers.memoize(() -> new AsyncDatasetsClient(clientOptions));
         this.connectorsClient = Suppliers.memoize(() -> new AsyncConnectorsClient(clientOptions));
@@ -266,6 +270,10 @@ public class AsyncCohere {
 
     public AsyncV2Client v2() {
         return this.v2Client.get();
+    }
+
+    public AsyncBatchesClient batches() {
+        return this.batchesClient.get();
     }
 
     public AsyncEmbedJobsClient embedJobs() {

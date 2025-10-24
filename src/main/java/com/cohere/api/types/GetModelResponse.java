@@ -33,8 +33,6 @@ public final class GetModelResponse {
 
     private final Optional<String> tokenizerUrl;
 
-    private final Optional<Boolean> supportsVision;
-
     private final Optional<List<CompatibleEndpoint>> defaultEndpoints;
 
     private final Optional<List<String>> features;
@@ -48,7 +46,6 @@ public final class GetModelResponse {
             Optional<Boolean> finetuned,
             Optional<Double> contextLength,
             Optional<String> tokenizerUrl,
-            Optional<Boolean> supportsVision,
             Optional<List<CompatibleEndpoint>> defaultEndpoints,
             Optional<List<String>> features,
             Map<String, Object> additionalProperties) {
@@ -58,7 +55,6 @@ public final class GetModelResponse {
         this.finetuned = finetuned;
         this.contextLength = contextLength;
         this.tokenizerUrl = tokenizerUrl;
-        this.supportsVision = supportsVision;
         this.defaultEndpoints = defaultEndpoints;
         this.features = features;
         this.additionalProperties = additionalProperties;
@@ -113,14 +109,6 @@ public final class GetModelResponse {
     }
 
     /**
-     * @return Whether the model supports image inputs or not.
-     */
-    @JsonProperty("supports_vision")
-    public Optional<Boolean> getSupportsVision() {
-        return supportsVision;
-    }
-
-    /**
      * @return The API endpoints that the model is default to.
      */
     @JsonProperty("default_endpoints")
@@ -154,7 +142,6 @@ public final class GetModelResponse {
                 && finetuned.equals(other.finetuned)
                 && contextLength.equals(other.contextLength)
                 && tokenizerUrl.equals(other.tokenizerUrl)
-                && supportsVision.equals(other.supportsVision)
                 && defaultEndpoints.equals(other.defaultEndpoints)
                 && features.equals(other.features);
     }
@@ -168,7 +155,6 @@ public final class GetModelResponse {
                 this.finetuned,
                 this.contextLength,
                 this.tokenizerUrl,
-                this.supportsVision,
                 this.defaultEndpoints,
                 this.features);
     }
@@ -196,8 +182,6 @@ public final class GetModelResponse {
 
         private Optional<String> tokenizerUrl = Optional.empty();
 
-        private Optional<Boolean> supportsVision = Optional.empty();
-
         private Optional<List<CompatibleEndpoint>> defaultEndpoints = Optional.empty();
 
         private Optional<List<String>> features = Optional.empty();
@@ -214,7 +198,6 @@ public final class GetModelResponse {
             finetuned(other.getFinetuned());
             contextLength(other.getContextLength());
             tokenizerUrl(other.getTokenizerUrl());
-            supportsVision(other.getSupportsVision());
             defaultEndpoints(other.getDefaultEndpoints());
             features(other.getFeatures());
             return this;
@@ -305,20 +288,6 @@ public final class GetModelResponse {
         }
 
         /**
-         * <p>Whether the model supports image inputs or not.</p>
-         */
-        @JsonSetter(value = "supports_vision", nulls = Nulls.SKIP)
-        public Builder supportsVision(Optional<Boolean> supportsVision) {
-            this.supportsVision = supportsVision;
-            return this;
-        }
-
-        public Builder supportsVision(Boolean supportsVision) {
-            this.supportsVision = Optional.ofNullable(supportsVision);
-            return this;
-        }
-
-        /**
          * <p>The API endpoints that the model is default to.</p>
          */
         @JsonSetter(value = "default_endpoints", nulls = Nulls.SKIP)
@@ -354,7 +323,6 @@ public final class GetModelResponse {
                     finetuned,
                     contextLength,
                     tokenizerUrl,
-                    supportsVision,
                     defaultEndpoints,
                     features,
                     additionalProperties);

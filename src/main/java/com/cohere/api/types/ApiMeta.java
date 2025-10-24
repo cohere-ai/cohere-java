@@ -27,6 +27,8 @@ public final class ApiMeta {
 
     private final Optional<ApiMetaTokens> tokens;
 
+    private final Optional<Double> cachedTokens;
+
     private final Optional<List<String>> warnings;
 
     private final Map<String, Object> additionalProperties;
@@ -35,11 +37,13 @@ public final class ApiMeta {
             Optional<ApiMetaApiVersion> apiVersion,
             Optional<ApiMetaBilledUnits> billedUnits,
             Optional<ApiMetaTokens> tokens,
+            Optional<Double> cachedTokens,
             Optional<List<String>> warnings,
             Map<String, Object> additionalProperties) {
         this.apiVersion = apiVersion;
         this.billedUnits = billedUnits;
         this.tokens = tokens;
+        this.cachedTokens = cachedTokens;
         this.warnings = warnings;
         this.additionalProperties = additionalProperties;
     }
@@ -57,6 +61,14 @@ public final class ApiMeta {
     @JsonProperty("tokens")
     public Optional<ApiMetaTokens> getTokens() {
         return tokens;
+    }
+
+    /**
+     * @return The number of prompt tokens that hit the inference cache.
+     */
+    @JsonProperty("cached_tokens")
+    public Optional<Double> getCachedTokens() {
+        return cachedTokens;
     }
 
     @JsonProperty("warnings")
@@ -79,12 +91,13 @@ public final class ApiMeta {
         return apiVersion.equals(other.apiVersion)
                 && billedUnits.equals(other.billedUnits)
                 && tokens.equals(other.tokens)
+                && cachedTokens.equals(other.cachedTokens)
                 && warnings.equals(other.warnings);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.apiVersion, this.billedUnits, this.tokens, this.warnings);
+        return Objects.hash(this.apiVersion, this.billedUnits, this.tokens, this.cachedTokens, this.warnings);
     }
 
     @java.lang.Override
@@ -104,6 +117,8 @@ public final class ApiMeta {
 
         private Optional<ApiMetaTokens> tokens = Optional.empty();
 
+        private Optional<Double> cachedTokens = Optional.empty();
+
         private Optional<List<String>> warnings = Optional.empty();
 
         @JsonAnySetter
@@ -115,6 +130,7 @@ public final class ApiMeta {
             apiVersion(other.getApiVersion());
             billedUnits(other.getBilledUnits());
             tokens(other.getTokens());
+            cachedTokens(other.getCachedTokens());
             warnings(other.getWarnings());
             return this;
         }
@@ -152,6 +168,20 @@ public final class ApiMeta {
             return this;
         }
 
+        /**
+         * <p>The number of prompt tokens that hit the inference cache.</p>
+         */
+        @JsonSetter(value = "cached_tokens", nulls = Nulls.SKIP)
+        public Builder cachedTokens(Optional<Double> cachedTokens) {
+            this.cachedTokens = cachedTokens;
+            return this;
+        }
+
+        public Builder cachedTokens(Double cachedTokens) {
+            this.cachedTokens = Optional.ofNullable(cachedTokens);
+            return this;
+        }
+
         @JsonSetter(value = "warnings", nulls = Nulls.SKIP)
         public Builder warnings(Optional<List<String>> warnings) {
             this.warnings = warnings;
@@ -164,7 +194,7 @@ public final class ApiMeta {
         }
 
         public ApiMeta build() {
-            return new ApiMeta(apiVersion, billedUnits, tokens, warnings, additionalProperties);
+            return new ApiMeta(apiVersion, billedUnits, tokens, cachedTokens, warnings, additionalProperties);
         }
     }
 }
