@@ -267,8 +267,8 @@ public final class ChatRequest {
     }
 
     /**
-     * @return Defaults to <code>&quot;accurate&quot;</code>.
-     * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.</p>
+     * @return Defaults to <code>&quot;enabled&quot;</code>.
+     * Citations are enabled by default for models that support it, but can be turned off by setting <code>&quot;type&quot;: &quot;disabled&quot;</code>.
      * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
      */
     @JsonProperty("citation_quality")
@@ -630,8 +630,8 @@ public final class ChatRequest {
         _FinalStage documents(List<Map<String, String>> documents);
 
         /**
-         * <p>Defaults to <code>&quot;accurate&quot;</code>.</p>
-         * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.</p>
+         * <p>Defaults to <code>&quot;enabled&quot;</code>.
+         * Citations are enabled by default for models that support it, but can be turned off by setting <code>&quot;type&quot;: &quot;disabled&quot;</code>.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          */
         _FinalStage citationQuality(Optional<ChatRequestCitationQuality> citationQuality);
@@ -1280,8 +1280,8 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Defaults to <code>&quot;accurate&quot;</code>.</p>
-         * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.</p>
+         * <p>Defaults to <code>&quot;enabled&quot;</code>.
+         * Citations are enabled by default for models that support it, but can be turned off by setting <code>&quot;type&quot;: &quot;disabled&quot;</code>.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1292,8 +1292,8 @@ public final class ChatRequest {
         }
 
         /**
-         * <p>Defaults to <code>&quot;accurate&quot;</code>.</p>
-         * <p>Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want <code>&quot;accurate&quot;</code> results, <code>&quot;fast&quot;</code> results or no results.</p>
+         * <p>Defaults to <code>&quot;enabled&quot;</code>.
+         * Citations are enabled by default for models that support it, but can be turned off by setting <code>&quot;type&quot;: &quot;disabled&quot;</code>.</p>
          * <p>Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments</p>
          */
         @java.lang.Override

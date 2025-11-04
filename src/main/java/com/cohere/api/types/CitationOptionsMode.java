@@ -6,6 +6,10 @@ package com.cohere.api.types;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CitationOptionsMode {
+    ENABLED("ENABLED"),
+
+    DISABLED("DISABLED"),
+
     FAST("FAST"),
 
     ACCURATE("ACCURATE"),

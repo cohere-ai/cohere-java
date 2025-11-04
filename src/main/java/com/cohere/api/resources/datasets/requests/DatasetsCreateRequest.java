@@ -88,7 +88,7 @@ public final class DatasetsCreateRequest {
     }
 
     /**
-     * @return The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.
+     * @return The dataset type, which is used to validate the data. The only valid type is <code>embed-input</code> used in conjunction with the Embed Jobs API.
      */
     @JsonProperty("type")
     public DatasetType getType() {
@@ -182,7 +182,7 @@ public final class DatasetsCreateRequest {
 
     public interface TypeStage {
         /**
-         * <p>The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.</p>
+         * <p>The dataset type, which is used to validate the data. The only valid type is <code>embed-input</code> used in conjunction with the Embed Jobs API.</p>
          */
         _FinalStage type(@NotNull DatasetType type);
     }
@@ -286,8 +286,8 @@ public final class DatasetsCreateRequest {
         }
 
         /**
-         * <p>The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.</p>
-         * <p>The dataset type, which is used to validate the data. Valid types are <code>embed-input</code>, <code>reranker-finetune-input</code>, <code>single-label-classification-finetune-input</code>, <code>chat-finetune-input</code>, and <code>multi-label-classification-finetune-input</code>.</p>
+         * <p>The dataset type, which is used to validate the data. The only valid type is <code>embed-input</code> used in conjunction with the Embed Jobs API.</p>
+         * <p>The dataset type, which is used to validate the data. The only valid type is <code>embed-input</code> used in conjunction with the Embed Jobs API.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
