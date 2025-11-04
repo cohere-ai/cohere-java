@@ -14,7 +14,9 @@ public enum ChatFinishReason {
 
     TOOL_CALL("TOOL_CALL"),
 
-    ERROR("ERROR");
+    ERROR("ERROR"),
+
+    TIMEOUT("TIMEOUT");
 
     private final String value;
 
