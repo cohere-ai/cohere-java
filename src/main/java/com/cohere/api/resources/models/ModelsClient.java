@@ -41,21 +41,21 @@ public class ModelsClient {
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public ListModelsResponse list() {
         return this.rawClient.list().body();
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public ListModelsResponse list(ModelsListRequest request) {
         return this.rawClient.list(request).body();
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public ListModelsResponse list(ModelsListRequest request, RequestOptions requestOptions) {
         return this.rawClient.list(request, requestOptions).body();

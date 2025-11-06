@@ -18,7 +18,9 @@ public enum FinishReason {
 
     USER_CANCEL("USER_CANCEL"),
 
-    MAX_TOKENS("MAX_TOKENS");
+    MAX_TOKENS("MAX_TOKENS"),
+
+    TIMEOUT("TIMEOUT");
 
     private final String value;
 

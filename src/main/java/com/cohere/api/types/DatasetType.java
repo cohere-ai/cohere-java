@@ -20,7 +20,15 @@ public enum DatasetType {
 
     CHAT_FINETUNE_INPUT("chat-finetune-input"),
 
-    MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT("multi-label-classification-finetune-input");
+    MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT("multi-label-classification-finetune-input"),
+
+    BATCH_CHAT_INPUT("batch-chat-input"),
+
+    BATCH_OPENAI_CHAT_INPUT("batch-openai-chat-input"),
+
+    BATCH_EMBED_V_2_INPUT("batch-embed-v2-input"),
+
+    BATCH_CHAT_V_2_INPUT("batch-chat-v2-input");
 
     private final String value;
 

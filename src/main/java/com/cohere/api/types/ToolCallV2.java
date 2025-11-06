@@ -16,37 +16,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolCallV2.Builder.class)
 public final class ToolCallV2 {
-    private final Optional<String> id;
-
-    private final Optional<String> type;
+    private final String id;
 
     private final Optional<ToolCallV2Function> function;
 
     private final Map<String, Object> additionalProperties;
 
-    private ToolCallV2(
-            Optional<String> id,
-            Optional<String> type,
-            Optional<ToolCallV2Function> function,
-            Map<String, Object> additionalProperties) {
+    private ToolCallV2(String id, Optional<ToolCallV2Function> function, Map<String, Object> additionalProperties) {
         this.id = id;
-        this.type = type;
         this.function = function;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
-    public Optional<String> getId() {
+    public String getId() {
         return id;
     }
 
     @JsonProperty("type")
-    public Optional<String> getType() {
-        return type;
+    public String getType() {
+        return "function";
     }
 
     @JsonProperty("function")
@@ -66,12 +60,12 @@ public final class ToolCallV2 {
     }
 
     private boolean equalTo(ToolCallV2 other) {
-        return id.equals(other.id) && type.equals(other.type) && function.equals(other.function);
+        return id.equals(other.id) && function.equals(other.function);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.type, this.function);
+        return Objects.hash(this.id, this.function);
     }
 
     @java.lang.Override
@@ -79,15 +73,27 @@ public final class ToolCallV2 {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IdStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> id = Optional.empty();
+    public interface IdStage {
+        _FinalStage id(@NotNull String id);
 
-        private Optional<String> type = Optional.empty();
+        Builder from(ToolCallV2 other);
+    }
+
+    public interface _FinalStage {
+        ToolCallV2 build();
+
+        _FinalStage function(Optional<ToolCallV2Function> function);
+
+        _FinalStage function(ToolCallV2Function function);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements IdStage, _FinalStage {
+        private String id;
 
         private Optional<ToolCallV2Function> function = Optional.empty();
 
@@ -96,48 +102,36 @@ public final class ToolCallV2 {
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(ToolCallV2 other) {
             id(other.getId());
-            type(other.getType());
             function(other.getFunction());
             return this;
         }
 
-        @JsonSetter(value = "id", nulls = Nulls.SKIP)
-        public Builder id(Optional<String> id) {
-            this.id = id;
+        @java.lang.Override
+        @JsonSetter("id")
+        public _FinalStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
-        public Builder id(String id) {
-            this.id = Optional.ofNullable(id);
-            return this;
-        }
-
-        @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<String> type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder type(String type) {
-            this.type = Optional.ofNullable(type);
-            return this;
-        }
-
-        @JsonSetter(value = "function", nulls = Nulls.SKIP)
-        public Builder function(Optional<ToolCallV2Function> function) {
-            this.function = function;
-            return this;
-        }
-
-        public Builder function(ToolCallV2Function function) {
+        @java.lang.Override
+        public _FinalStage function(ToolCallV2Function function) {
             this.function = Optional.ofNullable(function);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "function", nulls = Nulls.SKIP)
+        public _FinalStage function(Optional<ToolCallV2Function> function) {
+            this.function = function;
+            return this;
+        }
+
+        @java.lang.Override
         public ToolCallV2 build() {
-            return new ToolCallV2(id, type, function, additionalProperties);
+            return new ToolCallV2(id, function, additionalProperties);
         }
     }
 }

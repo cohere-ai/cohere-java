@@ -209,9 +209,6 @@ public class CohereBuilder {
     protected void validateConfiguration() {}
 
     public Cohere build() {
-        if (token == null) {
-            throw new RuntimeException("Please provide token or set the CO_API_KEY environment variable.");
-        }
         validateConfiguration();
         return new Cohere(buildClientOptions());
     }

@@ -16,6 +16,7 @@ import com.cohere.api.requests.GenerateStreamRequest;
 import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
+import com.cohere.api.resources.batches.BatchesClient;
 import com.cohere.api.resources.connectors.ConnectorsClient;
 import com.cohere.api.resources.datasets.DatasetsClient;
 import com.cohere.api.resources.embedjobs.EmbedJobsClient;
@@ -42,6 +43,8 @@ public class Cohere {
 
     protected final Supplier<V2Client> v2Client;
 
+    protected final Supplier<BatchesClient> batchesClient;
+
     protected final Supplier<EmbedJobsClient> embedJobsClient;
 
     protected final Supplier<DatasetsClient> datasetsClient;
@@ -56,6 +59,7 @@ public class Cohere {
         this.clientOptions = clientOptions;
         this.rawClient = new RawCohere(clientOptions);
         this.v2Client = Suppliers.memoize(() -> new V2Client(clientOptions));
+        this.batchesClient = Suppliers.memoize(() -> new BatchesClient(clientOptions));
         this.embedJobsClient = Suppliers.memoize(() -> new EmbedJobsClient(clientOptions));
         this.datasetsClient = Suppliers.memoize(() -> new DatasetsClient(clientOptions));
         this.connectorsClient = Suppliers.memoize(() -> new ConnectorsClient(clientOptions));
@@ -264,6 +268,10 @@ public class Cohere {
 
     public V2Client v2() {
         return this.v2Client.get();
+    }
+
+    public BatchesClient batches() {
+        return this.batchesClient.get();
     }
 
     public EmbedJobsClient embedJobs() {

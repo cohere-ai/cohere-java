@@ -44,6 +44,8 @@ public final class V2EmbedRequest {
 
     private final Optional<V2EmbedRequestTruncate> truncate;
 
+    private final Optional<Integer> priority;
+
     private final Map<String, Object> additionalProperties;
 
     private V2EmbedRequest(
@@ -56,6 +58,7 @@ public final class V2EmbedRequest {
             Optional<Integer> outputDimension,
             Optional<List<EmbeddingType>> embeddingTypes,
             Optional<V2EmbedRequestTruncate> truncate,
+            Optional<Integer> priority,
             Map<String, Object> additionalProperties) {
         this.texts = texts;
         this.images = images;
@@ -66,6 +69,7 @@ public final class V2EmbedRequest {
         this.outputDimension = outputDimension;
         this.embeddingTypes = embeddingTypes;
         this.truncate = truncate;
+        this.priority = priority;
         this.additionalProperties = additionalProperties;
     }
 
@@ -79,7 +83,7 @@ public final class V2EmbedRequest {
 
     /**
      * @return An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.
-     * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+     * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
      * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
      */
     @JsonProperty("images")
@@ -151,6 +155,15 @@ public final class V2EmbedRequest {
         return truncate;
     }
 
+    /**
+     * @return The priority of the request (lower means earlier handling; default 0 highest priority).
+     * Higher priority requests are handled first, and dropped last when the system is under load.
+     */
+    @JsonProperty("priority")
+    public Optional<Integer> getPriority() {
+        return priority;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -171,7 +184,8 @@ public final class V2EmbedRequest {
                 && maxTokens.equals(other.maxTokens)
                 && outputDimension.equals(other.outputDimension)
                 && embeddingTypes.equals(other.embeddingTypes)
-                && truncate.equals(other.truncate);
+                && truncate.equals(other.truncate)
+                && priority.equals(other.priority);
     }
 
     @java.lang.Override
@@ -185,7 +199,8 @@ public final class V2EmbedRequest {
                 this.maxTokens,
                 this.outputDimension,
                 this.embeddingTypes,
-                this.truncate);
+                this.truncate,
+                this.priority);
     }
 
     @java.lang.Override
@@ -222,7 +237,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
-         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
          * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
          */
         _FinalStage images(Optional<List<String>> images);
@@ -274,6 +289,14 @@ public final class V2EmbedRequest {
         _FinalStage truncate(Optional<V2EmbedRequestTruncate> truncate);
 
         _FinalStage truncate(V2EmbedRequestTruncate truncate);
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         */
+        _FinalStage priority(Optional<Integer> priority);
+
+        _FinalStage priority(Integer priority);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -281,6 +304,8 @@ public final class V2EmbedRequest {
         private String model;
 
         private EmbedInputType inputType;
+
+        private Optional<Integer> priority = Optional.empty();
 
         private Optional<V2EmbedRequestTruncate> truncate = Optional.empty();
 
@@ -312,6 +337,7 @@ public final class V2EmbedRequest {
             outputDimension(other.getOutputDimension());
             embeddingTypes(other.getEmbeddingTypes());
             truncate(other.getTruncate());
+            priority(other.getPriority());
             return this;
         }
 
@@ -331,6 +357,28 @@ public final class V2EmbedRequest {
         @JsonSetter("input_type")
         public _FinalStage inputType(@NotNull EmbedInputType inputType) {
             this.inputType = Objects.requireNonNull(inputType, "inputType must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage priority(Integer priority) {
+            this.priority = Optional.ofNullable(priority);
+            return this;
+        }
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "priority", nulls = Nulls.SKIP)
+        public _FinalStage priority(Optional<Integer> priority) {
+            this.priority = priority;
             return this;
         }
 
@@ -458,7 +506,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
-         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
          * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -470,7 +518,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>An array of image data URIs for the model to embed. Maximum number of images per call is <code>1</code>.</p>
-         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code> or <code>image/png</code> format and has a maximum size of 5MB.</p>
+         * <p>The image must be a valid <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URI</a>. The image must be in either <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, or <code>image/gif</code> format and has a maximum size of 5MB.</p>
          * <p>Image embeddings are supported with Embed v3.0 and newer models.</p>
          */
         @java.lang.Override
@@ -512,6 +560,7 @@ public final class V2EmbedRequest {
                     outputDimension,
                     embeddingTypes,
                     truncate,
+                    priority,
                     additionalProperties);
         }
     }
