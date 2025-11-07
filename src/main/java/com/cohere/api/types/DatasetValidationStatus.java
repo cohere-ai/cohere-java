@@ -3,30 +3,123 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum DatasetValidationStatus {
-    UNKNOWN("unknown"),
+public final class DatasetValidationStatus {
+    public static final DatasetValidationStatus SKIPPED = new DatasetValidationStatus(Value.SKIPPED, "skipped");
 
-    QUEUED("queued"),
+    public static final DatasetValidationStatus FAILED = new DatasetValidationStatus(Value.FAILED, "failed");
 
-    PROCESSING("processing"),
+    public static final DatasetValidationStatus UNKNOWN = new DatasetValidationStatus(Value.UNKNOWN, "unknown");
 
-    FAILED("failed"),
+    public static final DatasetValidationStatus PROCESSING =
+            new DatasetValidationStatus(Value.PROCESSING, "processing");
 
-    VALIDATED("validated"),
+    public static final DatasetValidationStatus QUEUED = new DatasetValidationStatus(Value.QUEUED, "queued");
 
-    SKIPPED("skipped");
+    public static final DatasetValidationStatus VALIDATED = new DatasetValidationStatus(Value.VALIDATED, "validated");
 
-    private final String value;
+    private final Value value;
 
-    DatasetValidationStatus(String value) {
+    private final String string;
+
+    DatasetValidationStatus(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof DatasetValidationStatus
+                        && this.string.equals(((DatasetValidationStatus) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case SKIPPED:
+                return visitor.visitSkipped();
+            case FAILED:
+                return visitor.visitFailed();
+            case UNKNOWN:
+                return visitor.visitUnknown();
+            case PROCESSING:
+                return visitor.visitProcessing();
+            case QUEUED:
+                return visitor.visitQueued();
+            case VALIDATED:
+                return visitor.visitValidated();
+            case _UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static DatasetValidationStatus valueOf(String value) {
+        switch (value) {
+            case "skipped":
+                return SKIPPED;
+            case "failed":
+                return FAILED;
+            case "unknown":
+                return UNKNOWN;
+            case "processing":
+                return PROCESSING;
+            case "queued":
+                return QUEUED;
+            case "validated":
+                return VALIDATED;
+            default:
+                return new DatasetValidationStatus(Value._UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        UNKNOWN,
+
+        QUEUED,
+
+        PROCESSING,
+
+        FAILED,
+
+        VALIDATED,
+
+        SKIPPED,
+
+        _UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitUnknown();
+
+        T visitQueued();
+
+        T visitProcessing();
+
+        T visitFailed();
+
+        T visitValidated();
+
+        T visitSkipped();
+
+        T visitUnknown(String unknownType);
     }
 }

@@ -69,6 +69,8 @@ public final class V2ChatRequest {
 
     private final Optional<Thinking> thinking;
 
+    private final Optional<Integer> priority;
+
     private final Map<String, Object> additionalProperties;
 
     private V2ChatRequest(
@@ -91,6 +93,7 @@ public final class V2ChatRequest {
             Optional<Boolean> logprobs,
             Optional<V2ChatRequestToolChoice> toolChoice,
             Optional<Thinking> thinking,
+            Optional<Integer> priority,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.messages = messages;
@@ -111,6 +114,7 @@ public final class V2ChatRequest {
         this.logprobs = logprobs;
         this.toolChoice = toolChoice;
         this.thinking = thinking;
+        this.priority = priority;
         this.additionalProperties = additionalProperties;
     }
 
@@ -125,7 +129,7 @@ public final class V2ChatRequest {
     }
 
     /**
-     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.
+     * @return The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -284,6 +288,15 @@ public final class V2ChatRequest {
         return thinking;
     }
 
+    /**
+     * @return The priority of the request (lower means earlier handling; default 0 highest priority).
+     * Higher priority requests are handled first, and dropped last when the system is under load.
+     */
+    @JsonProperty("priority")
+    public Optional<Integer> getPriority() {
+        return priority;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -314,7 +327,8 @@ public final class V2ChatRequest {
                 && p.equals(other.p)
                 && logprobs.equals(other.logprobs)
                 && toolChoice.equals(other.toolChoice)
-                && thinking.equals(other.thinking);
+                && thinking.equals(other.thinking)
+                && priority.equals(other.priority);
     }
 
     @java.lang.Override
@@ -338,7 +352,8 @@ public final class V2ChatRequest {
                 this.p,
                 this.logprobs,
                 this.toolChoice,
-                this.thinking);
+                this.thinking,
+                this.priority);
     }
 
     @java.lang.Override
@@ -352,7 +367,7 @@ public final class V2ChatRequest {
 
     public interface ModelStage {
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.</p>
          */
         _FinalStage model(@NotNull String model);
 
@@ -497,11 +512,21 @@ public final class V2ChatRequest {
         _FinalStage thinking(Optional<Thinking> thinking);
 
         _FinalStage thinking(Thinking thinking);
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         */
+        _FinalStage priority(Optional<Integer> priority);
+
+        _FinalStage priority(Integer priority);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ModelStage, _FinalStage {
         private String model;
+
+        private Optional<Integer> priority = Optional.empty();
 
         private Optional<Thinking> thinking = Optional.empty();
 
@@ -565,18 +590,41 @@ public final class V2ChatRequest {
             logprobs(other.getLogprobs());
             toolChoice(other.getToolChoice());
             thinking(other.getThinking());
+            priority(other.getPriority());
             return this;
         }
 
         /**
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
-         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a> or the ID of a <a href="https://docs.cohere.com/v2/docs/chat-fine-tuning">fine-tuned</a> model.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.</p>
+         * <p>The name of a compatible <a href="https://docs.cohere.com/v2/docs/models">Cohere model</a>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("model")
         public _FinalStage model(@NotNull String model) {
             this.model = Objects.requireNonNull(model, "model must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage priority(Integer priority) {
+            this.priority = Optional.ofNullable(priority);
+            return this;
+        }
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "priority", nulls = Nulls.SKIP)
+        public _FinalStage priority(Optional<Integer> priority) {
+            this.priority = priority;
             return this;
         }
 
@@ -941,7 +989,9 @@ public final class V2ChatRequest {
 
         @java.lang.Override
         public _FinalStage addAllMessages(List<ChatMessageV2> messages) {
-            this.messages.addAll(messages);
+            if (messages != null) {
+                this.messages.addAll(messages);
+            }
             return this;
         }
 
@@ -955,7 +1005,9 @@ public final class V2ChatRequest {
         @JsonSetter(value = "messages", nulls = Nulls.SKIP)
         public _FinalStage messages(List<ChatMessageV2> messages) {
             this.messages.clear();
-            this.messages.addAll(messages);
+            if (messages != null) {
+                this.messages.addAll(messages);
+            }
             return this;
         }
 
@@ -981,6 +1033,7 @@ public final class V2ChatRequest {
                     logprobs,
                     toolChoice,
                     thinking,
+                    priority,
                     additionalProperties);
         }
     }

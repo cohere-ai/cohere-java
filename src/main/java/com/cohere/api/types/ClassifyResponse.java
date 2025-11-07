@@ -149,7 +149,9 @@ public final class ClassifyResponse {
 
         @java.lang.Override
         public _FinalStage addAllClassifications(List<ClassifyResponseClassificationsItem> classifications) {
-            this.classifications.addAll(classifications);
+            if (classifications != null) {
+                this.classifications.addAll(classifications);
+            }
             return this;
         }
 
@@ -163,7 +165,9 @@ public final class ClassifyResponse {
         @JsonSetter(value = "classifications", nulls = Nulls.SKIP)
         public _FinalStage classifications(List<ClassifyResponseClassificationsItem> classifications) {
             this.classifications.clear();
-            this.classifications.addAll(classifications);
+            if (classifications != null) {
+                this.classifications.addAll(classifications);
+            }
             return this;
         }
 

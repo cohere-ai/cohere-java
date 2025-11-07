@@ -3,28 +3,121 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatFinishReason {
-    COMPLETE("COMPLETE"),
+public final class ChatFinishReason {
+    public static final ChatFinishReason STOP_SEQUENCE = new ChatFinishReason(Value.STOP_SEQUENCE, "STOP_SEQUENCE");
 
-    STOP_SEQUENCE("STOP_SEQUENCE"),
+    public static final ChatFinishReason TOOL_CALL = new ChatFinishReason(Value.TOOL_CALL, "TOOL_CALL");
 
-    MAX_TOKENS("MAX_TOKENS"),
+    public static final ChatFinishReason TIMEOUT = new ChatFinishReason(Value.TIMEOUT, "TIMEOUT");
 
-    TOOL_CALL("TOOL_CALL"),
+    public static final ChatFinishReason COMPLETE = new ChatFinishReason(Value.COMPLETE, "COMPLETE");
 
-    ERROR("ERROR");
+    public static final ChatFinishReason MAX_TOKENS = new ChatFinishReason(Value.MAX_TOKENS, "MAX_TOKENS");
 
-    private final String value;
+    public static final ChatFinishReason ERROR = new ChatFinishReason(Value.ERROR, "ERROR");
 
-    ChatFinishReason(String value) {
+    private final Value value;
+
+    private final String string;
+
+    ChatFinishReason(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatFinishReason && this.string.equals(((ChatFinishReason) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case STOP_SEQUENCE:
+                return visitor.visitStopSequence();
+            case TOOL_CALL:
+                return visitor.visitToolCall();
+            case TIMEOUT:
+                return visitor.visitTimeout();
+            case COMPLETE:
+                return visitor.visitComplete();
+            case MAX_TOKENS:
+                return visitor.visitMaxTokens();
+            case ERROR:
+                return visitor.visitError();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatFinishReason valueOf(String value) {
+        switch (value) {
+            case "STOP_SEQUENCE":
+                return STOP_SEQUENCE;
+            case "TOOL_CALL":
+                return TOOL_CALL;
+            case "TIMEOUT":
+                return TIMEOUT;
+            case "COMPLETE":
+                return COMPLETE;
+            case "MAX_TOKENS":
+                return MAX_TOKENS;
+            case "ERROR":
+                return ERROR;
+            default:
+                return new ChatFinishReason(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        COMPLETE,
+
+        STOP_SEQUENCE,
+
+        MAX_TOKENS,
+
+        TOOL_CALL,
+
+        ERROR,
+
+        TIMEOUT,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitComplete();
+
+        T visitStopSequence();
+
+        T visitMaxTokens();
+
+        T visitToolCall();
+
+        T visitError();
+
+        T visitTimeout();
+
+        T visitUnknown(String unknownType);
     }
 }

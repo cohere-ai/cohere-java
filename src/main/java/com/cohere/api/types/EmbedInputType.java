@@ -3,28 +3,111 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum EmbedInputType {
-    SEARCH_DOCUMENT("search_document"),
+public final class EmbedInputType {
+    public static final EmbedInputType SEARCH_QUERY = new EmbedInputType(Value.SEARCH_QUERY, "search_query");
 
-    SEARCH_QUERY("search_query"),
+    public static final EmbedInputType SEARCH_DOCUMENT = new EmbedInputType(Value.SEARCH_DOCUMENT, "search_document");
 
-    CLASSIFICATION("classification"),
+    public static final EmbedInputType CLUSTERING = new EmbedInputType(Value.CLUSTERING, "clustering");
 
-    CLUSTERING("clustering"),
+    public static final EmbedInputType IMAGE = new EmbedInputType(Value.IMAGE, "image");
 
-    IMAGE("image");
+    public static final EmbedInputType CLASSIFICATION = new EmbedInputType(Value.CLASSIFICATION, "classification");
 
-    private final String value;
+    private final Value value;
 
-    EmbedInputType(String value) {
+    private final String string;
+
+    EmbedInputType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof EmbedInputType && this.string.equals(((EmbedInputType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case SEARCH_QUERY:
+                return visitor.visitSearchQuery();
+            case SEARCH_DOCUMENT:
+                return visitor.visitSearchDocument();
+            case CLUSTERING:
+                return visitor.visitClustering();
+            case IMAGE:
+                return visitor.visitImage();
+            case CLASSIFICATION:
+                return visitor.visitClassification();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static EmbedInputType valueOf(String value) {
+        switch (value) {
+            case "search_query":
+                return SEARCH_QUERY;
+            case "search_document":
+                return SEARCH_DOCUMENT;
+            case "clustering":
+                return CLUSTERING;
+            case "image":
+                return IMAGE;
+            case "classification":
+                return CLASSIFICATION;
+            default:
+                return new EmbedInputType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        SEARCH_DOCUMENT,
+
+        SEARCH_QUERY,
+
+        CLASSIFICATION,
+
+        CLUSTERING,
+
+        IMAGE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitSearchDocument();
+
+        T visitSearchQuery();
+
+        T visitClassification();
+
+        T visitClustering();
+
+        T visitImage();
+
+        T visitUnknown(String unknownType);
     }
 }

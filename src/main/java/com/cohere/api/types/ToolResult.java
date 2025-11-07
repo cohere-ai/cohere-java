@@ -116,7 +116,9 @@ public final class ToolResult {
 
         @java.lang.Override
         public _FinalStage addAllOutputs(List<Map<String, Object>> outputs) {
-            this.outputs.addAll(outputs);
+            if (outputs != null) {
+                this.outputs.addAll(outputs);
+            }
             return this;
         }
 
@@ -130,7 +132,9 @@ public final class ToolResult {
         @JsonSetter(value = "outputs", nulls = Nulls.SKIP)
         public _FinalStage outputs(List<Map<String, Object>> outputs) {
             this.outputs.clear();
-            this.outputs.addAll(outputs);
+            if (outputs != null) {
+                this.outputs.addAll(outputs);
+            }
             return this;
         }
 

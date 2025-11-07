@@ -255,7 +255,9 @@ public final class ChatCitation {
          */
         @java.lang.Override
         public _FinalStage addAllDocumentIds(List<String> documentIds) {
-            this.documentIds.addAll(documentIds);
+            if (documentIds != null) {
+                this.documentIds.addAll(documentIds);
+            }
             return this;
         }
 
@@ -276,7 +278,9 @@ public final class ChatCitation {
         @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
         public _FinalStage documentIds(List<String> documentIds) {
             this.documentIds.clear();
-            this.documentIds.addAll(documentIds);
+            if (documentIds != null) {
+                this.documentIds.addAll(documentIds);
+            }
             return this;
         }
 

@@ -3,24 +3,93 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatRequestPromptTruncation {
-    OFF("OFF"),
+public final class ChatRequestPromptTruncation {
+    public static final ChatRequestPromptTruncation AUTO = new ChatRequestPromptTruncation(Value.AUTO, "AUTO");
 
-    AUTO("AUTO"),
+    public static final ChatRequestPromptTruncation AUTO_PRESERVE_ORDER =
+            new ChatRequestPromptTruncation(Value.AUTO_PRESERVE_ORDER, "AUTO_PRESERVE_ORDER");
 
-    AUTO_PRESERVE_ORDER("AUTO_PRESERVE_ORDER");
+    public static final ChatRequestPromptTruncation OFF = new ChatRequestPromptTruncation(Value.OFF, "OFF");
 
-    private final String value;
+    private final Value value;
 
-    ChatRequestPromptTruncation(String value) {
+    private final String string;
+
+    ChatRequestPromptTruncation(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatRequestPromptTruncation
+                        && this.string.equals(((ChatRequestPromptTruncation) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case AUTO:
+                return visitor.visitAuto();
+            case AUTO_PRESERVE_ORDER:
+                return visitor.visitAutoPreserveOrder();
+            case OFF:
+                return visitor.visitOff();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatRequestPromptTruncation valueOf(String value) {
+        switch (value) {
+            case "AUTO":
+                return AUTO;
+            case "AUTO_PRESERVE_ORDER":
+                return AUTO_PRESERVE_ORDER;
+            case "OFF":
+                return OFF;
+            default:
+                return new ChatRequestPromptTruncation(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        OFF,
+
+        AUTO,
+
+        AUTO_PRESERVE_ORDER,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitOff();
+
+        T visitAuto();
+
+        T visitAutoPreserveOrder();
+
+        T visitUnknown(String unknownType);
     }
 }

@@ -3,22 +3,82 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum SummarizeRequestFormat {
-    PARAGRAPH("paragraph"),
+public final class SummarizeRequestFormat {
+    public static final SummarizeRequestFormat BULLETS = new SummarizeRequestFormat(Value.BULLETS, "bullets");
 
-    BULLETS("bullets");
+    public static final SummarizeRequestFormat PARAGRAPH = new SummarizeRequestFormat(Value.PARAGRAPH, "paragraph");
 
-    private final String value;
+    private final Value value;
 
-    SummarizeRequestFormat(String value) {
+    private final String string;
+
+    SummarizeRequestFormat(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof SummarizeRequestFormat
+                        && this.string.equals(((SummarizeRequestFormat) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BULLETS:
+                return visitor.visitBullets();
+            case PARAGRAPH:
+                return visitor.visitParagraph();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static SummarizeRequestFormat valueOf(String value) {
+        switch (value) {
+            case "bullets":
+                return BULLETS;
+            case "paragraph":
+                return PARAGRAPH;
+            default:
+                return new SummarizeRequestFormat(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        PARAGRAPH,
+
+        BULLETS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitParagraph();
+
+        T visitBullets();
+
+        T visitUnknown(String unknownType);
     }
 }

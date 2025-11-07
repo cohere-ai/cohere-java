@@ -3,24 +3,91 @@
  */
 package com.cohere.api.resources.finetuning.finetuning.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Strategy {
-    STRATEGY_UNSPECIFIED("STRATEGY_UNSPECIFIED"),
+public final class Strategy {
+    public static final Strategy STRATEGY_UNSPECIFIED =
+            new Strategy(Value.STRATEGY_UNSPECIFIED, "STRATEGY_UNSPECIFIED");
 
-    STRATEGY_VANILLA("STRATEGY_VANILLA"),
+    public static final Strategy STRATEGY_TFEW = new Strategy(Value.STRATEGY_TFEW, "STRATEGY_TFEW");
 
-    STRATEGY_TFEW("STRATEGY_TFEW");
+    public static final Strategy STRATEGY_VANILLA = new Strategy(Value.STRATEGY_VANILLA, "STRATEGY_VANILLA");
 
-    private final String value;
+    private final Value value;
 
-    Strategy(String value) {
+    private final String string;
+
+    Strategy(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Strategy && this.string.equals(((Strategy) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case STRATEGY_UNSPECIFIED:
+                return visitor.visitStrategyUnspecified();
+            case STRATEGY_TFEW:
+                return visitor.visitStrategyTfew();
+            case STRATEGY_VANILLA:
+                return visitor.visitStrategyVanilla();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Strategy valueOf(String value) {
+        switch (value) {
+            case "STRATEGY_UNSPECIFIED":
+                return STRATEGY_UNSPECIFIED;
+            case "STRATEGY_TFEW":
+                return STRATEGY_TFEW;
+            case "STRATEGY_VANILLA":
+                return STRATEGY_VANILLA;
+            default:
+                return new Strategy(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        STRATEGY_UNSPECIFIED,
+
+        STRATEGY_VANILLA,
+
+        STRATEGY_TFEW,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitStrategyUnspecified();
+
+        T visitStrategyVanilla();
+
+        T visitStrategyTfew();
+
+        T visitUnknown(String unknownType);
     }
 }

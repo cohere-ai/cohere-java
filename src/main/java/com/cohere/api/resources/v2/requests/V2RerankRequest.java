@@ -33,6 +33,8 @@ public final class V2RerankRequest {
 
     private final Optional<Integer> maxTokensPerDoc;
 
+    private final Optional<Integer> priority;
+
     private final Map<String, Object> additionalProperties;
 
     private V2RerankRequest(
@@ -41,12 +43,14 @@ public final class V2RerankRequest {
             List<String> documents,
             Optional<Integer> topN,
             Optional<Integer> maxTokensPerDoc,
+            Optional<Integer> priority,
             Map<String, Object> additionalProperties) {
         this.model = model;
         this.query = query;
         this.documents = documents;
         this.topN = topN;
         this.maxTokensPerDoc = maxTokensPerDoc;
+        this.priority = priority;
         this.additionalProperties = additionalProperties;
     }
 
@@ -93,6 +97,15 @@ public final class V2RerankRequest {
         return maxTokensPerDoc;
     }
 
+    /**
+     * @return The priority of the request (lower means earlier handling; default 0 highest priority).
+     * Higher priority requests are handled first, and dropped last when the system is under load.
+     */
+    @JsonProperty("priority")
+    public Optional<Integer> getPriority() {
+        return priority;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -109,12 +122,13 @@ public final class V2RerankRequest {
                 && query.equals(other.query)
                 && documents.equals(other.documents)
                 && topN.equals(other.topN)
-                && maxTokensPerDoc.equals(other.maxTokensPerDoc);
+                && maxTokensPerDoc.equals(other.maxTokensPerDoc)
+                && priority.equals(other.priority);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.model, this.query, this.documents, this.topN, this.maxTokensPerDoc);
+        return Objects.hash(this.model, this.query, this.documents, this.topN, this.maxTokensPerDoc, this.priority);
     }
 
     @java.lang.Override
@@ -170,6 +184,14 @@ public final class V2RerankRequest {
         _FinalStage maxTokensPerDoc(Optional<Integer> maxTokensPerDoc);
 
         _FinalStage maxTokensPerDoc(Integer maxTokensPerDoc);
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         */
+        _FinalStage priority(Optional<Integer> priority);
+
+        _FinalStage priority(Integer priority);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -177,6 +199,8 @@ public final class V2RerankRequest {
         private String model;
 
         private String query;
+
+        private Optional<Integer> priority = Optional.empty();
 
         private Optional<Integer> maxTokensPerDoc = Optional.empty();
 
@@ -196,6 +220,7 @@ public final class V2RerankRequest {
             documents(other.getDocuments());
             topN(other.getTopN());
             maxTokensPerDoc(other.getMaxTokensPerDoc());
+            priority(other.getPriority());
             return this;
         }
 
@@ -220,6 +245,28 @@ public final class V2RerankRequest {
         @JsonSetter("query")
         public _FinalStage query(@NotNull String query) {
             this.query = Objects.requireNonNull(query, "query must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage priority(Integer priority) {
+            this.priority = Optional.ofNullable(priority);
+            return this;
+        }
+
+        /**
+         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
+         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "priority", nulls = Nulls.SKIP)
+        public _FinalStage priority(Optional<Integer> priority) {
+            this.priority = priority;
             return this;
         }
 
@@ -272,7 +319,9 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         public _FinalStage addAllDocuments(List<String> documents) {
-            this.documents.addAll(documents);
+            if (documents != null) {
+                this.documents.addAll(documents);
+            }
             return this;
         }
 
@@ -299,13 +348,15 @@ public final class V2RerankRequest {
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(List<String> documents) {
             this.documents.clear();
-            this.documents.addAll(documents);
+            if (documents != null) {
+                this.documents.addAll(documents);
+            }
             return this;
         }
 
         @java.lang.Override
         public V2RerankRequest build() {
-            return new V2RerankRequest(model, query, documents, topN, maxTokensPerDoc, additionalProperties);
+            return new V2RerankRequest(model, query, documents, topN, maxTokensPerDoc, priority, additionalProperties);
         }
     }
 }

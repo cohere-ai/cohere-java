@@ -3,24 +3,90 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum CitationType {
-    TEXT_CONTENT("TEXT_CONTENT"),
+public final class CitationType {
+    public static final CitationType PLAN = new CitationType(Value.PLAN, "PLAN");
 
-    THINKING_CONTENT("THINKING_CONTENT"),
+    public static final CitationType TEXT_CONTENT = new CitationType(Value.TEXT_CONTENT, "TEXT_CONTENT");
 
-    PLAN("PLAN");
+    public static final CitationType THINKING_CONTENT = new CitationType(Value.THINKING_CONTENT, "THINKING_CONTENT");
 
-    private final String value;
+    private final Value value;
 
-    CitationType(String value) {
+    private final String string;
+
+    CitationType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof CitationType && this.string.equals(((CitationType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case PLAN:
+                return visitor.visitPlan();
+            case TEXT_CONTENT:
+                return visitor.visitTextContent();
+            case THINKING_CONTENT:
+                return visitor.visitThinkingContent();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static CitationType valueOf(String value) {
+        switch (value) {
+            case "PLAN":
+                return PLAN;
+            case "TEXT_CONTENT":
+                return TEXT_CONTENT;
+            case "THINKING_CONTENT":
+                return THINKING_CONTENT;
+            default:
+                return new CitationType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        TEXT_CONTENT,
+
+        THINKING_CONTENT,
+
+        PLAN,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitTextContent();
+
+        T visitThinkingContent();
+
+        T visitPlan();
+
+        T visitUnknown(String unknownType);
     }
 }

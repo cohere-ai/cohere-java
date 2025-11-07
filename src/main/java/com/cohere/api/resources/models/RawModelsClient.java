@@ -69,11 +69,11 @@ public class RawModelsClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new CohereHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetModelResponse.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetModelResponse.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -116,32 +116,30 @@ public class RawModelsClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new CohereApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new CohereException("Network error executing HTTP request", e);
         }
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CohereHttpResponse<ListModelsResponse> list() {
         return list(ModelsListRequest.builder().build());
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CohereHttpResponse<ListModelsResponse> list(ModelsListRequest request) {
         return list(request, null);
     }
 
     /**
-     * Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+     * Returns a list of models available for use.
      */
     public CohereHttpResponse<ListModelsResponse> list(ModelsListRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -175,11 +173,11 @@ public class RawModelsClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new CohereHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ListModelsResponse.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListModelsResponse.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -222,11 +220,9 @@ public class RawModelsClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new CohereApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new CohereException("Network error executing HTTP request", e);
         }

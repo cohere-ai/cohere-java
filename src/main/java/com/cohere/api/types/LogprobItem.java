@@ -134,7 +134,9 @@ public final class LogprobItem {
         @JsonSetter(value = "token_ids", nulls = Nulls.SKIP)
         public Builder tokenIds(List<Integer> tokenIds) {
             this.tokenIds.clear();
-            this.tokenIds.addAll(tokenIds);
+            if (tokenIds != null) {
+                this.tokenIds.addAll(tokenIds);
+            }
             return this;
         }
 
@@ -144,7 +146,9 @@ public final class LogprobItem {
         }
 
         public Builder addAllTokenIds(List<Integer> tokenIds) {
-            this.tokenIds.addAll(tokenIds);
+            if (tokenIds != null) {
+                this.tokenIds.addAll(tokenIds);
+            }
             return this;
         }
 

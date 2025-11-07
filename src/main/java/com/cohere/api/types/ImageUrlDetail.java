@@ -3,24 +3,91 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ImageUrlDetail {
-    AUTO("auto"),
+public final class ImageUrlDetail {
+    public static final ImageUrlDetail LOW = new ImageUrlDetail(Value.LOW, "low");
 
-    LOW("low"),
+    public static final ImageUrlDetail AUTO = new ImageUrlDetail(Value.AUTO, "auto");
 
-    HIGH("high");
+    public static final ImageUrlDetail HIGH = new ImageUrlDetail(Value.HIGH, "high");
 
-    private final String value;
+    private final Value value;
 
-    ImageUrlDetail(String value) {
+    private final String string;
+
+    ImageUrlDetail(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ImageUrlDetail && this.string.equals(((ImageUrlDetail) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case LOW:
+                return visitor.visitLow();
+            case AUTO:
+                return visitor.visitAuto();
+            case HIGH:
+                return visitor.visitHigh();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ImageUrlDetail valueOf(String value) {
+        switch (value) {
+            case "low":
+                return LOW;
+            case "auto":
+                return AUTO;
+            case "high":
+                return HIGH;
+            default:
+                return new ImageUrlDetail(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        AUTO,
+
+        LOW,
+
+        HIGH,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitAuto();
+
+        T visitLow();
+
+        T visitHigh();
+
+        T visitUnknown(String unknownType);
     }
 }
