@@ -20,21 +20,18 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ToolV2.Builder.class)
 public final class ToolV2 {
-    private final Optional<String> type;
-
     private final Optional<ToolV2Function> function;
 
     private final Map<String, Object> additionalProperties;
 
-    private ToolV2(Optional<String> type, Optional<ToolV2Function> function, Map<String, Object> additionalProperties) {
-        this.type = type;
+    private ToolV2(Optional<ToolV2Function> function, Map<String, Object> additionalProperties) {
         this.function = function;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("type")
-    public Optional<String> getType() {
-        return type;
+    public String getType() {
+        return "function";
     }
 
     /**
@@ -57,12 +54,12 @@ public final class ToolV2 {
     }
 
     private boolean equalTo(ToolV2 other) {
-        return type.equals(other.type) && function.equals(other.function);
+        return function.equals(other.function);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.type, this.function);
+        return Objects.hash(this.function);
     }
 
     @java.lang.Override
@@ -76,8 +73,6 @@ public final class ToolV2 {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> type = Optional.empty();
-
         private Optional<ToolV2Function> function = Optional.empty();
 
         @JsonAnySetter
@@ -86,19 +81,7 @@ public final class ToolV2 {
         private Builder() {}
 
         public Builder from(ToolV2 other) {
-            type(other.getType());
             function(other.getFunction());
-            return this;
-        }
-
-        @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<String> type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder type(String type) {
-            this.type = Optional.ofNullable(type);
             return this;
         }
 
@@ -117,7 +100,7 @@ public final class ToolV2 {
         }
 
         public ToolV2 build() {
-            return new ToolV2(type, function, additionalProperties);
+            return new ToolV2(function, additionalProperties);
         }
     }
 }
