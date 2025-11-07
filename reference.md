@@ -31,8 +31,9 @@ To learn how to use the Chat API and RAG follow our [Text Generation guides](htt
 client.chatStream(
     ChatStreamRequest
         .builder()
-        .message("hello world!")
+        .message("hello!")
         .stream(true)
+        .model("command-a-03-2025")
         .build()
 );
 ```
@@ -223,9 +224,8 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 
 **citationQuality:** `Optional<ChatStreamRequestCitationQuality>` 
 
-Defaults to `"accurate"`.
-
-Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want `"accurate"` results, `"fast"` results or no results.
+Defaults to `"enabled"`.
+Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
 
 Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
@@ -487,36 +487,9 @@ To learn how to use the Chat API and RAG follow our [Text Generation guides](htt
 client.chatStream(
     ChatStreamRequest
         .builder()
-        .message("What year was he born?")
+        .message("Tell me about LLMs")
         .stream(false)
-        .chatHistory(
-            new ArrayList<Message>(
-                Arrays.asList(
-                    Message.user(
-                        ChatMessage
-                            .builder()
-                            .message("Who discovered gravity?")
-                            .build()
-                    ),
-                    Message.chatbot(
-                        ChatMessage
-                            .builder()
-                            .message("The man who is widely credited with discovering gravity is Sir Isaac Newton")
-                            .build()
-                    )
-                )
-            )
-        )
-        .connectors(
-            new ArrayList<ChatConnector>(
-                Arrays.asList(
-                    ChatConnector
-                        .builder()
-                        .id("web-search")
-                        .build()
-                )
-            )
-        )
+        .model("command-a-03-2025")
         .build()
 );
 ```
@@ -707,9 +680,8 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 
 **citationQuality:** `Optional<ChatRequestCitationQuality>` 
 
-Defaults to `"accurate"`.
-
-Dictates the approach taken to generating citations as part of the RAG flow by allowing the user to specify whether they want `"accurate"` results, `"fast"` results or no results.
+Defaults to `"enabled"`.
+Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
 
 Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
     
@@ -1511,7 +1483,7 @@ client.embed(
 
 An array of image data URIs for the model to embed. Maximum number of images per call is `1`.
 
-The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg` or `image/png` format and has a maximum size of 5MB.
+The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format and has a maximum size of 5MB.
 
 Images are only supported with Embed v3.0 and newer models.
     
@@ -2189,7 +2161,7 @@ Follow the [Migration Guide](https://docs.cohere.com/v2/docs/migrating-v1-to-v2)
 client.v2().chatStream(
     V2ChatStreamRequest
         .builder()
-        .model("command-r")
+        .model("command-a-03-2025")
         .messages(
             new ArrayList<ChatMessageV2>(
                 Arrays.asList(
@@ -2197,7 +2169,7 @@ client.v2().chatStream(
                         UserMessageV2
                             .builder()
                             .content(
-                                UserMessageV2Content.of("Hello!")
+                                UserMessageV2Content.of("Tell me about LLMs")
                             )
                             .build()
                     )
@@ -2235,7 +2207,7 @@ Streaming is beneficial for user interfaces that render the contents of the resp
 <dl>
 <dd>
 
-**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models) or the ID of a [fine-tuned](https://docs.cohere.com/v2/docs/chat-fine-tuning) model.
+**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models).
     
 </dd>
 </dl>
@@ -2435,6 +2407,17 @@ If tool_choice isn't specified, then the model is free to choose whether to use 
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**priority:** `Optional<Integer>` 
+
+The priority of the request (lower means earlier handling; default 0 highest priority).
+Higher priority requests are handled first, and dropped last when the system is under load.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -2521,7 +2504,7 @@ Streaming is beneficial for user interfaces that render the contents of the resp
 <dl>
 <dd>
 
-**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models) or the ID of a [fine-tuned](https://docs.cohere.com/v2/docs/chat-fine-tuning) model.
+**model:** `String` — The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models).
     
 </dd>
 </dl>
@@ -2721,6 +2704,17 @@ If tool_choice isn't specified, then the model is free to choose whether to use 
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**priority:** `Optional<Integer>` 
+
+The priority of the request (lower means earlier handling; default 0 highest priority).
+Higher priority requests are handled first, and dropped last when the system is under load.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -2803,7 +2797,7 @@ client.v2().embed(
 
 An array of image data URIs for the model to embed. Maximum number of images per call is `1`.
 
-The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg` or `image/png` format and has a maximum size of 5MB.
+The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format and has a maximum size of 5MB.
 
 Image embeddings are supported with Embed v3.0 and newer models.
     
@@ -2880,6 +2874,17 @@ One of `NONE|START|END` to specify how the API will handle inputs longer than th
 Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
 
 If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priority:** `Optional<Integer>` 
+
+The priority of the request (lower means earlier handling; default 0 highest priority).
+Higher priority requests are handled first, and dropped last when the system is under load.
     
 </dd>
 </dl>
@@ -2985,6 +2990,275 @@ For optimal performance we recommend against sending more than 1,000 documents i
 <dd>
 
 **maxTokensPerDoc:** `Optional<Integer>` — Defaults to `4096`. Long documents will be automatically truncated to the specified number of tokens.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priority:** `Optional<Integer>` 
+
+The priority of the request (lower means earlier handling; default 0 highest priority).
+Higher priority requests are handled first, and dropped last when the system is under load.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Batches
+<details><summary><code>client.batches.list() -> ListBatchesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List the batches for the current user
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.batches().list(
+    BatchesListBatchesRequest
+        .builder()
+        .pageSize(1)
+        .pageToken("page_token")
+        .orderBy("order_by")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**pageSize:** `Optional<Integer>` 
+
+The maximum number of batches to return. The service may return fewer than
+this value.
+If unspecified, at most 50 batches will be returned.
+The maximum value is 1000; values above 1000 will be coerced to 1000.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageToken:** `Optional<String>` 
+
+A page token, received from a previous `ListBatches` call.
+Provide this to retrieve the subsequent page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderBy:** `Optional<String>` 
+
+Batches can be ordered by creation time or last updated time.
+Use `created_at` for creation time or `updated_at` for last updated time.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.batches.create(request) -> CreateBatchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates and executes a batch from an uploaded dataset of requests
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.batches().create(
+    Batch
+        .builder()
+        .name("name")
+        .inputDatasetId("input_dataset_id")
+        .model("model")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Batch` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.batches.retrieve(id) -> GetBatchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a batch
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.batches().retrieve("id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `String` — The batch ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.batches.cancel(id) -> Map&lt;String, Object&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancels an in-progress batch
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.batches().cancel("id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `String` — The batch ID.
     
 </dd>
 </dl>
@@ -3297,6 +3571,12 @@ List datasets that have been created.
 client.datasets().list(
     DatasetsListRequest
         .builder()
+        .datasetType("datasetType")
+        .before(OffsetDateTime.parse("2024-01-15T09:30:00Z"))
+        .after(OffsetDateTime.parse("2024-01-15T09:30:00Z"))
+        .limit(1.1)
+        .offset(1.1)
+        .validationStatus(DatasetValidationStatus.UNKNOWN)
         .build()
 );
 ```
@@ -3397,6 +3677,10 @@ client.datasets().create(
         .builder()
         .name("name")
         .type(DatasetType.EMBED_INPUT)
+        .keepOriginalFile(true)
+        .skipMalformedInput(true)
+        .textSeparator("text_separator")
+        .csvDelimiter("csv_delimiter")
         .build()
 );
 ```
@@ -3421,7 +3705,7 @@ client.datasets().create(
 <dl>
 <dd>
 
-**type:** `DatasetType` — The dataset type, which is used to validate the data. Valid types are `embed-input`, `reranker-finetune-input`, `single-label-classification-finetune-input`, `chat-finetune-input`, and `multi-label-classification-finetune-input`.
+**type:** `DatasetType` — The dataset type, which is used to validate the data. The only valid type is `embed-input` used in conjunction with the Embed Jobs API.
     
 </dd>
 </dl>
@@ -3659,6 +3943,8 @@ Returns a list of connectors ordered by descending creation date (newer first). 
 client.connectors().list(
     ConnectorsListRequest
         .builder()
+        .limit(1.1)
+        .offset(1.1)
         .build()
 );
 ```
@@ -4065,6 +4351,7 @@ client.connectors().oAuthAuthorize(
     "id",
     ConnectorsOAuthAuthorizeRequest
         .builder()
+        .afterTokenRedirect("after_token_redirect")
         .build()
 );
 ```
@@ -4168,7 +4455,7 @@ client.models().get("command-a-03-2025");
 <dl>
 <dd>
 
-Returns a list of models available for use. The list contains models from Cohere as well as your fine-tuned models.
+Returns a list of models available for use.
 </dd>
 </dl>
 </dd>
@@ -4186,6 +4473,10 @@ Returns a list of models available for use. The list contains models from Cohere
 client.models().list(
     ModelsListRequest
         .builder()
+        .pageSize(1.1)
+        .pageToken("page_token")
+        .endpoint(CompatibleEndpoint.CHAT)
+        .defaultOnly(true)
         .build()
 );
 ```
@@ -4272,6 +4563,9 @@ Returns a list of fine-tuned models that the user has access to.
 client.finetuning().listFinetunedModels(
     FinetuningListFinetunedModelsRequest
         .builder()
+        .pageSize(1)
+        .pageToken("page_token")
+        .orderBy("order_by")
         .build()
 );
 ```
@@ -4635,6 +4929,9 @@ client.finetuning().listEvents(
     "finetuned_model_id",
     FinetuningListEventsRequest
         .builder()
+        .pageSize(1)
+        .pageToken("page_token")
+        .orderBy("order_by")
         .build()
 );
 ```
@@ -4730,6 +5027,8 @@ client.finetuning().listTrainingStepMetrics(
     "finetuned_model_id",
     FinetuningListTrainingStepMetricsRequest
         .builder()
+        .pageSize(1)
+        .pageToken("page_token")
         .build()
 );
 ```

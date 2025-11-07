@@ -209,9 +209,6 @@ public class AsyncCohereBuilder {
     protected void validateConfiguration() {}
 
     public AsyncCohere build() {
-        if (token == null) {
-            throw new RuntimeException("Please provide token or set the CO_API_KEY environment variable.");
-        }
         validateConfiguration();
         return new AsyncCohere(buildClientOptions());
     }
