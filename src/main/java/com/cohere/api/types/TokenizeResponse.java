@@ -114,7 +114,9 @@ public final class TokenizeResponse {
         @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
         public Builder tokens(List<Integer> tokens) {
             this.tokens.clear();
-            this.tokens.addAll(tokens);
+            if (tokens != null) {
+                this.tokens.addAll(tokens);
+            }
             return this;
         }
 
@@ -124,14 +126,18 @@ public final class TokenizeResponse {
         }
 
         public Builder addAllTokens(List<Integer> tokens) {
-            this.tokens.addAll(tokens);
+            if (tokens != null) {
+                this.tokens.addAll(tokens);
+            }
             return this;
         }
 
         @JsonSetter(value = "token_strings", nulls = Nulls.SKIP)
         public Builder tokenStrings(List<String> tokenStrings) {
             this.tokenStrings.clear();
-            this.tokenStrings.addAll(tokenStrings);
+            if (tokenStrings != null) {
+                this.tokenStrings.addAll(tokenStrings);
+            }
             return this;
         }
 
@@ -141,7 +147,9 @@ public final class TokenizeResponse {
         }
 
         public Builder addAllTokenStrings(List<String> tokenStrings) {
-            this.tokenStrings.addAll(tokenStrings);
+            if (tokenStrings != null) {
+                this.tokenStrings.addAll(tokenStrings);
+            }
             return this;
         }
 

@@ -3,22 +3,84 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ClassifyResponseClassificationsItemClassificationType {
-    SINGLE_LABEL("single-label"),
+public final class ClassifyResponseClassificationsItemClassificationType {
+    public static final ClassifyResponseClassificationsItemClassificationType MULTI_LABEL =
+            new ClassifyResponseClassificationsItemClassificationType(Value.MULTI_LABEL, "multi-label");
 
-    MULTI_LABEL("multi-label");
+    public static final ClassifyResponseClassificationsItemClassificationType SINGLE_LABEL =
+            new ClassifyResponseClassificationsItemClassificationType(Value.SINGLE_LABEL, "single-label");
 
-    private final String value;
+    private final Value value;
 
-    ClassifyResponseClassificationsItemClassificationType(String value) {
+    private final String string;
+
+    ClassifyResponseClassificationsItemClassificationType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ClassifyResponseClassificationsItemClassificationType
+                        && this.string.equals(((ClassifyResponseClassificationsItemClassificationType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case MULTI_LABEL:
+                return visitor.visitMultiLabel();
+            case SINGLE_LABEL:
+                return visitor.visitSingleLabel();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ClassifyResponseClassificationsItemClassificationType valueOf(String value) {
+        switch (value) {
+            case "multi-label":
+                return MULTI_LABEL;
+            case "single-label":
+                return SINGLE_LABEL;
+            default:
+                return new ClassifyResponseClassificationsItemClassificationType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        SINGLE_LABEL,
+
+        MULTI_LABEL,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitSingleLabel();
+
+        T visitMultiLabel();
+
+        T visitUnknown(String unknownType);
     }
 }

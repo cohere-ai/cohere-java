@@ -146,7 +146,9 @@ public final class ToolCall {
          */
         @java.lang.Override
         public _FinalStage putAllParameters(Map<String, Object> parameters) {
-            this.parameters.putAll(parameters);
+            if (parameters != null) {
+                this.parameters.putAll(parameters);
+            }
             return this;
         }
 
@@ -157,7 +159,9 @@ public final class ToolCall {
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
         public _FinalStage parameters(Map<String, Object> parameters) {
             this.parameters.clear();
-            this.parameters.putAll(parameters);
+            if (parameters != null) {
+                this.parameters.putAll(parameters);
+            }
             return this;
         }
 

@@ -3,30 +3,121 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum EmbeddingType {
-    FLOAT("float"),
+public final class EmbeddingType {
+    public static final EmbeddingType FLOAT = new EmbeddingType(Value.FLOAT, "float");
 
-    INT_8("int8"),
+    public static final EmbeddingType BASE_64 = new EmbeddingType(Value.BASE_64, "base64");
 
-    UINT_8("uint8"),
+    public static final EmbeddingType BINARY = new EmbeddingType(Value.BINARY, "binary");
 
-    BINARY("binary"),
+    public static final EmbeddingType UINT_8 = new EmbeddingType(Value.UINT_8, "uint8");
 
-    UBINARY("ubinary"),
+    public static final EmbeddingType UBINARY = new EmbeddingType(Value.UBINARY, "ubinary");
 
-    BASE_64("base64");
+    public static final EmbeddingType INT_8 = new EmbeddingType(Value.INT_8, "int8");
 
-    private final String value;
+    private final Value value;
 
-    EmbeddingType(String value) {
+    private final String string;
+
+    EmbeddingType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof EmbeddingType && this.string.equals(((EmbeddingType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case FLOAT:
+                return visitor.visitFloat();
+            case BASE_64:
+                return visitor.visitBase64();
+            case BINARY:
+                return visitor.visitBinary();
+            case UINT_8:
+                return visitor.visitUint8();
+            case UBINARY:
+                return visitor.visitUbinary();
+            case INT_8:
+                return visitor.visitInt8();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static EmbeddingType valueOf(String value) {
+        switch (value) {
+            case "float":
+                return FLOAT;
+            case "base64":
+                return BASE_64;
+            case "binary":
+                return BINARY;
+            case "uint8":
+                return UINT_8;
+            case "ubinary":
+                return UBINARY;
+            case "int8":
+                return INT_8;
+            default:
+                return new EmbeddingType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        FLOAT,
+
+        INT_8,
+
+        UINT_8,
+
+        BINARY,
+
+        UBINARY,
+
+        BASE_64,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitFloat();
+
+        T visitInt8();
+
+        T visitUint8();
+
+        T visitBinary();
+
+        T visitUbinary();
+
+        T visitBase64();
+
+        T visitUnknown(String unknownType);
     }
 }

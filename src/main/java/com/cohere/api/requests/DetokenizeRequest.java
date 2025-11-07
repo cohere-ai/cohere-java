@@ -137,7 +137,9 @@ public final class DetokenizeRequest {
          */
         @java.lang.Override
         public _FinalStage addAllTokens(List<Integer> tokens) {
-            this.tokens.addAll(tokens);
+            if (tokens != null) {
+                this.tokens.addAll(tokens);
+            }
             return this;
         }
 
@@ -158,7 +160,9 @@ public final class DetokenizeRequest {
         @JsonSetter(value = "tokens", nulls = Nulls.SKIP)
         public _FinalStage tokens(List<Integer> tokens) {
             this.tokens.clear();
-            this.tokens.addAll(tokens);
+            if (tokens != null) {
+                this.tokens.addAll(tokens);
+            }
             return this;
         }
 

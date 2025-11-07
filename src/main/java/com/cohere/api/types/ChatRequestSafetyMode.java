@@ -3,24 +3,92 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatRequestSafetyMode {
-    CONTEXTUAL("CONTEXTUAL"),
+public final class ChatRequestSafetyMode {
+    public static final ChatRequestSafetyMode NONE = new ChatRequestSafetyMode(Value.NONE, "NONE");
 
-    STRICT("STRICT"),
+    public static final ChatRequestSafetyMode STRICT = new ChatRequestSafetyMode(Value.STRICT, "STRICT");
 
-    NONE("NONE");
+    public static final ChatRequestSafetyMode CONTEXTUAL = new ChatRequestSafetyMode(Value.CONTEXTUAL, "CONTEXTUAL");
 
-    private final String value;
+    private final Value value;
 
-    ChatRequestSafetyMode(String value) {
+    private final String string;
+
+    ChatRequestSafetyMode(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatRequestSafetyMode
+                        && this.string.equals(((ChatRequestSafetyMode) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case NONE:
+                return visitor.visitNone();
+            case STRICT:
+                return visitor.visitStrict();
+            case CONTEXTUAL:
+                return visitor.visitContextual();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatRequestSafetyMode valueOf(String value) {
+        switch (value) {
+            case "NONE":
+                return NONE;
+            case "STRICT":
+                return STRICT;
+            case "CONTEXTUAL":
+                return CONTEXTUAL;
+            default:
+                return new ChatRequestSafetyMode(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CONTEXTUAL,
+
+        STRICT,
+
+        NONE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitContextual();
+
+        T visitStrict();
+
+        T visitNone();
+
+        T visitUnknown(String unknownType);
     }
 }

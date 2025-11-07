@@ -307,7 +307,9 @@ public final class ClassifyResponseClassificationsItem {
          */
         @java.lang.Override
         public _FinalStage putAllLabels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels) {
-            this.labels.putAll(labels);
+            if (labels != null) {
+                this.labels.putAll(labels);
+            }
             return this;
         }
 
@@ -318,7 +320,9 @@ public final class ClassifyResponseClassificationsItem {
         @JsonSetter(value = "labels", nulls = Nulls.SKIP)
         public _FinalStage labels(Map<String, ClassifyResponseClassificationsItemLabelsValue> labels) {
             this.labels.clear();
-            this.labels.putAll(labels);
+            if (labels != null) {
+                this.labels.putAll(labels);
+            }
             return this;
         }
 
@@ -328,7 +332,9 @@ public final class ClassifyResponseClassificationsItem {
          */
         @java.lang.Override
         public _FinalStage addAllConfidences(List<Float> confidences) {
-            this.confidences.addAll(confidences);
+            if (confidences != null) {
+                this.confidences.addAll(confidences);
+            }
             return this;
         }
 
@@ -349,7 +355,9 @@ public final class ClassifyResponseClassificationsItem {
         @JsonSetter(value = "confidences", nulls = Nulls.SKIP)
         public _FinalStage confidences(List<Float> confidences) {
             this.confidences.clear();
-            this.confidences.addAll(confidences);
+            if (confidences != null) {
+                this.confidences.addAll(confidences);
+            }
             return this;
         }
 
@@ -379,7 +387,9 @@ public final class ClassifyResponseClassificationsItem {
          */
         @java.lang.Override
         public _FinalStage addAllPredictions(List<String> predictions) {
-            this.predictions.addAll(predictions);
+            if (predictions != null) {
+                this.predictions.addAll(predictions);
+            }
             return this;
         }
 
@@ -400,7 +410,9 @@ public final class ClassifyResponseClassificationsItem {
         @JsonSetter(value = "predictions", nulls = Nulls.SKIP)
         public _FinalStage predictions(List<String> predictions) {
             this.predictions.clear();
-            this.predictions.addAll(predictions);
+            if (predictions != null) {
+                this.predictions.addAll(predictions);
+            }
             return this;
         }
 

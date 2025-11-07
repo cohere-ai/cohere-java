@@ -3,24 +3,92 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ClassifyRequestTruncate {
-    NONE("NONE"),
+public final class ClassifyRequestTruncate {
+    public static final ClassifyRequestTruncate END = new ClassifyRequestTruncate(Value.END, "END");
 
-    START("START"),
+    public static final ClassifyRequestTruncate NONE = new ClassifyRequestTruncate(Value.NONE, "NONE");
 
-    END("END");
+    public static final ClassifyRequestTruncate START = new ClassifyRequestTruncate(Value.START, "START");
 
-    private final String value;
+    private final Value value;
 
-    ClassifyRequestTruncate(String value) {
+    private final String string;
+
+    ClassifyRequestTruncate(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ClassifyRequestTruncate
+                        && this.string.equals(((ClassifyRequestTruncate) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case END:
+                return visitor.visitEnd();
+            case NONE:
+                return visitor.visitNone();
+            case START:
+                return visitor.visitStart();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ClassifyRequestTruncate valueOf(String value) {
+        switch (value) {
+            case "END":
+                return END;
+            case "NONE":
+                return NONE;
+            case "START":
+                return START;
+            default:
+                return new ClassifyRequestTruncate(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        NONE,
+
+        START,
+
+        END,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitNone();
+
+        T visitStart();
+
+        T visitEnd();
+
+        T visitUnknown(String unknownType);
     }
 }

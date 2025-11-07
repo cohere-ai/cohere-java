@@ -3,34 +3,187 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum DatasetType {
-    EMBED_INPUT("embed-input"),
+public final class DatasetType {
+    public static final DatasetType EMBED_INPUT = new DatasetType(Value.EMBED_INPUT, "embed-input");
 
-    EMBED_RESULT("embed-result"),
+    public static final DatasetType SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT = new DatasetType(
+            Value.SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT, "single-label-classification-finetune-input");
 
-    CLUSTER_RESULT("cluster-result"),
+    public static final DatasetType EMBED_RESULT = new DatasetType(Value.EMBED_RESULT, "embed-result");
 
-    CLUSTER_OUTLIERS("cluster-outliers"),
+    public static final DatasetType BATCH_CHAT_INPUT = new DatasetType(Value.BATCH_CHAT_INPUT, "batch-chat-input");
 
-    RERANKER_FINETUNE_INPUT("reranker-finetune-input"),
+    public static final DatasetType BATCH_OPENAI_CHAT_INPUT =
+            new DatasetType(Value.BATCH_OPENAI_CHAT_INPUT, "batch-openai-chat-input");
 
-    SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT("single-label-classification-finetune-input"),
+    public static final DatasetType MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT = new DatasetType(
+            Value.MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT, "multi-label-classification-finetune-input");
 
-    CHAT_FINETUNE_INPUT("chat-finetune-input"),
+    public static final DatasetType RERANKER_FINETUNE_INPUT =
+            new DatasetType(Value.RERANKER_FINETUNE_INPUT, "reranker-finetune-input");
 
-    MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT("multi-label-classification-finetune-input");
+    public static final DatasetType BATCH_EMBED_V_2_INPUT =
+            new DatasetType(Value.BATCH_EMBED_V_2_INPUT, "batch-embed-v2-input");
 
-    private final String value;
+    public static final DatasetType BATCH_CHAT_V_2_INPUT =
+            new DatasetType(Value.BATCH_CHAT_V_2_INPUT, "batch-chat-v2-input");
 
-    DatasetType(String value) {
+    public static final DatasetType CLUSTER_RESULT = new DatasetType(Value.CLUSTER_RESULT, "cluster-result");
+
+    public static final DatasetType CLUSTER_OUTLIERS = new DatasetType(Value.CLUSTER_OUTLIERS, "cluster-outliers");
+
+    public static final DatasetType CHAT_FINETUNE_INPUT =
+            new DatasetType(Value.CHAT_FINETUNE_INPUT, "chat-finetune-input");
+
+    private final Value value;
+
+    private final String string;
+
+    DatasetType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof DatasetType && this.string.equals(((DatasetType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case EMBED_INPUT:
+                return visitor.visitEmbedInput();
+            case SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT:
+                return visitor.visitSingleLabelClassificationFinetuneInput();
+            case EMBED_RESULT:
+                return visitor.visitEmbedResult();
+            case BATCH_CHAT_INPUT:
+                return visitor.visitBatchChatInput();
+            case BATCH_OPENAI_CHAT_INPUT:
+                return visitor.visitBatchOpenaiChatInput();
+            case MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT:
+                return visitor.visitMultiLabelClassificationFinetuneInput();
+            case RERANKER_FINETUNE_INPUT:
+                return visitor.visitRerankerFinetuneInput();
+            case BATCH_EMBED_V_2_INPUT:
+                return visitor.visitBatchEmbedV2Input();
+            case BATCH_CHAT_V_2_INPUT:
+                return visitor.visitBatchChatV2Input();
+            case CLUSTER_RESULT:
+                return visitor.visitClusterResult();
+            case CLUSTER_OUTLIERS:
+                return visitor.visitClusterOutliers();
+            case CHAT_FINETUNE_INPUT:
+                return visitor.visitChatFinetuneInput();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static DatasetType valueOf(String value) {
+        switch (value) {
+            case "embed-input":
+                return EMBED_INPUT;
+            case "single-label-classification-finetune-input":
+                return SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT;
+            case "embed-result":
+                return EMBED_RESULT;
+            case "batch-chat-input":
+                return BATCH_CHAT_INPUT;
+            case "batch-openai-chat-input":
+                return BATCH_OPENAI_CHAT_INPUT;
+            case "multi-label-classification-finetune-input":
+                return MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT;
+            case "reranker-finetune-input":
+                return RERANKER_FINETUNE_INPUT;
+            case "batch-embed-v2-input":
+                return BATCH_EMBED_V_2_INPUT;
+            case "batch-chat-v2-input":
+                return BATCH_CHAT_V_2_INPUT;
+            case "cluster-result":
+                return CLUSTER_RESULT;
+            case "cluster-outliers":
+                return CLUSTER_OUTLIERS;
+            case "chat-finetune-input":
+                return CHAT_FINETUNE_INPUT;
+            default:
+                return new DatasetType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        EMBED_INPUT,
+
+        EMBED_RESULT,
+
+        CLUSTER_RESULT,
+
+        CLUSTER_OUTLIERS,
+
+        RERANKER_FINETUNE_INPUT,
+
+        SINGLE_LABEL_CLASSIFICATION_FINETUNE_INPUT,
+
+        CHAT_FINETUNE_INPUT,
+
+        MULTI_LABEL_CLASSIFICATION_FINETUNE_INPUT,
+
+        BATCH_CHAT_INPUT,
+
+        BATCH_OPENAI_CHAT_INPUT,
+
+        BATCH_EMBED_V_2_INPUT,
+
+        BATCH_CHAT_V_2_INPUT,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitEmbedInput();
+
+        T visitEmbedResult();
+
+        T visitClusterResult();
+
+        T visitClusterOutliers();
+
+        T visitRerankerFinetuneInput();
+
+        T visitSingleLabelClassificationFinetuneInput();
+
+        T visitChatFinetuneInput();
+
+        T visitMultiLabelClassificationFinetuneInput();
+
+        T visitBatchChatInput();
+
+        T visitBatchOpenaiChatInput();
+
+        T visitBatchEmbedV2Input();
+
+        T visitBatchChatV2Input();
+
+        T visitUnknown(String unknownType);
     }
 }

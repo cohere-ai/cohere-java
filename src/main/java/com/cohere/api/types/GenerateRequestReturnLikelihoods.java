@@ -3,24 +3,94 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum GenerateRequestReturnLikelihoods {
-    GENERATION("GENERATION"),
+public final class GenerateRequestReturnLikelihoods {
+    public static final GenerateRequestReturnLikelihoods ALL = new GenerateRequestReturnLikelihoods(Value.ALL, "ALL");
 
-    ALL("ALL"),
+    public static final GenerateRequestReturnLikelihoods NONE =
+            new GenerateRequestReturnLikelihoods(Value.NONE, "NONE");
 
-    NONE("NONE");
+    public static final GenerateRequestReturnLikelihoods GENERATION =
+            new GenerateRequestReturnLikelihoods(Value.GENERATION, "GENERATION");
 
-    private final String value;
+    private final Value value;
 
-    GenerateRequestReturnLikelihoods(String value) {
+    private final String string;
+
+    GenerateRequestReturnLikelihoods(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof GenerateRequestReturnLikelihoods
+                        && this.string.equals(((GenerateRequestReturnLikelihoods) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case ALL:
+                return visitor.visitAll();
+            case NONE:
+                return visitor.visitNone();
+            case GENERATION:
+                return visitor.visitGeneration();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static GenerateRequestReturnLikelihoods valueOf(String value) {
+        switch (value) {
+            case "ALL":
+                return ALL;
+            case "NONE":
+                return NONE;
+            case "GENERATION":
+                return GENERATION;
+            default:
+                return new GenerateRequestReturnLikelihoods(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        GENERATION,
+
+        ALL,
+
+        NONE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitGeneration();
+
+        T visitAll();
+
+        T visitNone();
+
+        T visitUnknown(String unknownType);
     }
 }

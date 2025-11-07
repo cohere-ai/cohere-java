@@ -229,7 +229,9 @@ public final class EmbedFloatsResponse {
          */
         @java.lang.Override
         public _FinalStage addAllTexts(List<String> texts) {
-            this.texts.addAll(texts);
+            if (texts != null) {
+                this.texts.addAll(texts);
+            }
             return this;
         }
 
@@ -250,7 +252,9 @@ public final class EmbedFloatsResponse {
         @JsonSetter(value = "texts", nulls = Nulls.SKIP)
         public _FinalStage texts(List<String> texts) {
             this.texts.clear();
-            this.texts.addAll(texts);
+            if (texts != null) {
+                this.texts.addAll(texts);
+            }
             return this;
         }
 
@@ -260,7 +264,9 @@ public final class EmbedFloatsResponse {
          */
         @java.lang.Override
         public _FinalStage addAllEmbeddings(List<List<Double>> embeddings) {
-            this.embeddings.addAll(embeddings);
+            if (embeddings != null) {
+                this.embeddings.addAll(embeddings);
+            }
             return this;
         }
 
@@ -281,7 +287,9 @@ public final class EmbedFloatsResponse {
         @JsonSetter(value = "embeddings", nulls = Nulls.SKIP)
         public _FinalStage embeddings(List<List<Double>> embeddings) {
             this.embeddings.clear();
-            this.embeddings.addAll(embeddings);
+            if (embeddings != null) {
+                this.embeddings.addAll(embeddings);
+            }
             return this;
         }
 

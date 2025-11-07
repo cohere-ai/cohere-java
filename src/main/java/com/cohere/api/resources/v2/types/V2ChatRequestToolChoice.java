@@ -3,22 +3,82 @@
  */
 package com.cohere.api.resources.v2.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum V2ChatRequestToolChoice {
-    REQUIRED("REQUIRED"),
+public final class V2ChatRequestToolChoice {
+    public static final V2ChatRequestToolChoice REQUIRED = new V2ChatRequestToolChoice(Value.REQUIRED, "REQUIRED");
 
-    NONE("NONE");
+    public static final V2ChatRequestToolChoice NONE = new V2ChatRequestToolChoice(Value.NONE, "NONE");
 
-    private final String value;
+    private final Value value;
 
-    V2ChatRequestToolChoice(String value) {
+    private final String string;
+
+    V2ChatRequestToolChoice(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof V2ChatRequestToolChoice
+                        && this.string.equals(((V2ChatRequestToolChoice) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case REQUIRED:
+                return visitor.visitRequired();
+            case NONE:
+                return visitor.visitNone();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static V2ChatRequestToolChoice valueOf(String value) {
+        switch (value) {
+            case "REQUIRED":
+                return REQUIRED;
+            case "NONE":
+                return NONE;
+            default:
+                return new V2ChatRequestToolChoice(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        REQUIRED,
+
+        NONE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitRequired();
+
+        T visitNone();
+
+        T visitUnknown(String unknownType);
     }
 }

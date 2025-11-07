@@ -3,24 +3,91 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum AuthTokenType {
-    BEARER("bearer"),
+public final class AuthTokenType {
+    public static final AuthTokenType BEARER = new AuthTokenType(Value.BEARER, "bearer");
 
-    BASIC("basic"),
+    public static final AuthTokenType BASIC = new AuthTokenType(Value.BASIC, "basic");
 
-    NOSCHEME("noscheme");
+    public static final AuthTokenType NOSCHEME = new AuthTokenType(Value.NOSCHEME, "noscheme");
 
-    private final String value;
+    private final Value value;
 
-    AuthTokenType(String value) {
+    private final String string;
+
+    AuthTokenType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof AuthTokenType && this.string.equals(((AuthTokenType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BEARER:
+                return visitor.visitBearer();
+            case BASIC:
+                return visitor.visitBasic();
+            case NOSCHEME:
+                return visitor.visitNoscheme();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static AuthTokenType valueOf(String value) {
+        switch (value) {
+            case "bearer":
+                return BEARER;
+            case "basic":
+                return BASIC;
+            case "noscheme":
+                return NOSCHEME;
+            default:
+                return new AuthTokenType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        BEARER,
+
+        BASIC,
+
+        NOSCHEME,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitBearer();
+
+        T visitBasic();
+
+        T visitNoscheme();
+
+        T visitUnknown(String unknownType);
     }
 }

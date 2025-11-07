@@ -3,22 +3,82 @@
  */
 package com.cohere.api.resources.embedjobs.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum CreateEmbedJobRequestTruncate {
-    START("START"),
+public final class CreateEmbedJobRequestTruncate {
+    public static final CreateEmbedJobRequestTruncate END = new CreateEmbedJobRequestTruncate(Value.END, "END");
 
-    END("END");
+    public static final CreateEmbedJobRequestTruncate START = new CreateEmbedJobRequestTruncate(Value.START, "START");
 
-    private final String value;
+    private final Value value;
 
-    CreateEmbedJobRequestTruncate(String value) {
+    private final String string;
+
+    CreateEmbedJobRequestTruncate(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof CreateEmbedJobRequestTruncate
+                        && this.string.equals(((CreateEmbedJobRequestTruncate) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case END:
+                return visitor.visitEnd();
+            case START:
+                return visitor.visitStart();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static CreateEmbedJobRequestTruncate valueOf(String value) {
+        switch (value) {
+            case "END":
+                return END;
+            case "START":
+                return START;
+            default:
+                return new CreateEmbedJobRequestTruncate(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        START,
+
+        END,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitStart();
+
+        T visitEnd();
+
+        T visitUnknown(String unknownType);
     }
 }

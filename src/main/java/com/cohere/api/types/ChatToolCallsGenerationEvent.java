@@ -111,7 +111,9 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
         @JsonSetter(value = "tool_calls", nulls = Nulls.SKIP)
         public Builder toolCalls(List<ToolCall> toolCalls) {
             this.toolCalls.clear();
-            this.toolCalls.addAll(toolCalls);
+            if (toolCalls != null) {
+                this.toolCalls.addAll(toolCalls);
+            }
             return this;
         }
 
@@ -121,7 +123,9 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
         }
 
         public Builder addAllToolCalls(List<ToolCall> toolCalls) {
-            this.toolCalls.addAll(toolCalls);
+            if (toolCalls != null) {
+                this.toolCalls.addAll(toolCalls);
+            }
             return this;
         }
 

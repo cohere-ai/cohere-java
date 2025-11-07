@@ -88,7 +88,9 @@ public final class ChatSearchQueriesGenerationEvent implements IChatStreamEvent 
         @JsonSetter(value = "search_queries", nulls = Nulls.SKIP)
         public Builder searchQueries(List<ChatSearchQuery> searchQueries) {
             this.searchQueries.clear();
-            this.searchQueries.addAll(searchQueries);
+            if (searchQueries != null) {
+                this.searchQueries.addAll(searchQueries);
+            }
             return this;
         }
 
@@ -98,7 +100,9 @@ public final class ChatSearchQueriesGenerationEvent implements IChatStreamEvent 
         }
 
         public Builder addAllSearchQueries(List<ChatSearchQuery> searchQueries) {
-            this.searchQueries.addAll(searchQueries);
+            if (searchQueries != null) {
+                this.searchQueries.addAll(searchQueries);
+            }
             return this;
         }
 

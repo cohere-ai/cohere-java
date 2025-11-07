@@ -3,28 +3,113 @@
  */
 package com.cohere.api.resources.finetuning.finetuning.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum BaseType {
-    BASE_TYPE_UNSPECIFIED("BASE_TYPE_UNSPECIFIED"),
+public final class BaseType {
+    public static final BaseType BASE_TYPE_RERANK = new BaseType(Value.BASE_TYPE_RERANK, "BASE_TYPE_RERANK");
 
-    BASE_TYPE_GENERATIVE("BASE_TYPE_GENERATIVE"),
+    public static final BaseType BASE_TYPE_CHAT = new BaseType(Value.BASE_TYPE_CHAT, "BASE_TYPE_CHAT");
 
-    BASE_TYPE_CLASSIFICATION("BASE_TYPE_CLASSIFICATION"),
+    public static final BaseType BASE_TYPE_UNSPECIFIED =
+            new BaseType(Value.BASE_TYPE_UNSPECIFIED, "BASE_TYPE_UNSPECIFIED");
 
-    BASE_TYPE_RERANK("BASE_TYPE_RERANK"),
+    public static final BaseType BASE_TYPE_GENERATIVE =
+            new BaseType(Value.BASE_TYPE_GENERATIVE, "BASE_TYPE_GENERATIVE");
 
-    BASE_TYPE_CHAT("BASE_TYPE_CHAT");
+    public static final BaseType BASE_TYPE_CLASSIFICATION =
+            new BaseType(Value.BASE_TYPE_CLASSIFICATION, "BASE_TYPE_CLASSIFICATION");
 
-    private final String value;
+    private final Value value;
 
-    BaseType(String value) {
+    private final String string;
+
+    BaseType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof BaseType && this.string.equals(((BaseType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BASE_TYPE_RERANK:
+                return visitor.visitBaseTypeRerank();
+            case BASE_TYPE_CHAT:
+                return visitor.visitBaseTypeChat();
+            case BASE_TYPE_UNSPECIFIED:
+                return visitor.visitBaseTypeUnspecified();
+            case BASE_TYPE_GENERATIVE:
+                return visitor.visitBaseTypeGenerative();
+            case BASE_TYPE_CLASSIFICATION:
+                return visitor.visitBaseTypeClassification();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static BaseType valueOf(String value) {
+        switch (value) {
+            case "BASE_TYPE_RERANK":
+                return BASE_TYPE_RERANK;
+            case "BASE_TYPE_CHAT":
+                return BASE_TYPE_CHAT;
+            case "BASE_TYPE_UNSPECIFIED":
+                return BASE_TYPE_UNSPECIFIED;
+            case "BASE_TYPE_GENERATIVE":
+                return BASE_TYPE_GENERATIVE;
+            case "BASE_TYPE_CLASSIFICATION":
+                return BASE_TYPE_CLASSIFICATION;
+            default:
+                return new BaseType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        BASE_TYPE_UNSPECIFIED,
+
+        BASE_TYPE_GENERATIVE,
+
+        BASE_TYPE_CLASSIFICATION,
+
+        BASE_TYPE_RERANK,
+
+        BASE_TYPE_CHAT,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitBaseTypeUnspecified();
+
+        T visitBaseTypeGenerative();
+
+        T visitBaseTypeClassification();
+
+        T visitBaseTypeRerank();
+
+        T visitBaseTypeChat();
+
+        T visitUnknown(String unknownType);
     }
 }

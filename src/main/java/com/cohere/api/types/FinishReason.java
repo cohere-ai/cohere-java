@@ -3,32 +3,140 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum FinishReason {
-    COMPLETE("COMPLETE"),
+public final class FinishReason {
+    public static final FinishReason ERROR_TOXIC = new FinishReason(Value.ERROR_TOXIC, "ERROR_TOXIC");
 
-    STOP_SEQUENCE("STOP_SEQUENCE"),
+    public static final FinishReason ERROR_LIMIT = new FinishReason(Value.ERROR_LIMIT, "ERROR_LIMIT");
 
-    ERROR("ERROR"),
+    public static final FinishReason STOP_SEQUENCE = new FinishReason(Value.STOP_SEQUENCE, "STOP_SEQUENCE");
 
-    ERROR_TOXIC("ERROR_TOXIC"),
+    public static final FinishReason USER_CANCEL = new FinishReason(Value.USER_CANCEL, "USER_CANCEL");
 
-    ERROR_LIMIT("ERROR_LIMIT"),
+    public static final FinishReason TIMEOUT = new FinishReason(Value.TIMEOUT, "TIMEOUT");
 
-    USER_CANCEL("USER_CANCEL"),
+    public static final FinishReason COMPLETE = new FinishReason(Value.COMPLETE, "COMPLETE");
 
-    MAX_TOKENS("MAX_TOKENS");
+    public static final FinishReason MAX_TOKENS = new FinishReason(Value.MAX_TOKENS, "MAX_TOKENS");
 
-    private final String value;
+    public static final FinishReason ERROR = new FinishReason(Value.ERROR, "ERROR");
 
-    FinishReason(String value) {
+    private final Value value;
+
+    private final String string;
+
+    FinishReason(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof FinishReason && this.string.equals(((FinishReason) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case ERROR_TOXIC:
+                return visitor.visitErrorToxic();
+            case ERROR_LIMIT:
+                return visitor.visitErrorLimit();
+            case STOP_SEQUENCE:
+                return visitor.visitStopSequence();
+            case USER_CANCEL:
+                return visitor.visitUserCancel();
+            case TIMEOUT:
+                return visitor.visitTimeout();
+            case COMPLETE:
+                return visitor.visitComplete();
+            case MAX_TOKENS:
+                return visitor.visitMaxTokens();
+            case ERROR:
+                return visitor.visitError();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static FinishReason valueOf(String value) {
+        switch (value) {
+            case "ERROR_TOXIC":
+                return ERROR_TOXIC;
+            case "ERROR_LIMIT":
+                return ERROR_LIMIT;
+            case "STOP_SEQUENCE":
+                return STOP_SEQUENCE;
+            case "USER_CANCEL":
+                return USER_CANCEL;
+            case "TIMEOUT":
+                return TIMEOUT;
+            case "COMPLETE":
+                return COMPLETE;
+            case "MAX_TOKENS":
+                return MAX_TOKENS;
+            case "ERROR":
+                return ERROR;
+            default:
+                return new FinishReason(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        COMPLETE,
+
+        STOP_SEQUENCE,
+
+        ERROR,
+
+        ERROR_TOXIC,
+
+        ERROR_LIMIT,
+
+        USER_CANCEL,
+
+        MAX_TOKENS,
+
+        TIMEOUT,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitComplete();
+
+        T visitStopSequence();
+
+        T visitError();
+
+        T visitErrorToxic();
+
+        T visitErrorLimit();
+
+        T visitUserCancel();
+
+        T visitMaxTokens();
+
+        T visitTimeout();
+
+        T visitUnknown(String unknownType);
     }
 }

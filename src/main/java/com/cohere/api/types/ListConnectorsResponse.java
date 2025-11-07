@@ -97,7 +97,9 @@ public final class ListConnectorsResponse {
         @JsonSetter(value = "connectors", nulls = Nulls.SKIP)
         public Builder connectors(List<Connector> connectors) {
             this.connectors.clear();
-            this.connectors.addAll(connectors);
+            if (connectors != null) {
+                this.connectors.addAll(connectors);
+            }
             return this;
         }
 
@@ -107,7 +109,9 @@ public final class ListConnectorsResponse {
         }
 
         public Builder addAllConnectors(List<Connector> connectors) {
-            this.connectors.addAll(connectors);
+            if (connectors != null) {
+                this.connectors.addAll(connectors);
+            }
             return this;
         }
 
