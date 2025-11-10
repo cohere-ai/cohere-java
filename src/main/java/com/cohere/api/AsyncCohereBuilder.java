@@ -5,6 +5,8 @@ package com.cohere.api;
 
 import com.cohere.api.core.ClientOptions;
 import com.cohere.api.core.Environment;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import okhttp3.OkHttpClient;
 
@@ -12,6 +14,8 @@ public class AsyncCohereBuilder {
     private Optional<Integer> timeout = Optional.empty();
 
     private Optional<Integer> maxRetries = Optional.empty();
+
+    private final Map<String, String> customHeaders = new HashMap<>();
 
     private String token = System.getenv("CO_API_KEY");
 
@@ -72,6 +76,19 @@ public class AsyncCohereBuilder {
         return this;
     }
 
+    /**
+     * Add a custom header to be sent with all requests.
+     * For headers that need to be computed dynamically or conditionally, use the setAdditional() method override instead.
+     *
+     * @param name The header name
+     * @param value The header value
+     * @return This builder for method chaining
+     */
+    public AsyncCohereBuilder addHeader(String name, String value) {
+        this.customHeaders.put(name, value);
+        return this;
+    }
+
     protected ClientOptions buildClientOptions() {
         ClientOptions.Builder builder = ClientOptions.builder();
         setEnvironment(builder);
@@ -80,6 +97,9 @@ public class AsyncCohereBuilder {
         setHttpClient(builder);
         setTimeouts(builder);
         setRetries(builder);
+        for (Map.Entry<String, String> header : this.customHeaders.entrySet()) {
+            builder.addHeader(header.getKey(), header.getValue());
+        }
         setAdditional(builder);
         return builder.build();
     }

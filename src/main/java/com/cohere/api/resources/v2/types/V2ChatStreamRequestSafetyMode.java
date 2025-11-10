@@ -3,24 +3,94 @@
  */
 package com.cohere.api.resources.v2.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum V2ChatStreamRequestSafetyMode {
-    CONTEXTUAL("CONTEXTUAL"),
+public final class V2ChatStreamRequestSafetyMode {
+    public static final V2ChatStreamRequestSafetyMode OFF = new V2ChatStreamRequestSafetyMode(Value.OFF, "OFF");
 
-    STRICT("STRICT"),
+    public static final V2ChatStreamRequestSafetyMode STRICT =
+            new V2ChatStreamRequestSafetyMode(Value.STRICT, "STRICT");
 
-    OFF("OFF");
+    public static final V2ChatStreamRequestSafetyMode CONTEXTUAL =
+            new V2ChatStreamRequestSafetyMode(Value.CONTEXTUAL, "CONTEXTUAL");
 
-    private final String value;
+    private final Value value;
 
-    V2ChatStreamRequestSafetyMode(String value) {
+    private final String string;
+
+    V2ChatStreamRequestSafetyMode(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof V2ChatStreamRequestSafetyMode
+                        && this.string.equals(((V2ChatStreamRequestSafetyMode) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case OFF:
+                return visitor.visitOff();
+            case STRICT:
+                return visitor.visitStrict();
+            case CONTEXTUAL:
+                return visitor.visitContextual();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static V2ChatStreamRequestSafetyMode valueOf(String value) {
+        switch (value) {
+            case "OFF":
+                return OFF;
+            case "STRICT":
+                return STRICT;
+            case "CONTEXTUAL":
+                return CONTEXTUAL;
+            default:
+                return new V2ChatStreamRequestSafetyMode(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CONTEXTUAL,
+
+        STRICT,
+
+        OFF,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitContextual();
+
+        T visitStrict();
+
+        T visitOff();
+
+        T visitUnknown(String unknownType);
     }
 }

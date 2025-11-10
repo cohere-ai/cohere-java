@@ -3,36 +3,151 @@
  */
 package com.cohere.api.resources.finetuning.finetuning.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Status {
-    STATUS_UNSPECIFIED("STATUS_UNSPECIFIED"),
+public final class Status {
+    public static final Status STATUS_TEMPORARILY_OFFLINE =
+            new Status(Value.STATUS_TEMPORARILY_OFFLINE, "STATUS_TEMPORARILY_OFFLINE");
 
-    STATUS_FINETUNING("STATUS_FINETUNING"),
+    public static final Status STATUS_FAILED = new Status(Value.STATUS_FAILED, "STATUS_FAILED");
 
-    STATUS_DEPLOYING_API("STATUS_DEPLOYING_API"),
+    public static final Status STATUS_FINETUNING = new Status(Value.STATUS_FINETUNING, "STATUS_FINETUNING");
 
-    STATUS_READY("STATUS_READY"),
+    public static final Status STATUS_READY = new Status(Value.STATUS_READY, "STATUS_READY");
 
-    STATUS_FAILED("STATUS_FAILED"),
+    public static final Status STATUS_DELETED = new Status(Value.STATUS_DELETED, "STATUS_DELETED");
 
-    STATUS_DELETED("STATUS_DELETED"),
+    public static final Status STATUS_DEPLOYING_API = new Status(Value.STATUS_DEPLOYING_API, "STATUS_DEPLOYING_API");
 
-    STATUS_TEMPORARILY_OFFLINE("STATUS_TEMPORARILY_OFFLINE"),
+    public static final Status STATUS_PAUSED = new Status(Value.STATUS_PAUSED, "STATUS_PAUSED");
 
-    STATUS_PAUSED("STATUS_PAUSED"),
+    public static final Status STATUS_QUEUED = new Status(Value.STATUS_QUEUED, "STATUS_QUEUED");
 
-    STATUS_QUEUED("STATUS_QUEUED");
+    public static final Status STATUS_UNSPECIFIED = new Status(Value.STATUS_UNSPECIFIED, "STATUS_UNSPECIFIED");
 
-    private final String value;
+    private final Value value;
 
-    Status(String value) {
+    private final String string;
+
+    Status(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Status && this.string.equals(((Status) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case STATUS_TEMPORARILY_OFFLINE:
+                return visitor.visitStatusTemporarilyOffline();
+            case STATUS_FAILED:
+                return visitor.visitStatusFailed();
+            case STATUS_FINETUNING:
+                return visitor.visitStatusFinetuning();
+            case STATUS_READY:
+                return visitor.visitStatusReady();
+            case STATUS_DELETED:
+                return visitor.visitStatusDeleted();
+            case STATUS_DEPLOYING_API:
+                return visitor.visitStatusDeployingApi();
+            case STATUS_PAUSED:
+                return visitor.visitStatusPaused();
+            case STATUS_QUEUED:
+                return visitor.visitStatusQueued();
+            case STATUS_UNSPECIFIED:
+                return visitor.visitStatusUnspecified();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Status valueOf(String value) {
+        switch (value) {
+            case "STATUS_TEMPORARILY_OFFLINE":
+                return STATUS_TEMPORARILY_OFFLINE;
+            case "STATUS_FAILED":
+                return STATUS_FAILED;
+            case "STATUS_FINETUNING":
+                return STATUS_FINETUNING;
+            case "STATUS_READY":
+                return STATUS_READY;
+            case "STATUS_DELETED":
+                return STATUS_DELETED;
+            case "STATUS_DEPLOYING_API":
+                return STATUS_DEPLOYING_API;
+            case "STATUS_PAUSED":
+                return STATUS_PAUSED;
+            case "STATUS_QUEUED":
+                return STATUS_QUEUED;
+            case "STATUS_UNSPECIFIED":
+                return STATUS_UNSPECIFIED;
+            default:
+                return new Status(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        STATUS_UNSPECIFIED,
+
+        STATUS_FINETUNING,
+
+        STATUS_DEPLOYING_API,
+
+        STATUS_READY,
+
+        STATUS_FAILED,
+
+        STATUS_DELETED,
+
+        STATUS_TEMPORARILY_OFFLINE,
+
+        STATUS_PAUSED,
+
+        STATUS_QUEUED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitStatusUnspecified();
+
+        T visitStatusFinetuning();
+
+        T visitStatusDeployingApi();
+
+        T visitStatusReady();
+
+        T visitStatusFailed();
+
+        T visitStatusDeleted();
+
+        T visitStatusTemporarilyOffline();
+
+        T visitStatusPaused();
+
+        T visitStatusQueued();
+
+        T visitUnknown(String unknownType);
     }
 }

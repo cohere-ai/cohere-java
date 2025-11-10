@@ -163,7 +163,9 @@ public final class ClassifyRequest {
         @JsonSetter(value = "inputs", nulls = Nulls.SKIP)
         public Builder inputs(List<String> inputs) {
             this.inputs.clear();
-            this.inputs.addAll(inputs);
+            if (inputs != null) {
+                this.inputs.addAll(inputs);
+            }
             return this;
         }
 
@@ -173,7 +175,9 @@ public final class ClassifyRequest {
         }
 
         public Builder addAllInputs(List<String> inputs) {
-            this.inputs.addAll(inputs);
+            if (inputs != null) {
+                this.inputs.addAll(inputs);
+            }
             return this;
         }
 

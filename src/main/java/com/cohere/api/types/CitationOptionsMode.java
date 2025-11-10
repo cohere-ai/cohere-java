@@ -3,28 +3,111 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum CitationOptionsMode {
-    ENABLED("ENABLED"),
+public final class CitationOptionsMode {
+    public static final CitationOptionsMode FAST = new CitationOptionsMode(Value.FAST, "FAST");
 
-    DISABLED("DISABLED"),
+    public static final CitationOptionsMode DISABLED = new CitationOptionsMode(Value.DISABLED, "DISABLED");
 
-    FAST("FAST"),
+    public static final CitationOptionsMode ENABLED = new CitationOptionsMode(Value.ENABLED, "ENABLED");
 
-    ACCURATE("ACCURATE"),
+    public static final CitationOptionsMode OFF = new CitationOptionsMode(Value.OFF, "OFF");
 
-    OFF("OFF");
+    public static final CitationOptionsMode ACCURATE = new CitationOptionsMode(Value.ACCURATE, "ACCURATE");
 
-    private final String value;
+    private final Value value;
 
-    CitationOptionsMode(String value) {
+    private final String string;
+
+    CitationOptionsMode(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof CitationOptionsMode && this.string.equals(((CitationOptionsMode) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case FAST:
+                return visitor.visitFast();
+            case DISABLED:
+                return visitor.visitDisabled();
+            case ENABLED:
+                return visitor.visitEnabled();
+            case OFF:
+                return visitor.visitOff();
+            case ACCURATE:
+                return visitor.visitAccurate();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static CitationOptionsMode valueOf(String value) {
+        switch (value) {
+            case "FAST":
+                return FAST;
+            case "DISABLED":
+                return DISABLED;
+            case "ENABLED":
+                return ENABLED;
+            case "OFF":
+                return OFF;
+            case "ACCURATE":
+                return ACCURATE;
+            default:
+                return new CitationOptionsMode(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ENABLED,
+
+        DISABLED,
+
+        FAST,
+
+        ACCURATE,
+
+        OFF,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitEnabled();
+
+        T visitDisabled();
+
+        T visitFast();
+
+        T visitAccurate();
+
+        T visitOff();
+
+        T visitUnknown(String unknownType);
     }
 }

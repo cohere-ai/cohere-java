@@ -3,22 +3,81 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatCitationType {
-    TEXT_CONTENT("TEXT_CONTENT"),
+public final class ChatCitationType {
+    public static final ChatCitationType PLAN = new ChatCitationType(Value.PLAN, "PLAN");
 
-    PLAN("PLAN");
+    public static final ChatCitationType TEXT_CONTENT = new ChatCitationType(Value.TEXT_CONTENT, "TEXT_CONTENT");
 
-    private final String value;
+    private final Value value;
 
-    ChatCitationType(String value) {
+    private final String string;
+
+    ChatCitationType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatCitationType && this.string.equals(((ChatCitationType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case PLAN:
+                return visitor.visitPlan();
+            case TEXT_CONTENT:
+                return visitor.visitTextContent();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatCitationType valueOf(String value) {
+        switch (value) {
+            case "PLAN":
+                return PLAN;
+            case "TEXT_CONTENT":
+                return TEXT_CONTENT;
+            default:
+                return new ChatCitationType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        TEXT_CONTENT,
+
+        PLAN,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitTextContent();
+
+        T visitPlan();
+
+        T visitUnknown(String unknownType);
     }
 }

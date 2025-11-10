@@ -3,24 +3,92 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum GenerateStreamRequestTruncate {
-    NONE("NONE"),
+public final class GenerateStreamRequestTruncate {
+    public static final GenerateStreamRequestTruncate END = new GenerateStreamRequestTruncate(Value.END, "END");
 
-    START("START"),
+    public static final GenerateStreamRequestTruncate NONE = new GenerateStreamRequestTruncate(Value.NONE, "NONE");
 
-    END("END");
+    public static final GenerateStreamRequestTruncate START = new GenerateStreamRequestTruncate(Value.START, "START");
 
-    private final String value;
+    private final Value value;
 
-    GenerateStreamRequestTruncate(String value) {
+    private final String string;
+
+    GenerateStreamRequestTruncate(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof GenerateStreamRequestTruncate
+                        && this.string.equals(((GenerateStreamRequestTruncate) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case END:
+                return visitor.visitEnd();
+            case NONE:
+                return visitor.visitNone();
+            case START:
+                return visitor.visitStart();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static GenerateStreamRequestTruncate valueOf(String value) {
+        switch (value) {
+            case "END":
+                return END;
+            case "NONE":
+                return NONE;
+            case "START":
+                return START;
+            default:
+                return new GenerateStreamRequestTruncate(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        NONE,
+
+        START,
+
+        END,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitNone();
+
+        T visitStart();
+
+        T visitEnd();
+
+        T visitUnknown(String unknownType);
     }
 }

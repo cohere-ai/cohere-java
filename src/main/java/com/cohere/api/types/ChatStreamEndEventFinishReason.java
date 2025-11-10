@@ -3,28 +3,116 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatStreamEndEventFinishReason {
-    COMPLETE("COMPLETE"),
+public final class ChatStreamEndEventFinishReason {
+    public static final ChatStreamEndEventFinishReason ERROR_LIMIT =
+            new ChatStreamEndEventFinishReason(Value.ERROR_LIMIT, "ERROR_LIMIT");
 
-    ERROR_LIMIT("ERROR_LIMIT"),
+    public static final ChatStreamEndEventFinishReason ERROR_TOXIC =
+            new ChatStreamEndEventFinishReason(Value.ERROR_TOXIC, "ERROR_TOXIC");
 
-    MAX_TOKENS("MAX_TOKENS"),
+    public static final ChatStreamEndEventFinishReason COMPLETE =
+            new ChatStreamEndEventFinishReason(Value.COMPLETE, "COMPLETE");
 
-    ERROR("ERROR"),
+    public static final ChatStreamEndEventFinishReason MAX_TOKENS =
+            new ChatStreamEndEventFinishReason(Value.MAX_TOKENS, "MAX_TOKENS");
 
-    ERROR_TOXIC("ERROR_TOXIC");
+    public static final ChatStreamEndEventFinishReason ERROR = new ChatStreamEndEventFinishReason(Value.ERROR, "ERROR");
 
-    private final String value;
+    private final Value value;
 
-    ChatStreamEndEventFinishReason(String value) {
+    private final String string;
+
+    ChatStreamEndEventFinishReason(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatStreamEndEventFinishReason
+                        && this.string.equals(((ChatStreamEndEventFinishReason) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case ERROR_LIMIT:
+                return visitor.visitErrorLimit();
+            case ERROR_TOXIC:
+                return visitor.visitErrorToxic();
+            case COMPLETE:
+                return visitor.visitComplete();
+            case MAX_TOKENS:
+                return visitor.visitMaxTokens();
+            case ERROR:
+                return visitor.visitError();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatStreamEndEventFinishReason valueOf(String value) {
+        switch (value) {
+            case "ERROR_LIMIT":
+                return ERROR_LIMIT;
+            case "ERROR_TOXIC":
+                return ERROR_TOXIC;
+            case "COMPLETE":
+                return COMPLETE;
+            case "MAX_TOKENS":
+                return MAX_TOKENS;
+            case "ERROR":
+                return ERROR;
+            default:
+                return new ChatStreamEndEventFinishReason(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        COMPLETE,
+
+        ERROR_LIMIT,
+
+        MAX_TOKENS,
+
+        ERROR,
+
+        ERROR_TOXIC,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitComplete();
+
+        T visitErrorLimit();
+
+        T visitMaxTokens();
+
+        T visitError();
+
+        T visitErrorToxic();
+
+        T visitUnknown(String unknownType);
     }
 }

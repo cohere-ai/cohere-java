@@ -989,7 +989,9 @@ public final class V2ChatRequest {
 
         @java.lang.Override
         public _FinalStage addAllMessages(List<ChatMessageV2> messages) {
-            this.messages.addAll(messages);
+            if (messages != null) {
+                this.messages.addAll(messages);
+            }
             return this;
         }
 
@@ -1003,7 +1005,9 @@ public final class V2ChatRequest {
         @JsonSetter(value = "messages", nulls = Nulls.SKIP)
         public _FinalStage messages(List<ChatMessageV2> messages) {
             this.messages.clear();
-            this.messages.addAll(messages);
+            if (messages != null) {
+                this.messages.addAll(messages);
+            }
             return this;
         }
 

@@ -101,12 +101,16 @@ public final class Document {
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public Builder data(Map<String, Object> data) {
             this.data.clear();
-            this.data.putAll(data);
+            if (data != null) {
+                this.data.putAll(data);
+            }
             return this;
         }
 
         public Builder putAllData(Map<String, Object> data) {
-            this.data.putAll(data);
+            if (data != null) {
+                this.data.putAll(data);
+            }
             return this;
         }
 

@@ -184,7 +184,9 @@ public final class Generation {
          */
         @java.lang.Override
         public _FinalStage addAllGenerations(List<SingleGeneration> generations) {
-            this.generations.addAll(generations);
+            if (generations != null) {
+                this.generations.addAll(generations);
+            }
             return this;
         }
 
@@ -205,7 +207,9 @@ public final class Generation {
         @JsonSetter(value = "generations", nulls = Nulls.SKIP)
         public _FinalStage generations(List<SingleGeneration> generations) {
             this.generations.clear();
-            this.generations.addAll(generations);
+            if (generations != null) {
+                this.generations.addAll(generations);
+            }
             return this;
         }
 

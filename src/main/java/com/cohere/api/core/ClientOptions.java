@@ -21,26 +21,30 @@ public final class ClientOptions {
 
     private final int timeout;
 
+    private final int maxRetries;
+
     private ClientOptions(
             Environment environment,
             Map<String, String> headers,
             Map<String, Supplier<String>> headerSuppliers,
             OkHttpClient httpClient,
-            int timeout) {
+            int timeout,
+            int maxRetries) {
         this.environment = environment;
         this.headers = new HashMap<>();
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "com.cohere:cohere-java/1.8.0");
+                put("User-Agent", "com.cohere:cohere-java/1.9.3");
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.cohere.fern:api-sdk");
-                put("X-Fern-SDK-Version", "1.8.0");
+                put("X-Fern-SDK-Version", "1.9.3");
             }
         });
         this.headerSuppliers = headerSuppliers;
         this.httpClient = httpClient;
         this.timeout = timeout;
+        this.maxRetries = maxRetries;
     }
 
     public Environment environment() {
@@ -80,6 +84,10 @@ public final class ClientOptions {
                 .writeTimeout(0, TimeUnit.SECONDS)
                 .readTimeout(0, TimeUnit.SECONDS)
                 .build();
+    }
+
+    public int maxRetries() {
+        return this.maxRetries;
     }
 
     public static Builder builder() {
@@ -165,7 +173,8 @@ public final class ClientOptions {
             this.httpClient = httpClientBuilder.build();
             this.timeout = Optional.of(httpClient.callTimeoutMillis() / 1000);
 
-            return new ClientOptions(environment, headers, headerSuppliers, httpClient, this.timeout.get());
+            return new ClientOptions(
+                    environment, headers, headerSuppliers, httpClient, this.timeout.get(), this.maxRetries);
         }
 
         /**

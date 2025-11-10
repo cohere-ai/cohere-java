@@ -87,7 +87,9 @@ public final class ChatCitationGenerationEvent implements IChatStreamEvent {
         @JsonSetter(value = "citations", nulls = Nulls.SKIP)
         public Builder citations(List<ChatCitation> citations) {
             this.citations.clear();
-            this.citations.addAll(citations);
+            if (citations != null) {
+                this.citations.addAll(citations);
+            }
             return this;
         }
 
@@ -97,7 +99,9 @@ public final class ChatCitationGenerationEvent implements IChatStreamEvent {
         }
 
         public Builder addAllCitations(List<ChatCitation> citations) {
-            this.citations.addAll(citations);
+            if (citations != null) {
+                this.citations.addAll(citations);
+            }
             return this;
         }
 

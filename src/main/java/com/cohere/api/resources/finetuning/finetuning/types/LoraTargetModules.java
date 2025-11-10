@@ -3,26 +3,105 @@
  */
 package com.cohere.api.resources.finetuning.finetuning.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum LoraTargetModules {
-    LORA_TARGET_MODULES_UNSPECIFIED("LORA_TARGET_MODULES_UNSPECIFIED"),
+public final class LoraTargetModules {
+    public static final LoraTargetModules LORA_TARGET_MODULES_UNSPECIFIED =
+            new LoraTargetModules(Value.LORA_TARGET_MODULES_UNSPECIFIED, "LORA_TARGET_MODULES_UNSPECIFIED");
 
-    LORA_TARGET_MODULES_QV("LORA_TARGET_MODULES_QV"),
+    public static final LoraTargetModules LORA_TARGET_MODULES_QV =
+            new LoraTargetModules(Value.LORA_TARGET_MODULES_QV, "LORA_TARGET_MODULES_QV");
 
-    LORA_TARGET_MODULES_QKVO("LORA_TARGET_MODULES_QKVO"),
+    public static final LoraTargetModules LORA_TARGET_MODULES_QKVO_FFN =
+            new LoraTargetModules(Value.LORA_TARGET_MODULES_QKVO_FFN, "LORA_TARGET_MODULES_QKVO_FFN");
 
-    LORA_TARGET_MODULES_QKVO_FFN("LORA_TARGET_MODULES_QKVO_FFN");
+    public static final LoraTargetModules LORA_TARGET_MODULES_QKVO =
+            new LoraTargetModules(Value.LORA_TARGET_MODULES_QKVO, "LORA_TARGET_MODULES_QKVO");
 
-    private final String value;
+    private final Value value;
 
-    LoraTargetModules(String value) {
+    private final String string;
+
+    LoraTargetModules(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof LoraTargetModules && this.string.equals(((LoraTargetModules) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case LORA_TARGET_MODULES_UNSPECIFIED:
+                return visitor.visitLoraTargetModulesUnspecified();
+            case LORA_TARGET_MODULES_QV:
+                return visitor.visitLoraTargetModulesQv();
+            case LORA_TARGET_MODULES_QKVO_FFN:
+                return visitor.visitLoraTargetModulesQkvoFfn();
+            case LORA_TARGET_MODULES_QKVO:
+                return visitor.visitLoraTargetModulesQkvo();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static LoraTargetModules valueOf(String value) {
+        switch (value) {
+            case "LORA_TARGET_MODULES_UNSPECIFIED":
+                return LORA_TARGET_MODULES_UNSPECIFIED;
+            case "LORA_TARGET_MODULES_QV":
+                return LORA_TARGET_MODULES_QV;
+            case "LORA_TARGET_MODULES_QKVO_FFN":
+                return LORA_TARGET_MODULES_QKVO_FFN;
+            case "LORA_TARGET_MODULES_QKVO":
+                return LORA_TARGET_MODULES_QKVO;
+            default:
+                return new LoraTargetModules(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        LORA_TARGET_MODULES_UNSPECIFIED,
+
+        LORA_TARGET_MODULES_QV,
+
+        LORA_TARGET_MODULES_QKVO,
+
+        LORA_TARGET_MODULES_QKVO_FFN,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitLoraTargetModulesUnspecified();
+
+        T visitLoraTargetModulesQv();
+
+        T visitLoraTargetModulesQkvo();
+
+        T visitLoraTargetModulesQkvoFfn();
+
+        T visitUnknown(String unknownType);
     }
 }

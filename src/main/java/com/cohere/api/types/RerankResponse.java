@@ -125,7 +125,9 @@ public final class RerankResponse {
         @JsonSetter(value = "results", nulls = Nulls.SKIP)
         public Builder results(List<RerankResponseResultsItem> results) {
             this.results.clear();
-            this.results.addAll(results);
+            if (results != null) {
+                this.results.addAll(results);
+            }
             return this;
         }
 
@@ -135,7 +137,9 @@ public final class RerankResponse {
         }
 
         public Builder addAllResults(List<RerankResponseResultsItem> results) {
-            this.results.addAll(results);
+            if (results != null) {
+                this.results.addAll(results);
+            }
             return this;
         }
 

@@ -3,32 +3,131 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum CompatibleEndpoint {
-    CHAT("chat"),
+public final class CompatibleEndpoint {
+    public static final CompatibleEndpoint EMBED = new CompatibleEndpoint(Value.EMBED, "embed");
 
-    EMBED("embed"),
+    public static final CompatibleEndpoint RERANK = new CompatibleEndpoint(Value.RERANK, "rerank");
 
-    CLASSIFY("classify"),
+    public static final CompatibleEndpoint GENERATE = new CompatibleEndpoint(Value.GENERATE, "generate");
 
-    SUMMARIZE("summarize"),
+    public static final CompatibleEndpoint SUMMARIZE = new CompatibleEndpoint(Value.SUMMARIZE, "summarize");
 
-    RERANK("rerank"),
+    public static final CompatibleEndpoint CLASSIFY = new CompatibleEndpoint(Value.CLASSIFY, "classify");
 
-    RATE("rate"),
+    public static final CompatibleEndpoint RATE = new CompatibleEndpoint(Value.RATE, "rate");
 
-    GENERATE("generate");
+    public static final CompatibleEndpoint CHAT = new CompatibleEndpoint(Value.CHAT, "chat");
 
-    private final String value;
+    private final Value value;
 
-    CompatibleEndpoint(String value) {
+    private final String string;
+
+    CompatibleEndpoint(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof CompatibleEndpoint && this.string.equals(((CompatibleEndpoint) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case EMBED:
+                return visitor.visitEmbed();
+            case RERANK:
+                return visitor.visitRerank();
+            case GENERATE:
+                return visitor.visitGenerate();
+            case SUMMARIZE:
+                return visitor.visitSummarize();
+            case CLASSIFY:
+                return visitor.visitClassify();
+            case RATE:
+                return visitor.visitRate();
+            case CHAT:
+                return visitor.visitChat();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static CompatibleEndpoint valueOf(String value) {
+        switch (value) {
+            case "embed":
+                return EMBED;
+            case "rerank":
+                return RERANK;
+            case "generate":
+                return GENERATE;
+            case "summarize":
+                return SUMMARIZE;
+            case "classify":
+                return CLASSIFY;
+            case "rate":
+                return RATE;
+            case "chat":
+                return CHAT;
+            default:
+                return new CompatibleEndpoint(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CHAT,
+
+        EMBED,
+
+        CLASSIFY,
+
+        SUMMARIZE,
+
+        RERANK,
+
+        RATE,
+
+        GENERATE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitChat();
+
+        T visitEmbed();
+
+        T visitClassify();
+
+        T visitSummarize();
+
+        T visitRerank();
+
+        T visitRate();
+
+        T visitGenerate();
+
+        T visitUnknown(String unknownType);
     }
 }

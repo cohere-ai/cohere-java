@@ -3,22 +3,84 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatContentStartEventDeltaMessageContentType {
-    TEXT("text"),
+public final class ChatContentStartEventDeltaMessageContentType {
+    public static final ChatContentStartEventDeltaMessageContentType TEXT =
+            new ChatContentStartEventDeltaMessageContentType(Value.TEXT, "text");
 
-    THINKING("thinking");
+    public static final ChatContentStartEventDeltaMessageContentType THINKING =
+            new ChatContentStartEventDeltaMessageContentType(Value.THINKING, "thinking");
 
-    private final String value;
+    private final Value value;
 
-    ChatContentStartEventDeltaMessageContentType(String value) {
+    private final String string;
+
+    ChatContentStartEventDeltaMessageContentType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatContentStartEventDeltaMessageContentType
+                        && this.string.equals(((ChatContentStartEventDeltaMessageContentType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case TEXT:
+                return visitor.visitText();
+            case THINKING:
+                return visitor.visitThinking();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatContentStartEventDeltaMessageContentType valueOf(String value) {
+        switch (value) {
+            case "text":
+                return TEXT;
+            case "thinking":
+                return THINKING;
+            default:
+                return new ChatContentStartEventDeltaMessageContentType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        TEXT,
+
+        THINKING,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitText();
+
+        T visitThinking();
+
+        T visitUnknown(String unknownType);
     }
 }
