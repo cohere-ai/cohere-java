@@ -3,28 +3,111 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum EmbedJobStatus {
-    PROCESSING("processing"),
+public final class EmbedJobStatus {
+    public static final EmbedJobStatus FAILED = new EmbedJobStatus(Value.FAILED, "failed");
 
-    COMPLETE("complete"),
+    public static final EmbedJobStatus COMPLETE = new EmbedJobStatus(Value.COMPLETE, "complete");
 
-    CANCELLING("cancelling"),
+    public static final EmbedJobStatus PROCESSING = new EmbedJobStatus(Value.PROCESSING, "processing");
 
-    CANCELLED("cancelled"),
+    public static final EmbedJobStatus CANCELLING = new EmbedJobStatus(Value.CANCELLING, "cancelling");
 
-    FAILED("failed");
+    public static final EmbedJobStatus CANCELLED = new EmbedJobStatus(Value.CANCELLED, "cancelled");
 
-    private final String value;
+    private final Value value;
 
-    EmbedJobStatus(String value) {
+    private final String string;
+
+    EmbedJobStatus(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof EmbedJobStatus && this.string.equals(((EmbedJobStatus) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case FAILED:
+                return visitor.visitFailed();
+            case COMPLETE:
+                return visitor.visitComplete();
+            case PROCESSING:
+                return visitor.visitProcessing();
+            case CANCELLING:
+                return visitor.visitCancelling();
+            case CANCELLED:
+                return visitor.visitCancelled();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static EmbedJobStatus valueOf(String value) {
+        switch (value) {
+            case "failed":
+                return FAILED;
+            case "complete":
+                return COMPLETE;
+            case "processing":
+                return PROCESSING;
+            case "cancelling":
+                return CANCELLING;
+            case "cancelled":
+                return CANCELLED;
+            default:
+                return new EmbedJobStatus(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        PROCESSING,
+
+        COMPLETE,
+
+        CANCELLING,
+
+        CANCELLED,
+
+        FAILED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitProcessing();
+
+        T visitComplete();
+
+        T visitCancelling();
+
+        T visitCancelled();
+
+        T visitFailed();
+
+        T visitUnknown(String unknownType);
     }
 }

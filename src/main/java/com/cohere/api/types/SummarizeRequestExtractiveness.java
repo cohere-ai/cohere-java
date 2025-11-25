@@ -3,24 +3,93 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum SummarizeRequestExtractiveness {
-    LOW("low"),
+public final class SummarizeRequestExtractiveness {
+    public static final SummarizeRequestExtractiveness MEDIUM =
+            new SummarizeRequestExtractiveness(Value.MEDIUM, "medium");
 
-    MEDIUM("medium"),
+    public static final SummarizeRequestExtractiveness LOW = new SummarizeRequestExtractiveness(Value.LOW, "low");
 
-    HIGH("high");
+    public static final SummarizeRequestExtractiveness HIGH = new SummarizeRequestExtractiveness(Value.HIGH, "high");
 
-    private final String value;
+    private final Value value;
 
-    SummarizeRequestExtractiveness(String value) {
+    private final String string;
+
+    SummarizeRequestExtractiveness(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof SummarizeRequestExtractiveness
+                        && this.string.equals(((SummarizeRequestExtractiveness) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case MEDIUM:
+                return visitor.visitMedium();
+            case LOW:
+                return visitor.visitLow();
+            case HIGH:
+                return visitor.visitHigh();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static SummarizeRequestExtractiveness valueOf(String value) {
+        switch (value) {
+            case "medium":
+                return MEDIUM;
+            case "low":
+                return LOW;
+            case "high":
+                return HIGH;
+            default:
+                return new SummarizeRequestExtractiveness(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        LOW,
+
+        MEDIUM,
+
+        HIGH,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitLow();
+
+        T visitMedium();
+
+        T visitHigh();
+
+        T visitUnknown(String unknownType);
     }
 }

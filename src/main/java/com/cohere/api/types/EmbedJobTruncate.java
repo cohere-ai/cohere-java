@@ -3,22 +3,81 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum EmbedJobTruncate {
-    START("START"),
+public final class EmbedJobTruncate {
+    public static final EmbedJobTruncate END = new EmbedJobTruncate(Value.END, "END");
 
-    END("END");
+    public static final EmbedJobTruncate START = new EmbedJobTruncate(Value.START, "START");
 
-    private final String value;
+    private final Value value;
 
-    EmbedJobTruncate(String value) {
+    private final String string;
+
+    EmbedJobTruncate(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof EmbedJobTruncate && this.string.equals(((EmbedJobTruncate) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case END:
+                return visitor.visitEnd();
+            case START:
+                return visitor.visitStart();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static EmbedJobTruncate valueOf(String value) {
+        switch (value) {
+            case "END":
+                return END;
+            case "START":
+                return START;
+            default:
+                return new EmbedJobTruncate(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        START,
+
+        END,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitStart();
+
+        T visitEnd();
+
+        T visitUnknown(String unknownType);
     }
 }

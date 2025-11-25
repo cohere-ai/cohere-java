@@ -319,7 +319,9 @@ public final class V2RerankRequest {
          */
         @java.lang.Override
         public _FinalStage addAllDocuments(List<String> documents) {
-            this.documents.addAll(documents);
+            if (documents != null) {
+                this.documents.addAll(documents);
+            }
             return this;
         }
 
@@ -346,7 +348,9 @@ public final class V2RerankRequest {
         @JsonSetter(value = "documents", nulls = Nulls.SKIP)
         public _FinalStage documents(List<String> documents) {
             this.documents.clear();
-            this.documents.addAll(documents);
+            if (documents != null) {
+                this.documents.addAll(documents);
+            }
             return this;
         }
 

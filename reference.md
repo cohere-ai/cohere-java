@@ -290,7 +290,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
-**p:** `Optional<Float>` 
+**p:** `Optional<Double>` 
 
 Ensures that only the most likely tokens, with total probability mass of `p`, are considered for generation at each step. If both `k` and `p` are enabled, `p` acts after `k`.
 Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
@@ -330,7 +330,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
-**frequencyPenalty:** `Optional<Float>` 
+**frequencyPenalty:** `Optional<Double>` 
 
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
@@ -344,7 +344,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
-**presencePenalty:** `Optional<Float>` 
+**presencePenalty:** `Optional<Double>` 
 
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
@@ -746,7 +746,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
-**p:** `Optional<Float>` 
+**p:** `Optional<Double>` 
 
 Ensures that only the most likely tokens, with total probability mass of `p`, are considered for generation at each step. If both `k` and `p` are enabled, `p` acts after `k`.
 Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
@@ -786,7 +786,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
-**frequencyPenalty:** `Optional<Float>` 
+**frequencyPenalty:** `Optional<Double>` 
 
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
@@ -800,7 +800,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 <dl>
 <dd>
 
-**presencePenalty:** `Optional<Float>` 
+**presencePenalty:** `Optional<Double>` 
 
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
@@ -1037,7 +1037,7 @@ If `NONE` is selected, when the input exceeds the maximum input token length an 
 <dl>
 <dd>
 
-**temperature:** `Optional<Float>` 
+**temperature:** `Optional<Double>` 
 
 A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations. See [Temperature](/temperature-wiki) for more details.
 Defaults to `0.75`, min value of `0.0`, max value of `5.0`.
@@ -1100,7 +1100,7 @@ Defaults to `0`, min value of `0`, max value of `500`.
 <dl>
 <dd>
 
-**p:** `Optional<Float>` 
+**p:** `Optional<Double>` 
 
 Ensures that only the most likely tokens, with total probability mass of `p`, are considered for generation at each step. If both `k` and `p` are enabled, `p` acts after `k`.
 Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
@@ -1111,7 +1111,7 @@ Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
 <dl>
 <dd>
 
-**frequencyPenalty:** `Optional<Float>` 
+**frequencyPenalty:** `Optional<Double>` 
 
 Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
 
@@ -1123,7 +1123,7 @@ Using `frequency_penalty` in combination with `presence_penalty` is not supporte
 <dl>
 <dd>
 
-**presencePenalty:** `Optional<Float>` 
+**presencePenalty:** `Optional<Double>` 
 
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
@@ -1288,7 +1288,7 @@ If `NONE` is selected, when the input exceeds the maximum input token length an 
 <dl>
 <dd>
 
-**temperature:** `Optional<Float>` 
+**temperature:** `Optional<Double>` 
 
 A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations. See [Temperature](/temperature-wiki) for more details.
 Defaults to `0.75`, min value of `0.0`, max value of `5.0`.
@@ -1351,7 +1351,7 @@ Defaults to `0`, min value of `0`, max value of `500`.
 <dl>
 <dd>
 
-**p:** `Optional<Float>` 
+**p:** `Optional<Double>` 
 
 Ensures that only the most likely tokens, with total probability mass of `p`, are considered for generation at each step. If both `k` and `p` are enabled, `p` acts after `k`.
 Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
@@ -1362,7 +1362,7 @@ Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
 <dl>
 <dd>
 
-**frequencyPenalty:** `Optional<Float>` 
+**frequencyPenalty:** `Optional<Double>` 
 
 Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
 
@@ -1374,7 +1374,7 @@ Using `frequency_penalty` in combination with `presence_penalty` is not supporte
 <dl>
 <dd>
 
-**presencePenalty:** `Optional<Float>` 
+**presencePenalty:** `Optional<Double>` 
 
 Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
 
@@ -1449,7 +1449,7 @@ client.embed(
     EmbedRequest
         .builder()
         .texts(
-            new ArrayList<String>(
+            Optional.of(
                 Arrays.asList("hello", "goodbye")
             )
         )
@@ -1574,14 +1574,12 @@ client.rerank(
     RerankRequest
         .builder()
         .documents(
-            new ArrayList<RerankRequestDocumentsItem>(
-                Arrays.asList(
-                    RerankRequestDocumentsItem.of(),
-                    RerankRequestDocumentsItem.of(),
-                    RerankRequestDocumentsItem.of(),
-                    RerankRequestDocumentsItem.of(),
-                    RerankRequestDocumentsItem.of()
-                )
+            Arrays.asList(
+                RerankRequestDocumentsItem.of(),
+                RerankRequestDocumentsItem.of(),
+                RerankRequestDocumentsItem.of(),
+                RerankRequestDocumentsItem.of(),
+                RerankRequestDocumentsItem.of()
             )
         )
         .query("What is the capital of the United States?")
@@ -1705,12 +1703,10 @@ client.classify(
             ClassifyRequest
                 .builder()
                 .inputs(
-                    new ArrayList<String>(
-                        Arrays.asList("Confirm your email address", "hey i need u to send some $")
-                    )
+                    Arrays.asList("Confirm your email address", "hey i need u to send some $")
                 )
                 .examples(
-                    new ArrayList<ClassifyExample>(
+                    Optional.of(
                         Arrays.asList(
                             ClassifyExample
                                 .builder()
@@ -1929,7 +1925,7 @@ client.summarize(
 <dl>
 <dd>
 
-**temperature:** `Optional<Float>` — Ranges from 0 to 5. Controls the randomness of the output. Lower values tend to generate more “predictable” output, while higher values tend to generate more “creative” output. The sweet spot is typically between 0 and 1.
+**temperature:** `Optional<Double>` — Ranges from 0 to 5. Controls the randomness of the output. Lower values tend to generate more “predictable” output, while higher values tend to generate more “creative” output. The sweet spot is typically between 0 and 1.
     
 </dd>
 </dl>
@@ -2048,9 +2044,7 @@ client.detokenize(
     DetokenizeRequest
         .builder()
         .tokens(
-            new ArrayList<Integer>(
-                Arrays.asList(10002, 2261, 2012, 8, 2792, 43)
-            )
+            Arrays.asList(10002, 2261, 2012, 8, 2792, 43)
         )
         .model("command")
         .build()
@@ -2163,16 +2157,14 @@ client.v2().chatStream(
         .builder()
         .model("command-a-03-2025")
         .messages(
-            new ArrayList<ChatMessageV2>(
-                Arrays.asList(
-                    ChatMessageV2.user(
-                        UserMessageV2
-                            .builder()
-                            .content(
-                                UserMessageV2Content.of("Tell me about LLMs")
-                            )
-                            .build()
-                    )
+            Arrays.asList(
+                ChatMessageV2.user(
+                    UserMessageV2
+                        .builder()
+                        .content(
+                            UserMessageV2Content.of("Tell me about LLMs")
+                        )
+                        .build()
                 )
             )
         )
@@ -2460,16 +2452,14 @@ client.v2().chatStream(
         .builder()
         .model("command-a-03-2025")
         .messages(
-            new ArrayList<ChatMessageV2>(
-                Arrays.asList(
-                    ChatMessageV2.user(
-                        UserMessageV2
-                            .builder()
-                            .content(
-                                UserMessageV2Content.of("Tell me about LLMs")
-                            )
-                            .build()
-                    )
+            Arrays.asList(
+                ChatMessageV2.user(
+                    UserMessageV2
+                        .builder()
+                        .content(
+                            UserMessageV2Content.of("Tell me about LLMs")
+                        )
+                        .build()
                 )
             )
         )
@@ -2760,12 +2750,12 @@ client.v2().embed(
         .model("embed-v4.0")
         .inputType(EmbedInputType.CLASSIFICATION)
         .texts(
-            new ArrayList<String>(
+            Optional.of(
                 Arrays.asList("hello", "goodbye")
             )
         )
         .embeddingTypes(
-            new ArrayList<EmbeddingType>(
+            Optional.of(
                 Arrays.asList(EmbeddingType.FLOAT)
             )
         )
@@ -2927,9 +2917,7 @@ client.v2().rerank(
     V2RerankRequest
         .builder()
         .documents(
-            new ArrayList<String>(
-                Arrays.asList("Carson City is the capital city of the American state of Nevada.", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.", "Capital punishment has existed in the United States since beforethe United States was a country. As of 2017, capital punishment is legal in 30 of the 50 states.")
-            )
+            Arrays.asList("Carson City is the capital city of the American state of Nevada.", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.", "Capital punishment has existed in the United States since beforethe United States was a country. As of 2017, capital punishment is legal in 30 of the 50 states.")
         )
         .query("What is the capital of the United States?")
         .model("rerank-v3.5")
@@ -3617,7 +3605,7 @@ client.datasets().list(
 <dl>
 <dd>
 
-**limit:** `Optional<Float>` — optional limit to number of results
+**limit:** `Optional<Double>` — optional limit to number of results
     
 </dd>
 </dl>
@@ -3625,7 +3613,7 @@ client.datasets().list(
 <dl>
 <dd>
 
-**offset:** `Optional<Float>` — optional offset to start of results
+**offset:** `Optional<Double>` — optional offset to start of results
     
 </dd>
 </dl>
@@ -3961,7 +3949,7 @@ client.connectors().list(
 <dl>
 <dd>
 
-**limit:** `Optional<Float>` — Maximum number of connectors to return [0, 100].
+**limit:** `Optional<Double>` — Maximum number of connectors to return [0, 100].
     
 </dd>
 </dl>
@@ -3969,7 +3957,7 @@ client.connectors().list(
 <dl>
 <dd>
 
-**offset:** `Optional<Float>` — Number of connectors to skip before returning results [0, inf].
+**offset:** `Optional<Double>` — Number of connectors to skip before returning results [0, inf].
     
 </dd>
 </dl>
@@ -4493,7 +4481,7 @@ client.models().list(
 <dl>
 <dd>
 
-**pageSize:** `Optional<Float>` 
+**pageSize:** `Optional<Double>` 
 
 Maximum number of models to include in a page
 Defaults to `20`, min value of `1`, max value of `1000`.

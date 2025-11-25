@@ -97,7 +97,9 @@ public final class ListModelsResponse {
         @JsonSetter(value = "models", nulls = Nulls.SKIP)
         public Builder models(List<GetModelResponse> models) {
             this.models.clear();
-            this.models.addAll(models);
+            if (models != null) {
+                this.models.addAll(models);
+            }
             return this;
         }
 
@@ -107,7 +109,9 @@ public final class ListModelsResponse {
         }
 
         public Builder addAllModels(List<GetModelResponse> models) {
-            this.models.addAll(models);
+            if (models != null) {
+                this.models.addAll(models);
+            }
             return this;
         }
 

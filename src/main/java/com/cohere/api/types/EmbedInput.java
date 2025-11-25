@@ -87,7 +87,9 @@ public final class EmbedInput {
         @JsonSetter(value = "content", nulls = Nulls.SKIP)
         public Builder content(List<EmbedContent> content) {
             this.content.clear();
-            this.content.addAll(content);
+            if (content != null) {
+                this.content.addAll(content);
+            }
             return this;
         }
 
@@ -97,7 +99,9 @@ public final class EmbedInput {
         }
 
         public Builder addAllContent(List<EmbedContent> content) {
-            this.content.addAll(content);
+            if (content != null) {
+                this.content.addAll(content);
+            }
             return this;
         }
 

@@ -3,24 +3,93 @@
  */
 package com.cohere.api.resources.v2.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum V2ChatRequestSafetyMode {
-    CONTEXTUAL("CONTEXTUAL"),
+public final class V2ChatRequestSafetyMode {
+    public static final V2ChatRequestSafetyMode OFF = new V2ChatRequestSafetyMode(Value.OFF, "OFF");
 
-    STRICT("STRICT"),
+    public static final V2ChatRequestSafetyMode STRICT = new V2ChatRequestSafetyMode(Value.STRICT, "STRICT");
 
-    OFF("OFF");
+    public static final V2ChatRequestSafetyMode CONTEXTUAL =
+            new V2ChatRequestSafetyMode(Value.CONTEXTUAL, "CONTEXTUAL");
 
-    private final String value;
+    private final Value value;
 
-    V2ChatRequestSafetyMode(String value) {
+    private final String string;
+
+    V2ChatRequestSafetyMode(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof V2ChatRequestSafetyMode
+                        && this.string.equals(((V2ChatRequestSafetyMode) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case OFF:
+                return visitor.visitOff();
+            case STRICT:
+                return visitor.visitStrict();
+            case CONTEXTUAL:
+                return visitor.visitContextual();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static V2ChatRequestSafetyMode valueOf(String value) {
+        switch (value) {
+            case "OFF":
+                return OFF;
+            case "STRICT":
+                return STRICT;
+            case "CONTEXTUAL":
+                return CONTEXTUAL;
+            default:
+                return new V2ChatRequestSafetyMode(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CONTEXTUAL,
+
+        STRICT,
+
+        OFF,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitContextual();
+
+        T visitStrict();
+
+        T visitOff();
+
+        T visitUnknown(String unknownType);
     }
 }

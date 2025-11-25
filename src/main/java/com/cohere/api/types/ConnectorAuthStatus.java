@@ -3,22 +3,81 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ConnectorAuthStatus {
-    VALID("valid"),
+public final class ConnectorAuthStatus {
+    public static final ConnectorAuthStatus EXPIRED = new ConnectorAuthStatus(Value.EXPIRED, "expired");
 
-    EXPIRED("expired");
+    public static final ConnectorAuthStatus VALID = new ConnectorAuthStatus(Value.VALID, "valid");
 
-    private final String value;
+    private final Value value;
 
-    ConnectorAuthStatus(String value) {
+    private final String string;
+
+    ConnectorAuthStatus(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ConnectorAuthStatus && this.string.equals(((ConnectorAuthStatus) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case EXPIRED:
+                return visitor.visitExpired();
+            case VALID:
+                return visitor.visitValid();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ConnectorAuthStatus valueOf(String value) {
+        switch (value) {
+            case "expired":
+                return EXPIRED;
+            case "valid":
+                return VALID;
+            default:
+                return new ConnectorAuthStatus(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        VALID,
+
+        EXPIRED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitValid();
+
+        T visitExpired();
+
+        T visitUnknown(String unknownType);
     }
 }

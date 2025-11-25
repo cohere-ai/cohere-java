@@ -3,28 +3,116 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatStreamRequestCitationQuality {
-    ENABLED("ENABLED"),
+public final class ChatStreamRequestCitationQuality {
+    public static final ChatStreamRequestCitationQuality FAST =
+            new ChatStreamRequestCitationQuality(Value.FAST, "FAST");
 
-    DISABLED("DISABLED"),
+    public static final ChatStreamRequestCitationQuality DISABLED =
+            new ChatStreamRequestCitationQuality(Value.DISABLED, "DISABLED");
 
-    FAST("FAST"),
+    public static final ChatStreamRequestCitationQuality ENABLED =
+            new ChatStreamRequestCitationQuality(Value.ENABLED, "ENABLED");
 
-    ACCURATE("ACCURATE"),
+    public static final ChatStreamRequestCitationQuality OFF = new ChatStreamRequestCitationQuality(Value.OFF, "OFF");
 
-    OFF("OFF");
+    public static final ChatStreamRequestCitationQuality ACCURATE =
+            new ChatStreamRequestCitationQuality(Value.ACCURATE, "ACCURATE");
 
-    private final String value;
+    private final Value value;
 
-    ChatStreamRequestCitationQuality(String value) {
+    private final String string;
+
+    ChatStreamRequestCitationQuality(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ChatStreamRequestCitationQuality
+                        && this.string.equals(((ChatStreamRequestCitationQuality) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case FAST:
+                return visitor.visitFast();
+            case DISABLED:
+                return visitor.visitDisabled();
+            case ENABLED:
+                return visitor.visitEnabled();
+            case OFF:
+                return visitor.visitOff();
+            case ACCURATE:
+                return visitor.visitAccurate();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ChatStreamRequestCitationQuality valueOf(String value) {
+        switch (value) {
+            case "FAST":
+                return FAST;
+            case "DISABLED":
+                return DISABLED;
+            case "ENABLED":
+                return ENABLED;
+            case "OFF":
+                return OFF;
+            case "ACCURATE":
+                return ACCURATE;
+            default:
+                return new ChatStreamRequestCitationQuality(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ENABLED,
+
+        DISABLED,
+
+        FAST,
+
+        ACCURATE,
+
+        OFF,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitEnabled();
+
+        T visitDisabled();
+
+        T visitFast();
+
+        T visitAccurate();
+
+        T visitOff();
+
+        T visitUnknown(String unknownType);
     }
 }

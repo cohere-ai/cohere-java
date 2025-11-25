@@ -3,24 +3,92 @@
  */
 package com.cohere.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum SummarizeRequestLength {
-    SHORT("short"),
+public final class SummarizeRequestLength {
+    public static final SummarizeRequestLength LONG = new SummarizeRequestLength(Value.LONG, "long");
 
-    MEDIUM("medium"),
+    public static final SummarizeRequestLength MEDIUM = new SummarizeRequestLength(Value.MEDIUM, "medium");
 
-    LONG("long");
+    public static final SummarizeRequestLength SHORT = new SummarizeRequestLength(Value.SHORT, "short");
 
-    private final String value;
+    private final Value value;
 
-    SummarizeRequestLength(String value) {
+    private final String string;
+
+    SummarizeRequestLength(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof SummarizeRequestLength
+                        && this.string.equals(((SummarizeRequestLength) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case LONG:
+                return visitor.visitLong();
+            case MEDIUM:
+                return visitor.visitMedium();
+            case SHORT:
+                return visitor.visitShort();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static SummarizeRequestLength valueOf(String value) {
+        switch (value) {
+            case "long":
+                return LONG;
+            case "medium":
+                return MEDIUM;
+            case "short":
+                return SHORT;
+            default:
+                return new SummarizeRequestLength(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        SHORT,
+
+        MEDIUM,
+
+        LONG,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitShort();
+
+        T visitMedium();
+
+        T visitLong();
+
+        T visitUnknown(String unknownType);
     }
 }
