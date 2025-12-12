@@ -224,74 +224,33 @@ public final class Stream<T> implements Iterable<T>, Closeable {
             try {
                 while (sseScanner.hasNextLine()) {
                     String line = sseScanner.nextLine();
-
-                    if (line.trim().isEmpty()) {
-                        if (eventDataBuffer.length() > 0) {
-                            try {
-                                nextItem = ObjectMappers.JSON_MAPPER.readValue(eventDataBuffer.toString(), valueType);
-                                hasNextItem = true;
-                                eventDataBuffer.setLength(0);
-                                currentEventType = null;
-                                return true;
-                            } catch (Exception parseEx) {
-                                System.err.println("Failed to parse SSE event: " + parseEx.getMessage());
-                                eventDataBuffer.setLength(0);
-                                currentEventType = null;
-                                continue;
-                            }
-                        }
+                    if (line == null) continue;
+                    line = line.trim();
+                    if (line.isEmpty()) {
                         continue;
                     }
-
                     if (line.startsWith(DATA_PREFIX)) {
-                        String dataContent = line.substring(DATA_PREFIX.length());
-                        if (dataContent.startsWith(" ")) {
-                            dataContent = dataContent.substring(1);
-                        }
-
-                        if (eventDataBuffer.length() == 0
-                                && streamTerminator != null
-                                && dataContent.trim().equals(streamTerminator)) {
+                        String dataContent = line.substring(DATA_PREFIX.length()).trim();
+                        // Check for stream terminator
+                        if (streamTerminator != null && dataContent.equals(streamTerminator)) {
                             endOfStream = true;
                             return false;
                         }
-
-                        if (eventDataBuffer.length() > 0) {
-                            eventDataBuffer.append('\n');
+                        if (!dataContent.isEmpty()) {
+                            try {
+                                nextItem = ObjectMappers.JSON_MAPPER.readValue(dataContent, valueType);
+                                hasNextItem = true;
+                                return true;
+                            } catch (Exception parseEx) {
+                                System.err.println("Failed to parse SSE data line: " + parseEx.getMessage());
+                                continue;
+                            }
                         }
-                        eventDataBuffer.append(dataContent);
-                    } else if (line.startsWith("event:")) {
-                        String eventValue = line.length() > 6 ? line.substring(6) : "";
-                        if (eventValue.startsWith(" ")) {
-                            eventValue = eventValue.substring(1);
-                        }
-                        currentEventType = eventValue;
-                    } else if (line.startsWith("id:")) {
-                        // Event ID field (ignored)
-                    } else if (line.startsWith("retry:")) {
-                        // Retry field (ignored)
-                    } else if (line.startsWith(":")) {
-                        // Comment line (ignored)
                     }
+                    // Ignore event:, id:, retry:, and comment lines
                 }
-
-                if (eventDataBuffer.length() > 0) {
-                    try {
-                        nextItem = ObjectMappers.JSON_MAPPER.readValue(eventDataBuffer.toString(), valueType);
-                        hasNextItem = true;
-                        eventDataBuffer.setLength(0);
-                        currentEventType = null;
-                        return true;
-                    } catch (Exception parseEx) {
-                        System.err.println("Failed to parse final SSE event: " + parseEx.getMessage());
-                        eventDataBuffer.setLength(0);
-                        currentEventType = null;
-                    }
-                }
-
                 endOfStream = true;
                 return false;
-
             } catch (Exception e) {
                 System.err.println("Failed to parse SSE stream: " + e.getMessage());
                 endOfStream = true;
