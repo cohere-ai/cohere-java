@@ -72,6 +72,44 @@ public final class StreamTest {
         assertFalse(testStream.iterator().hasNext());
     }
 
+    @Test
+    public void testSseStreamIgnoresEventLinesAndParsesData() {
+        // Simulate Cohere SSE stream with event: and data: lines
+        String sse = String.join("\n",
+            "event: message-start",
+            "data: {\"id\":\"id1\",\"type\":\"message-start\",\"delta\":{\"message\":{\"role\":\"assistant\",\"content\":[]}}}",
+            "",
+            "event: content-delta",
+            "data: {\"type\":\"content-delta\",\"index\":0,\"delta\":{\"message\":{\"content\":{\"text\":\"hello\"}}}}",
+            "",
+            "event: content-delta",
+            "data: {\"type\":\"content-delta\",\"index\":1,\"delta\":{\"message\":{\"content\":{\"text\":\" world\"}}}}",
+            ""
+        );
+        StringReader sseInput = new StringReader(sse);
+        Stream<Map> sseStream = Stream.fromSse(Map.class, sseInput);
+        int count = 0;
+        StringBuilder content = new StringBuilder();
+        for (Map event : sseStream) {
+            assertNotNull(event);
+            assertTrue(event.containsKey("type"));
+            if ("content-delta".equals(event.get("type"))) {
+                // Drill down to message.content.text
+                Map delta = (Map) event.get("delta");
+                assertNotNull(delta);
+                Map message = (Map) delta.get("message");
+                assertNotNull(message);
+                Map contentMap = (Map) message.get("content");
+                assertNotNull(contentMap);
+                String text = (String) contentMap.get("text");
+                if (text != null) content.append(text);
+            }
+            count++;
+        }
+        assertEquals(3, count); // 1 message-start + 2 content-delta
+        assertEquals("hello world", content.toString());
+    }
+
     private static String mapToJson(Map map) {
         try {
             return ObjectMappers.JSON_MAPPER.writeValueAsString(map);
