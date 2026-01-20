@@ -1,5 +1,5 @@
 # Reference
-<details><summary><code>client.chatStream(request) -> Optional&lt;StreamedChatResponse&gt;</code></summary>
+<details><summary><code>client.chatStream(request) -> Optional&amp;lt;StreamedChatResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -912,7 +912,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 </dl>
 </details>
 
-<details><summary><code>client.generateStream(request) -> Optional&lt;GenerateStreamedResponse&gt;</code></summary>
+<details><summary><code>client.generateStream(request) -> Optional&amp;lt;GenerateStreamedResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -1584,7 +1584,7 @@ client.rerank(
         )
         .query("What is the capital of the United States?")
         .topN(3)
-        .model("rerank-v3.5")
+        .model("rerank-v4.0-pro")
         .build()
 );
 ```
@@ -2123,7 +2123,7 @@ client.checkApiKey();
 </details>
 
 ## V2
-<details><summary><code>client.v2.chatStream(request) -> Optional&lt;V2ChatStreamResponse&gt;</code></summary>
+<details><summary><code>client.v2.chatStream(request) -> Optional&amp;lt;V2ChatStreamResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -2403,10 +2403,7 @@ If tool_choice isn't specified, then the model is free to choose whether to use 
 <dl>
 <dd>
 
-**priority:** `Optional<Integer>` 
-
-The priority of the request (lower means earlier handling; default 0 highest priority).
-Higher priority requests are handled first, and dropped last when the system is under load.
+**priority:** `Optional<Integer>` — Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.
     
 </dd>
 </dl>
@@ -2698,10 +2695,7 @@ If tool_choice isn't specified, then the model is free to choose whether to use 
 <dl>
 <dd>
 
-**priority:** `Optional<Integer>` 
-
-The priority of the request (lower means earlier handling; default 0 highest priority).
-Higher priority requests are handled first, and dropped last when the system is under load.
+**priority:** `Optional<Integer>` — Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.
     
 </dd>
 </dl>
@@ -2871,10 +2865,7 @@ If `NONE` is selected, when the input exceeds the maximum input token length an 
 <dl>
 <dd>
 
-**priority:** `Optional<Integer>` 
-
-The priority of the request (lower means earlier handling; default 0 highest priority).
-Higher priority requests are handled first, and dropped last when the system is under load.
+**priority:** `Optional<Integer>` — Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.
     
 </dd>
 </dl>
@@ -2920,7 +2911,7 @@ client.v2().rerank(
             Arrays.asList("Carson City is the capital city of the American state of Nevada.", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.", "Capital punishment has existed in the United States since beforethe United States was a country. As of 2017, capital punishment is legal in 30 of the 50 states.")
         )
         .query("What is the capital of the United States?")
-        .model("rerank-v3.5")
+        .model("rerank-v4.0-pro")
         .topN(3)
         .build()
 );
@@ -2985,10 +2976,7 @@ For optimal performance we recommend against sending more than 1,000 documents i
 <dl>
 <dd>
 
-**priority:** `Optional<Integer>` 
-
-The priority of the request (lower means earlier handling; default 0 highest priority).
-Higher priority requests are handled first, and dropped last when the system is under load.
+**priority:** `Optional<Integer>` — Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.
     
 </dd>
 </dl>
@@ -3204,7 +3192,7 @@ client.batches().retrieve("id");
 </dl>
 </details>
 
-<details><summary><code>client.batches.cancel(id) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.batches.cancel(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3846,7 +3834,7 @@ client.datasets().get("id");
 </dl>
 </details>
 
-<details><summary><code>client.datasets.delete(id) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.datasets.delete(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4139,7 +4127,7 @@ client.connectors().get("id");
 </dl>
 </details>
 
-<details><summary><code>client.connectors.delete(id) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.connectors.delete(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4733,7 +4721,7 @@ client.finetuning().getFinetunedModel("id");
 </dl>
 </details>
 
-<details><summary><code>client.finetuning.deleteFinetunedModel(id) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.finetuning.deleteFinetunedModel(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
