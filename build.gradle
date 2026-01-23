@@ -47,7 +47,7 @@ java {
 
 group = 'com.cohere'
 
-version = '1.7.1'
+version = '1.9.4'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
@@ -78,7 +78,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.cohere'
             artifactId = 'cohere-java'
-            version = '1.7.1'
+            version = '1.9.4'
             from components.java
             pom {
                 name = 'cohere'
