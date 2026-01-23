@@ -24,6 +24,8 @@ public final class ApiMetaBilledUnits {
 
     private final Optional<Double> inputTokens;
 
+    private final Optional<Double> imageTokens;
+
     private final Optional<Double> outputTokens;
 
     private final Optional<Double> searchUnits;
@@ -35,12 +37,14 @@ public final class ApiMetaBilledUnits {
     private ApiMetaBilledUnits(
             Optional<Double> images,
             Optional<Double> inputTokens,
+            Optional<Double> imageTokens,
             Optional<Double> outputTokens,
             Optional<Double> searchUnits,
             Optional<Double> classifications,
             Map<String, Object> additionalProperties) {
         this.images = images;
         this.inputTokens = inputTokens;
+        this.imageTokens = imageTokens;
         this.outputTokens = outputTokens;
         this.searchUnits = searchUnits;
         this.classifications = classifications;
@@ -61,6 +65,14 @@ public final class ApiMetaBilledUnits {
     @JsonProperty("input_tokens")
     public Optional<Double> getInputTokens() {
         return inputTokens;
+    }
+
+    /**
+     * @return The number of billed image tokens.
+     */
+    @JsonProperty("image_tokens")
+    public Optional<Double> getImageTokens() {
+        return imageTokens;
     }
 
     /**
@@ -101,6 +113,7 @@ public final class ApiMetaBilledUnits {
     private boolean equalTo(ApiMetaBilledUnits other) {
         return images.equals(other.images)
                 && inputTokens.equals(other.inputTokens)
+                && imageTokens.equals(other.imageTokens)
                 && outputTokens.equals(other.outputTokens)
                 && searchUnits.equals(other.searchUnits)
                 && classifications.equals(other.classifications);
@@ -108,7 +121,13 @@ public final class ApiMetaBilledUnits {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.images, this.inputTokens, this.outputTokens, this.searchUnits, this.classifications);
+        return Objects.hash(
+                this.images,
+                this.inputTokens,
+                this.imageTokens,
+                this.outputTokens,
+                this.searchUnits,
+                this.classifications);
     }
 
     @java.lang.Override
@@ -126,6 +145,8 @@ public final class ApiMetaBilledUnits {
 
         private Optional<Double> inputTokens = Optional.empty();
 
+        private Optional<Double> imageTokens = Optional.empty();
+
         private Optional<Double> outputTokens = Optional.empty();
 
         private Optional<Double> searchUnits = Optional.empty();
@@ -140,6 +161,7 @@ public final class ApiMetaBilledUnits {
         public Builder from(ApiMetaBilledUnits other) {
             images(other.getImages());
             inputTokens(other.getInputTokens());
+            imageTokens(other.getImageTokens());
             outputTokens(other.getOutputTokens());
             searchUnits(other.getSearchUnits());
             classifications(other.getClassifications());
@@ -171,6 +193,20 @@ public final class ApiMetaBilledUnits {
 
         public Builder inputTokens(Double inputTokens) {
             this.inputTokens = Optional.ofNullable(inputTokens);
+            return this;
+        }
+
+        /**
+         * <p>The number of billed image tokens.</p>
+         */
+        @JsonSetter(value = "image_tokens", nulls = Nulls.SKIP)
+        public Builder imageTokens(Optional<Double> imageTokens) {
+            this.imageTokens = imageTokens;
+            return this;
+        }
+
+        public Builder imageTokens(Double imageTokens) {
+            this.imageTokens = Optional.ofNullable(imageTokens);
             return this;
         }
 
@@ -218,7 +254,7 @@ public final class ApiMetaBilledUnits {
 
         public ApiMetaBilledUnits build() {
             return new ApiMetaBilledUnits(
-                    images, inputTokens, outputTokens, searchUnits, classifications, additionalProperties);
+                    images, inputTokens, imageTokens, outputTokens, searchUnits, classifications, additionalProperties);
         }
     }
 }
