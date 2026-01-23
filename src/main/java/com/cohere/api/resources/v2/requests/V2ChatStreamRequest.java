@@ -289,8 +289,7 @@ public final class V2ChatStreamRequest {
     }
 
     /**
-     * @return The priority of the request (lower means earlier handling; default 0 highest priority).
-     * Higher priority requests are handled first, and dropped last when the system is under load.
+     * @return Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.
      */
     @JsonProperty("priority")
     public Optional<Integer> getPriority() {
@@ -514,8 +513,7 @@ public final class V2ChatStreamRequest {
         _FinalStage thinking(Thinking thinking);
 
         /**
-         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
-         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         * <p>Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.</p>
          */
         _FinalStage priority(Optional<Integer> priority);
 
@@ -607,8 +605,7 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
-         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         * <p>Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -618,8 +615,7 @@ public final class V2ChatStreamRequest {
         }
 
         /**
-         * <p>The priority of the request (lower means earlier handling; default 0 highest priority).
-         * Higher priority requests are handled first, and dropped last when the system is under load.</p>
+         * <p>Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "priority", nulls = Nulls.SKIP)
