@@ -36,7 +36,7 @@ public final class SystemMessageV2Content {
         if (this.type == 0) {
             return visitor.visit((String) this.value);
         } else if (this.type == 1) {
-            return visitor.visit((List<SystemMessageV2ContentItem>) this.value);
+            return visitor.visit((List<SystemMessageV2ContentOneItem>) this.value);
         }
         throw new IllegalStateException("Failed to visit value. This should never happen.");
     }
@@ -65,14 +65,14 @@ public final class SystemMessageV2Content {
         return new SystemMessageV2Content(value, 0);
     }
 
-    public static SystemMessageV2Content of(List<SystemMessageV2ContentItem> value) {
+    public static SystemMessageV2Content of(List<SystemMessageV2ContentOneItem> value) {
         return new SystemMessageV2Content(value, 1);
     }
 
     public interface Visitor<T> {
         T visit(String value);
 
-        T visit(List<SystemMessageV2ContentItem> value);
+        T visit(List<SystemMessageV2ContentOneItem> value);
     }
 
     static final class Deserializer extends StdDeserializer<SystemMessageV2Content> {
@@ -89,7 +89,7 @@ public final class SystemMessageV2Content {
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(
-                        value, new TypeReference<List<SystemMessageV2ContentItem>>() {}));
+                        value, new TypeReference<List<SystemMessageV2ContentOneItem>>() {}));
             } catch (RuntimeException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");

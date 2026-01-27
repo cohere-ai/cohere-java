@@ -62,6 +62,13 @@ public class RawDatasetsClient {
     /**
      * List datasets that have been created.
      */
+    public CohereHttpResponse<DatasetsListResponse> list(RequestOptions requestOptions) {
+        return list(DatasetsListRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * List datasets that have been created.
+     */
     public CohereHttpResponse<DatasetsListResponse> list(DatasetsListRequest request) {
         return list(request, null);
     }
@@ -96,6 +103,11 @@ public class RawDatasetsClient {
         if (request.getValidationStatus().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "validationStatus", request.getValidationStatus().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -209,16 +221,22 @@ public class RawDatasetsClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "optional_fields", request.getOptionalFields().get(), true);
         }
-        MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
             String dataMimeType = Files.probeContentType(data.toPath());
             MediaType dataMimeTypeMediaType = dataMimeType != null ? MediaType.parse(dataMimeType) : null;
-            body.addFormDataPart("data", data.getName(), RequestBody.create(data, dataMimeTypeMediaType));
+            multipartBodyBuilder.addFormDataPart(
+                    "data", data.getName(), RequestBody.create(data, dataMimeTypeMediaType));
             if (evalData.isPresent()) {
                 String evalDataMimeType = Files.probeContentType(evalData.get().toPath());
                 MediaType evalDataMimeTypeMediaType =
                         evalDataMimeType != null ? MediaType.parse(evalDataMimeType) : null;
-                body.addFormDataPart(
+                multipartBodyBuilder.addFormDataPart(
                         "eval_data",
                         evalData.get().getName(),
                         RequestBody.create(evalData.get(), evalDataMimeTypeMediaType));
@@ -228,7 +246,7 @@ public class RawDatasetsClient {
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("POST", body.build())
+                .method("POST", multipartBodyBuilder.build())
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
@@ -305,12 +323,16 @@ public class RawDatasetsClient {
      * View the dataset storage usage for your Organization. Each Organization can have up to 10GB of storage across all their users.
      */
     public CohereHttpResponse<DatasetsGetUsageResponse> getUsage(RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/datasets/usage")
-                .build();
+                .addPathSegments("v1/datasets/usage");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -388,13 +410,17 @@ public class RawDatasetsClient {
      * Retrieve a dataset by ID. See <a href="https://docs.cohere.com/docs/datasets">'Datasets'</a> for more information.
      */
     public CohereHttpResponse<DatasetsGetResponse> get(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/datasets")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -471,13 +497,17 @@ public class RawDatasetsClient {
      * Delete a dataset by ID. Datasets are automatically deleted after 30 days, but they can also be deleted manually.
      */
     public CohereHttpResponse<Map<String, Object>> delete(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/datasets")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

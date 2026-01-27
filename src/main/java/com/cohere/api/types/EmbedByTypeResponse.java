@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmbedByTypeResponse.Builder.class)
 public final class EmbedByTypeResponse {
+    private final Optional<EmbedByTypeResponseResponseType> responseType;
+
     private final String id;
 
     private final EmbedByTypeResponseEmbeddings embeddings;
@@ -35,18 +37,25 @@ public final class EmbedByTypeResponse {
     private final Map<String, Object> additionalProperties;
 
     private EmbedByTypeResponse(
+            Optional<EmbedByTypeResponseResponseType> responseType,
             String id,
             EmbedByTypeResponseEmbeddings embeddings,
             Optional<List<String>> texts,
             Optional<List<Image>> images,
             Optional<ApiMeta> meta,
             Map<String, Object> additionalProperties) {
+        this.responseType = responseType;
         this.id = id;
         this.embeddings = embeddings;
         this.texts = texts;
         this.images = images;
         this.meta = meta;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("response_type")
+    public Optional<EmbedByTypeResponseResponseType> getResponseType() {
+        return responseType;
     }
 
     @JsonProperty("id")
@@ -95,7 +104,8 @@ public final class EmbedByTypeResponse {
     }
 
     private boolean equalTo(EmbedByTypeResponse other) {
-        return id.equals(other.id)
+        return responseType.equals(other.responseType)
+                && id.equals(other.id)
                 && embeddings.equals(other.embeddings)
                 && texts.equals(other.texts)
                 && images.equals(other.images)
@@ -104,7 +114,7 @@ public final class EmbedByTypeResponse {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.embeddings, this.texts, this.images, this.meta);
+        return Objects.hash(this.responseType, this.id, this.embeddings, this.texts, this.images, this.meta);
     }
 
     @java.lang.Override
@@ -131,6 +141,10 @@ public final class EmbedByTypeResponse {
 
     public interface _FinalStage {
         EmbedByTypeResponse build();
+
+        _FinalStage responseType(Optional<EmbedByTypeResponseResponseType> responseType);
+
+        _FinalStage responseType(EmbedByTypeResponseResponseType responseType);
 
         /**
          * <p>The text entries for which embeddings were returned.</p>
@@ -163,6 +177,8 @@ public final class EmbedByTypeResponse {
 
         private Optional<List<String>> texts = Optional.empty();
 
+        private Optional<EmbedByTypeResponseResponseType> responseType = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -170,6 +186,7 @@ public final class EmbedByTypeResponse {
 
         @java.lang.Override
         public Builder from(EmbedByTypeResponse other) {
+            responseType(other.getResponseType());
             id(other.getId());
             embeddings(other.getEmbeddings());
             texts(other.getTexts());
@@ -251,8 +268,21 @@ public final class EmbedByTypeResponse {
         }
 
         @java.lang.Override
+        public _FinalStage responseType(EmbedByTypeResponseResponseType responseType) {
+            this.responseType = Optional.ofNullable(responseType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "response_type", nulls = Nulls.SKIP)
+        public _FinalStage responseType(Optional<EmbedByTypeResponseResponseType> responseType) {
+            this.responseType = responseType;
+            return this;
+        }
+
+        @java.lang.Override
         public EmbedByTypeResponse build() {
-            return new EmbedByTypeResponse(id, embeddings, texts, images, meta, additionalProperties);
+            return new EmbedByTypeResponse(responseType, id, embeddings, texts, images, meta, additionalProperties);
         }
     }
 }

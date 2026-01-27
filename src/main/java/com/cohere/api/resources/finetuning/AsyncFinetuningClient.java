@@ -46,6 +46,13 @@ public class AsyncFinetuningClient {
     /**
      * Returns a list of fine-tuned models that the user has access to.
      */
+    public CompletableFuture<ListFinetunedModelsResponse> listFinetunedModels(RequestOptions requestOptions) {
+        return this.rawClient.listFinetunedModels(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of fine-tuned models that the user has access to.
+     */
     public CompletableFuture<ListFinetunedModelsResponse> listFinetunedModels(
             FinetuningListFinetunedModelsRequest request) {
         return this.rawClient.listFinetunedModels(request).thenApply(response -> response.body());
@@ -134,6 +141,15 @@ public class AsyncFinetuningClient {
      * The events are ordered by creation time, with the most recent event first.
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
+    public CompletableFuture<ListEventsResponse> listEvents(String finetunedModelId, RequestOptions requestOptions) {
+        return this.rawClient.listEvents(finetunedModelId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of events that occurred during the life-cycle of the fine-tuned model.
+     * The events are ordered by creation time, with the most recent event first.
+     * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
+     */
     public CompletableFuture<ListEventsResponse> listEvents(
             String finetunedModelId, FinetuningListEventsRequest request) {
         return this.rawClient.listEvents(finetunedModelId, request).thenApply(response -> response.body());
@@ -158,6 +174,18 @@ public class AsyncFinetuningClient {
      */
     public CompletableFuture<ListTrainingStepMetricsResponse> listTrainingStepMetrics(String finetunedModelId) {
         return this.rawClient.listTrainingStepMetrics(finetunedModelId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of metrics measured during the training of a fine-tuned model.
+     * The metrics are ordered by step number, with the most recent step first.
+     * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
+     */
+    public CompletableFuture<ListTrainingStepMetricsResponse> listTrainingStepMetrics(
+            String finetunedModelId, RequestOptions requestOptions) {
+        return this.rawClient
+                .listTrainingStepMetrics(finetunedModelId, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**

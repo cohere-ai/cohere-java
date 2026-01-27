@@ -42,6 +42,13 @@ public class DatasetsClient {
     /**
      * List datasets that have been created.
      */
+    public DatasetsListResponse list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).body();
+    }
+
+    /**
+     * List datasets that have been created.
+     */
     public DatasetsListResponse list(DatasetsListRequest request) {
         return this.rawClient.list(request).body();
     }

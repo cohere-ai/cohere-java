@@ -47,8 +47,6 @@ import com.cohere.api.types.SummarizeResponse;
 import com.cohere.api.types.TokenizeResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -78,50 +76,26 @@ public class RawCohere {
      */
     public CohereHttpResponse<Iterable<StreamedChatResponse>> chatStream(
             ChatStreamRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/chat")
-                .build();
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("message", request.getMessage());
-        properties.put("model", request.getModel());
-        properties.put("stream", request.getStream());
-        properties.put("preamble", request.getPreamble());
-        properties.put("chat_history", request.getChatHistory());
-        properties.put("conversation_id", request.getConversationId());
-        properties.put("prompt_truncation", request.getPromptTruncation());
-        properties.put("connectors", request.getConnectors());
-        properties.put("search_queries_only", request.getSearchQueriesOnly());
-        properties.put("documents", request.getDocuments());
-        properties.put("citation_quality", request.getCitationQuality());
-        properties.put("temperature", request.getTemperature());
-        properties.put("max_tokens", request.getMaxTokens());
-        properties.put("max_input_tokens", request.getMaxInputTokens());
-        properties.put("k", request.getK());
-        properties.put("p", request.getP());
-        properties.put("seed", request.getSeed());
-        properties.put("stop_sequences", request.getStopSequences());
-        properties.put("frequency_penalty", request.getFrequencyPenalty());
-        properties.put("presence_penalty", request.getPresencePenalty());
-        properties.put("raw_prompting", request.getRawPrompting());
-        properties.put("tools", request.getTools());
-        properties.put("tool_results", request.getToolResults());
-        properties.put("force_single_step", request.getForceSingleStep());
-        properties.put("response_format", request.getResponseFormat());
-        properties.put("safety_mode", request.getSafetyMode());
+                .addPathSegments("v1/chat");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
+                .addHeader("Content-Type", "application/json");
         if (request.getAccepts().isPresent()) {
             _requestBuilder.addHeader("Accepts", request.getAccepts().get());
         }
@@ -201,46 +175,23 @@ public class RawCohere {
      * To learn how to use the Chat API and RAG follow our <a href="https://docs.cohere.com/docs/chat-api">Text Generation guides</a>.
      */
     public CohereHttpResponse<NonStreamedChatResponse> chat(ChatRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/chat")
-                .build();
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("message", request.getMessage());
-        properties.put("model", request.getModel());
-        properties.put("stream", request.getStream());
-        properties.put("preamble", request.getPreamble());
-        properties.put("chat_history", request.getChatHistory());
-        properties.put("conversation_id", request.getConversationId());
-        properties.put("prompt_truncation", request.getPromptTruncation());
-        properties.put("connectors", request.getConnectors());
-        properties.put("search_queries_only", request.getSearchQueriesOnly());
-        properties.put("documents", request.getDocuments());
-        properties.put("citation_quality", request.getCitationQuality());
-        properties.put("temperature", request.getTemperature());
-        properties.put("max_tokens", request.getMaxTokens());
-        properties.put("max_input_tokens", request.getMaxInputTokens());
-        properties.put("k", request.getK());
-        properties.put("p", request.getP());
-        properties.put("seed", request.getSeed());
-        properties.put("stop_sequences", request.getStopSequences());
-        properties.put("frequency_penalty", request.getFrequencyPenalty());
-        properties.put("presence_penalty", request.getPresencePenalty());
-        properties.put("raw_prompting", request.getRawPrompting());
-        properties.put("tools", request.getTools());
-        properties.put("tool_results", request.getToolResults());
-        properties.put("force_single_step", request.getForceSingleStep());
-        properties.put("response_format", request.getResponseFormat());
-        properties.put("safety_mode", request.getSafetyMode());
+                .addPathSegments("v1/chat");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -329,10 +280,14 @@ public class RawCohere {
      */
     public CohereHttpResponse<Iterable<GenerateStreamedResponse>> generateStream(
             GenerateStreamRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/generate")
-                .build();
+                .addPathSegments("v1/generate");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -341,11 +296,10 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -427,10 +381,14 @@ public class RawCohere {
      * Generates realistic text conditioned on a given input.</p>
      */
     public CohereHttpResponse<Generation> generate(GenerateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/generate")
-                .build();
+                .addPathSegments("v1/generate");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -439,7 +397,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -520,6 +478,15 @@ public class RawCohere {
      * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
      * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
+    public CohereHttpResponse<EmbedResponse> embed(RequestOptions requestOptions) {
+        return embed(EmbedRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * This endpoint returns text and image embeddings. An embedding is a list of floating point numbers that captures semantic information about the content that it represents.
+     * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
+     */
     public CohereHttpResponse<EmbedResponse> embed(EmbedRequest request) {
         return embed(request, null);
     }
@@ -530,10 +497,14 @@ public class RawCohere {
      * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
     public CohereHttpResponse<EmbedResponse> embed(EmbedRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/embed")
-                .build();
+                .addPathSegments("v1/embed");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -542,7 +513,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -620,10 +591,14 @@ public class RawCohere {
      * This endpoint takes in a query and a list of texts and produces an ordered array with each text assigned a relevance score.
      */
     public CohereHttpResponse<RerankResponse> rerank(RerankRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/rerank")
-                .build();
+                .addPathSegments("v1/rerank");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -632,7 +607,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -712,10 +687,14 @@ public class RawCohere {
      * Note: <a href="https://docs.cohere.com/docs/classify-fine-tuning">Fine-tuned models</a> trained on classification examples don't require the <code>examples</code> parameter to be passed in explicitly.
      */
     public CohereHttpResponse<ClassifyResponse> classify(ClassifyRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/classify")
-                .build();
+                .addPathSegments("v1/classify");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -724,7 +703,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -808,10 +787,14 @@ public class RawCohere {
      * Generates a summary in English for a given text.</p>
      */
     public CohereHttpResponse<SummarizeResponse> summarize(SummarizeRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/summarize")
-                .build();
+                .addPathSegments("v1/summarize");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -820,7 +803,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -898,10 +881,14 @@ public class RawCohere {
      * This endpoint splits input text into smaller units called tokens using byte-pair encoding (BPE). To learn more about tokenization and byte pair encoding, see the tokens page.
      */
     public CohereHttpResponse<TokenizeResponse> tokenize(TokenizeRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/tokenize")
-                .build();
+                .addPathSegments("v1/tokenize");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -910,7 +897,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -988,10 +975,14 @@ public class RawCohere {
      * This endpoint takes tokens using byte-pair encoding and returns their text representation. To learn more about tokenization and byte pair encoding, see the tokens page.
      */
     public CohereHttpResponse<DetokenizeResponse> detokenize(DetokenizeRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/detokenize")
-                .build();
+                .addPathSegments("v1/detokenize");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -1000,7 +991,7 @@ public class RawCohere {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -1078,12 +1069,16 @@ public class RawCohere {
      * Checks that the api key in the Authorization header is valid and active
      */
     public CohereHttpResponse<CheckApiKeyResponse> checkApiKey(RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/check-api-key")
-                .build();
+                .addPathSegments("v1/check-api-key");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

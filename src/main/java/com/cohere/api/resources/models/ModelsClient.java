@@ -50,6 +50,13 @@ public class ModelsClient {
     /**
      * Returns a list of models available for use.
      */
+    public ListModelsResponse list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).body();
+    }
+
+    /**
+     * Returns a list of models available for use.
+     */
     public ListModelsResponse list(ModelsListRequest request) {
         return this.rawClient.list(request).body();
     }
