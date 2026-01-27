@@ -5,5 +5,5 @@
   "generatorConfig": {
     "client-class-name": "Cohere"
   },
-  "sdkVersion": "1.7.1"
+  "sdkVersion": "1.9.5"
 }
