@@ -58,6 +58,14 @@ public class RawFinetuningClient {
     /**
      * Returns a list of fine-tuned models that the user has access to.
      */
+    public CohereHttpResponse<ListFinetunedModelsResponse> listFinetunedModels(RequestOptions requestOptions) {
+        return listFinetunedModels(
+                FinetuningListFinetunedModelsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of fine-tuned models that the user has access to.
+     */
     public CohereHttpResponse<ListFinetunedModelsResponse> listFinetunedModels(
             FinetuningListFinetunedModelsRequest request) {
         return listFinetunedModels(request, null);
@@ -82,6 +90,11 @@ public class RawFinetuningClient {
         if (request.getOrderBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "order_by", request.getOrderBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -145,10 +158,14 @@ public class RawFinetuningClient {
      */
     public CohereHttpResponse<CreateFinetunedModelResponse> createFinetunedModel(
             FinetunedModel request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/finetuning/finetuned-models")
-                .build();
+                .addPathSegments("v1/finetuning/finetuned-models");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -157,7 +174,7 @@ public class RawFinetuningClient {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -218,13 +235,17 @@ public class RawFinetuningClient {
      * Retrieve a fine-tuned model by its ID.
      */
     public CohereHttpResponse<GetFinetunedModelResponse> getFinetunedModel(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/finetuning/finetuned-models")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -286,13 +307,17 @@ public class RawFinetuningClient {
      * This operation is irreversible.
      */
     public CohereHttpResponse<Map<String, Object>> deleteFinetunedModel(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/finetuning/finetuned-models")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -355,11 +380,15 @@ public class RawFinetuningClient {
      */
     public CohereHttpResponse<UpdateFinetunedModelResponse> updateFinetunedModel(
             String id, FinetuningUpdateFinetunedModelRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/finetuning/finetuned-models")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -368,7 +397,7 @@ public class RawFinetuningClient {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PATCH", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -433,6 +462,16 @@ public class RawFinetuningClient {
      * The events are ordered by creation time, with the most recent event first.
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
+    public CohereHttpResponse<ListEventsResponse> listEvents(String finetunedModelId, RequestOptions requestOptions) {
+        return listEvents(
+                finetunedModelId, FinetuningListEventsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of events that occurred during the life-cycle of the fine-tuned model.
+     * The events are ordered by creation time, with the most recent event first.
+     * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
+     */
     public CohereHttpResponse<ListEventsResponse> listEvents(
             String finetunedModelId, FinetuningListEventsRequest request) {
         return listEvents(finetunedModelId, request, null);
@@ -461,6 +500,11 @@ public class RawFinetuningClient {
         if (request.getOrderBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "order_by", request.getOrderBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -528,6 +572,19 @@ public class RawFinetuningClient {
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
     public CohereHttpResponse<ListTrainingStepMetricsResponse> listTrainingStepMetrics(
+            String finetunedModelId, RequestOptions requestOptions) {
+        return listTrainingStepMetrics(
+                finetunedModelId,
+                FinetuningListTrainingStepMetricsRequest.builder().build(),
+                requestOptions);
+    }
+
+    /**
+     * Returns a list of metrics measured during the training of a fine-tuned model.
+     * The metrics are ordered by step number, with the most recent step first.
+     * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
+     */
+    public CohereHttpResponse<ListTrainingStepMetricsResponse> listTrainingStepMetrics(
             String finetunedModelId, FinetuningListTrainingStepMetricsRequest request) {
         return listTrainingStepMetrics(finetunedModelId, request, null);
     }
@@ -551,6 +608,11 @@ public class RawFinetuningClient {
         if (request.getPageToken().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "page_token", request.getPageToken().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

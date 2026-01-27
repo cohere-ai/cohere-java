@@ -40,6 +40,13 @@ public class AsyncBatchesClient {
     /**
      * List the batches for the current user
      */
+    public CompletableFuture<ListBatchesResponse> list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * List the batches for the current user
+     */
     public CompletableFuture<ListBatchesResponse> list(BatchesListBatchesRequest request) {
         return this.rawClient.list(request).thenApply(response -> response.body());
     }

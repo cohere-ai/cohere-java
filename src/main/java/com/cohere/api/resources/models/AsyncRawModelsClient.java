@@ -56,13 +56,17 @@ public class AsyncRawModelsClient {
      * Returns the details of a model, provided its name.
      */
     public CompletableFuture<CohereHttpResponse<GetModelResponse>> get(String model, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/models")
-                .addPathSegment(model)
-                .build();
+                .addPathSegment(model);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -176,6 +180,13 @@ public class AsyncRawModelsClient {
     /**
      * Returns a list of models available for use.
      */
+    public CompletableFuture<CohereHttpResponse<ListModelsResponse>> list(RequestOptions requestOptions) {
+        return list(ModelsListRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of models available for use.
+     */
     public CompletableFuture<CohereHttpResponse<ListModelsResponse>> list(ModelsListRequest request) {
         return list(request, null);
     }
@@ -203,6 +214,11 @@ public class AsyncRawModelsClient {
         if (request.getDefaultOnly().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "default_only", request.getDefaultOnly().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

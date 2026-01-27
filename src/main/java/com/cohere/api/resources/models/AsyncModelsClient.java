@@ -51,6 +51,13 @@ public class AsyncModelsClient {
     /**
      * Returns a list of models available for use.
      */
+    public CompletableFuture<ListModelsResponse> list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of models available for use.
+     */
     public CompletableFuture<ListModelsResponse> list(ModelsListRequest request) {
         return this.rawClient.list(request).thenApply(response -> response.body());
     }

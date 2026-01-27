@@ -45,6 +45,13 @@ public class FinetuningClient {
     /**
      * Returns a list of fine-tuned models that the user has access to.
      */
+    public ListFinetunedModelsResponse listFinetunedModels(RequestOptions requestOptions) {
+        return this.rawClient.listFinetunedModels(requestOptions).body();
+    }
+
+    /**
+     * Returns a list of fine-tuned models that the user has access to.
+     */
     public ListFinetunedModelsResponse listFinetunedModels(FinetuningListFinetunedModelsRequest request) {
         return this.rawClient.listFinetunedModels(request).body();
     }
@@ -130,6 +137,15 @@ public class FinetuningClient {
      * The events are ordered by creation time, with the most recent event first.
      * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
      */
+    public ListEventsResponse listEvents(String finetunedModelId, RequestOptions requestOptions) {
+        return this.rawClient.listEvents(finetunedModelId, requestOptions).body();
+    }
+
+    /**
+     * Returns a list of events that occurred during the life-cycle of the fine-tuned model.
+     * The events are ordered by creation time, with the most recent event first.
+     * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
+     */
     public ListEventsResponse listEvents(String finetunedModelId, FinetuningListEventsRequest request) {
         return this.rawClient.listEvents(finetunedModelId, request).body();
     }
@@ -153,6 +169,18 @@ public class FinetuningClient {
      */
     public ListTrainingStepMetricsResponse listTrainingStepMetrics(String finetunedModelId) {
         return this.rawClient.listTrainingStepMetrics(finetunedModelId).body();
+    }
+
+    /**
+     * Returns a list of metrics measured during the training of a fine-tuned model.
+     * The metrics are ordered by step number, with the most recent step first.
+     * The list can be paginated using <code>page_size</code> and <code>page_token</code> parameters.
+     */
+    public ListTrainingStepMetricsResponse listTrainingStepMetrics(
+            String finetunedModelId, RequestOptions requestOptions) {
+        return this.rawClient
+                .listTrainingStepMetrics(finetunedModelId, requestOptions)
+                .body();
     }
 
     /**

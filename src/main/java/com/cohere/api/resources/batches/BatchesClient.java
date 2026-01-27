@@ -39,6 +39,13 @@ public class BatchesClient {
     /**
      * List the batches for the current user
      */
+    public ListBatchesResponse list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).body();
+    }
+
+    /**
+     * List the batches for the current user
+     */
     public ListBatchesResponse list(BatchesListBatchesRequest request) {
         return this.rawClient.list(request).body();
     }

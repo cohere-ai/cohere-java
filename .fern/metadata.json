@@ -1,8 +1,9 @@
 {
-  "cliVersion": "0.112.1",
+  "cliVersion": "3.50.1",
   "generatorName": "fernapi/fern-java-sdk",
-  "generatorVersion": "3.14.2",
+  "generatorVersion": "3.34.5",
   "generatorConfig": {
     "client-class-name": "Cohere"
-  }
+  },
+  "sdkVersion": "1.7.1"
 }

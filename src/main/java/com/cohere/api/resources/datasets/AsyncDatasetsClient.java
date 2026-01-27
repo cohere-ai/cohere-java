@@ -43,6 +43,13 @@ public class AsyncDatasetsClient {
     /**
      * List datasets that have been created.
      */
+    public CompletableFuture<DatasetsListResponse> list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * List datasets that have been created.
+     */
     public CompletableFuture<DatasetsListResponse> list(DatasetsListRequest request) {
         return this.rawClient.list(request).thenApply(response -> response.body());
     }

@@ -55,6 +55,13 @@ public class AsyncRawBatchesClient {
     /**
      * List the batches for the current user
      */
+    public CompletableFuture<CohereHttpResponse<ListBatchesResponse>> list(RequestOptions requestOptions) {
+        return list(BatchesListBatchesRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * List the batches for the current user
+     */
     public CompletableFuture<CohereHttpResponse<ListBatchesResponse>> list(BatchesListBatchesRequest request) {
         return list(request, null);
     }
@@ -78,6 +85,11 @@ public class AsyncRawBatchesClient {
         if (request.getOrderBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "order_by", request.getOrderBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -166,10 +178,14 @@ public class AsyncRawBatchesClient {
      */
     public CompletableFuture<CohereHttpResponse<CreateBatchResponse>> create(
             Batch request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v2/batches")
-                .build();
+                .addPathSegments("v2/batches");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -178,7 +194,7 @@ public class AsyncRawBatchesClient {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -264,13 +280,17 @@ public class AsyncRawBatchesClient {
      * Retrieves a batch
      */
     public CompletableFuture<CohereHttpResponse<GetBatchResponse>> retrieve(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/batches")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -355,14 +375,18 @@ public class AsyncRawBatchesClient {
      * Cancels an in-progress batch
      */
     public CompletableFuture<CohereHttpResponse<Map<String, Object>>> cancel(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/batches")
                 .addPathSegment(id)
-                .addPathSegments(":cancel")
-                .build();
+                .addPathSegments(":cancel");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

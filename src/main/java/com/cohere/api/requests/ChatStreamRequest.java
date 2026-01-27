@@ -14,6 +14,7 @@ import com.cohere.api.types.Tool;
 import com.cohere.api.types.ToolResult;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -144,7 +145,7 @@ public final class ChatStreamRequest {
     /**
      * @return Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.
      */
-    @JsonProperty("Accepts")
+    @JsonIgnore
     public Optional<String> getAccepts() {
         return accepts;
     }
@@ -1543,7 +1544,6 @@ public final class ChatStreamRequest {
          * <p>Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.</p>
          */
         @java.lang.Override
-        @JsonSetter(value = "Accepts", nulls = Nulls.SKIP)
         public _FinalStage accepts(Optional<String> accepts) {
             this.accepts = accepts;
             return this;

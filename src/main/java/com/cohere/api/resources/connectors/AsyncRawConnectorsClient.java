@@ -65,6 +65,13 @@ public class AsyncRawConnectorsClient {
     /**
      * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
+    public CompletableFuture<CohereHttpResponse<ListConnectorsResponse>> list(RequestOptions requestOptions) {
+        return list(ConnectorsListRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
+     */
     public CompletableFuture<CohereHttpResponse<ListConnectorsResponse>> list(ConnectorsListRequest request) {
         return list(request, null);
     }
@@ -84,6 +91,11 @@ public class AsyncRawConnectorsClient {
         if (request.getOffset().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "offset", request.getOffset().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -202,10 +214,14 @@ public class AsyncRawConnectorsClient {
      */
     public CompletableFuture<CohereHttpResponse<CreateConnectorResponse>> create(
             CreateConnectorRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v1/connectors")
-                .build();
+                .addPathSegments("v1/connectors");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -214,7 +230,7 @@ public class AsyncRawConnectorsClient {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -330,13 +346,17 @@ public class AsyncRawConnectorsClient {
      * Retrieve a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
     public CompletableFuture<CohereHttpResponse<GetConnectorResponse>> get(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/connectors")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -451,13 +471,17 @@ public class AsyncRawConnectorsClient {
      * Delete a connector by ID. See <a href="https://docs.cohere.com/docs/connectors">'Connectors'</a> for more information.
      */
     public CompletableFuture<CohereHttpResponse<Map<String, Object>>> delete(String id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/connectors")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -573,6 +597,14 @@ public class AsyncRawConnectorsClient {
      * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
     public CompletableFuture<CohereHttpResponse<UpdateConnectorResponse>> update(
+            String id, RequestOptions requestOptions) {
+        return update(id, UpdateConnectorRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
+     */
+    public CompletableFuture<CohereHttpResponse<UpdateConnectorResponse>> update(
             String id, UpdateConnectorRequest request) {
         return update(id, request, null);
     }
@@ -582,11 +614,15 @@ public class AsyncRawConnectorsClient {
      */
     public CompletableFuture<CohereHttpResponse<UpdateConnectorResponse>> update(
             String id, UpdateConnectorRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v1/connectors")
-                .addPathSegment(id)
-                .build();
+                .addPathSegment(id);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -595,7 +631,7 @@ public class AsyncRawConnectorsClient {
             throw new CohereException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PATCH", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -711,6 +747,14 @@ public class AsyncRawConnectorsClient {
      * Authorize the connector with the given ID for the connector oauth app.  See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
      */
     public CompletableFuture<CohereHttpResponse<OAuthAuthorizeResponse>> oAuthAuthorize(
+            String id, RequestOptions requestOptions) {
+        return oAuthAuthorize(id, ConnectorsOAuthAuthorizeRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Authorize the connector with the given ID for the connector oauth app.  See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
+     */
+    public CompletableFuture<CohereHttpResponse<OAuthAuthorizeResponse>> oAuthAuthorize(
             String id, ConnectorsOAuthAuthorizeRequest request) {
         return oAuthAuthorize(id, request, null);
     }
@@ -732,6 +776,11 @@ public class AsyncRawConnectorsClient {
                     "after_token_redirect",
                     request.getAfterTokenRedirect().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

@@ -161,6 +161,15 @@ public class Cohere {
      * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
      * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
      */
+    public EmbedResponse embed(RequestOptions requestOptions) {
+        return this.rawClient.embed(requestOptions).body();
+    }
+
+    /**
+     * This endpoint returns text and image embeddings. An embedding is a list of floating point numbers that captures semantic information about the content that it represents.
+     * <p>Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.</p>
+     * <p>If you want to learn more how to use the embedding model, have a look at the <a href="https://docs.cohere.com/docs/semantic-search">Semantic Search Guide</a>.</p>
+     */
     public EmbedResponse embed(EmbedRequest request) {
         return this.rawClient.embed(request).body();
     }

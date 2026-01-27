@@ -1,5 +1,5 @@
 # Reference
-<details><summary><code>client.chatStream(request) -> Optional&amp;lt;StreamedChatResponse&amp;gt;</code></summary>
+<details><summary><code>client.chatStream(request) -> Iterable&amp;lt;StreamedChatResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -32,7 +32,6 @@ client.chatStream(
     ChatStreamRequest
         .builder()
         .message("hello!")
-        .stream(true)
         .model("command-a-03-2025")
         .build()
 );
@@ -488,7 +487,6 @@ client.chatStream(
     ChatStreamRequest
         .builder()
         .message("Tell me about LLMs")
-        .stream(false)
         .model("command-a-03-2025")
         .build()
 );
@@ -912,7 +910,7 @@ Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private D
 </dl>
 </details>
 
-<details><summary><code>client.generateStream(request) -> Optional&amp;lt;GenerateStreamedResponse&amp;gt;</code></summary>
+<details><summary><code>client.generateStream(request) -> Iterable&amp;lt;GenerateStreamedResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -946,7 +944,6 @@ client.generateStream(
     GenerateStreamRequest
         .builder()
         .prompt("Please explain to me how LLMs work")
-        .stream(true)
         .build()
 );
 ```
@@ -1197,7 +1194,6 @@ client.generateStream(
     GenerateStreamRequest
         .builder()
         .prompt("Please explain to me how LLMs work")
-        .stream(false)
         .build()
 );
 ```
@@ -1573,6 +1569,7 @@ This endpoint takes in a query and a list of texts and produces an ordered array
 client.rerank(
     RerankRequest
         .builder()
+        .query("What is the capital of the United States?")
         .documents(
             Arrays.asList(
                 RerankRequestDocumentsItem.of(),
@@ -1582,9 +1579,8 @@ client.rerank(
                 RerankRequestDocumentsItem.of()
             )
         )
-        .query("What is the capital of the United States?")
-        .topN(3)
         .model("rerank-v4.0-pro")
+        .topN(3)
         .build()
 );
 ```
@@ -2043,10 +2039,10 @@ This endpoint takes tokens using byte-pair encoding and returns their text repre
 client.detokenize(
     DetokenizeRequest
         .builder()
+        .model("command")
         .tokens(
             Arrays.asList(10002, 2261, 2012, 8, 2792, 43)
         )
-        .model("command")
         .build()
 );
 ```
@@ -2123,7 +2119,7 @@ client.checkApiKey();
 </details>
 
 ## V2
-<details><summary><code>client.v2.chatStream(request) -> Optional&amp;lt;V2ChatStreamResponse&amp;gt;</code></summary>
+<details><summary><code>client.v2.chatStream(request) -> Iterable&amp;lt;V2ChatStreamResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -2168,7 +2164,6 @@ client.v2().chatStream(
                 )
             )
         )
-        .stream(true)
         .build()
 );
 ```
@@ -2460,7 +2455,6 @@ client.v2().chatStream(
                 )
             )
         )
-        .stream(false)
         .build()
 );
 ```
@@ -2907,11 +2901,11 @@ This endpoint takes in a query and a list of texts and produces an ordered array
 client.v2().rerank(
     V2RerankRequest
         .builder()
+        .model("rerank-v4.0-pro")
+        .query("What is the capital of the United States?")
         .documents(
             Arrays.asList("Carson City is the capital city of the American state of Nevada.", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.", "Capital punishment has existed in the United States since beforethe United States was a country. As of 2017, capital punishment is legal in 30 of the 50 states.")
         )
-        .query("What is the capital of the United States?")
-        .model("rerank-v4.0-pro")
         .topN(3)
         .build()
 );

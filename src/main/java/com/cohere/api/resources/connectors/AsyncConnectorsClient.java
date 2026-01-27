@@ -44,6 +44,13 @@ public class AsyncConnectorsClient {
     /**
      * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
+    public CompletableFuture<ListConnectorsResponse> list(RequestOptions requestOptions) {
+        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of connectors ordered by descending creation date (newer first). See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
+     */
     public CompletableFuture<ListConnectorsResponse> list(ConnectorsListRequest request) {
         return this.rawClient.list(request).thenApply(response -> response.body());
     }
@@ -109,6 +116,13 @@ public class AsyncConnectorsClient {
     /**
      * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
      */
+    public CompletableFuture<UpdateConnectorResponse> update(String id, RequestOptions requestOptions) {
+        return this.rawClient.update(id, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Update a connector by ID. Omitted fields will not be updated. See <a href="https://docs.cohere.com/docs/managing-your-connector">'Managing your Connector'</a> for more information.
+     */
     public CompletableFuture<UpdateConnectorResponse> update(String id, UpdateConnectorRequest request) {
         return this.rawClient.update(id, request).thenApply(response -> response.body());
     }
@@ -126,6 +140,13 @@ public class AsyncConnectorsClient {
      */
     public CompletableFuture<OAuthAuthorizeResponse> oAuthAuthorize(String id) {
         return this.rawClient.oAuthAuthorize(id).thenApply(response -> response.body());
+    }
+
+    /**
+     * Authorize the connector with the given ID for the connector oauth app.  See <a href="https://docs.cohere.com/docs/connector-authentication">'Connector Authentication'</a> for more information.
+     */
+    public CompletableFuture<OAuthAuthorizeResponse> oAuthAuthorize(String id, RequestOptions requestOptions) {
+        return this.rawClient.oAuthAuthorize(id, requestOptions).thenApply(response -> response.body());
     }
 
     /**
