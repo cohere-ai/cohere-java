@@ -93,7 +93,8 @@ public class RawV2Client {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new CohereHttpResponse<>(
-                        Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response)), response);
+                        Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response), "[DONE]"),
+                        response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
