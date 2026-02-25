@@ -101,7 +101,7 @@ public class AsyncRawV2Client {
                     ResponseBody responseBody = response.body();
                     if (response.isSuccessful()) {
                         future.complete(new CohereHttpResponse<>(
-                                Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response)),
+                                Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response), "[DONE]"),
                                 response));
                         return;
                     }
