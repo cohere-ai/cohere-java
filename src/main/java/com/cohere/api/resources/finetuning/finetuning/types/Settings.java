@@ -140,6 +140,10 @@ public final class Settings {
     public interface _FinalStage {
         Settings build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Fine-tuning hyper-parameters.</p>
          */
@@ -276,6 +280,18 @@ public final class Settings {
         @java.lang.Override
         public Settings build() {
             return new Settings(baseModel, datasetId, hyperparameters, multiLabel, wandb, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

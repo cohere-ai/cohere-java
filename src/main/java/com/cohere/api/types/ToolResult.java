@@ -82,6 +82,10 @@ public final class ToolResult {
     public interface _FinalStage {
         ToolResult build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage outputs(List<Map<String, Object>> outputs);
 
         _FinalStage addOutputs(Map<String, Object> outputs);
@@ -141,6 +145,18 @@ public final class ToolResult {
         @java.lang.Override
         public ToolResult build() {
             return new ToolResult(call, outputs, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

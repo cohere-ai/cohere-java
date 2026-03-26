@@ -87,6 +87,10 @@ public final class DetokenizeResponse {
     public interface _FinalStage {
         DetokenizeResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage meta(Optional<ApiMeta> meta);
 
         _FinalStage meta(ApiMeta meta);
@@ -138,6 +142,18 @@ public final class DetokenizeResponse {
         @java.lang.Override
         public DetokenizeResponse build() {
             return new DetokenizeResponse(text, meta, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

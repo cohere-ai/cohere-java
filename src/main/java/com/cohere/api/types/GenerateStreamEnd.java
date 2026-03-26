@@ -99,6 +99,10 @@ public final class GenerateStreamEnd implements IGenerateStreamEvent {
     public interface _FinalStage {
         GenerateStreamEnd build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage finishReason(Optional<FinishReason> finishReason);
 
         _FinalStage finishReason(FinishReason finishReason);
@@ -155,6 +159,18 @@ public final class GenerateStreamEnd implements IGenerateStreamEvent {
         @java.lang.Override
         public GenerateStreamEnd build() {
             return new GenerateStreamEnd(isFinished, finishReason, response, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

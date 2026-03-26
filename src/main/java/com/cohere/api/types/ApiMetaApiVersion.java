@@ -95,6 +95,10 @@ public final class ApiMetaApiVersion {
     public interface _FinalStage {
         ApiMetaApiVersion build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage isDeprecated(Optional<Boolean> isDeprecated);
 
         _FinalStage isDeprecated(Boolean isDeprecated);
@@ -161,6 +165,18 @@ public final class ApiMetaApiVersion {
         @java.lang.Override
         public ApiMetaApiVersion build() {
             return new ApiMetaApiVersion(version, isDeprecated, isExperimental, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

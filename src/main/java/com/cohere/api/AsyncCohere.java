@@ -16,6 +16,7 @@ import com.cohere.api.requests.GenerateStreamRequest;
 import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
+import com.cohere.api.resources.audio.AsyncAudioClient;
 import com.cohere.api.resources.batches.AsyncBatchesClient;
 import com.cohere.api.resources.connectors.AsyncConnectorsClient;
 import com.cohere.api.resources.datasets.AsyncDatasetsClient;
@@ -56,6 +57,8 @@ public class AsyncCohere {
 
     protected final Supplier<AsyncFinetuningClient> finetuningClient;
 
+    protected final Supplier<AsyncAudioClient> audioClient;
+
     public AsyncCohere(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.rawClient = new AsyncRawCohere(clientOptions);
@@ -66,6 +69,7 @@ public class AsyncCohere {
         this.connectorsClient = Suppliers.memoize(() -> new AsyncConnectorsClient(clientOptions));
         this.modelsClient = Suppliers.memoize(() -> new AsyncModelsClient(clientOptions));
         this.finetuningClient = Suppliers.memoize(() -> new AsyncFinetuningClient(clientOptions));
+        this.audioClient = Suppliers.memoize(() -> new AsyncAudioClient(clientOptions));
     }
 
     /**
@@ -303,6 +307,10 @@ public class AsyncCohere {
 
     public AsyncFinetuningClient finetuning() {
         return this.finetuningClient.get();
+    }
+
+    public AsyncAudioClient audio() {
+        return this.audioClient.get();
     }
 
     public static AsyncCohereBuilder builder() {

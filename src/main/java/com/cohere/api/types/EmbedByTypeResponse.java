@@ -142,6 +142,10 @@ public final class EmbedByTypeResponse {
     public interface _FinalStage {
         EmbedByTypeResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage responseType(Optional<EmbedByTypeResponseResponseType> responseType);
 
         _FinalStage responseType(EmbedByTypeResponseResponseType responseType);
@@ -283,6 +287,18 @@ public final class EmbedByTypeResponse {
         @java.lang.Override
         public EmbedByTypeResponse build() {
             return new EmbedByTypeResponse(responseType, id, embeddings, texts, images, meta, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

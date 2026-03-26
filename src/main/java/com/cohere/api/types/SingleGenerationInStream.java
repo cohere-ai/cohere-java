@@ -122,6 +122,10 @@ public final class SingleGenerationInStream {
     public interface _FinalStage {
         SingleGenerationInStream build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero.</p>
          */
@@ -203,6 +207,18 @@ public final class SingleGenerationInStream {
         @java.lang.Override
         public SingleGenerationInStream build() {
             return new SingleGenerationInStream(id, text, index, finishReason, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -92,5 +92,15 @@ public final class ChatToolCallStartEventDelta {
         public ChatToolCallStartEventDelta build() {
             return new ChatToolCallStartEventDelta(message, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

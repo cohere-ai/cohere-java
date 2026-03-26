@@ -90,6 +90,10 @@ public final class ImageUrl {
     public interface _FinalStage {
         ImageUrl build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Controls the level of detail in image processing. <code>&quot;auto&quot;</code> is the default and lets the system choose, <code>&quot;low&quot;</code> is faster but less detailed, and <code>&quot;high&quot;</code> preserves maximum detail. You can save tokens and speed up responses by using detail: <code>&quot;low&quot;</code>.</p>
          */
@@ -151,6 +155,18 @@ public final class ImageUrl {
         @java.lang.Override
         public ImageUrl build() {
             return new ImageUrl(url, detail, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

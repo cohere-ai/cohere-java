@@ -330,6 +330,10 @@ public final class GenerateStreamRequest {
     public interface _FinalStage {
         GenerateStreamRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The identifier of the model to generate with. Currently available models are <code>command</code> (default), <code>command-nightly</code> (experimental), <code>command-light</code>, and <code>command-light-nightly</code> (experimental).
          * Smaller, &quot;light&quot; models are faster, while larger models will perform better. <a href="https://docs.cohere.com/docs/training-custom-models">Custom models</a> can also be supplied with their full ID.</p>
@@ -884,6 +888,18 @@ public final class GenerateStreamRequest {
                     returnLikelihoods,
                     rawPrompting,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

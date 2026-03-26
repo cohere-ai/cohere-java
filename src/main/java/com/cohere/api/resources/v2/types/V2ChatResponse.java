@@ -134,6 +134,10 @@ public final class V2ChatResponse {
     public interface _FinalStage {
         V2ChatResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage usage(Optional<Usage> usage);
 
         _FinalStage usage(Usage usage);
@@ -225,6 +229,18 @@ public final class V2ChatResponse {
         @java.lang.Override
         public V2ChatResponse build() {
             return new V2ChatResponse(id, finishReason, message, usage, logprobs, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -227,6 +227,10 @@ public final class V2EmbedRequest {
     public interface _FinalStage {
         V2EmbedRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>An array of strings for the model to embed. Maximum number of texts per call is <code>96</code>.</p>
          */
@@ -558,6 +562,18 @@ public final class V2EmbedRequest {
                     truncate,
                     priority,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -82,6 +82,10 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
     public interface _FinalStage {
         ChatToolCallsChunkEvent build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage text(Optional<String> text);
 
         _FinalStage text(String text);
@@ -128,6 +132,18 @@ public final class ChatToolCallsChunkEvent implements IChatStreamEvent {
         @java.lang.Override
         public ChatToolCallsChunkEvent build() {
             return new ChatToolCallsChunkEvent(toolCallDelta, text, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

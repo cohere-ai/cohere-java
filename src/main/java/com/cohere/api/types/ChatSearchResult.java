@@ -133,6 +133,10 @@ public final class ChatSearchResult {
     public interface _FinalStage {
         ChatSearchResult build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage searchQuery(Optional<ChatSearchQuery> searchQuery);
 
         _FinalStage searchQuery(ChatSearchQuery searchQuery);
@@ -292,6 +296,18 @@ public final class ChatSearchResult {
         public ChatSearchResult build() {
             return new ChatSearchResult(
                     searchQuery, connector, documentIds, errorMessage, continueOnFailure, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

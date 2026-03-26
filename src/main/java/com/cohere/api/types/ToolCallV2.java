@@ -86,6 +86,10 @@ public final class ToolCallV2 {
     public interface _FinalStage {
         ToolCallV2 build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage function(Optional<ToolCallV2Function> function);
 
         _FinalStage function(ToolCallV2Function function);
@@ -132,6 +136,18 @@ public final class ToolCallV2 {
         @java.lang.Override
         public ToolCallV2 build() {
             return new ToolCallV2(id, function, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

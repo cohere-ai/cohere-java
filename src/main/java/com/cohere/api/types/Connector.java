@@ -276,6 +276,10 @@ public final class Connector {
     public interface _FinalStage {
         Connector build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The organization to which this connector belongs. This is automatically set to
          * the organization of the user who created the connector.</p>
@@ -641,6 +645,18 @@ public final class Connector {
                     active,
                     continueOnFailure,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -132,5 +132,15 @@ public final class ChatToolCallsGenerationEvent implements IChatStreamEvent {
         public ChatToolCallsGenerationEvent build() {
             return new ChatToolCallsGenerationEvent(text, toolCalls, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

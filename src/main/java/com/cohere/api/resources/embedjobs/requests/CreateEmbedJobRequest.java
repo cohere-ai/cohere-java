@@ -180,6 +180,10 @@ public final class CreateEmbedJobRequest {
     public interface _FinalStage {
         CreateEmbedJobRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The name of the embed job.</p>
          */
@@ -365,6 +369,18 @@ public final class CreateEmbedJobRequest {
         public CreateEmbedJobRequest build() {
             return new CreateEmbedJobRequest(
                     model, datasetId, inputType, name, embeddingTypes, truncate, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

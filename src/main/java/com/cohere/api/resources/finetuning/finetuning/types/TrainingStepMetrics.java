@@ -160,5 +160,15 @@ public final class TrainingStepMetrics {
         public TrainingStepMetrics build() {
             return new TrainingStepMetrics(createdAt, stepNumber, metrics, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

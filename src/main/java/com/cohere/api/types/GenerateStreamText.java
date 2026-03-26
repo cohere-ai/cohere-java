@@ -103,6 +103,10 @@ public final class GenerateStreamText implements IGenerateStreamEvent {
     public interface _FinalStage {
         GenerateStreamText build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Refers to the nth generation. Only present when <code>num_generations</code> is greater than zero, and only when text responses are being streamed.</p>
          */
@@ -174,6 +178,18 @@ public final class GenerateStreamText implements IGenerateStreamEvent {
         @java.lang.Override
         public GenerateStreamText build() {
             return new GenerateStreamText(text, index, isFinished, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

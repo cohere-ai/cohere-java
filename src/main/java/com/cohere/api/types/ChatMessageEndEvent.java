@@ -114,5 +114,15 @@ public final class ChatMessageEndEvent implements IChatStreamEventType {
         public ChatMessageEndEvent build() {
             return new ChatMessageEndEvent(id, delta, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

@@ -190,6 +190,10 @@ public final class DatasetsCreateRequest {
     public interface _FinalStage {
         DatasetsCreateRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.</p>
          */
@@ -441,6 +445,18 @@ public final class DatasetsCreateRequest {
                     textSeparator,
                     csvDelimiter,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -35,6 +35,7 @@ import com.cohere.api.types.EmbedByTypeResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
@@ -93,6 +94,7 @@ public class AsyncRawV2Client {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
+        client = client.newBuilder().callTimeout(0, TimeUnit.SECONDS).build();
         CompletableFuture<CohereHttpResponse<Iterable<V2ChatStreamResponse>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -101,7 +103,7 @@ public class AsyncRawV2Client {
                     ResponseBody responseBody = response.body();
                     if (response.isSuccessful()) {
                         future.complete(new CohereHttpResponse<>(
-                                Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response)),
+                                Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response), "[DONE]"),
                                 response));
                         return;
                     }
