@@ -6,5 +6,5 @@
     "client-class-name": "Cohere"
   },
   "originGitCommit": "7ffcb80a5edaf952524b88ad8960151e148ff39b",
-  "sdkVersion": "1.8.0"
+  "sdkVersion": "1.10.0"
 }
