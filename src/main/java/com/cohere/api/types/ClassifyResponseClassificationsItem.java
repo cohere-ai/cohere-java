@@ -186,6 +186,10 @@ public final class ClassifyResponseClassificationsItem {
     public interface _FinalStage {
         ClassifyResponseClassificationsItem build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The input text that was classified</p>
          */
@@ -468,6 +472,18 @@ public final class ClassifyResponseClassificationsItem {
                     labels,
                     classificationType,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

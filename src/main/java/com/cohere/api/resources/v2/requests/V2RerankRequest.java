@@ -158,6 +158,10 @@ public final class V2RerankRequest {
     public interface _FinalStage {
         V2RerankRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>A list of texts that will be compared to the <code>query</code>.
          * For optimal performance we recommend against sending more than 1,000 documents in a single request.</p>
@@ -353,6 +357,18 @@ public final class V2RerankRequest {
         @java.lang.Override
         public V2RerankRequest build() {
             return new V2RerankRequest(model, query, documents, topN, maxTokensPerDoc, priority, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

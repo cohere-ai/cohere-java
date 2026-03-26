@@ -91,6 +91,10 @@ public final class Thinking {
     public interface _FinalStage {
         Thinking build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The maximum number of tokens the model can use for thinking, which must be set to a positive integer.
          * The model will stop thinking if it reaches the thinking token budget and will proceed with the response.</p>
@@ -155,6 +159,18 @@ public final class Thinking {
         @java.lang.Override
         public Thinking build() {
             return new Thinking(type, tokenBudget, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -92,6 +92,10 @@ public final class CheckApiKeyResponse {
     public interface _FinalStage {
         CheckApiKeyResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage organizationId(Optional<String> organizationId);
 
         _FinalStage organizationId(String organizationId);
@@ -158,6 +162,18 @@ public final class CheckApiKeyResponse {
         @java.lang.Override
         public CheckApiKeyResponse build() {
             return new CheckApiKeyResponse(valid, organizationId, ownerId, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

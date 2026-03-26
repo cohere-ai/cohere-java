@@ -122,6 +122,10 @@ public final class Tool {
     public interface _FinalStage {
         Tool build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The input parameters of the tool. Accepts a dictionary where the key is the name of the parameter and the value is the parameter spec. Valid parameter names contain only the characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code> and must not begin with a digit.</p>
          * <pre><code>{
@@ -223,6 +227,18 @@ public final class Tool {
         @java.lang.Override
         public Tool build() {
             return new Tool(name, description, parameterDefinitions, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

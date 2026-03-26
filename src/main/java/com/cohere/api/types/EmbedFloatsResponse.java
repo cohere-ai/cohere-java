@@ -126,6 +126,10 @@ public final class EmbedFloatsResponse {
     public interface _FinalStage {
         EmbedFloatsResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>An array of embeddings, where each embedding is an array of floats. The length of the <code>embeddings</code> array will be the same as the length of the original <code>texts</code> array.</p>
          */
@@ -296,6 +300,18 @@ public final class EmbedFloatsResponse {
         @java.lang.Override
         public EmbedFloatsResponse build() {
             return new EmbedFloatsResponse(id, embeddings, texts, images, meta, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

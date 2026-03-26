@@ -169,6 +169,10 @@ public final class SummarizeRequest {
     public interface _FinalStage {
         SummarizeRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>One of <code>short</code>, <code>medium</code>, <code>long</code>, or <code>auto</code> defaults to <code>auto</code>. Indicates the approximate length of the summary. If <code>auto</code> is selected, the best option will be picked based on the input text.</p>
          */
@@ -381,6 +385,18 @@ public final class SummarizeRequest {
         public SummarizeRequest build() {
             return new SummarizeRequest(
                     text, length, format, model, extractiveness, temperature, additionalCommand, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

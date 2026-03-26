@@ -90,6 +90,10 @@ public final class ToolCall {
     public interface _FinalStage {
         ToolCall build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The name and value of the parameters to use when invoking a tool.</p>
          */
@@ -168,6 +172,18 @@ public final class ToolCall {
         @java.lang.Override
         public ToolCall build() {
             return new ToolCall(name, parameters, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -16,6 +16,7 @@ import com.cohere.api.requests.GenerateStreamRequest;
 import com.cohere.api.requests.RerankRequest;
 import com.cohere.api.requests.SummarizeRequest;
 import com.cohere.api.requests.TokenizeRequest;
+import com.cohere.api.resources.audio.AudioClient;
 import com.cohere.api.resources.batches.BatchesClient;
 import com.cohere.api.resources.connectors.ConnectorsClient;
 import com.cohere.api.resources.datasets.DatasetsClient;
@@ -55,6 +56,8 @@ public class Cohere {
 
     protected final Supplier<FinetuningClient> finetuningClient;
 
+    protected final Supplier<AudioClient> audioClient;
+
     public Cohere(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.rawClient = new RawCohere(clientOptions);
@@ -65,6 +68,7 @@ public class Cohere {
         this.connectorsClient = Suppliers.memoize(() -> new ConnectorsClient(clientOptions));
         this.modelsClient = Suppliers.memoize(() -> new ModelsClient(clientOptions));
         this.finetuningClient = Suppliers.memoize(() -> new FinetuningClient(clientOptions));
+        this.audioClient = Suppliers.memoize(() -> new AudioClient(clientOptions));
     }
 
     /**
@@ -301,6 +305,10 @@ public class Cohere {
 
     public FinetuningClient finetuning() {
         return this.finetuningClient.get();
+    }
+
+    public AudioClient audio() {
+        return this.audioClient.get();
     }
 
     public static CohereBuilder builder() {

@@ -112,6 +112,10 @@ public final class FinetuningUpdateFinetunedModelRequest {
     public interface _FinalStage {
         FinetuningUpdateFinetunedModelRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Current stage in the life-cycle of the fine-tuned model.</p>
          */
@@ -188,6 +192,18 @@ public final class FinetuningUpdateFinetunedModelRequest {
         @java.lang.Override
         public FinetuningUpdateFinetunedModelRequest build() {
             return new FinetuningUpdateFinetunedModelRequest(name, settings, status, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

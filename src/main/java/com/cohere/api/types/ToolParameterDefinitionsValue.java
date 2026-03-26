@@ -105,6 +105,10 @@ public final class ToolParameterDefinitionsValue {
     public interface _FinalStage {
         ToolParameterDefinitionsValue build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The description of the parameter.</p>
          */
@@ -196,6 +200,18 @@ public final class ToolParameterDefinitionsValue {
         @java.lang.Override
         public ToolParameterDefinitionsValue build() {
             return new ToolParameterDefinitionsValue(description, type, required, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

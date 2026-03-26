@@ -122,6 +122,10 @@ public final class ChatConnector {
     public interface _FinalStage {
         ChatConnector build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>When specified, this user access token will be passed to the connector in the Authorization header instead of the Cohere generated one.</p>
          */
@@ -249,6 +253,18 @@ public final class ChatConnector {
         @java.lang.Override
         public ChatConnector build() {
             return new ChatConnector(id, userAccessToken, continueOnFailure, options, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

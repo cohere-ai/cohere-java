@@ -113,6 +113,10 @@ public final class Generation {
     public interface _FinalStage {
         Generation build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Prompt used for generations.</p>
          */
@@ -236,6 +240,18 @@ public final class Generation {
         @java.lang.Override
         public Generation build() {
             return new Generation(id, prompt, generations, meta, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

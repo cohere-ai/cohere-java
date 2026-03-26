@@ -95,6 +95,10 @@ public final class ClassifyResponse {
     public interface _FinalStage {
         ClassifyResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage classifications(List<ClassifyResponseClassificationsItem> classifications);
 
         _FinalStage addClassifications(ClassifyResponseClassificationsItem classifications);
@@ -174,6 +178,18 @@ public final class ClassifyResponse {
         @java.lang.Override
         public ClassifyResponse build() {
             return new ClassifyResponse(id, classifications, meta, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -34,6 +34,7 @@ import com.cohere.api.resources.v2.types.V2RerankResponse;
 import com.cohere.api.types.EmbedByTypeResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -88,12 +89,14 @@ public class RawV2Client {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
+        client = client.newBuilder().callTimeout(0, TimeUnit.SECONDS).build();
         try {
             Response response = client.newCall(okhttpRequest).execute();
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new CohereHttpResponse<>(
-                        Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response)), response);
+                        Stream.fromSse(V2ChatStreamResponse.class, new ResponseBodyReader(response), "[DONE]"),
+                        response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

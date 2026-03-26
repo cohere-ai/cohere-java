@@ -1572,11 +1572,31 @@ client.rerank(
         .query("What is the capital of the United States?")
         .documents(
             Arrays.asList(
-                RerankRequestDocumentsItem.of(),
-                RerankRequestDocumentsItem.of(),
-                RerankRequestDocumentsItem.of(),
-                RerankRequestDocumentsItem.of(),
-                RerankRequestDocumentsItem.of()
+                RerankRequestDocumentsItem.of(
+                    new HashMap<String, String>() {{
+                        put("text", "Carson City is the capital city of the American state of Nevada.");
+                    }}
+                ),
+                RerankRequestDocumentsItem.of(
+                    new HashMap<String, String>() {{
+                        put("text", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.");
+                    }}
+                ),
+                RerankRequestDocumentsItem.of(
+                    new HashMap<String, String>() {{
+                        put("text", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.");
+                    }}
+                ),
+                RerankRequestDocumentsItem.of(
+                    new HashMap<String, String>() {{
+                        put("text", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.");
+                    }}
+                ),
+                RerankRequestDocumentsItem.of(
+                    new HashMap<String, String>() {{
+                        put("text", "Capital punishment has existed in the United States since beforethe United States was a country. As of 2017, capital punishment is legal in 30 of the 50 states.");
+                    }}
+                )
             )
         )
         .model("rerank-v4.0-pro")
@@ -5045,3 +5065,50 @@ Maximum number of results to be returned by the server. If 0, defaults to
 </dd>
 </dl>
 </details>
+
+## Audio Transcriptions
+<details><summary><code>client.audio.transcriptions.create(request) -> AudioTranscriptionsCreateResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Transcribe an audio file.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.audio().transcriptions().create(
+    TranscriptionsCreateRequest
+        .builder()
+        .model("model")
+        .language("language")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+

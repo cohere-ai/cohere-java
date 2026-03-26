@@ -251,5 +251,15 @@ public final class EmbedByTypeResponseEmbeddings {
             return new EmbedByTypeResponseEmbeddings(
                     float_, int8, uint8, binary, ubinary, base64, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

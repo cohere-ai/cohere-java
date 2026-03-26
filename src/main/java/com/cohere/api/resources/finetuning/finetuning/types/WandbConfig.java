@@ -109,6 +109,10 @@ public final class WandbConfig {
     public interface _FinalStage {
         WandbConfig build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The WandB entity name to be used during training.</p>
          */
@@ -185,6 +189,18 @@ public final class WandbConfig {
         @java.lang.Override
         public WandbConfig build() {
             return new WandbConfig(project, apiKey, entity, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

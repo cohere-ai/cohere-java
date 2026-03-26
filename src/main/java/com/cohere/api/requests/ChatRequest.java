@@ -534,6 +534,10 @@ public final class ChatRequest {
     public interface _FinalStage {
         ChatRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Pass text/event-stream to receive the streamed response as server-sent events. The default is <code>\n</code> delimited events.</p>
          */
@@ -1579,6 +1583,18 @@ public final class ChatRequest {
                     responseFormat,
                     safetyMode,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

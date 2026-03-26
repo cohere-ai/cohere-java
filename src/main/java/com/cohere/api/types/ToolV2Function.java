@@ -106,6 +106,10 @@ public final class ToolV2Function {
     public interface _FinalStage {
         ToolV2Function build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The description of the function.</p>
          */
@@ -214,6 +218,18 @@ public final class ToolV2Function {
         @java.lang.Override
         public ToolV2Function build() {
             return new ToolV2Function(name, description, parameters, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }
