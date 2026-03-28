@@ -6,9 +6,9 @@ package com.cohere.api.resources.connectors.requests;
 import com.cohere.api.core.ObjectMappers;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -36,7 +36,7 @@ public final class ConnectorsListRequest {
     /**
      * @return Maximum number of connectors to return [0, 100].
      */
-    @JsonProperty("limit")
+    @JsonIgnore
     public Optional<Double> getLimit() {
         return limit;
     }
@@ -44,7 +44,7 @@ public final class ConnectorsListRequest {
     /**
      * @return Number of connectors to skip before returning results [0, inf].
      */
-    @JsonProperty("offset")
+    @JsonIgnore
     public Optional<Double> getOffset() {
         return offset;
     }

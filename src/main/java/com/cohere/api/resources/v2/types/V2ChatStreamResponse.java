@@ -229,6 +229,22 @@ public final class V2ChatStreamResponse {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof V2ChatStreamResponse && value.equals(((V2ChatStreamResponse) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -286,6 +302,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class MessageStartValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatMessageStartEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -325,6 +342,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ContentStartValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatContentStartEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -364,6 +382,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ContentDeltaValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatContentDeltaEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -403,6 +422,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ContentEndValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatContentEndEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -442,6 +462,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ToolPlanDeltaValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatToolPlanDeltaEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -481,6 +502,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ToolCallStartValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatToolCallStartEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -520,6 +542,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ToolCallDeltaValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatToolCallDeltaEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -559,6 +582,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class ToolCallEndValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatToolCallEndEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -598,6 +622,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class CitationStartValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private CitationStartEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -637,6 +662,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class CitationEndValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private CitationEndEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -676,6 +702,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class MessageEndValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatMessageEndEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -715,6 +742,7 @@ public final class V2ChatStreamResponse {
     @JsonIgnoreProperties("type")
     private static final class DebugValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatDebugEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

@@ -5,19 +5,16 @@ package com.cohere.api.resources.finetuning.requests;
 
 import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.resources.finetuning.finetuning.types.Settings;
-import com.cohere.api.resources.finetuning.finetuning.types.Status;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -27,15 +24,12 @@ public final class FinetuningUpdateFinetunedModelRequest {
 
     private final Settings settings;
 
-    private final Optional<Status> status;
-
     private final Map<String, Object> additionalProperties;
 
     private FinetuningUpdateFinetunedModelRequest(
-            String name, Settings settings, Optional<Status> status, Map<String, Object> additionalProperties) {
+            String name, Settings settings, Map<String, Object> additionalProperties) {
         this.name = name;
         this.settings = settings;
-        this.status = status;
         this.additionalProperties = additionalProperties;
     }
 
@@ -55,14 +49,6 @@ public final class FinetuningUpdateFinetunedModelRequest {
         return settings;
     }
 
-    /**
-     * @return Current stage in the life-cycle of the fine-tuned model.
-     */
-    @JsonProperty("status")
-    public Optional<Status> getStatus() {
-        return status;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -76,12 +62,12 @@ public final class FinetuningUpdateFinetunedModelRequest {
     }
 
     private boolean equalTo(FinetuningUpdateFinetunedModelRequest other) {
-        return name.equals(other.name) && settings.equals(other.settings) && status.equals(other.status);
+        return name.equals(other.name) && settings.equals(other.settings);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.name, this.settings, this.status);
+        return Objects.hash(this.name, this.settings);
     }
 
     @java.lang.Override
@@ -115,13 +101,6 @@ public final class FinetuningUpdateFinetunedModelRequest {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-        /**
-         * <p>Current stage in the life-cycle of the fine-tuned model.</p>
-         */
-        _FinalStage status(Optional<Status> status);
-
-        _FinalStage status(Status status);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -129,8 +108,6 @@ public final class FinetuningUpdateFinetunedModelRequest {
         private String name;
 
         private Settings settings;
-
-        private Optional<Status> status = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -141,7 +118,6 @@ public final class FinetuningUpdateFinetunedModelRequest {
         public Builder from(FinetuningUpdateFinetunedModelRequest other) {
             name(other.getName());
             settings(other.getSettings());
-            status(other.getStatus());
             return this;
         }
 
@@ -169,29 +145,9 @@ public final class FinetuningUpdateFinetunedModelRequest {
             return this;
         }
 
-        /**
-         * <p>Current stage in the life-cycle of the fine-tuned model.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage status(Status status) {
-            this.status = Optional.ofNullable(status);
-            return this;
-        }
-
-        /**
-         * <p>Current stage in the life-cycle of the fine-tuned model.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public _FinalStage status(Optional<Status> status) {
-            this.status = status;
-            return this;
-        }
-
         @java.lang.Override
         public FinetuningUpdateFinetunedModelRequest build() {
-            return new FinetuningUpdateFinetunedModelRequest(name, settings, status, additionalProperties);
+            return new FinetuningUpdateFinetunedModelRequest(name, settings, additionalProperties);
         }
 
         @java.lang.Override

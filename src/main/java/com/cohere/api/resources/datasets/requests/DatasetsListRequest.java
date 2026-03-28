@@ -7,9 +7,9 @@ import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.DatasetValidationStatus;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -56,7 +56,7 @@ public final class DatasetsListRequest {
     /**
      * @return optional filter by dataset type
      */
-    @JsonProperty("datasetType")
+    @JsonIgnore
     public Optional<String> getDatasetType() {
         return datasetType;
     }
@@ -64,7 +64,7 @@ public final class DatasetsListRequest {
     /**
      * @return optional filter before a date
      */
-    @JsonProperty("before")
+    @JsonIgnore
     public Optional<OffsetDateTime> getBefore() {
         return before;
     }
@@ -72,7 +72,7 @@ public final class DatasetsListRequest {
     /**
      * @return optional filter after a date
      */
-    @JsonProperty("after")
+    @JsonIgnore
     public Optional<OffsetDateTime> getAfter() {
         return after;
     }
@@ -80,7 +80,7 @@ public final class DatasetsListRequest {
     /**
      * @return optional limit to number of results
      */
-    @JsonProperty("limit")
+    @JsonIgnore
     public Optional<Double> getLimit() {
         return limit;
     }
@@ -88,7 +88,7 @@ public final class DatasetsListRequest {
     /**
      * @return optional offset to start of results
      */
-    @JsonProperty("offset")
+    @JsonIgnore
     public Optional<Double> getOffset() {
         return offset;
     }
@@ -96,7 +96,7 @@ public final class DatasetsListRequest {
     /**
      * @return optional filter by validation status
      */
-    @JsonProperty("validationStatus")
+    @JsonIgnore
     public Optional<DatasetValidationStatus> getValidationStatus() {
         return validationStatus;
     }

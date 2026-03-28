@@ -6,9 +6,9 @@ package com.cohere.api.resources.batches.requests;
 import com.cohere.api.core.ObjectMappers;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -45,7 +45,7 @@ public final class BatchesListBatchesRequest {
      * If unspecified, at most 50 batches will be returned.
      * The maximum value is 1000; values above 1000 will be coerced to 1000.
      */
-    @JsonProperty("page_size")
+    @JsonIgnore
     public Optional<Integer> getPageSize() {
         return pageSize;
     }
@@ -54,7 +54,7 @@ public final class BatchesListBatchesRequest {
      * @return A page token, received from a previous <code>ListBatches</code> call.
      * Provide this to retrieve the subsequent page.
      */
-    @JsonProperty("page_token")
+    @JsonIgnore
     public Optional<String> getPageToken() {
         return pageToken;
     }
@@ -63,7 +63,7 @@ public final class BatchesListBatchesRequest {
      * @return Batches can be ordered by creation time or last updated time.
      * Use <code>created_at</code> for creation time or <code>updated_at</code> for last updated time.
      */
-    @JsonProperty("order_by")
+    @JsonIgnore
     public Optional<String> getOrderBy() {
         return orderBy;
     }

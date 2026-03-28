@@ -4870,14 +4870,6 @@ client.finetuning().updateFinetunedModel(
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**status:** `Optional<Status>` — Current stage in the life-cycle of the fine-tuned model.
-    
-</dd>
-</dl>
 </dd>
 </dl>
 

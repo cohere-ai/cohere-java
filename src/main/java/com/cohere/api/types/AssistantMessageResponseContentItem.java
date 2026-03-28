@@ -67,6 +67,23 @@ public final class AssistantMessageResponseContentItem {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof AssistantMessageResponseContentItem
+                && value.equals(((AssistantMessageResponseContentItem) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -91,6 +108,7 @@ public final class AssistantMessageResponseContentItem {
     @JsonIgnoreProperties("type")
     private static final class TextValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatTextContent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -130,6 +148,7 @@ public final class AssistantMessageResponseContentItem {
     @JsonIgnoreProperties("type")
     private static final class ThinkingValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
         private ChatThinkingContent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
