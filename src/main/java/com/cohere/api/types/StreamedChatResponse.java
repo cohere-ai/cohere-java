@@ -172,6 +172,22 @@ public final class StreamedChatResponse {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof StreamedChatResponse && value.equals(((StreamedChatResponse) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -224,6 +240,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class StreamStartValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatStreamStartEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -263,6 +280,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class SearchQueriesGenerationValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatSearchQueriesGenerationEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -302,6 +320,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class SearchResultsValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatSearchResultsEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -341,6 +360,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class TextGenerationValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatTextGenerationEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -380,6 +400,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class CitationGenerationValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatCitationGenerationEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -419,6 +440,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class ToolCallsGenerationValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatToolCallsGenerationEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -458,6 +480,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class StreamEndValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatStreamEndEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -497,6 +520,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class ToolCallsChunkValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatToolCallsChunkEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -536,6 +560,7 @@ public final class StreamedChatResponse {
     @JsonIgnoreProperties("event_type")
     private static final class DebugValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private ChatDebugEvent value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

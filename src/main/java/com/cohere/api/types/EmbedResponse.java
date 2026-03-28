@@ -67,6 +67,22 @@ public final class EmbedResponse {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof EmbedResponse && value.equals(((EmbedResponse) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -95,6 +111,7 @@ public final class EmbedResponse {
     @JsonIgnoreProperties("response_type")
     private static final class EmbeddingsFloatsValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "response_type", allowSetters = true)
         private EmbedFloatsResponse value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -134,6 +151,7 @@ public final class EmbedResponse {
     @JsonIgnoreProperties("response_type")
     private static final class EmbeddingsByTypeValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "response_type", allowSetters = true)
         private EmbedByTypeResponse value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

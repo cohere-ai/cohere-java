@@ -7,9 +7,9 @@ import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.CompatibleEndpoint;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -48,7 +48,7 @@ public final class ModelsListRequest {
      * @return Maximum number of models to include in a page
      * Defaults to <code>20</code>, min value of <code>1</code>, max value of <code>1000</code>.
      */
-    @JsonProperty("page_size")
+    @JsonIgnore
     public Optional<Double> getPageSize() {
         return pageSize;
     }
@@ -56,7 +56,7 @@ public final class ModelsListRequest {
     /**
      * @return Page token provided in the <code>next_page_token</code> field of a previous response.
      */
-    @JsonProperty("page_token")
+    @JsonIgnore
     public Optional<String> getPageToken() {
         return pageToken;
     }
@@ -64,7 +64,7 @@ public final class ModelsListRequest {
     /**
      * @return When provided, filters the list of models to only those that are compatible with the specified endpoint.
      */
-    @JsonProperty("endpoint")
+    @JsonIgnore
     public Optional<CompatibleEndpoint> getEndpoint() {
         return endpoint;
     }
@@ -72,7 +72,7 @@ public final class ModelsListRequest {
     /**
      * @return When provided, filters the list of models to only the default model to the endpoint. This parameter is only valid when <code>endpoint</code> is provided.
      */
-    @JsonProperty("default_only")
+    @JsonIgnore
     public Optional<Boolean> getDefaultOnly() {
         return defaultOnly;
     }

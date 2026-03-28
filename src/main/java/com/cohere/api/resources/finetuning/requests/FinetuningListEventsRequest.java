@@ -6,9 +6,9 @@ package com.cohere.api.resources.finetuning.requests;
 import com.cohere.api.core.ObjectMappers;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -43,7 +43,7 @@ public final class FinetuningListEventsRequest {
      * @return Maximum number of results to be returned by the server. If 0, defaults to
      * 50.
      */
-    @JsonProperty("page_size")
+    @JsonIgnore
     public Optional<Integer> getPageSize() {
         return pageSize;
     }
@@ -51,7 +51,7 @@ public final class FinetuningListEventsRequest {
     /**
      * @return Request a specific page of the list results.
      */
-    @JsonProperty("page_token")
+    @JsonIgnore
     public Optional<String> getPageToken() {
         return pageToken;
     }
@@ -65,7 +65,7 @@ public final class FinetuningListEventsRequest {
      * <li>created_at (default)</li>
      * </ul>
      */
-    @JsonProperty("order_by")
+    @JsonIgnore
     public Optional<String> getOrderBy() {
         return orderBy;
     }

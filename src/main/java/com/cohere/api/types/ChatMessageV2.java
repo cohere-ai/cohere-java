@@ -97,6 +97,22 @@ public final class ChatMessageV2 {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof ChatMessageV2 && value.equals(((ChatMessageV2) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -130,6 +146,7 @@ public final class ChatMessageV2 {
     @JsonIgnoreProperties("role")
     private static final class UserValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "role", allowSetters = true)
         private UserMessageV2 value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -169,6 +186,7 @@ public final class ChatMessageV2 {
     @JsonIgnoreProperties("role")
     private static final class AssistantValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "role", allowSetters = true)
         private AssistantMessage value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -208,6 +226,7 @@ public final class ChatMessageV2 {
     @JsonIgnoreProperties("role")
     private static final class SystemValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "role", allowSetters = true)
         private SystemMessageV2 value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -247,6 +266,7 @@ public final class ChatMessageV2 {
     @JsonIgnoreProperties("role")
     private static final class ToolValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "role", allowSetters = true)
         private ToolMessageV2 value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

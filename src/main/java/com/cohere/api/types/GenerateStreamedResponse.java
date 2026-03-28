@@ -82,6 +82,22 @@ public final class GenerateStreamedResponse {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof GenerateStreamedResponse && value.equals(((GenerateStreamedResponse) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -116,6 +132,7 @@ public final class GenerateStreamedResponse {
     @JsonIgnoreProperties("event_type")
     private static final class TextGenerationValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private GenerateStreamText value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -155,6 +172,7 @@ public final class GenerateStreamedResponse {
     @JsonIgnoreProperties("event_type")
     private static final class StreamEndValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private GenerateStreamEnd value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -194,6 +212,7 @@ public final class GenerateStreamedResponse {
     @JsonIgnoreProperties("event_type")
     private static final class StreamErrorValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "event_type", allowSetters = true)
         private GenerateStreamError value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

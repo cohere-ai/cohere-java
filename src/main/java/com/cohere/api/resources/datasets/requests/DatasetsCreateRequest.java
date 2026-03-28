@@ -7,9 +7,9 @@ import com.cohere.api.core.ObjectMappers;
 import com.cohere.api.types.DatasetType;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -66,7 +66,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>keep_fields</code> are missing from the uploaded file, Dataset validation will fail.
      */
-    @JsonProperty("keep_fields")
+    @JsonIgnore
     public Optional<List<String>> getKeepFields() {
         return keepFields;
     }
@@ -74,7 +74,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the <a href="https://docs.cohere.com/docs/datasets#dataset-types">schema for the corresponding Dataset type</a>. For example, Datasets of type <code>embed-input</code> will drop all fields other than the required <code>text</code> field. If any of the fields in <code>optional_fields</code> are missing from the uploaded file, Dataset validation will pass.
      */
-    @JsonProperty("optional_fields")
+    @JsonIgnore
     public Optional<List<String>> getOptionalFields() {
         return optionalFields;
     }
@@ -82,7 +82,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return The name of the uploaded dataset.
      */
-    @JsonProperty("name")
+    @JsonIgnore
     public String getName() {
         return name;
     }
@@ -90,7 +90,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return The dataset type, which is used to validate the data. The only valid type is <code>embed-input</code> used in conjunction with the Embed Jobs API.
      */
-    @JsonProperty("type")
+    @JsonIgnore
     public DatasetType getType() {
         return type;
     }
@@ -98,7 +98,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return Indicates if the original file should be stored.
      */
-    @JsonProperty("keep_original_file")
+    @JsonIgnore
     public Optional<Boolean> getKeepOriginalFile() {
         return keepOriginalFile;
     }
@@ -106,7 +106,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return Indicates whether rows with malformed input should be dropped (instead of failing the validation check). Dropped rows will be returned in the warnings field.
      */
-    @JsonProperty("skip_malformed_input")
+    @JsonIgnore
     public Optional<Boolean> getSkipMalformedInput() {
         return skipMalformedInput;
     }
@@ -114,7 +114,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return Raw .txt uploads will be split into entries using the text_separator value.
      */
-    @JsonProperty("text_separator")
+    @JsonIgnore
     public Optional<String> getTextSeparator() {
         return textSeparator;
     }
@@ -122,7 +122,7 @@ public final class DatasetsCreateRequest {
     /**
      * @return The delimiter used for .csv uploads.
      */
-    @JsonProperty("csv_delimiter")
+    @JsonIgnore
     public Optional<String> getCsvDelimiter() {
         return csvDelimiter;
     }
