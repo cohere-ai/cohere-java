@@ -5,6 +5,6 @@
   "generatorConfig": {
     "client-class-name": "Cohere"
   },
-  "originGitCommit": "5bd36abb3df64eb4dd528f855dedf6d6a2b4cf52",
-  "sdkVersion": "1.7.1"
+  "originGitCommit": "40f3fd11b9fd6b445b024a2fcf6f2e67f6181147",
+  "sdkVersion": "1.10.1"
 }
