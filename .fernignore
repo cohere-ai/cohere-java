@@ -1,3 +1,7 @@
 README.md
 banner.png
 CODEOWNERS
+src/main/java/com/cohere/api/OptionalAuth.java
+src/main/java/com/cohere/api/CohereBuilder.java
+src/main/java/com/cohere/api/AsyncCohereBuilder.java
+src/test/java/com/cohere/api/OptionalAuthTest.java

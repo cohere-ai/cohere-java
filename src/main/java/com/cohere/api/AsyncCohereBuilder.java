@@ -142,7 +142,7 @@ public class AsyncCohereBuilder {
      * }</pre>
      */
     protected void setAuthentication(ClientOptions.Builder builder) {
-        if (this.token != null) {
+        if (OptionalAuth.sendsAuthorizationHeader(this.token)) {
             builder.addHeader("Authorization", "Bearer " + this.token);
         }
     }
