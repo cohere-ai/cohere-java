@@ -37,6 +37,8 @@ public final class GetModelResponse {
 
     private final Optional<List<String>> features;
 
+    private final Optional<GetModelResponseSamplingDefaults> samplingDefaults;
+
     private final Map<String, Object> additionalProperties;
 
     private GetModelResponse(
@@ -48,6 +50,7 @@ public final class GetModelResponse {
             Optional<String> tokenizerUrl,
             Optional<List<CompatibleEndpoint>> defaultEndpoints,
             Optional<List<String>> features,
+            Optional<GetModelResponseSamplingDefaults> samplingDefaults,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.isDeprecated = isDeprecated;
@@ -57,6 +60,7 @@ public final class GetModelResponse {
         this.tokenizerUrl = tokenizerUrl;
         this.defaultEndpoints = defaultEndpoints;
         this.features = features;
+        this.samplingDefaults = samplingDefaults;
         this.additionalProperties = additionalProperties;
     }
 
@@ -124,6 +128,14 @@ public final class GetModelResponse {
         return features;
     }
 
+    /**
+     * @return Default sampling parameters for this model when omitted from API requests.
+     */
+    @JsonProperty("sampling_defaults")
+    public Optional<GetModelResponseSamplingDefaults> getSamplingDefaults() {
+        return samplingDefaults;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -143,7 +155,8 @@ public final class GetModelResponse {
                 && contextLength.equals(other.contextLength)
                 && tokenizerUrl.equals(other.tokenizerUrl)
                 && defaultEndpoints.equals(other.defaultEndpoints)
-                && features.equals(other.features);
+                && features.equals(other.features)
+                && samplingDefaults.equals(other.samplingDefaults);
     }
 
     @java.lang.Override
@@ -156,7 +169,8 @@ public final class GetModelResponse {
                 this.contextLength,
                 this.tokenizerUrl,
                 this.defaultEndpoints,
-                this.features);
+                this.features,
+                this.samplingDefaults);
     }
 
     @java.lang.Override
@@ -186,6 +200,8 @@ public final class GetModelResponse {
 
         private Optional<List<String>> features = Optional.empty();
 
+        private Optional<GetModelResponseSamplingDefaults> samplingDefaults = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -200,6 +216,7 @@ public final class GetModelResponse {
             tokenizerUrl(other.getTokenizerUrl());
             defaultEndpoints(other.getDefaultEndpoints());
             features(other.getFeatures());
+            samplingDefaults(other.getSamplingDefaults());
             return this;
         }
 
@@ -315,6 +332,20 @@ public final class GetModelResponse {
             return this;
         }
 
+        /**
+         * <p>Default sampling parameters for this model when omitted from API requests.</p>
+         */
+        @JsonSetter(value = "sampling_defaults", nulls = Nulls.SKIP)
+        public Builder samplingDefaults(Optional<GetModelResponseSamplingDefaults> samplingDefaults) {
+            this.samplingDefaults = samplingDefaults;
+            return this;
+        }
+
+        public Builder samplingDefaults(GetModelResponseSamplingDefaults samplingDefaults) {
+            this.samplingDefaults = Optional.ofNullable(samplingDefaults);
+            return this;
+        }
+
         public GetModelResponse build() {
             return new GetModelResponse(
                     name,
@@ -325,6 +356,7 @@ public final class GetModelResponse {
                     tokenizerUrl,
                     defaultEndpoints,
                     features,
+                    samplingDefaults,
                     additionalProperties);
         }
 

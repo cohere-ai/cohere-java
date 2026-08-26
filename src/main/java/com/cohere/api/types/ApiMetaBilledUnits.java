@@ -32,6 +32,8 @@ public final class ApiMetaBilledUnits {
 
     private final Optional<Double> classifications;
 
+    private final Optional<Double> pages;
+
     private final Map<String, Object> additionalProperties;
 
     private ApiMetaBilledUnits(
@@ -41,6 +43,7 @@ public final class ApiMetaBilledUnits {
             Optional<Double> outputTokens,
             Optional<Double> searchUnits,
             Optional<Double> classifications,
+            Optional<Double> pages,
             Map<String, Object> additionalProperties) {
         this.images = images;
         this.inputTokens = inputTokens;
@@ -48,6 +51,7 @@ public final class ApiMetaBilledUnits {
         this.outputTokens = outputTokens;
         this.searchUnits = searchUnits;
         this.classifications = classifications;
+        this.pages = pages;
         this.additionalProperties = additionalProperties;
     }
 
@@ -99,6 +103,14 @@ public final class ApiMetaBilledUnits {
         return classifications;
     }
 
+    /**
+     * @return The number of billed pages parsed.
+     */
+    @JsonProperty("pages")
+    public Optional<Double> getPages() {
+        return pages;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -116,7 +128,8 @@ public final class ApiMetaBilledUnits {
                 && imageTokens.equals(other.imageTokens)
                 && outputTokens.equals(other.outputTokens)
                 && searchUnits.equals(other.searchUnits)
-                && classifications.equals(other.classifications);
+                && classifications.equals(other.classifications)
+                && pages.equals(other.pages);
     }
 
     @java.lang.Override
@@ -127,7 +140,8 @@ public final class ApiMetaBilledUnits {
                 this.imageTokens,
                 this.outputTokens,
                 this.searchUnits,
-                this.classifications);
+                this.classifications,
+                this.pages);
     }
 
     @java.lang.Override
@@ -153,6 +167,8 @@ public final class ApiMetaBilledUnits {
 
         private Optional<Double> classifications = Optional.empty();
 
+        private Optional<Double> pages = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -165,6 +181,7 @@ public final class ApiMetaBilledUnits {
             outputTokens(other.getOutputTokens());
             searchUnits(other.getSearchUnits());
             classifications(other.getClassifications());
+            pages(other.getPages());
             return this;
         }
 
@@ -252,9 +269,30 @@ public final class ApiMetaBilledUnits {
             return this;
         }
 
+        /**
+         * <p>The number of billed pages parsed.</p>
+         */
+        @JsonSetter(value = "pages", nulls = Nulls.SKIP)
+        public Builder pages(Optional<Double> pages) {
+            this.pages = pages;
+            return this;
+        }
+
+        public Builder pages(Double pages) {
+            this.pages = Optional.ofNullable(pages);
+            return this;
+        }
+
         public ApiMetaBilledUnits build() {
             return new ApiMetaBilledUnits(
-                    images, inputTokens, imageTokens, outputTokens, searchUnits, classifications, additionalProperties);
+                    images,
+                    inputTokens,
+                    imageTokens,
+                    outputTokens,
+                    searchUnits,
+                    classifications,
+                    pages,
+                    additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

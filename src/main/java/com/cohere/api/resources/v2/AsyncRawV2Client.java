@@ -24,6 +24,7 @@ import com.cohere.api.errors.ServiceUnavailableError;
 import com.cohere.api.errors.TooManyRequestsError;
 import com.cohere.api.errors.UnauthorizedError;
 import com.cohere.api.errors.UnprocessableEntityError;
+import com.cohere.api.resources.v2.requests.ParseRequest;
 import com.cohere.api.resources.v2.requests.V2ChatRequest;
 import com.cohere.api.resources.v2.requests.V2ChatStreamRequest;
 import com.cohere.api.resources.v2.requests.V2EmbedRequest;
@@ -32,6 +33,7 @@ import com.cohere.api.resources.v2.types.V2ChatResponse;
 import com.cohere.api.resources.v2.types.V2ChatStreamResponse;
 import com.cohere.api.resources.v2.types.V2RerankResponse;
 import com.cohere.api.types.EmbedByTypeResponse;
+import com.cohere.api.types.ParseResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -240,6 +242,149 @@ public class AsyncRawV2Client {
                     if (response.isSuccessful()) {
                         future.complete(new CohereHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2ChatResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 403:
+                                future.completeExceptionally(new ForbiddenError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 404:
+                                future.completeExceptionally(new NotFoundError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 422:
+                                future.completeExceptionally(new UnprocessableEntityError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 429:
+                                future.completeExceptionally(new TooManyRequestsError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 498:
+                                future.completeExceptionally(new InvalidTokenError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 499:
+                                future.completeExceptionally(new ClientClosedRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 501:
+                                future.completeExceptionally(new NotImplementedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 504:
+                                future.completeExceptionally(new GatewayTimeoutError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new CohereApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new CohereException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new CohereException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Parse a document image into structured output. Use <code>output_format</code> to select
+     * blocks or markdown (default).
+     * <p>Currently supports <code>document.type = image_url</code> only (data URI or remote http(s)
+     * image URL). PDF / file URL inputs are not yet supported.</p>
+     * <p>Image limits: 20 MB file size; 50 megapixels or 200 MB decoded (whichever is
+     * exceeded first).</p>
+     */
+    public CompletableFuture<CohereHttpResponse<ParseResponse>> parse(ParseRequest request) {
+        return parse(request, null);
+    }
+
+    /**
+     * Parse a document image into structured output. Use <code>output_format</code> to select
+     * blocks or markdown (default).
+     * <p>Currently supports <code>document.type = image_url</code> only (data URI or remote http(s)
+     * image URL). PDF / file URL inputs are not yet supported.</p>
+     * <p>Image limits: 20 MB file size; 50 megapixels or 200 MB decoded (whichever is
+     * exceeded first).</p>
+     */
+    public CompletableFuture<CohereHttpResponse<ParseResponse>> parse(
+            ParseRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/parse");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new CohereException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<CohereHttpResponse<ParseResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new CohereHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ParseResponse.class),
                                 response));
                         return;
                     }
