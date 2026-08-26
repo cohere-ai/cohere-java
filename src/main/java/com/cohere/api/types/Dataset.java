@@ -47,6 +47,10 @@ public final class Dataset {
 
     private final Optional<List<String>> validationWarnings;
 
+    private final Optional<ParseInfo> parseInfo;
+
+    private final Optional<Metrics> metrics;
+
     private final Map<String, Object> additionalProperties;
 
     private Dataset(
@@ -62,6 +66,8 @@ public final class Dataset {
             Optional<List<String>> preserveFields,
             Optional<List<DatasetPart>> datasetParts,
             Optional<List<String>> validationWarnings,
+            Optional<ParseInfo> parseInfo,
+            Optional<Metrics> metrics,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
@@ -75,6 +81,8 @@ public final class Dataset {
         this.preserveFields = preserveFields;
         this.datasetParts = datasetParts;
         this.validationWarnings = validationWarnings;
+        this.parseInfo = parseInfo;
+        this.metrics = metrics;
         this.additionalProperties = additionalProperties;
     }
 
@@ -162,6 +170,16 @@ public final class Dataset {
         return validationWarnings;
     }
 
+    @JsonProperty("parse_info")
+    public Optional<ParseInfo> getParseInfo() {
+        return parseInfo;
+    }
+
+    @JsonProperty("metrics")
+    public Optional<Metrics> getMetrics() {
+        return metrics;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -185,7 +203,9 @@ public final class Dataset {
                 && requiredFields.equals(other.requiredFields)
                 && preserveFields.equals(other.preserveFields)
                 && datasetParts.equals(other.datasetParts)
-                && validationWarnings.equals(other.validationWarnings);
+                && validationWarnings.equals(other.validationWarnings)
+                && parseInfo.equals(other.parseInfo)
+                && metrics.equals(other.metrics);
     }
 
     @java.lang.Override
@@ -202,7 +222,9 @@ public final class Dataset {
                 this.requiredFields,
                 this.preserveFields,
                 this.datasetParts,
-                this.validationWarnings);
+                this.validationWarnings,
+                this.parseInfo,
+                this.metrics);
     }
 
     @java.lang.Override
@@ -294,6 +316,14 @@ public final class Dataset {
         _FinalStage validationWarnings(Optional<List<String>> validationWarnings);
 
         _FinalStage validationWarnings(List<String> validationWarnings);
+
+        _FinalStage parseInfo(Optional<ParseInfo> parseInfo);
+
+        _FinalStage parseInfo(ParseInfo parseInfo);
+
+        _FinalStage metrics(Optional<Metrics> metrics);
+
+        _FinalStage metrics(Metrics metrics);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -316,6 +346,10 @@ public final class Dataset {
         private DatasetType datasetType;
 
         private DatasetValidationStatus validationStatus;
+
+        private Optional<Metrics> metrics = Optional.empty();
+
+        private Optional<ParseInfo> parseInfo = Optional.empty();
 
         private Optional<List<String>> validationWarnings = Optional.empty();
 
@@ -348,6 +382,8 @@ public final class Dataset {
             preserveFields(other.getPreserveFields());
             datasetParts(other.getDatasetParts());
             validationWarnings(other.getValidationWarnings());
+            parseInfo(other.getParseInfo());
+            metrics(other.getMetrics());
             return this;
         }
 
@@ -410,6 +446,32 @@ public final class Dataset {
         @JsonSetter("validation_status")
         public _FinalStage validationStatus(@NotNull DatasetValidationStatus validationStatus) {
             this.validationStatus = Objects.requireNonNull(validationStatus, "validationStatus must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage metrics(Metrics metrics) {
+            this.metrics = Optional.ofNullable(metrics);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metrics", nulls = Nulls.SKIP)
+        public _FinalStage metrics(Optional<Metrics> metrics) {
+            this.metrics = metrics;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage parseInfo(ParseInfo parseInfo) {
+            this.parseInfo = Optional.ofNullable(parseInfo);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "parse_info", nulls = Nulls.SKIP)
+        public _FinalStage parseInfo(Optional<ParseInfo> parseInfo) {
+            this.parseInfo = parseInfo;
             return this;
         }
 
@@ -534,6 +596,8 @@ public final class Dataset {
                     preserveFields,
                     datasetParts,
                     validationWarnings,
+                    parseInfo,
+                    metrics,
                     additionalProperties);
         }
 

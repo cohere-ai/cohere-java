@@ -5,6 +5,7 @@ package com.cohere.api.resources.v2;
 
 import com.cohere.api.core.ClientOptions;
 import com.cohere.api.core.RequestOptions;
+import com.cohere.api.resources.v2.requests.ParseRequest;
 import com.cohere.api.resources.v2.requests.V2ChatRequest;
 import com.cohere.api.resources.v2.requests.V2ChatStreamRequest;
 import com.cohere.api.resources.v2.requests.V2EmbedRequest;
@@ -13,6 +14,7 @@ import com.cohere.api.resources.v2.types.V2ChatResponse;
 import com.cohere.api.resources.v2.types.V2ChatStreamResponse;
 import com.cohere.api.resources.v2.types.V2RerankResponse;
 import com.cohere.api.types.EmbedByTypeResponse;
+import com.cohere.api.types.ParseResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncV2Client {
@@ -63,6 +65,30 @@ public class AsyncV2Client {
      */
     public CompletableFuture<V2ChatResponse> chat(V2ChatRequest request, RequestOptions requestOptions) {
         return this.rawClient.chat(request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Parse a document image into structured output. Use <code>output_format</code> to select
+     * blocks or markdown (default).
+     * <p>Currently supports <code>document.type = image_url</code> only (data URI or remote http(s)
+     * image URL). PDF / file URL inputs are not yet supported.</p>
+     * <p>Image limits: 20 MB file size; 50 megapixels or 200 MB decoded (whichever is
+     * exceeded first).</p>
+     */
+    public CompletableFuture<ParseResponse> parse(ParseRequest request) {
+        return this.rawClient.parse(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Parse a document image into structured output. Use <code>output_format</code> to select
+     * blocks or markdown (default).
+     * <p>Currently supports <code>document.type = image_url</code> only (data URI or remote http(s)
+     * image URL). PDF / file URL inputs are not yet supported.</p>
+     * <p>Image limits: 20 MB file size; 50 megapixels or 200 MB decoded (whichever is
+     * exceeded first).</p>
+     */
+    public CompletableFuture<ParseResponse> parse(ParseRequest request, RequestOptions requestOptions) {
+        return this.rawClient.parse(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**

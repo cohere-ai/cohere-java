@@ -1477,11 +1477,15 @@ client.embed(
 
 **images:** `Optional<List<String>>` 
 
-An array of image data URIs for the model to embed. Maximum number of images per call is `1`.
+An array of image data URIs for the model to embed.
 
-The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format and has a maximum size of 5MB.
+The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format.
 
-Images are only supported with Embed v3.0 and newer models.
+Image embeddings are supported with Embed v3.0 and newer models.
+
+For **Embed v3.x** models, the maximum number of images per call is `1`, and each image has a maximum size of `5MB`.
+
+For **Embed v4.0 and newer** models, there is no limit on the number of images per call. The combined size of all images in the request must be at most `20MB`.
     
 </dd>
 </dl>
@@ -2171,7 +2175,7 @@ Follow the [Migration Guide](https://docs.cohere.com/v2/docs/migrating-v1-to-v2)
 client.v2().chatStream(
     V2ChatStreamRequest
         .builder()
-        .model("command-a-03-2025")
+        .model("command-a-plus-05-2026")
         .messages(
             Arrays.asList(
                 ChatMessageV2.user(
@@ -2462,7 +2466,7 @@ Follow the [Migration Guide](https://docs.cohere.com/v2/docs/migrating-v1-to-v2)
 client.v2().chatStream(
     V2ChatStreamRequest
         .builder()
-        .model("command-a-03-2025")
+        .model("command-a-plus-05-2026")
         .messages(
             Arrays.asList(
                 ChatMessageV2.user(
@@ -2721,6 +2725,95 @@ If tool_choice isn't specified, then the model is free to choose whether to use 
 </dl>
 </details>
 
+<details><summary><code>client.v2.parse(request) -> ParseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Parse a document image into structured output. Use `output_format` to select
+blocks or markdown (default).
+
+Currently supports `document.type = image_url` only (data URI or remote http(s)
+image URL). PDF / file URL inputs are not yet supported.
+
+Image limits: 20 MB file size; 50 megapixels or 200 MB decoded (whichever is
+exceeded first).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.v2().parse(
+    ParseRequest
+        .builder()
+        .model("parse-v5.0")
+        .document(
+            ParseDocument
+                .builder()
+                .imageUrl("https://cohere.com/favicon-32x32.png")
+                .build()
+        )
+        .outputFormat(ParseOutputFormat.MARKDOWN)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**model:** `String` — The name of a compatible Cohere parse model.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document:** `ParseDocument` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**outputFormat:** `Optional<ParseOutputFormat>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.v2.embed(request) -> EmbedByTypeResponse</code></summary>
 <dl>
 <dd>
@@ -2793,11 +2886,15 @@ client.v2().embed(
 
 **images:** `Optional<List<String>>` 
 
-An array of image data URIs for the model to embed. Maximum number of images per call is `1`.
+An array of image data URIs for the model to embed.
 
-The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format and has a maximum size of 5MB.
+The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format.
 
 Image embeddings are supported with Embed v3.0 and newer models.
+
+For **Embed v3.x** models, the maximum number of images per call is `1`, and each image has a maximum size of `5MB`.
+
+For **Embed v4.0 and newer** models, there is no limit on the number of images per call. The combined size of all images in the request must be at most `20MB`.
     
 </dd>
 </dl>
@@ -3667,6 +3764,12 @@ client.datasets().create(
         .builder()
         .name("name")
         .type(DatasetType.EMBED_INPUT)
+        .keepFields(
+            Arrays.asList("keep_fields")
+        )
+        .optionalFields(
+            Arrays.asList("optional_fields")
+        )
         .keepOriginalFile(true)
         .skipMalformedInput(true)
         .textSeparator("text_separator")

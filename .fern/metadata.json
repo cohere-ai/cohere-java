@@ -1,10 +1,10 @@
 {
-  "cliVersion": "4.48.0",
+  "cliVersion": "5.55.0",
   "generatorName": "fernapi/fern-java-sdk",
-  "generatorVersion": "4.0.6",
+  "generatorVersion": "4.1.2",
   "generatorConfig": {
     "client-class-name": "Cohere"
   },
-  "originGitCommit": "40f3fd11b9fd6b445b024a2fcf6f2e67f6181147",
-  "sdkVersion": "1.10.2"
+  "originGitCommit": "5c526877987b8b4e11151461d0c251002eb24341",
+  "sdkVersion": "1.11.0"
 }

@@ -32,6 +32,12 @@ public final class FinetuneDatasetMetrics {
 
     private final Optional<Long> evalSizeBytes;
 
+    private final Optional<RerankerDataMetrics> rerankerDataMetrics;
+
+    private final Optional<ChatDataMetrics> chatDataMetrics;
+
+    private final Optional<ClassifyDataMetrics> classifyDataMetrics;
+
     private final Map<String, Object> additionalProperties;
 
     private FinetuneDatasetMetrics(
@@ -41,6 +47,9 @@ public final class FinetuneDatasetMetrics {
             Optional<Long> trainSizeBytes,
             Optional<Long> evalExamples,
             Optional<Long> evalSizeBytes,
+            Optional<RerankerDataMetrics> rerankerDataMetrics,
+            Optional<ChatDataMetrics> chatDataMetrics,
+            Optional<ClassifyDataMetrics> classifyDataMetrics,
             Map<String, Object> additionalProperties) {
         this.trainableTokenCount = trainableTokenCount;
         this.totalExamples = totalExamples;
@@ -48,6 +57,9 @@ public final class FinetuneDatasetMetrics {
         this.trainSizeBytes = trainSizeBytes;
         this.evalExamples = evalExamples;
         this.evalSizeBytes = evalSizeBytes;
+        this.rerankerDataMetrics = rerankerDataMetrics;
+        this.chatDataMetrics = chatDataMetrics;
+        this.classifyDataMetrics = classifyDataMetrics;
         this.additionalProperties = additionalProperties;
     }
 
@@ -99,6 +111,21 @@ public final class FinetuneDatasetMetrics {
         return evalSizeBytes;
     }
 
+    @JsonProperty("reranker_data_metrics")
+    public Optional<RerankerDataMetrics> getRerankerDataMetrics() {
+        return rerankerDataMetrics;
+    }
+
+    @JsonProperty("chat_data_metrics")
+    public Optional<ChatDataMetrics> getChatDataMetrics() {
+        return chatDataMetrics;
+    }
+
+    @JsonProperty("classify_data_metrics")
+    public Optional<ClassifyDataMetrics> getClassifyDataMetrics() {
+        return classifyDataMetrics;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -116,7 +143,10 @@ public final class FinetuneDatasetMetrics {
                 && trainExamples.equals(other.trainExamples)
                 && trainSizeBytes.equals(other.trainSizeBytes)
                 && evalExamples.equals(other.evalExamples)
-                && evalSizeBytes.equals(other.evalSizeBytes);
+                && evalSizeBytes.equals(other.evalSizeBytes)
+                && rerankerDataMetrics.equals(other.rerankerDataMetrics)
+                && chatDataMetrics.equals(other.chatDataMetrics)
+                && classifyDataMetrics.equals(other.classifyDataMetrics);
     }
 
     @java.lang.Override
@@ -127,7 +157,10 @@ public final class FinetuneDatasetMetrics {
                 this.trainExamples,
                 this.trainSizeBytes,
                 this.evalExamples,
-                this.evalSizeBytes);
+                this.evalSizeBytes,
+                this.rerankerDataMetrics,
+                this.chatDataMetrics,
+                this.classifyDataMetrics);
     }
 
     @java.lang.Override
@@ -153,6 +186,12 @@ public final class FinetuneDatasetMetrics {
 
         private Optional<Long> evalSizeBytes = Optional.empty();
 
+        private Optional<RerankerDataMetrics> rerankerDataMetrics = Optional.empty();
+
+        private Optional<ChatDataMetrics> chatDataMetrics = Optional.empty();
+
+        private Optional<ClassifyDataMetrics> classifyDataMetrics = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -165,6 +204,9 @@ public final class FinetuneDatasetMetrics {
             trainSizeBytes(other.getTrainSizeBytes());
             evalExamples(other.getEvalExamples());
             evalSizeBytes(other.getEvalSizeBytes());
+            rerankerDataMetrics(other.getRerankerDataMetrics());
+            chatDataMetrics(other.getChatDataMetrics());
+            classifyDataMetrics(other.getClassifyDataMetrics());
             return this;
         }
 
@@ -252,6 +294,39 @@ public final class FinetuneDatasetMetrics {
             return this;
         }
 
+        @JsonSetter(value = "reranker_data_metrics", nulls = Nulls.SKIP)
+        public Builder rerankerDataMetrics(Optional<RerankerDataMetrics> rerankerDataMetrics) {
+            this.rerankerDataMetrics = rerankerDataMetrics;
+            return this;
+        }
+
+        public Builder rerankerDataMetrics(RerankerDataMetrics rerankerDataMetrics) {
+            this.rerankerDataMetrics = Optional.ofNullable(rerankerDataMetrics);
+            return this;
+        }
+
+        @JsonSetter(value = "chat_data_metrics", nulls = Nulls.SKIP)
+        public Builder chatDataMetrics(Optional<ChatDataMetrics> chatDataMetrics) {
+            this.chatDataMetrics = chatDataMetrics;
+            return this;
+        }
+
+        public Builder chatDataMetrics(ChatDataMetrics chatDataMetrics) {
+            this.chatDataMetrics = Optional.ofNullable(chatDataMetrics);
+            return this;
+        }
+
+        @JsonSetter(value = "classify_data_metrics", nulls = Nulls.SKIP)
+        public Builder classifyDataMetrics(Optional<ClassifyDataMetrics> classifyDataMetrics) {
+            this.classifyDataMetrics = classifyDataMetrics;
+            return this;
+        }
+
+        public Builder classifyDataMetrics(ClassifyDataMetrics classifyDataMetrics) {
+            this.classifyDataMetrics = Optional.ofNullable(classifyDataMetrics);
+            return this;
+        }
+
         public FinetuneDatasetMetrics build() {
             return new FinetuneDatasetMetrics(
                     trainableTokenCount,
@@ -260,6 +335,9 @@ public final class FinetuneDatasetMetrics {
                     trainSizeBytes,
                     evalExamples,
                     evalSizeBytes,
+                    rerankerDataMetrics,
+                    chatDataMetrics,
+                    classifyDataMetrics,
                     additionalProperties);
         }
 

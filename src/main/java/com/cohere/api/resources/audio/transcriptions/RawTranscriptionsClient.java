@@ -69,15 +69,11 @@ public class RawTranscriptionsClient {
         }
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
-            multipartBodyBuilder.addFormDataPart(
-                    "model", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getModel()));
-            multipartBodyBuilder.addFormDataPart(
-                    "language", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getLanguage()));
+            multipartBodyBuilder.addFormDataPart("model", request.getModel());
+            multipartBodyBuilder.addFormDataPart("language", request.getLanguage());
             if (request.getTemperature().isPresent()) {
                 multipartBodyBuilder.addFormDataPart(
-                        "temperature",
-                        ObjectMappers.JSON_MAPPER.writeValueAsString(
-                                request.getTemperature().get()));
+                        "temperature", request.getTemperature().get().toString());
             }
             String fileMimeType = Files.probeContentType(file.toPath());
             MediaType fileMimeTypeMediaType = fileMimeType != null ? MediaType.parse(fileMimeType) : null;
