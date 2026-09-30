@@ -29,13 +29,20 @@ public final class ParseResponse {
 
     private final Optional<ApiMeta> meta;
 
+    private final Optional<ChatFinishReason> finishReason;
+
     private final Map<String, Object> additionalProperties;
 
     private ParseResponse(
-            String id, List<ParsePage> pages, Optional<ApiMeta> meta, Map<String, Object> additionalProperties) {
+            String id,
+            List<ParsePage> pages,
+            Optional<ApiMeta> meta,
+            Optional<ChatFinishReason> finishReason,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.pages = pages;
         this.meta = meta;
+        this.finishReason = finishReason;
         this.additionalProperties = additionalProperties;
     }
 
@@ -60,6 +67,16 @@ public final class ParseResponse {
         return meta;
     }
 
+    /**
+     * @return The reason parsing finished. For Parse, this is only ever <code>COMPLETE</code> or
+     * <code>MAX_TOKENS</code>; <code>MAX_TOKENS</code> indicates the output was truncated because it
+     * exceeded the maximum output token limit.
+     */
+    @JsonProperty("finish_reason")
+    public Optional<ChatFinishReason> getFinishReason() {
+        return finishReason;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -72,12 +89,15 @@ public final class ParseResponse {
     }
 
     private boolean equalTo(ParseResponse other) {
-        return id.equals(other.id) && pages.equals(other.pages) && meta.equals(other.meta);
+        return id.equals(other.id)
+                && pages.equals(other.pages)
+                && meta.equals(other.meta)
+                && finishReason.equals(other.finishReason);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.pages, this.meta);
+        return Objects.hash(this.id, this.pages, this.meta, this.finishReason);
     }
 
     @java.lang.Override
@@ -117,11 +137,22 @@ public final class ParseResponse {
         _FinalStage meta(Optional<ApiMeta> meta);
 
         _FinalStage meta(ApiMeta meta);
+
+        /**
+         * <p>The reason parsing finished. For Parse, this is only ever <code>COMPLETE</code> or
+         * <code>MAX_TOKENS</code>; <code>MAX_TOKENS</code> indicates the output was truncated because it
+         * exceeded the maximum output token limit.</p>
+         */
+        _FinalStage finishReason(Optional<ChatFinishReason> finishReason);
+
+        _FinalStage finishReason(ChatFinishReason finishReason);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements IdStage, _FinalStage {
         private String id;
+
+        private Optional<ChatFinishReason> finishReason = Optional.empty();
 
         private Optional<ApiMeta> meta = Optional.empty();
 
@@ -137,6 +168,7 @@ public final class ParseResponse {
             id(other.getId());
             pages(other.getPages());
             meta(other.getMeta());
+            finishReason(other.getFinishReason());
             return this;
         }
 
@@ -149,6 +181,30 @@ public final class ParseResponse {
         @JsonSetter("id")
         public _FinalStage id(@NotNull String id) {
             this.id = Objects.requireNonNull(id, "id must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The reason parsing finished. For Parse, this is only ever <code>COMPLETE</code> or
+         * <code>MAX_TOKENS</code>; <code>MAX_TOKENS</code> indicates the output was truncated because it
+         * exceeded the maximum output token limit.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage finishReason(ChatFinishReason finishReason) {
+            this.finishReason = Optional.ofNullable(finishReason);
+            return this;
+        }
+
+        /**
+         * <p>The reason parsing finished. For Parse, this is only ever <code>COMPLETE</code> or
+         * <code>MAX_TOKENS</code>; <code>MAX_TOKENS</code> indicates the output was truncated because it
+         * exceeded the maximum output token limit.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "finish_reason", nulls = Nulls.SKIP)
+        public _FinalStage finishReason(Optional<ChatFinishReason> finishReason) {
+            this.finishReason = finishReason;
             return this;
         }
 
@@ -202,7 +258,7 @@ public final class ParseResponse {
 
         @java.lang.Override
         public ParseResponse build() {
-            return new ParseResponse(id, pages, meta, additionalProperties);
+            return new ParseResponse(id, pages, meta, finishReason, additionalProperties);
         }
 
         @java.lang.Override
