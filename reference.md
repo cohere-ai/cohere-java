@@ -1449,8 +1449,8 @@ client.embed(
                 Arrays.asList("hello", "goodbye")
             )
         )
-        .model("embed-v4.0")
-        .inputType(EmbedInputType.CLASSIFICATION)
+        .model("embed-v5.0-fast")
+        .inputType(EmbedInputType.SEARCH_DOCUMENT)
         .build()
 );
 ```
@@ -2848,8 +2848,8 @@ If you want to learn more how to use the embedding model, have a look at the [Se
 client.v2().embed(
     V2EmbedRequest
         .builder()
-        .model("embed-v4.0")
-        .inputType(EmbedInputType.CLASSIFICATION)
+        .model("embed-v5.0-fast")
+        .inputType(EmbedInputType.SEARCH_DOCUMENT)
         .texts(
             Optional.of(
                 Arrays.asList("hello", "goodbye")
@@ -2937,7 +2937,7 @@ For **Embed v4.0 and newer** models, there is no limit on the number of images p
 **outputDimension:** `Optional<Integer>` 
 
 The number of dimensions of the output embedding. This is only available for `embed-v4` and newer models.
-Possible values are `256`, `512`, `1024`, and `1536`. The default is `1536`.
+For supported dimensions, please refer to the [Embed models](https://docs.cohere.com/docs/cohere-embed) page.
     
 </dd>
 </dl>
@@ -3018,12 +3018,20 @@ This endpoint takes in a query and a list of texts and produces an ordered array
 client.v2().rerank(
     V2RerankRequest
         .builder()
-        .model("rerank-v4.0-pro")
+        .model("rerank-v5.0-pro")
         .query("What is the capital of the United States?")
         .documents(
-            Arrays.asList("Carson City is the capital city of the American state of Nevada.", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.", "Capital punishment has existed in the United States since beforethe United States was a country. As of 2017, capital punishment is legal in 30 of the 50 states.")
+            Arrays.asList("Carson City is the capital city of the American state of Nevada.", "The Commonwealth of the Northern Mariana Islands is a group of islands in the Pacific Ocean. Its capital is Saipan.", "Capitalization or capitalisation in English grammar is the use of a capital letter at the start of a word. English usage varies from capitalization in other languages.", "Washington, D.C. (also known as simply Washington or D.C., and officially as the District of Columbia) is the capital of the United States. It is a federal district.", "Capital gains are profits from the sale of an asset such as stocks or real estate. In the United States, long-term capital gains are taxed at lower rates than ordinary income.")
         )
         .topN(3)
+        .relevantSpans(
+            RerankRelevantSpans
+                .builder()
+                .mode(RerankRelevantSpansMode.ENABLED)
+                .threshold(0.1f)
+                .maxSpans(3)
+                .build()
+        )
         .build()
 );
 ```
@@ -3040,7 +3048,7 @@ client.v2().rerank(
 <dl>
 <dd>
 
-**model:** `String` — The identifier of the model to use, eg `rerank-v3.5`.
+**model:** `String` — The identifier of the model to use, eg `rerank-v5.0-pro`.
     
 </dd>
 </dl>
@@ -3080,6 +3088,14 @@ For optimal performance we recommend against sending more than 1,000 documents i
 <dd>
 
 **maxTokensPerDoc:** `Optional<Integer>` — Defaults to `4096`. Long documents will be automatically truncated to the specified number of tokens.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**relevantSpans:** `Optional<RerankRelevantSpans>` 
     
 </dd>
 </dl>

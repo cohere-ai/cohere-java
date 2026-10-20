@@ -4,16 +4,20 @@
 package com.cohere.api.resources.v2.types;
 
 import com.cohere.api.core.ObjectMappers;
+import com.cohere.api.types.RerankRelevantSpanResponse;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = V2RerankResponseResultsItem.Builder.class)
@@ -22,11 +26,18 @@ public final class V2RerankResponseResultsItem {
 
     private final float relevanceScore;
 
+    private final Optional<List<RerankRelevantSpanResponse>> relevantSpans;
+
     private final Map<String, Object> additionalProperties;
 
-    private V2RerankResponseResultsItem(int index, float relevanceScore, Map<String, Object> additionalProperties) {
+    private V2RerankResponseResultsItem(
+            int index,
+            float relevanceScore,
+            Optional<List<RerankRelevantSpanResponse>> relevantSpans,
+            Map<String, Object> additionalProperties) {
         this.index = index;
         this.relevanceScore = relevanceScore;
+        this.relevantSpans = relevantSpans;
         this.additionalProperties = additionalProperties;
     }
 
@@ -46,6 +57,14 @@ public final class V2RerankResponseResultsItem {
         return relevanceScore;
     }
 
+    /**
+     * @return The spans of this document that are most relevant to the query, ordered from most to least relevant. Only returned when the request enabled <code>relevant_spans</code> and the model found at least one span for the document.
+     */
+    @JsonProperty("relevant_spans")
+    public Optional<List<RerankRelevantSpanResponse>> getRelevantSpans() {
+        return relevantSpans;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -58,12 +77,14 @@ public final class V2RerankResponseResultsItem {
     }
 
     private boolean equalTo(V2RerankResponseResultsItem other) {
-        return index == other.index && relevanceScore == other.relevanceScore;
+        return index == other.index
+                && relevanceScore == other.relevanceScore
+                && relevantSpans.equals(other.relevantSpans);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.index, this.relevanceScore);
+        return Objects.hash(this.index, this.relevanceScore, this.relevantSpans);
     }
 
     @java.lang.Override
@@ -97,6 +118,13 @@ public final class V2RerankResponseResultsItem {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>The spans of this document that are most relevant to the query, ordered from most to least relevant. Only returned when the request enabled <code>relevant_spans</code> and the model found at least one span for the document.</p>
+         */
+        _FinalStage relevantSpans(Optional<List<RerankRelevantSpanResponse>> relevantSpans);
+
+        _FinalStage relevantSpans(List<RerankRelevantSpanResponse> relevantSpans);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -104,6 +132,8 @@ public final class V2RerankResponseResultsItem {
         private int index;
 
         private float relevanceScore;
+
+        private Optional<List<RerankRelevantSpanResponse>> relevantSpans = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -114,6 +144,7 @@ public final class V2RerankResponseResultsItem {
         public Builder from(V2RerankResponseResultsItem other) {
             index(other.getIndex());
             relevanceScore(other.getRelevanceScore());
+            relevantSpans(other.getRelevantSpans());
             return this;
         }
 
@@ -141,9 +172,29 @@ public final class V2RerankResponseResultsItem {
             return this;
         }
 
+        /**
+         * <p>The spans of this document that are most relevant to the query, ordered from most to least relevant. Only returned when the request enabled <code>relevant_spans</code> and the model found at least one span for the document.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage relevantSpans(List<RerankRelevantSpanResponse> relevantSpans) {
+            this.relevantSpans = Optional.ofNullable(relevantSpans);
+            return this;
+        }
+
+        /**
+         * <p>The spans of this document that are most relevant to the query, ordered from most to least relevant. Only returned when the request enabled <code>relevant_spans</code> and the model found at least one span for the document.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "relevant_spans", nulls = Nulls.SKIP)
+        public _FinalStage relevantSpans(Optional<List<RerankRelevantSpanResponse>> relevantSpans) {
+            this.relevantSpans = relevantSpans;
+            return this;
+        }
+
         @java.lang.Override
         public V2RerankResponseResultsItem build() {
-            return new V2RerankResponseResultsItem(index, relevanceScore, additionalProperties);
+            return new V2RerankResponseResultsItem(index, relevanceScore, relevantSpans, additionalProperties);
         }
 
         @java.lang.Override

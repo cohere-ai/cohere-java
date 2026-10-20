@@ -4,6 +4,7 @@
 package com.cohere.api.resources.v2.requests;
 
 import com.cohere.api.core.ObjectMappers;
+import com.cohere.api.types.RerankRelevantSpans;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,6 +34,8 @@ public final class V2RerankRequest {
 
     private final Optional<Integer> maxTokensPerDoc;
 
+    private final Optional<RerankRelevantSpans> relevantSpans;
+
     private final Optional<Integer> priority;
 
     private final Map<String, Object> additionalProperties;
@@ -43,6 +46,7 @@ public final class V2RerankRequest {
             List<String> documents,
             Optional<Integer> topN,
             Optional<Integer> maxTokensPerDoc,
+            Optional<RerankRelevantSpans> relevantSpans,
             Optional<Integer> priority,
             Map<String, Object> additionalProperties) {
         this.model = model;
@@ -50,12 +54,13 @@ public final class V2RerankRequest {
         this.documents = documents;
         this.topN = topN;
         this.maxTokensPerDoc = maxTokensPerDoc;
+        this.relevantSpans = relevantSpans;
         this.priority = priority;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The identifier of the model to use, eg <code>rerank-v3.5</code>.
+     * @return The identifier of the model to use, eg <code>rerank-v5.0-pro</code>.
      */
     @JsonProperty("model")
     public String getModel() {
@@ -97,6 +102,11 @@ public final class V2RerankRequest {
         return maxTokensPerDoc;
     }
 
+    @JsonProperty("relevant_spans")
+    public Optional<RerankRelevantSpans> getRelevantSpans() {
+        return relevantSpans;
+    }
+
     /**
      * @return Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.
      */
@@ -122,12 +132,20 @@ public final class V2RerankRequest {
                 && documents.equals(other.documents)
                 && topN.equals(other.topN)
                 && maxTokensPerDoc.equals(other.maxTokensPerDoc)
+                && relevantSpans.equals(other.relevantSpans)
                 && priority.equals(other.priority);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.model, this.query, this.documents, this.topN, this.maxTokensPerDoc, this.priority);
+        return Objects.hash(
+                this.model,
+                this.query,
+                this.documents,
+                this.topN,
+                this.maxTokensPerDoc,
+                this.relevantSpans,
+                this.priority);
     }
 
     @java.lang.Override
@@ -141,7 +159,7 @@ public final class V2RerankRequest {
 
     public interface ModelStage {
         /**
-         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
+         * <p>The identifier of the model to use, eg <code>rerank-v5.0-pro</code>.</p>
          */
         QueryStage model(@NotNull String model);
 
@@ -188,6 +206,10 @@ public final class V2RerankRequest {
 
         _FinalStage maxTokensPerDoc(Integer maxTokensPerDoc);
 
+        _FinalStage relevantSpans(Optional<RerankRelevantSpans> relevantSpans);
+
+        _FinalStage relevantSpans(RerankRelevantSpans relevantSpans);
+
         /**
          * <p>Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.</p>
          */
@@ -203,6 +225,8 @@ public final class V2RerankRequest {
         private String query;
 
         private Optional<Integer> priority = Optional.empty();
+
+        private Optional<RerankRelevantSpans> relevantSpans = Optional.empty();
 
         private Optional<Integer> maxTokensPerDoc = Optional.empty();
 
@@ -222,13 +246,14 @@ public final class V2RerankRequest {
             documents(other.getDocuments());
             topN(other.getTopN());
             maxTokensPerDoc(other.getMaxTokensPerDoc());
+            relevantSpans(other.getRelevantSpans());
             priority(other.getPriority());
             return this;
         }
 
         /**
-         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
-         * <p>The identifier of the model to use, eg <code>rerank-v3.5</code>.</p>
+         * <p>The identifier of the model to use, eg <code>rerank-v5.0-pro</code>.</p>
+         * <p>The identifier of the model to use, eg <code>rerank-v5.0-pro</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -267,6 +292,19 @@ public final class V2RerankRequest {
         @JsonSetter(value = "priority", nulls = Nulls.SKIP)
         public _FinalStage priority(Optional<Integer> priority) {
             this.priority = priority;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage relevantSpans(RerankRelevantSpans relevantSpans) {
+            this.relevantSpans = Optional.ofNullable(relevantSpans);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "relevant_spans", nulls = Nulls.SKIP)
+        public _FinalStage relevantSpans(Optional<RerankRelevantSpans> relevantSpans) {
+            this.relevantSpans = relevantSpans;
             return this;
         }
 
@@ -356,7 +394,8 @@ public final class V2RerankRequest {
 
         @java.lang.Override
         public V2RerankRequest build() {
-            return new V2RerankRequest(model, query, documents, topN, maxTokensPerDoc, priority, additionalProperties);
+            return new V2RerankRequest(
+                    model, query, documents, topN, maxTokensPerDoc, relevantSpans, priority, additionalProperties);
         }
 
         @java.lang.Override
