@@ -124,7 +124,7 @@ public final class V2EmbedRequest {
 
     /**
      * @return The number of dimensions of the output embedding. This is only available for <code>embed-v4</code> and newer models.
-     * Possible values are <code>256</code>, <code>512</code>, <code>1024</code>, and <code>1536</code>. The default is <code>1536</code>.
+     * For supported dimensions, please refer to the <a href="https://docs.cohere.com/docs/cohere-embed">Embed models</a> page.
      */
     @JsonProperty("output_dimension")
     public Optional<Integer> getOutputDimension() {
@@ -267,7 +267,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>The number of dimensions of the output embedding. This is only available for <code>embed-v4</code> and newer models.
-         * Possible values are <code>256</code>, <code>512</code>, <code>1024</code>, and <code>1536</code>. The default is <code>1536</code>.</p>
+         * For supported dimensions, please refer to the <a href="https://docs.cohere.com/docs/cohere-embed">Embed models</a> page.</p>
          */
         _FinalStage outputDimension(Optional<Integer> outputDimension);
 
@@ -448,7 +448,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>The number of dimensions of the output embedding. This is only available for <code>embed-v4</code> and newer models.
-         * Possible values are <code>256</code>, <code>512</code>, <code>1024</code>, and <code>1536</code>. The default is <code>1536</code>.</p>
+         * For supported dimensions, please refer to the <a href="https://docs.cohere.com/docs/cohere-embed">Embed models</a> page.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -459,7 +459,7 @@ public final class V2EmbedRequest {
 
         /**
          * <p>The number of dimensions of the output embedding. This is only available for <code>embed-v4</code> and newer models.
-         * Possible values are <code>256</code>, <code>512</code>, <code>1024</code>, and <code>1536</code>. The default is <code>1536</code>.</p>
+         * For supported dimensions, please refer to the <a href="https://docs.cohere.com/docs/cohere-embed">Embed models</a> page.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "output_dimension", nulls = Nulls.SKIP)
