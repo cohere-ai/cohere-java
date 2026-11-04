@@ -26,6 +26,8 @@ public final class ApiMetaBilledUnits {
 
     private final Optional<Double> imageTokens;
 
+    private final Optional<Double> textTokens;
+
     private final Optional<Double> outputTokens;
 
     private final Optional<Double> searchUnits;
@@ -40,6 +42,7 @@ public final class ApiMetaBilledUnits {
             Optional<Double> images,
             Optional<Double> inputTokens,
             Optional<Double> imageTokens,
+            Optional<Double> textTokens,
             Optional<Double> outputTokens,
             Optional<Double> searchUnits,
             Optional<Double> classifications,
@@ -48,6 +51,7 @@ public final class ApiMetaBilledUnits {
         this.images = images;
         this.inputTokens = inputTokens;
         this.imageTokens = imageTokens;
+        this.textTokens = textTokens;
         this.outputTokens = outputTokens;
         this.searchUnits = searchUnits;
         this.classifications = classifications;
@@ -77,6 +81,14 @@ public final class ApiMetaBilledUnits {
     @JsonProperty("image_tokens")
     public Optional<Double> getImageTokens() {
         return imageTokens;
+    }
+
+    /**
+     * @return The number of billed text tokens.
+     */
+    @JsonProperty("text_tokens")
+    public Optional<Double> getTextTokens() {
+        return textTokens;
     }
 
     /**
@@ -126,6 +138,7 @@ public final class ApiMetaBilledUnits {
         return images.equals(other.images)
                 && inputTokens.equals(other.inputTokens)
                 && imageTokens.equals(other.imageTokens)
+                && textTokens.equals(other.textTokens)
                 && outputTokens.equals(other.outputTokens)
                 && searchUnits.equals(other.searchUnits)
                 && classifications.equals(other.classifications)
@@ -138,6 +151,7 @@ public final class ApiMetaBilledUnits {
                 this.images,
                 this.inputTokens,
                 this.imageTokens,
+                this.textTokens,
                 this.outputTokens,
                 this.searchUnits,
                 this.classifications,
@@ -161,6 +175,8 @@ public final class ApiMetaBilledUnits {
 
         private Optional<Double> imageTokens = Optional.empty();
 
+        private Optional<Double> textTokens = Optional.empty();
+
         private Optional<Double> outputTokens = Optional.empty();
 
         private Optional<Double> searchUnits = Optional.empty();
@@ -178,6 +194,7 @@ public final class ApiMetaBilledUnits {
             images(other.getImages());
             inputTokens(other.getInputTokens());
             imageTokens(other.getImageTokens());
+            textTokens(other.getTextTokens());
             outputTokens(other.getOutputTokens());
             searchUnits(other.getSearchUnits());
             classifications(other.getClassifications());
@@ -224,6 +241,20 @@ public final class ApiMetaBilledUnits {
 
         public Builder imageTokens(Double imageTokens) {
             this.imageTokens = Optional.ofNullable(imageTokens);
+            return this;
+        }
+
+        /**
+         * <p>The number of billed text tokens.</p>
+         */
+        @JsonSetter(value = "text_tokens", nulls = Nulls.SKIP)
+        public Builder textTokens(Optional<Double> textTokens) {
+            this.textTokens = textTokens;
+            return this;
+        }
+
+        public Builder textTokens(Double textTokens) {
+            this.textTokens = Optional.ofNullable(textTokens);
             return this;
         }
 
@@ -288,6 +319,7 @@ public final class ApiMetaBilledUnits {
                     images,
                     inputTokens,
                     imageTokens,
+                    textTokens,
                     outputTokens,
                     searchUnits,
                     classifications,
