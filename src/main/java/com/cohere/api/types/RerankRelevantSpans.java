@@ -41,7 +41,7 @@ public final class RerankRelevantSpans {
     }
 
     /**
-     * @return Whether the model prunes each document down to its relevant spans. Pruning is off unless <code>relevant_spans</code> is passed with <code>&quot;mode&quot;: &quot;enabled&quot;</code>.
+     * @return One of <code>&quot;enabled&quot;</code> or <code>&quot;disabled&quot;</code>. Controls whether relevant spans will be returned in the API response.
      */
     @JsonProperty("mode")
     public RerankRelevantSpansMode getMode() {
@@ -49,7 +49,7 @@ public final class RerankRelevantSpans {
     }
 
     /**
-     * @return The score a span must reach to be considered relevant. A higher value prunes more of each document. Defaults to <code>0.1</code>. Can only be set when <code>mode</code> is <code>enabled</code>.
+     * @return Only spans with a relevance score higher than the specified threshold value will be included in the response. Defaults to <code>0.1</code>.
      */
     @JsonProperty("threshold")
     public Optional<Float> getThreshold() {
@@ -57,7 +57,7 @@ public final class RerankRelevantSpans {
     }
 
     /**
-     * @return Optional. The most spans to return per document, out of the spans scoring above <code>threshold</code>. Must be greater than <code>0</code>. If not set, all of them are returned. Can only be set when <code>mode</code> is <code>enabled</code>.
+     * @return The maximum number of relevant spans to include per document. If not set, all relevant spans will be returned.
      */
     @JsonProperty("max_spans")
     public Optional<Integer> getMaxSpans() {
@@ -95,7 +95,7 @@ public final class RerankRelevantSpans {
 
     public interface ModeStage {
         /**
-         * <p>Whether the model prunes each document down to its relevant spans. Pruning is off unless <code>relevant_spans</code> is passed with <code>&quot;mode&quot;: &quot;enabled&quot;</code>.</p>
+         * <p>One of <code>&quot;enabled&quot;</code> or <code>&quot;disabled&quot;</code>. Controls whether relevant spans will be returned in the API response.</p>
          */
         _FinalStage mode(@NotNull RerankRelevantSpansMode mode);
 
@@ -110,14 +110,14 @@ public final class RerankRelevantSpans {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>The score a span must reach to be considered relevant. A higher value prunes more of each document. Defaults to <code>0.1</code>. Can only be set when <code>mode</code> is <code>enabled</code>.</p>
+         * <p>Only spans with a relevance score higher than the specified threshold value will be included in the response. Defaults to <code>0.1</code>.</p>
          */
         _FinalStage threshold(Optional<Float> threshold);
 
         _FinalStage threshold(Float threshold);
 
         /**
-         * <p>Optional. The most spans to return per document, out of the spans scoring above <code>threshold</code>. Must be greater than <code>0</code>. If not set, all of them are returned. Can only be set when <code>mode</code> is <code>enabled</code>.</p>
+         * <p>The maximum number of relevant spans to include per document. If not set, all relevant spans will be returned.</p>
          */
         _FinalStage maxSpans(Optional<Integer> maxSpans);
 
@@ -146,8 +146,8 @@ public final class RerankRelevantSpans {
         }
 
         /**
-         * <p>Whether the model prunes each document down to its relevant spans. Pruning is off unless <code>relevant_spans</code> is passed with <code>&quot;mode&quot;: &quot;enabled&quot;</code>.</p>
-         * <p>Whether the model prunes each document down to its relevant spans. Pruning is off unless <code>relevant_spans</code> is passed with <code>&quot;mode&quot;: &quot;enabled&quot;</code>.</p>
+         * <p>One of <code>&quot;enabled&quot;</code> or <code>&quot;disabled&quot;</code>. Controls whether relevant spans will be returned in the API response.</p>
+         * <p>One of <code>&quot;enabled&quot;</code> or <code>&quot;disabled&quot;</code>. Controls whether relevant spans will be returned in the API response.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -158,7 +158,7 @@ public final class RerankRelevantSpans {
         }
 
         /**
-         * <p>Optional. The most spans to return per document, out of the spans scoring above <code>threshold</code>. Must be greater than <code>0</code>. If not set, all of them are returned. Can only be set when <code>mode</code> is <code>enabled</code>.</p>
+         * <p>The maximum number of relevant spans to include per document. If not set, all relevant spans will be returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -168,7 +168,7 @@ public final class RerankRelevantSpans {
         }
 
         /**
-         * <p>Optional. The most spans to return per document, out of the spans scoring above <code>threshold</code>. Must be greater than <code>0</code>. If not set, all of them are returned. Can only be set when <code>mode</code> is <code>enabled</code>.</p>
+         * <p>The maximum number of relevant spans to include per document. If not set, all relevant spans will be returned.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "max_spans", nulls = Nulls.SKIP)
@@ -178,7 +178,7 @@ public final class RerankRelevantSpans {
         }
 
         /**
-         * <p>The score a span must reach to be considered relevant. A higher value prunes more of each document. Defaults to <code>0.1</code>. Can only be set when <code>mode</code> is <code>enabled</code>.</p>
+         * <p>Only spans with a relevance score higher than the specified threshold value will be included in the response. Defaults to <code>0.1</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -188,7 +188,7 @@ public final class RerankRelevantSpans {
         }
 
         /**
-         * <p>The score a span must reach to be considered relevant. A higher value prunes more of each document. Defaults to <code>0.1</code>. Can only be set when <code>mode</code> is <code>enabled</code>.</p>
+         * <p>Only spans with a relevance score higher than the specified threshold value will be included in the response. Defaults to <code>0.1</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "threshold", nulls = Nulls.SKIP)
